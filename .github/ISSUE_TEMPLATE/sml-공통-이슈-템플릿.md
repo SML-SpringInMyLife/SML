@@ -1,7 +1,7 @@
 ---
-name: "[이름] 제목"
+name: SML 공통 이슈 템플릿
 about: issue 작성을 위한 공통 템플릿
-title: ''
+title: "[이름] 제목"
 labels: ''
 assignees: ''
 
