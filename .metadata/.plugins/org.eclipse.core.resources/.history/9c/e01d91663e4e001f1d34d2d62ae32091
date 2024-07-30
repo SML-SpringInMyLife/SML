@@ -1,0 +1,45 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%
+    String requestURI = request.getRequestURI();
+    String basePath = "/admin/";
+    String pagePath = requestURI.substring(requestURI.indexOf(basePath) + basePath.length());
+    pagePath = pagePath.replace(".jsp", "");
+
+    if (pagePath == null || pagePath.isEmpty()) {
+        pagePath = "main"; 
+    }
+%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link rel="stylesheet"
+	href="${webappRoot}/resources/css/admin/admin.css">
+</head>
+<body>
+
+	<nav class="admin-menu">
+		<a href="/admin/main"><h3>관리자 페이지</h3></a>
+		<hr>
+		<ul>
+			<li><a href="/admin/members"
+				class="<c:if test='${pagePath == "members"}'>active</c:if>">회원
+					관리</a></li>
+			<li><a href="/admin/courses"
+				class="<c:if test='${pagePath == "courses"}'>active</c:if>">수강신청
+					관리</a></li>
+			<li><a href="/admin/sms"
+				class="<c:if test='${pagePath == "sms"}'>active</c:if>">SMS 관리</a></li>
+			<li><a href="/admin/chat"
+				class="<c:if test='${pagePath == "chat"}'>active</c:if>">채팅상담 관리</a></li>
+			<li><a href="/admin/edit"
+				class="<c:if test='${pagePath == "edit"}'>active</c:if>">내 정보수정</a></li>
+
+		</ul>
+	</nav>
+
+</body>
+</html>

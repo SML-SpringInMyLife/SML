@@ -57,10 +57,6 @@ header {
 	margin-right: 50px;
 }
 
-.main-menu li:hover, .auth-menu li:hover, .mobile-menu li:hover {
-	font-weight: 900;
-}
-
 .auth-menu li {
 	margin-left: 20px;
 }
@@ -75,6 +71,10 @@ a {
 	text-decoration: none;
 	color: #01530c;
 	font-size: 1.5em;
+}
+
+.main-menu li a:hover, .auth-menu li a:hover, .mobile-menu li a:hover {
+	color: #ec7c00;
 }
 
 .hamburger-container {
@@ -201,7 +201,7 @@ main {
 	margin-top: 190px;
 	padding-top: 50px;
 	flex: 1;
-	min-height: 500px;
+	min-height: 560px;
 }
 
 /* 푸터 영역 */

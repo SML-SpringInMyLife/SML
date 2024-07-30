@@ -1,0 +1,74 @@
+      var registrationChart;
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var ctx = document.getElementById('registrationChart').getContext('2d');
+            registrationChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+                    datasets: [
+                        {
+                            label: '남자 회원',
+                            backgroundColor: 'blue',
+                            data: []  // initial empty data
+                        },
+                        {
+                            label: '여자 회원',
+                            backgroundColor: 'red',
+                            data: []  // initial empty data
+                        },
+                        {
+                            label: '총 회원',
+                            backgroundColor: 'green',
+                            data: []  // initial empty data
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        },
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Load initial data for the default year
+            updateChart();
+        });
+
+        function updateChart() {
+            var year = document.getElementById('yearSelect').value;
+            
+            // Fetch data from the server based on the selected year
+            // For demonstration, we will use static data. Replace this with an AJAX request to your server.
+            var data = getDataForYear(year);
+
+            registrationChart.data.datasets[0].data = data.male;
+            registrationChart.data.datasets[1].data = data.female;
+            registrationChart.data.datasets[2].data = data.total;
+            registrationChart.update();
+        }
+
+        function getDataForYear(year) {
+            // Replace this with your actual data fetching logic
+            var data = {
+                "2023": {
+                    male: [12, 19, 3, 5, 2, 3, 8, 12, 6, 3, 5, 7],
+                    female: [15, 29, 5, 10, 5, 6, 12, 18, 9, 5, 6, 8],
+                    total: [27, 48, 8, 15, 7, 9, 20, 30, 15, 8, 11, 15]
+                },
+                "2022": {
+                    male: [22, 29, 5, 7, 4, 5, 10, 15, 9, 6, 7, 9],
+                    female: [18, 25, 7, 12, 6, 8, 14, 20, 11, 7, 8, 10],
+                    total: [40, 54, 12, 19, 10, 13, 24, 35, 20, 13, 15, 19]
+                },
+                // Add more years as needed
+            };
+
+            return data[year];
+        }
