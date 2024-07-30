@@ -4,7 +4,7 @@
 <%@ page session="false"%>
 <html>
 <head>
-<title>글 등록 - 커뮤니티</title>
+<title>수업 등록 - 수강 신청</title>
 <link rel="stylesheet"
 	href="${webappRoot}/resources/css/common/common.css">
 </head>
@@ -14,7 +14,10 @@
 
 	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
-	<h1>본문내용 넣으세용~</h1>
+	<h1>수업 등록</h1>
+	<div class="course_enroll">
+	
+	</div>
 	
 	
 		
