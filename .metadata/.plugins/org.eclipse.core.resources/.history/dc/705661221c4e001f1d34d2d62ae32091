@@ -1,0 +1,207 @@
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+
+hamburger.addEventListener('click', function() {
+    // Toggle mobile menu visibility
+    if (mobileMenu.style.display === 'none' || mobileMenu.style.display === '') {
+        mobileMenu.style.display = 'block';
+    } else {
+        mobileMenu.style.display = 'none';
+    }
+});
+
+window.addEventListener('resize', function() {
+    // Hide mobile menu if the window is resized above 1400px
+    if (window.innerWidth >= 1400) {
+        mobileMenu.style.display = 'none';
+    }
+});
+
+
+I want to create a quick menu that follows when scrolling on the right side of the screen. I want to put 4 functions vertically in the menu. 1 to enlarge screen font, 1 to reduce screen font, 1 chat consultation button, 1 to return to top of screen
+ChatGPT
+Creating a quick menu that follows the user while scrolling and includes the functionalities you mentioned involves a combination of HTML, CSS, and JavaScript. Here's a simple implementation:
+
+HTML: Define the structure of the menu.
+CSS: Style the menu and make it fixed on the right side.
+JavaScript: Add functionality to the buttons (enlarge font, reduce font, chat consultation, return to top).
+Step 1: HTML
+html
+코드 복사
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Menu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="quick-menu">
+    <button onclick="enlargeFont()">Enlarge Font</button>
+    <button onclick="reduceFont()">Reduce Font</button>
+    <button onclick="chatConsultation()">Chat Consultation</button>
+    <button onclick="scrollToTop()">Top</button>
+</div>
+
+<!-- Example content to demonstrate scrolling -->
+<div style="height: 2000px;">
+    <h1>Scroll Down to See the Quick Menu</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+Step 2: CSS (styles.css)
+css
+코드 복사
+body {
+    font-family: Arial, sans-serif;
+}
+
+#quick-menu {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#quick-menu button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#quick-menu button:hover {
+    background-color: #ddd;
+}
+Step 3: JavaScript (script.js)
+javascript
+코드 복사
+function enlargeFont() {
+    document.body.style.fontSize = (parseFloat(getComputedStyle(document.body).fontSize) + 2) + 'px';
+}
+
+function reduceFont() {
+    document.body.style.fontSize = (parseFloat(getComputedStyle(document.body).fontSize) - 2) + 'px';
+}
+
+function chatConsultation() {
+    alert('This would open a chat consultation window.');
+    // Here you can integrate your chat system
+}
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+Explanation:
+HTML:
+
+The div with id="quick-menu" contains four buttons with respective onclick handlers.
+A large div with a height of 2000px to enable scrolling for demonstration purposes.
+CSS:
+
+The #quick-menu is fixed on the right side of the screen at 50% from the top with a vertical transform for centering.
+Basic styling for the buttons to make them user-friendly.
+JavaScript:
+
+enlargeFont: Increases the font size of the body.
+reduceFont: Decreases the font size of the body.
+chatConsultation: Placeholder function for opening a chat consultation.
+scrollToTop: Smooth scrolls to the top of the page.
+This code will create a simple, functional quick menu that follows the user as they scroll and provides the desired functionalities.
+
+Bundle them into one box with translucency and separate them with a border line.
+ChatGPT
+Sure, I can help you bundle the buttons into one translucent box with separation lines and a border. Here's the updated code:
+
+Step 1: HTML
+html
+코드 복사
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quick Menu</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="quick-menu">
+    <button onclick="enlargeFont()">Enlarge Font</button>
+    <button onclick="reduceFont()">Reduce Font</button>
+    <button onclick="chatConsultation()">Chat Consultation</button>
+    <button onclick="scrollToTop()">Top</button>
+</div>
+
+<!-- Example content to demonstrate scrolling -->
+<div style="height: 2000px;">
+    <h1>Scroll Down to See the Quick Menu</h1>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit...</p>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
+Step 2: CSS (styles.css)
+css
+코드 복사
+body {
+    font-family: Arial, sans-serif;
+}
+
+#quick-menu {
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+}
+
+#quick-menu button {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+#quick-menu button:last-child {
+    border-bottom: none;
+}
+
+#quick-menu button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+Step 3: JavaScript (script.js)
+javascript
+코드 복사
+function enlargeFont() {
+    document.body.style.fontSize = (parseFloat(getComputedStyle(document.body).fontSize) + 2) + 'px';
+}
+
+function reduceFont() {
+    document.body.style.fontSize = (parseFloat(getComputedStyle(document.body).fontSize) - 2) + 'px';
+}
+
+function chatConsultation() {
+    alert('This would open a chat consultation window.');
+}
+
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}

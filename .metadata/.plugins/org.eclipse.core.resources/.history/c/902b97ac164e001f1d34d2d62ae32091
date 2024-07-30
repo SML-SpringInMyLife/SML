@@ -1,0 +1,242 @@
+@charset "UTF-8";
+
+/* 전체 기본 폰트 설정 */
+@font-face {
+    font-family: 'JSArirangHON-Regular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/JSArirangHON-RegularA1.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+	font-family: 'JSArirangHON-Regular';
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+/* 헤더(네비게이션) 영역 */
+header {
+	width: 100%;
+	height: 180px;
+	background-color: #f8f8f8;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: fixed; /* 위치 고정 */
+	top: 0; /* 화면 상단에 위치 */
+	z-index: 1000;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-bottom: 10px solid #01530c;
+}
+
+.container {
+	width: 80%;
+	max-width: 1240px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: relative; /* 상대적 위치 설정 (모바일 메뉴 조정용) */
+}
+
+.logo {
+	width: 180px;
+	height: auto;
+}
+
+.main-menu ul, .auth-menu ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+}
+
+.main-menu li {
+	margin-right: 50px;
+}
+
+.main-menu li:hover, .auth-menu li:hover, .mobile-menu li:hover {
+	font-weight: 900;
+}
+
+.auth-menu li {
+	margin-left: 20px;
+}
+
+.auth-menu {
+	display: flex;
+	align-items: right;
+	position: relative; /* 상대적 위치 설정 (햄버거 메뉴 조정용) */
+}
+
+a {
+	text-decoration: none;
+	color: #01530c;
+	font-size: 24px;
+}
+
+.hamburger-container {
+	position: relative;
+}
+
+.hamburger {
+	display: none;
+	background: none;
+	border: none;
+	font-size: 80px; /* 폰트 크기 설정 (햄버거 아이콘 크기) */
+	cursor: pointer; /* 클릭 가능한 커서 설정 */
+	margin-left: 20px;
+	color: #01530c;
+}
+
+.mobile-menu {
+	display: none;
+	position: absolute;
+	top: calc(100% + 5px); /* 버튼 아래에 약간의 여백 추가 */
+	right: 0; /* 버튼 오른쪽 끝에 위치 */
+	width: 150px;
+	background-color: #f8f8f8;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	z-index: 999; /* 햄버거 버튼보다 뒤에 위치하도록 설정 */
+	border: 1px solid #ddd;
+}
+
+.mobile-menu ul {
+	list-style: none;
+	padding: 20px;
+	margin: 0;
+}
+
+.mobile-menu li {
+	margin-bottom: 10px;
+}
+
+/* 화면 너비가 1400px 이하일 때, 네비게이션 메뉴 비활성화, 햄버거 버튼 및 메뉴 팝업 활성화 */
+@media ( max-width : 1400px) {
+	.main-menu, .auth-menu {
+		display: none; /* 메인 메뉴와 인증 메뉴 숨기기 */
+	}
+	.hamburger {
+		display: block; /* 햄버거 버튼 표시 */
+	}
+}
+
+.main-container {
+	position: relative; /* 상대적 위치 설정 */
+	height: 100vh; /* 전체 뷰포트 높이 */
+	margin-top: 190px; /* 헤더 높이만큼 여백 추가 */
+	background-image: url('/resources/images/mainPage.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: hidden; /* 컨테이너의 오버플로우 방지 */
+}
+
+.main-container::before {
+	content: ""; /* 가상 요소에 내용 없음 */
+	position: absolute; /* 절대 위치 설정 */
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.5); /* 50% 투명도의 검정색 오버레이 */
+	pointer-events: none; /* 오버레이 아래의 요소와 상호작용 가능 */
+	z-index: 1; /* 텍스트 위에 위치하도록 설정 */
+}
+
+.main-text {
+	position: relative; /* 오버레이 위에 위치하도록 설정 */
+	z-index: 2;
+	color: white; /* 흰색 텍스트 색상 */
+	font-size: 3em;
+	text-align: center; /* 텍스트 수평 중앙 정렬 */
+	line-height: 1.2; /* 텍스트 가독성을 위한 줄 높이 조정 */
+}
+
+main {
+	width: 80%;
+	max-width: 1240px;
+	margin: 0 auto;
+	margin-top: 190px;
+	padding-top: 50px;
+	flex: 1;
+	min-height: 500px;
+}
+
+/* 푸터 영역 */
+footer {
+	margin: 0;
+	width: 100%;
+	height: 130px;
+	background-color: #e5e5e5;
+	box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+	padding: 20px 0;
+	position: relative;
+}
+
+.footer-container {
+	width: 80%;
+	max-width: 1240px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin: 0 auto;
+}
+
+.footer-left {
+	display: flex;
+	align-items: center;
+}
+
+.footer-logo {
+	width: 100px;
+	height: auto;
+	margin-right: 20px;
+}
+
+.footer-menu ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	display: flex;
+}
+
+.footer-menu li {
+	margin-right: 20px;
+}
+
+.footer-menu li:last-child {
+	margin-right: 0;
+}
+
+.footer-menu a {
+	text-decoration: none;
+	color: #01530c;
+	font-size: 16px;
+}
+
+.footer-left p {
+	color: #01530c;
+	font-size: 16px;
+}
+
+/* 반응형 디자인: 화면 너비가 1400px 이하일 때 */
+@media ( max-width : 1400px) {
+	.footer-container {
+		flex-direction: column; /* 열 방향으로 레이아웃 설정 */
+		align-items: flex-start; /* 왼쪽 정렬 */
+	}
+	.footer-menu ul {
+		flex-direction: column;
+		align-items: flex-start;
+	}
+	.footer-menu li {
+		margin-bottom: 10px;
+	}
+	.footer-menu li:last-child {
+		margin-bottom: 0;
+	}
+}

@@ -1,0 +1,19 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ page session="false"%>
+<html>
+<head>
+<title>Home</title>
+<link rel="stylesheet"
+	href="${webappRoot}/resources/css/common/commonPage.css">
+</head>
+<body>
+
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+
+	<main>
+		<h1>Hello world!</h1>
+	</main>
+	
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+</body>
+</html>
