@@ -158,6 +158,7 @@ a {
 	line-height: 1.2; /* 텍스트 가독성을 위한 줄 높이 조정 */
 }
 
+/* 퀵 메뉴 */
 #quick-menu {
 	position: fixed;
     right: 20px;
@@ -168,7 +169,7 @@ a {
     gap: 0;
     background: rgba(255, 255, 255, 0.8);
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 50px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     padding: 10px;
 	z-index:1000;
@@ -191,6 +192,8 @@ a {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+
+/* 페이지 본문 전체 영역 */
 main {
 	width: 80%;
 	max-width: 1240px;

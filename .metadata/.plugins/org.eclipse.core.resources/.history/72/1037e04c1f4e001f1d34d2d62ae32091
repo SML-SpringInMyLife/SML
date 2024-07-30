@@ -192,8 +192,6 @@ a {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
-
-/* 페이지 본문 전체 영역 */
 main {
 	width: 80%;
 	max-width: 1240px;
