@@ -2,10 +2,12 @@
 
 /* 전체 기본 폰트 설정 */
 @font-face {
-    font-family: 'WAGURITTF';
-    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403@1.0/WAGURITTF.woff2') format('woff2');
-    font-weight: normal;
-    font-style: normal;
+	font-family: 'WAGURITTF';
+	src:
+		url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403@1.0/WAGURITTF.woff2')
+		format('woff2');
+	font-weight: normal;
+	font-style: normal;
 }
 
 body {
@@ -72,7 +74,7 @@ header {
 a {
 	text-decoration: none;
 	color: #01530c;
-	font-size: 24px;
+	font-size: 1.5em;
 }
 
 .hamburger-container {
@@ -154,6 +156,39 @@ a {
 	font-size: 3em;
 	text-align: center; /* 텍스트 수평 중앙 정렬 */
 	line-height: 1.2; /* 텍스트 가독성을 위한 줄 높이 조정 */
+}
+
+#quick-menu {
+	position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+	z-index:1000;
+}
+
+#quick-menu button {
+    padding: 10px;
+    font-size: 32px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #ccc;
+}
+
+#quick-menu button:last-child {
+    border-bottom: none;
+}
+
+#quick-menu button:hover {
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 main {

@@ -8,8 +8,24 @@
 <title>Header</title>
 <link rel="stylesheet"
 	href="${webappRoot}/resources/css/common/common.css">
+<link rel='stylesheet'
+	href='https://cdn-uicons.flaticon.com/2.5.1/uicons-bold-rounded/css/uicons-bold-rounded.css'>
 </head>
 <body>
+	<div id="quick-menu">
+		<button onclick="enlargeFont()">
+			<i class="fi fi-br-zoom-in"></i>
+		</button>
+		<button onclick="reduceFont()">
+			<i class="fi fi-br-zoom-out"></i>
+		</button>
+		<button onclick="chatConsultation()">
+			<i class="fi fi-br-comments-question-check"></i>
+		</button>
+		<button onclick="scrollToTop()">
+			<i class="fi fi-br-chevron-double-up"></i>
+		</button>
+	</div>
 	<header>
 		<div class="container">
 			<a href="/" class="main-link"> <img
@@ -46,7 +62,8 @@
 			</div>
 		</div>
 	</header>
-	
+
+
 	<script src="${webappRoot}/resources/js/common.js"></script>
 </body>
 </html>

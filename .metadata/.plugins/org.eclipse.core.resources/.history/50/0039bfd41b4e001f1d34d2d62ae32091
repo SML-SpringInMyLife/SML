@@ -74,7 +74,7 @@ header {
 a {
 	text-decoration: none;
 	color: #01530c;
-	font-size: 1.5em;
+	font-size: 24px;
 }
 
 .hamburger-container {
@@ -160,35 +160,22 @@ a {
 
 #quick-menu {
 	position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-	z-index:1000;
+	right: 20px;
+	top: 50%;
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
 }
 
 #quick-menu button {
-    padding: 10px;
-    font-size: 32px;
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #ccc;
-}
-
-#quick-menu button:last-child {
-    border-bottom: none;
+	padding: 10px;
+	font-size: 16px;
+	cursor: pointer;
 }
 
 #quick-menu button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+	background-color: #ddd;
 }
 
 main {

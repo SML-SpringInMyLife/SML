@@ -16,19 +16,3 @@ window.addEventListener('resize', function() {
         mobileMenu.style.display = 'none';
     }
 });
-
-function enlargeFont() {
-    document.body.style.fontSize = (parseFloat(getComputedStyle(document.body).fontSize) + 2) + 'px';
-}
-
-function reduceFont() {
-    document.body.style.fontSize = (parseFloat(getComputedStyle(document.body).fontSize) - 2) + 'px';
-}
-
-function chatConsultation() {
-    alert('아직 채팅상담 연결 전입니다~!');
-}
-
-function scrollToTop() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}

@@ -74,7 +74,7 @@ header {
 a {
 	text-decoration: none;
 	color: #01530c;
-	font-size: 1.5em;
+	font-size: 2드;
 }
 
 .hamburger-container {

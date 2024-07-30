@@ -26,7 +26,7 @@ function reduceFont() {
 }
 
 function chatConsultation() {
-    alert('아직 채팅상담 연결 전입니다~!');
+    alert('This would open a chat consultation window.');
 }
 
 function scrollToTop() {
