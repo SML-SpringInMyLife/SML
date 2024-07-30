@@ -2,10 +2,10 @@
 
 /* 전체 기본 폰트 설정 */
 @font-face {
-	font-family: 'SUIT-Regular';
-	src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_suit@1.0/SUIT-Regular.woff2') format('woff2');
-	font-weight: normal;
-	font-style: normal;
+    font-family: 'WAGURITTF';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403@1.0/WAGURITTF.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }
 
 body {
@@ -16,6 +16,7 @@ body {
 
 /* 헤더(네비게이션) 영역 */
 header {
+	font-family: 'WAGURITTF';
 	width: 100%;
 	height: 180px;
 	background-color: #f8f8f8;
@@ -39,7 +40,7 @@ header {
 }
 
 .logo {
-	width: 180px; 
+	width: 180px;
 	height: auto;
 }
 
@@ -53,7 +54,6 @@ header {
 .main-menu li {
 	margin-right: 50px;
 }
-
 
 .main-menu li:hover, .auth-menu li:hover, .mobile-menu li:hover {
 	font-weight: 900;
@@ -75,24 +75,22 @@ a {
 	font-size: 24px;
 }
 
-
-
 .hamburger-container {
-	position: relative; 
+	position: relative;
 }
 
 .hamburger {
 	display: none;
-	background: none; 
-	border: none; 
+	background: none;
+	border: none;
 	font-size: 80px; /* 폰트 크기 설정 (햄버거 아이콘 크기) */
 	cursor: pointer; /* 클릭 가능한 커서 설정 */
-	margin-left: 20px; 
+	margin-left: 20px;
 	color: #01530c;
 }
 
 .mobile-menu {
-	display: none; 
+	display: none;
 	position: absolute;
 	top: calc(100% + 5px); /* 버튼 아래에 약간의 여백 추가 */
 	right: 0; /* 버튼 오른쪽 끝에 위치 */
@@ -110,11 +108,11 @@ a {
 }
 
 .mobile-menu li {
-	margin-bottom: 10px; 
+	margin-bottom: 10px;
 }
 
 /* 화면 너비가 1400px 이하일 때, 네비게이션 메뉴 비활성화, 햄버거 버튼 및 메뉴 팝업 활성화 */
-@media (max-width: 1400px) {
+@media ( max-width : 1400px) {
 	.main-menu, .auth-menu {
 		display: none; /* 메인 메뉴와 인증 메뉴 숨기기 */
 	}
@@ -129,7 +127,7 @@ a {
 	margin-top: 190px; /* 헤더 높이만큼 여백 추가 */
 	background-image: url('/resources/images/mainPage.jpg');
 	background-repeat: no-repeat;
-	background-size: cover; 
+	background-size: cover;
 	background-position: center;
 	display: flex;
 	justify-content: center;
@@ -153,7 +151,7 @@ a {
 	position: relative; /* 오버레이 위에 위치하도록 설정 */
 	z-index: 2;
 	color: white; /* 흰색 텍스트 색상 */
-	font-size: 3em; 
+	font-size: 3em;
 	text-align: center; /* 텍스트 수평 중앙 정렬 */
 	line-height: 1.2; /* 텍스트 가독성을 위한 줄 높이 조정 */
 }
@@ -163,7 +161,7 @@ main {
 	max-width: 1240px;
 	margin: 0 auto;
 	margin-top: 190px;
-	padding-top: 50px; 
+	padding-top: 50px;
 	flex: 1;
 	min-height: 500px;
 }
@@ -222,11 +220,11 @@ footer {
 
 .footer-left p {
 	color: #01530c;
-	font-size: 16px; 
+	font-size: 16px;
 }
 
 /* 반응형 디자인: 화면 너비가 1400px 이하일 때 */
-@media (max-width: 1400px) {
+@media ( max-width : 1400px) {
 	.footer-container {
 		flex-direction: column; /* 열 방향으로 레이아웃 설정 */
 		align-items: flex-start; /* 왼쪽 정렬 */
