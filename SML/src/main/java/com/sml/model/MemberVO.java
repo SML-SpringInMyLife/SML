@@ -13,6 +13,9 @@ public class MemberVO {
 	private int regDate;
 	private int money;
 	private int point;
+
+	test
+	
 	public String getMemberId() {
 		return memberId;
 	}
