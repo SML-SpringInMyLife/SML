@@ -59,4 +59,12 @@ public class CommunityController {
 		return "redirect:/community/boardList";
 	}
 	
+	@GetMapping("/board")
+	public void boardGET() {
+		
+	}
+	
+	// ¼öÁ¤
+	
+	
 }
