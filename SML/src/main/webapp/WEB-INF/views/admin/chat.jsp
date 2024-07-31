@@ -73,7 +73,7 @@
 			</div>
 		</div>
 
-	ㄴ</main>
+	</main>
 
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>

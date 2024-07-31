@@ -26,6 +26,8 @@
 			<i class="fi fi-br-chevron-double-up"></i>
 		</button>
 	</div>
+
+
 	<header>
 		<div class="container">
 			<a href="/" class="main-link"> <img
@@ -63,6 +65,25 @@
 		</div>
 	</header>
 
+	<div id="chat-container" class="hidden">
+		<div id="chat-header">
+			<span><< 채팅 상담 >></span>
+			<button onclick="closeChat()">X</button>
+		</div>
+		<div id="chat-box"></div>
+		<div id="chat-input">
+			<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
+			<button onclick="sendMessage()">전송</button>
+		</div>
+	</div>
+
+	<div id="close-chat-modal" class="modal hidden">
+		<div class="modal-content">
+			<p>채팅(상담)을 종료하시겠습니까?</p>
+			<button onclick="confirmCloseChat()">종료</button>
+			<button onclick="cancelCloseChat()">취소</button>
+		</div>
+	</div>
 
 	<script src="${webappRoot}/resources/js/common.js"></script>
 </body>

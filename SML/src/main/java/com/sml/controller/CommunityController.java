@@ -23,13 +23,13 @@ public class CommunityController {
 	
 //	@RequestMapping(value = "boardList", method = RequestMethod.GET)
 //	public void adminMainGET() throws Exception{
-//		logger.info("Ä¿¹Â´ÏÆ¼ ÆäÀÌÁö ÀÌµ¿");
+//		logger.info("ì»¤ë®¤ë‹ˆí‹° í˜ì´ì§€ ì´ë™");
 //	}
 	
 	@GetMapping("/boardList")
 	public void boardListGET(Model model) throws Exception {
 		
-		logger.info("Ä¿¹Â´ÏÆ¼ ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ì»¤ë®¤ë‹ˆí‹° í˜ì´ì§€ ì´ë™");
 		
 		List list = service.getBoardList();
 		

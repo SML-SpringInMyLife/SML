@@ -13,8 +13,8 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<div class="main-container">
-		<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 		<main>
+			<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 			<div class="row align-items-center">
 				<div class="main-text">
 					<h1>Spring in My Life</h1>
