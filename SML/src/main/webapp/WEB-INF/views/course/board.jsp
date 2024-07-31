@@ -5,8 +5,10 @@
 <html>
 <head>
 <title>Home</title>
-<link rel="stylesheet"
-	href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="../resources/css/course/board.css">
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 	<!-- 헤더 영역 포함 -->

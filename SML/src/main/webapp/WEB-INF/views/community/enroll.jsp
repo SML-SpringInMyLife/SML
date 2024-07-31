@@ -6,6 +6,7 @@
 <head>
 <title>글 등록 - 커뮤니티</title>
 <link rel="stylesheet" 	href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="../resources/css/community/enroll.css">
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
@@ -39,17 +40,19 @@
 				</div>
 			</div>
 			<div class="form_section">
-				<div class="form_section_title">
-					<label>비밀글 설정</label>
+				<div class="form_section_title secretPostLabel">
+					<label>비밀 글 설정</label>
+					<input type="checkbox" name="secretPost" id="secretPost">
 				</div>
-				<div class="form_section_content">
-					<!-- checkbox -->
+				<div class="form_section_content" id="passwordSection" style="display: none;">
+					<label for="secretPassword">비밀 글 비밀번호 </label>
+					<input type="password" name="secretPassword" id="secretPassword">
 				</div>
 			</div>
 		</form>
 		<div class="btn_section">
 			<button id="cancelBtn" class="btn">취소</button>
-			<button id="submitBtn" class="btn">등록</button>
+			<button id="enrollBtn" class="btn enroll_btn">등록</button>
 		</div>
 	</div>
 	</main>
@@ -66,42 +69,20 @@
 				console.error(error);
 			});
 		
+		// 비밀글 설정 체크박스
+		$("#secretPost").change(function() {
+			if ($(this).is(":checked")) {
+				$("#passwordSection").slideDown(); // 비밀번호 입력란 나타나기
+			} else {
+				$("#passwordSection").slideUp(); // 비밀번호 입력란 사라지기
+			}
+		});
+		
 		// 등록 버튼
 		$("#enrollBtn").click(function() {
-			
-			let titleCheck = false;
-			let contentCheck = false;
-			
-			let commTitle = $('input[name=commTitle]').val();
-			let commContent = $('input[name=commContent]').val();
-			
-			let wCommTitle = $('#warn_commTitle');
-			let wCommContent = $('#warn_commContent');
-			
-			// 공란 체크
-			if (commTitle === '') {
-				wCommTitle.css('display', 'block');
-				titleCheck = false;
-			} else {
-				wCommTitle.css('display', 'none');
-				titleCheck = true;
-			}
-			
-			if (commContent === '') {
-				wCommContent.css('display', 'block');
-				contentCheck = false;
-			} else {
-				wCommContent.css('display', 'none');
-				contentCheck = true;
-			}
-			
-			if (titleCheck && contentCheck) {
-				$("#enrollForm").submit();
-			} else {
-				return;
-			}
-			
-		}
+			$("#enrollForm").submit();
+						
+		});
 		
 		// 취소 버튼
 		$("#cancelBtn").click(function() {

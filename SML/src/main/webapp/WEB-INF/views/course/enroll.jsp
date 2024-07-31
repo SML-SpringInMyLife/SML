@@ -5,8 +5,10 @@
 <html>
 <head>
 <title>수업 등록 - 수강 신청</title>
-<link rel="stylesheet"
-	href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="../resources/css/course/enroll.css">
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 	<!-- 헤더 영역 포함 -->

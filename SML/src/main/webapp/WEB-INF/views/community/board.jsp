@@ -6,8 +6,9 @@
 <html>
 <head>
 <title>Home</title>
-<link rel="stylesheet"
-	href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="../resources/css/community/board.css">
+
 </head>
 <body>
 	<!-- 헤더 영역 포함 -->
