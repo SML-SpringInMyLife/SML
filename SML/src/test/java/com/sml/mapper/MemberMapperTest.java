@@ -21,8 +21,8 @@ public class MemberMapperTest {
 	public void memberJoin() throws Exception{
 		MemberVO member = new MemberVO();
 		
-		member.setMemId("user123");
-		member.setMemPw("password123");
+		member.setMemId("test");
+		member.setMemPw("1234");
 		member.setMemName("홍길동");
 		member.setMemMail("user123@example.com");
 		member.setMemPhone("010-1234-5678");
@@ -47,8 +47,8 @@ public class MemberMapperTest {
 	public void memberLogin() throws Exception{
 		MemberVO member = new MemberVO();
 		
-		member.setMemId("user123");
-		member.setMemPw("password123");
+		member.setMemId("test");
+		member.setMemPw("1234");
 		
 		membermapper.memberLogin(member);
 		System.out.println("결과" + membermapper.memberLogin(member));
