@@ -44,7 +44,7 @@
 			<nav class="auth-menu" id="auth-menu">
 				<ul>
 					<li><a href="/login">로그인</a></li>
-					<li><a href="/register">회원가입</a></li>
+					<li><a href="/join">회원가입</a></li>
 				</ul>
 			</nav>
 			<button class="hamburger" id="hamburger">&#9776;</button>
