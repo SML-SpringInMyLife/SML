@@ -20,7 +20,7 @@
 					</ul>
 				</nav>
 			</div>
-			<p>&copy; 2024 Your Company. All Rights Reserved.</p>
+			<p>&copy; 2024 SML Company. All Rights Reserved.</p>
 		</div>
 	</footer>
 </body>

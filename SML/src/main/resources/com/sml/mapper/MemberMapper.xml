@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.sml.mapper.MemberMapper">  
+ 
+  <!-- 회원가입 -->
+  <insert id="memberJoin">
+  	INSERT INTO TB_MEMBER (
+            MEM_ID, MEM_PW, MEM_NAME, MEM_MAIL, MEM_PHONE, MEM_EMER_PHONE,
+            MEM_ADDR1, MEM_ADDR2, MEM_ADDR3, MEM_BIRTH, MEM_JOIN_DATE,
+            MEM_QUIT_DATE, MEM_STATUS, MEM_TOTAL_POINT, MEM_ADMIN_CHECK, POINT_CODE
+        ) VALUES (
+            #{memId}, #{memPw}, #{memName}, #{memMail}, #{memPhone}, #{memEmerPhone},
+            #{memAddr1}, #{memAddr2}, #{memAddr3}, #{memBirth}, #{memJoinDate},
+            #{memQuitDate}, #{memStatus}, #{memTotalPoint}, #{memAdminCheck}, #{pointCode}
+        )
+      	
+  </insert>
+  
+   <!-- 로그인 -->
+   <select id="memberLogin" resultType="com.sml.model.MemberVO">
+   
+   	 SELECT 
+        MEM_CODE, MEM_ID, MEM_PW, MEM_NAME, MEM_MAIL, MEM_PHONE, MEM_EMER_PHONE,
+        MEM_ADDR1, MEM_ADDR2, MEM_ADDR3, MEM_BIRTH, MEM_JOIN_DATE,
+        MEM_QUIT_DATE, MEM_STATUS, MEM_TOTAL_POINT, MEM_ADMIN_CHECK, POINT_CODE 
+   	 FROM TB_MEMBER
+   	 WHERE MEM_ID=#{memId} and MEM_PW = #{memPw}
+   
+   
+   </select>
+  	
+</mapper>
+  
