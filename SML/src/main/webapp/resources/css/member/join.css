@@ -6,7 +6,7 @@
 
 /* 화면 전체 렙 */
 .wrapper{
-	width: 1900px;	
+	width: 100%;	
 }
 
 /* content 랩 */
@@ -48,6 +48,17 @@
 	border:none;
 	font-size:28px;
 }
+
+/*중복아이디 존재하지 않는 경우*/
+.id_input_re_1{
+	color : green;
+	display : none;
+}
+/*중복아이디 존재하는 경우*/
+.id_input_re_2{
+	color : red;
+	display : none;
+}	
 
 /* 비밀번호 영역 */
 .pw_wrap{
@@ -144,13 +155,15 @@
     height: 31px;
     padding: 10px 14px;
     width: 61%;
-    float: left;
+    float: left;    
 }
+ 
 #mail_check_input_box_false{
-	background-color : #ebebe4;
+    background-color:#ebebe4;
 }
+ 
 #mail_check_input_box_true{
-	background-color : white;
+    background-color:white;
 }
 .mail_check_input{
 	width:100%;
@@ -170,11 +183,12 @@
     background-color: #ececf7;
     cursor: pointer;
 }
+
 .correct{
-	color : green;
+    color : green;
 }
 .incorrect{
-	color : red;
+    color : red;
 }
 
 /* 주소 영역 */
@@ -242,6 +256,7 @@
 	border:none;
 	font-size:28px;
 }
+
 /* 가입하기 버튼 */
 .join_button_wrap{
 	margin-top: 40px;
@@ -285,21 +300,10 @@
 .pwck_input_re_2{
         color : red;
         display : none;    
-}   
+}
+
 
 /* float 속성 해제 */
 .clearfix{
 	clear: both;
-}
-
-/* 중복 아이디가 존재하지 않는 경우*/
-.id_input_re_1{
-	color : green;
-	display : none;
-}
-
-/* 중복 아이디가 존재하는 경우*/
-.id_input_re_2{
-	color : red;
-	display : none;
 }

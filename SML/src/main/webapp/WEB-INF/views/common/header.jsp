@@ -37,7 +37,7 @@
 					<li><a href="/notice">공지사항</a></li>
 					<li><a href="/life">생활정보</a></li>
 					<li><a href="/location">위치찾기</a></li>
-					<li><a href="/class">취미교실</a></li>
+					<li><a href="/course">취미교실</a></li>
 					<li><a href="/community">커뮤니티</a></li>
 				</ul>
 			</nav>
@@ -53,11 +53,11 @@
 					<li><a href="/notice">공지사항</a></li>
 					<li><a href="/life">생활정보</a></li>
 					<li><a href="/location">위치찾기</a></li>
-					<li><a href="/class">취미교실</a></li>
+					<li><a href="/course">취미교실</a></li>
 					<li><a href="/community">커뮤니티</a></li>
 					<p>----------------</p>
 					<li><a href="/login">로그인</a></li>
-					<li><a href="/register">회원가입</a></li>
+					<li><a href="/join">회원가입</a></li>
 				</ul>
 			</div>
 		</div>
