@@ -102,6 +102,14 @@ textarea[name="commContent"] {
     box-sizing: border-box; /* 패딩과 테두리를 포함하여 전체 너비를 설정 */
 }
 
+/* 입력란 공란 경고 태그 */
+.form_section_content span{    
+    display: none;
+    padding-top: 10px;
+    text-align: center;
+    color: #e05757;
+    font-weight: 300;    
+}
 
 /* 경고 메시지 */
 #warn_commTitle,
@@ -153,3 +161,4 @@ textarea[name="commContent"] {
     outline: none; /* 포커스 시 기본 테두리 제거 */
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* 포커스 시 그림자 추가 */
 }
+

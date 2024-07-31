@@ -15,10 +15,10 @@
 	<!-- 헤더 영역 포함 -->
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
 	<h1>커뮤니티 글 작성</h1>
 	<div class="community_enroll">
+		<jsp:include page="/WEB-INF/views/community/communityMenu.jsp" />
 		<form action="/community/enroll" method="post" id="enrollForm">
 			<div class="form_section">
 				<div class="form_section_title">
@@ -80,8 +80,43 @@
 		
 		// 등록 버튼
 		$("#enrollBtn").click(function() {
-			$("#enrollForm").submit();
-						
+			/* 검사 통과 유무 변수 */
+		    let titleCheck = false;            
+		    let contentCheck = false; 
+		    
+		    /* 입력값 변수 */
+		    let commTitle = $('input[name=commTitle]').val(); 
+		    let commContent = $('textarea[name=commContent]').val();
+		    
+		    /* 공란 경고 span태그 */
+		    let wCommTitle = $('#warn_commTitle');
+		    let wCommContent = $('#warn_commContent');
+		    
+		    /* 제목 공백 체크 */
+		    if(commTitle ===''){
+		    	wCommTitle.css('display', 'block');
+		    	titleCheck = false;
+		    } else {
+		    	wCommTitle.css('display', 'none');
+		    	titleCheck = true;
+		    }
+		    
+		    /* 내용 공백 체크 */
+		    if(commContent ===''){
+		    	wCommContent.css('display', 'block');
+		    	contentCheck = false;
+		    } else {
+		    	wCommContent.css('display', 'none');
+		    	contentCheck = true;
+		    }
+		    
+		    /* 최종 검사 */
+		    if(titleCheck && contentCheck){
+		    	$("#enrollForm").submit();
+		    } else {
+		    	return;
+		    }
+		
 		});
 		
 		// 취소 버튼

@@ -24,9 +24,6 @@
 			<td class="th_column_4">게시글 내용</td>
 			<td class="th_column_5">조회수</td>
 		</tr>
-
-
-
 	</main>
 
 	<!-- 푸터 영역 포함 -->
