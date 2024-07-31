@@ -1,7 +1,0 @@
-INDEX VERSION 1.131
-D:\SML-develop\SML\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1024833254.index
-\SML\src\main\java
-D:\SML-develop\SML\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1844725257.index
-\SML\src\main\java
-D:\SML-develop\SML\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\358021294.index
-\SML\src\main\java
