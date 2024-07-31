@@ -6,14 +6,10 @@
   <mapper namespace="com.sml.mapper.CommunityMapper">
   
   	<insert id="enroll">
-  		INSERT INTO COMMUNITY(COMM_CODE, COMM_TITLE, COMM_CONTENT) VALUES (
-  			#{commCode},
-  			#{commTitle},
-  			#{commContent}  			
-  		)
   	</insert>
   	
-  	<select id="boardList">
+  	<select id="boardList" resultType="com.sml.model.CommunityVO">
+  		SELECT COMM_CODE, COMM_TITLE, MEM_CODE, COMM_ENROLL_DATE, COMM_COUNT FROM COMMUNITY
   	</select>
   	
   	<select id="board">
