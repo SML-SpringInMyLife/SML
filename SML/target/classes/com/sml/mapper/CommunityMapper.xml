@@ -1,1 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.sml.mapper.CommunityMapper">
+  
+  	<insert id="enroll">
+  		INSERT INTO COMMUNITY(COMM_CODE, COMM_TITLE, COMM_CONTENT) VALUES (
+  			#{commCode},
+  			#{commTitle},
+  			#{commContent}  			
+  		)
+  	</insert>
+  	
+  	<select id="boardList">
+  	</select>
+  	
+  	<select id="board">
+  	</select>
+  	
+  	<update id="modify">
+  	</update>
+  	
+  	<update id="delete">
+  	</update>
+  	
+  </mapper>

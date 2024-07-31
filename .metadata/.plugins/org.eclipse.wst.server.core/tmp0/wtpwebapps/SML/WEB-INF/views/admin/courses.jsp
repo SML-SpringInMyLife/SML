@@ -6,8 +6,6 @@
 <html>
 <head>
 <title>SML_Admin(수강신청관리)</title>
-<link rel="stylesheet"
-	href="${webappRoot}/resources/css/common/common.css">
 </head>
 <body>
 	<!-- 헤더 영역 포함 -->
@@ -25,57 +23,62 @@
 						<option value="courseName">수업명</option>
 						<option value="enrolleeName">성명</option>
 						<option value="phone">전화번호</option>
-					</select> <input type="text" id="searchQuery" placeholder="검색어를 입력하세요.">
+					</select> <input type="text" id="searchQuery" class="search-bar"
+						placeholder="검색어를 입력하세요.">
 					<button onclick="searchCourses()">검색</button>
 				</div>
 
 				<table class="course-table">
 					<thead>
 						<tr>
-							<th>No.</th>
-							<th>수업명</th>
-							<th>개강일</th>
-							<th>신청자No</th>
-							<th>성명</th>
-							<th>전화번호</th>
-							<th>신청상태</th>
-							<th>비고</th>
+							<th data-label="No.">No.</th>
+							<th data-label="수업명">수업명</th>
+							<th data-label="개강일">개강일</th>
+							<th data-label="신청자No.">신청자No.</th>
+							<th data-label="성명">성명</th>
+							<th data-label="전화번호">전화번호</th>
+							<th data-label="신청상태">신청상태</th>
+							<th data-label="비고">비고</th>
 						</tr>
 					</thead>
 					<tbody id="courseList">
 						<!-- Sample Group Row -->
 						<tr class="course-group">
-							<td colspan="8">2024 자바 프로그래밍</td>
+							<td colspan="8" data-label="수업명">2024 자바 프로그래밍</td>
 						</tr>
 						<tr>
-							<td>001</td>
-							<td>자바 프로그래밍</td>
-							<td>2023-08-01</td>
-							<td>1</td>
-							<td>홍길동</td>
-							<td>010-1234-5678</td>
-							<td>완료 / <button class="changeStatus">취소</button></td>
-							<td>-</td>
+							<td data-label="No.">1</td>
+							<td data-label="수업명">자바 프로그래밍</td>
+							<td data-label="개강일">2023-08-01</td>
+							<td data-label="신청자No.">1</td>
+							<td data-label="성명">홍길동</td>
+							<td data-label="전화번호">010-1234-5678</td>
+							<td data-label="신청상태">완료 /
+								<button class="changeStatus">취소</button>
+							</td>
+							<td data-label="비고">-</td>
 						</tr>
 						<tr>
-							<td>002</td>
-							<td>자바 프로그래밍</td>
-							<td>2023-08-01</td>
-							<td>2</td>
-							<td>임꺽정</td>
-							<td>010-1234-5678</td>
-							<td>취소</button></td>
-							<td>-</td>
+							<td data-label="No.">2</td>
+							<td data-label="수업명">자바 프로그래밍</td>
+							<td data-label="개강일">2023-08-01</td>
+							<td data-label="신청자No.">2</td>
+							<td data-label="성명">임꺽정</td>
+							<td data-label="전화번호">010-1234-5678</td>
+							<td data-label="신청상태">취소</td>
+							<td data-label="비고">-</td>
 						</tr>
 						<tr>
-							<td>003</td>
-							<td>자바 프로그래밍</td>
-							<td>2023-08-01</td>
-							<td>3</td>
-							<td>유관순</td>
-							<td>010-1234-5678</td>
-							<td>완료 / <button class="changeStatus">취소</button></td>
-							<td>-</td>
+							<td data-label="No.">3</td>
+							<td data-label="수업명">자바 프로그래밍</td>
+							<td data-label="개강일">2023-08-01</td>
+							<td data-label="신청자No.">3</td>
+							<td data-label="성명">유관순</td>
+							<td data-label="전화번호">010-1234-5678</td>
+							<td data-label="신청상태">완료 /
+								<button class="changeStatus">취소</button>
+							</td>
+							<td data-label="비고">-</td>
 						</tr>
 					</tbody>
 				</table>

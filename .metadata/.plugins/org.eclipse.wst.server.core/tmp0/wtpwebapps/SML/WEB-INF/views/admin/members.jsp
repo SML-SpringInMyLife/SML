@@ -6,8 +6,6 @@
 <html>
 <head>
 <title>SML_Admin(회원관리)</title>
-<link rel="stylesheet"
-	href="${webappRoot}/resources/css/common/common.css">
 </head>
 <body>
 	<!-- 헤더 영역 포함 -->
@@ -26,41 +24,47 @@
 						<option value="name">성명</option>
 						<option value="phone">전화번호</option>
 						<option value="status">회원상태</option>
-					</select> <input type="text" id="searchQuery" placeholder="검색어를 입력하세요.">
+					</select> <input type="text" id="searchQuery" class="search-bar"
+						placeholder="검색어를 입력하세요.">
 					<button onclick="searchMembers()">검색</button>
 				</div>
 
 				<table class="member-table">
+					<!-- Caption added for better accessibility -->
 					<thead>
 						<tr>
-							<th>No.</th>
-							<th>ID</th>
-							<th>성명</th>
-							<th>생년월일</th>
-							<th>전화번호</th>
-							<th>잔여포인트</th>
-							<th>회원상태</th>
+							<th data-label="No.">No.</th>
+							<th data-label="ID">ID</th>
+							<th data-label="성명">성명</th>
+							<th data-label="생년월일">생년월일</th>
+							<th data-label="전화번호">전화번호</th>
+							<th data-label="잔여포인트">잔여포인트</th>
+							<th data-label="회원상태">회원상태</th>
 						</tr>
 					</thead>
 					<tbody id="memberList">
 						<!-- 샘플 -->
 						<tr>
-							<td>1</td>
-							<td>Hong</td>
-							<td>홍길동</td>
-							<td>1990-01-01</td>
-							<td>010-1234-5678</td>
-							<td>1500 point</td>
-							<td>Y / <button class="changeStatus">휴면처리</button></td>
+							<td data-label="No.">1</td>
+							<td data-label="ID">Hong</td>
+							<td data-label="성명">홍길동</td>
+							<td data-label="생년월일">1990-01-01</td>
+							<td data-label="전화번호">010-1234-5678</td>
+							<td data-label="잔여포인트">1500 point</td>
+							<td data-label="회원상태">Y /
+								<button class="changeStatus">휴면처리</button>
+							</td>
 						</tr>
 						<tr>
-							<td>2</td>
-							<td>Lim</td>
-							<td>임꺽정</td>
-							<td>1990-01-01</td>
-							<td>010-1234-5678</td>
-							<td>2000 point</td>
-							<td>N / <button class="changeStatus">복구처리</button></td>
+							<td data-label="No.">2</td>
+							<td data-label="ID">Lim</td>
+							<td data-label="성명">임꺽정</td>
+							<td data-label="생년월일">1990-01-01</td>
+							<td data-label="전화번호">010-1234-5678</td>
+							<td data-label="잔여포인트">2000 point</td>
+							<td data-label="회원상태">N /
+								<button class="changeStatus">복구처리</button>
+							</td>
 						</tr>
 
 					</tbody>
