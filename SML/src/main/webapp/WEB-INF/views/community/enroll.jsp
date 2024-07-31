@@ -18,7 +18,7 @@
 	<main>
 	<h1>커뮤니티 글 작성</h1>
 	<div class="community_enroll">
-		<form action="/" method="post" id="enrollForm">
+		<form action="/community/enroll" method="post" id="enrollForm">
 			<div class="form_section">
 				<div class="form_section_title">
 					<label>글 제목</label>
