@@ -27,7 +27,7 @@ header {
 	align-items: center;
 	position: fixed; /* 위치 고정 */
 	top: 0; /* 화면 상단에 위치 */
-	z-index: 1000;
+	z-index: 900;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	border-bottom: 10px solid #01530c;
 }
@@ -57,10 +57,6 @@ header {
 	margin-right: 50px;
 }
 
-.main-menu li:hover, .auth-menu li:hover, .mobile-menu li:hover {
-	font-weight: 900;
-}
-
 .auth-menu li {
 	margin-left: 20px;
 }
@@ -75,6 +71,10 @@ a {
 	text-decoration: none;
 	color: #01530c;
 	font-size: 1.5em;
+}
+
+.main-menu li a:hover, .auth-menu li a:hover, .mobile-menu li a:hover {
+	color: #ec7c00;
 }
 
 .hamburger-container {
@@ -158,6 +158,7 @@ a {
 	line-height: 1.2; /* 텍스트 가독성을 위한 줄 높이 조정 */
 }
 
+/* 퀵 메뉴 */
 #quick-menu {
 	position: fixed;
     right: 20px;
@@ -168,7 +169,7 @@ a {
     gap: 0;
     background: rgba(255, 255, 255, 0.8);
     border: 1px solid #ccc;
-    border-radius: 8px;
+    border-radius: 50px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     padding: 10px;
 	z-index:1000;
@@ -191,6 +192,8 @@ a {
     background-color: rgba(0, 0, 0, 0.1);
 }
 
+
+/* 페이지 본문 전체 영역 */
 main {
 	width: 80%;
 	max-width: 1240px;
@@ -198,7 +201,7 @@ main {
 	margin-top: 190px;
 	padding-top: 50px;
 	flex: 1;
-	min-height: 500px;
+	min-height: 560px;
 }
 
 /* 푸터 영역 */

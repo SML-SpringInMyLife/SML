@@ -18,4 +18,39 @@ public class AdminController {
 		logger.info("관리자 페이지 이동");
 
 	}
+	
+	@RequestMapping(value = "courses", method = RequestMethod.GET)
+	public void adminCoursesGET() throws Exception {
+
+		logger.info("관리자 - 수강신청관리 페이지 이동");
+
+	}
+	
+	@RequestMapping(value = "members", method = RequestMethod.GET)
+	public void adminMembersGET() throws Exception {
+
+		logger.info("관리자 - 회원관리페이지 이동");
+
+	}
+	
+	@RequestMapping(value = "edit", method = RequestMethod.GET)
+	public void adminEditGET() throws Exception {
+
+		logger.info("관리자 - 정보수정페이지 이동");
+
+	}
+	
+	@RequestMapping(value = "sms", method = RequestMethod.GET)
+	public void adminSmsGET() throws Exception {
+
+		logger.info("관리자 - 문자관리페이지 이동");
+
+	}
+	
+	@RequestMapping(value = "chat", method = RequestMethod.GET)
+	public void adminChatGET() throws Exception {
+
+		logger.info("관리자 - 채팅상담관리페이지 이동");
+
+	}
 }
