@@ -15,8 +15,8 @@
 <body>
 <main>
       <div class="login-container">
-         <p class="login-title">Login<p>
-         <form class="login-form" method="post">
+         <p class="login-title">Login</p>
+         <form class="login-form" class="login-form" method="post">
             <input type="text" id="memId" name="memId"
                placeholder="아이디를 입력하세요." required> 
              <input type="password" id="memPw" name="memPw"
@@ -38,7 +38,7 @@
 <script>
  
     /* 로그인 버튼 클릭 메서드 */
-    $(".login_button").click(function(){
+    $(".login-button").click(function(){
         
         //alert("로그인 버튼 작동");
         
