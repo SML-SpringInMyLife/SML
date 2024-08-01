@@ -52,7 +52,7 @@ public class CommunityController {
    
    @GetMapping("/modify")
    public void modifyGET() throws Exception{
-	   logger.info("커뮤니티 글 수정!!");
+	   logger.info("커뮤니티 글 수정");
    }
    @PostMapping("/modify")
    public String modifyPOST() throws Exception{
