@@ -5,7 +5,12 @@
   
   <mapper namespace="com.sml.mapper.CommunityMapper">
   
-  	<insert id="enroll">
+  	<insert id="communityEnroll">
+  		INSERT INTO COMMUNITY(COMM_TITLE, COMM_CONTENT, MEM_CODE) VALUES(
+  			#{commTitle},
+  			#{commContent},
+  			#{memberCode}
+  		)
   	</insert>
   	
   	<select id="boardList" resultType="com.sml.model.CommunityVO">
