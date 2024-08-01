@@ -6,7 +6,7 @@
 <head>
 <title>Home</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/course/modify.css">
+<link rel="stylesheet" href="../resources/css/course/course.css">
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>

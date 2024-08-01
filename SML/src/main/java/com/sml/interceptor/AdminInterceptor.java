@@ -20,7 +20,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 
 		if (lvo == null || lvo.getAdminCk() == 0) { // 관리자 계정 아닌 경우
 
-			response.sendRedirect("/"); // 메인페이지로 리다이렉트
+			response.sendRedirect("/"); // 오류 페이지로 리다이렉트 - 예정
 
 			return false;
 
