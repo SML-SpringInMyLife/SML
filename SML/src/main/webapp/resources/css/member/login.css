@@ -1,0 +1,76 @@
+@charset "UTF-8";
+
+.login-container {
+   margin: 30px auto;
+   background-color: white;
+   padding: 30px;
+   border-radius: 8px;
+   box-shadow: 0 0 10px rgba(0, 0, 0, 0.4);
+   width: 100%;
+   max-width: 400px;
+}
+
+/* Heading */
+.login-title {
+   margin: 0;
+   margin-bottom: 50px;
+   text-align: center;
+   font-size: 3em;
+   font-weight: 900;
+}
+
+/* Form */
+.login-form {
+   display: flex;
+   flex-direction: column;
+}
+
+/* Input */
+.login-form input {
+   margin-bottom: 20px;
+   padding: 10px;
+   border: 1px solid #ddd;
+   border-radius: 4px;
+   font-size: 1.3em;
+}
+
+/* 버튼 */
+.login-button {
+   padding: 10px;
+   border: none;
+   border-radius: 10px;
+   font-size: 1.3em;
+   color: white;
+   background-color: #008040;
+   margin: 10px 0;
+   cursor: pointer;
+   width: 100%;
+}
+
+.login-button.kakao {
+   background-color: #ffcc00; /* Kakao color */
+   color : #333;
+}
+
+.login-button.naver {
+   background-color: #03c75a; /* Naver color */
+}
+
+.login-button.google {
+   background-color: #db4437; /* Google color */
+}
+
+/* 회원가입 링크 */
+.join-link {
+   text-align: center;
+   font-size: 1em;
+}
+
+.join-link a {
+   color: #007bff;
+   text-decoration: none;
+}
+
+.join-link a:hover {
+   text-decoration: underline;
+}
