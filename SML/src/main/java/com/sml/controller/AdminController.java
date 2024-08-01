@@ -53,4 +53,10 @@ public class AdminController {
 		logger.info("관리자 - 채팅상담관리페이지 이동");
 
 	}
+	@RequestMapping(value = "login", method = RequestMethod.GET)
+	public void adminLoginGET() throws Exception {
+		
+		logger.info("로그인페이지 이동");
+		
+	}
 }

@@ -26,13 +26,13 @@ public class CommunityController {
 	
 //	@RequestMapping(value = "boardList", method = RequestMethod.GET)
 //	public void adminMainGET() throws Exception{
-//		logger.info("Ä¿¹Â´ÏÆ¼ ÆäÀÌÁö ÀÌµ¿");
+//		logger.info("ì»¤ë®¤ë‹ˆí‹° í˜ì´ì§€ ì´ë™");
 //	}
 	
 	@GetMapping("/boardList")
 	public String boardListGET(Model model) throws Exception {
 		
-		logger.info("Ä¿¹Â´ÏÆ¼ ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ì»¤ë®¤ë‹ˆí‹° í˜ì´ì§€ ì´ë™");
 		
 		List list = service.getBoardList();
 
@@ -49,7 +49,7 @@ public class CommunityController {
 	
 	@GetMapping("/enroll")
 	public void communityEnrollGET() throws Exception{
-		logger.info("±Û µî·Ï ÆäÀÌÁö Á¢¼Ó");
+		logger.info("ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 	}
 	@PostMapping("/communityEnroll.do")
 	public String communityEnrollPOST(CommunityVO community, RedirectAttributes rttr) throws Exception {
@@ -63,8 +63,4 @@ public class CommunityController {
 	public void boardGET() {
 		
 	}
-	
-	// ¼öÁ¤
-	
-	
-}
+

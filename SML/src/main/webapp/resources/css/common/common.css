@@ -32,6 +32,11 @@ header {
 	border-bottom: 10px solid #01530c;
 }
 
+a {
+	color: #333;
+	text-decoration: none;
+}
+
 .container {
 	width: 80%;
 	max-width: 1240px;
@@ -67,8 +72,7 @@ header {
 	position: relative; /* 상대적 위치 설정 (햄버거 메뉴 조정용) */
 }
 
-a {
-	text-decoration: none;
+.main-menu a, .auth-menu a, .mobile-menu a {
 	color: #01530c;
 	font-size: 1.5em;
 }
@@ -99,7 +103,7 @@ a {
 	width: 150px;
 	background-color: #f8f8f8;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	z-index: 999; /* 햄버거 버튼보다 뒤에 위치하도록 설정 */
+	z-index: 888; /* 햄버거 버튼보다 뒤에 위치하도록 설정 */
 	border: 1px solid #ddd;
 }
 
@@ -161,120 +165,239 @@ a {
 /* 퀵 메뉴 */
 #quick-menu {
 	position: fixed;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid #ccc;
-    border-radius: 50px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    padding: 10px;
-	z-index:1000;
+	right: 20px;
+	top: 50%;
+	transform: translateY(-50%);
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	background: rgba(255, 255, 255, 0.8);
+	border: 1px solid #ccc;
+	border-radius: 50px;
+	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+	padding: 10px;
+	z-index: 800;
 }
 
 #quick-menu button {
-    padding: 10px;
-    font-size: 32px;
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    border-bottom: 1px solid #ccc;
+	padding: 10px;
+	font-size: 32px;
+	cursor: pointer;
+	background: transparent;
+	border: none;
+	border-bottom: 1px solid #ccc;
 }
 
 #quick-menu button:last-child {
-    border-bottom: none;
+	border-bottom: none;
 }
 
 #quick-menu button:hover {
-    background-color: rgba(0, 0, 0, 0.1);
+	background-color: rgba(0, 0, 0, 0.1);
 }
-
 
 /* 페이지 본문 전체 영역 */
 main {
+	margin: 0;
 	width: 80%;
 	max-width: 1240px;
 	margin: 0 auto;
 	margin-top: 190px;
-	padding-top: 50px;
+	padding: 50px 0;
 	flex: 1;
 	min-height: 560px;
-}
-
-/* 푸터 영역 */
-footer {
-	margin: 0;
-	width: 100%;
-	height: 130px;
-	background-color: #e5e5e5;
-	box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
-	padding: 20px 0;
-	position: relative;
-}
-
-.footer-container {
 	width: 80%;
-	max-width: 1240px;
+}
+
+/* 채팅상담창 영역 */
+#chat-container {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	width: 300px;
+	background-color: white;
+	border: 1px solid #ccc;
+	box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
+	z-index: 900;
+}
+
+#chat-container.hidden {
+	display: none;
+}
+
+#chat-header {
+	background-color: #004000;
+	color: white;
+	padding: 10px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+}
+
+#chat-box {
+	height: 200px;
+	padding: 10px;
+	overflow-y: auto;
+	border-bottom: 1px solid #ccc;
+}
+
+#chat-input {
 	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	display: flex;
+	width: 100%;
 }
 
+#message-input {
+	width: 83%;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 4px;
+}
+
+#chat-container button {
+	padding: 10px;
+	border: none;
+	background-color: #004000;
+	color: white;
+	cursor: pointer;
+	border-radius: 10px;
+}
+
+#chat-container button:hover {
+	background-color: #008000;
+}
+
+/* 채팅창 종료 경고창 */
+.modal {
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	background-color: white;
+	border: 1px solid #ccc;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+	border-radius: 10px;
+	z-index: 1000;
+}
+
+.modal-content {
+	padding: 20px;
+	text-align: center;
+}
+
+.hidden {
+	display: none;
+}
+
+#close-chat-modal {
+	position: fixed;
+	z-index: 1000;
+	width: 300px;
+	background-color: white;
+	border: 1px solid #ccc;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#close-chat-modal .modal-content {
+	padding: 20px;
+	text-align: center;
+}
+
+#close-chat-modal .modal-content button {
+	margin: 10px;
+	padding: 10px 20px;
+	color: white;
+	cursor: pointer;
+	border-radius: 10px;
+	border: 1px solid #008000;
+	background-color: #fff;
+	color: #008000;
+	border-radius: 10px;
+}
+
+#close-chat-modal .modal-content button:hover {
+	background-color: #008000;
+	color: white;
+	border-radius: 10px;
+}
+
+/* Footer area */
+/* Footer overall style */
+footer {
+	background-color: #edeff1;
+	padding: 15px 0 0 0;
+}
+
+/* Footer container style */
+.footer-container {
+	display: flex; /* Flexbox를 사용하여 레이아웃 구성 */
+	flex-direction: column; /* 세로 방향으로 배치 */
+	max-width: 1200px; /* 최대 너비 설정 */
+	margin: 0 auto; /* 중앙 정렬을 위한 자동 마진 */
+	font-size: 0.8em; /* 폰트 크기 설정 */
+}
+
+/* Left section style */
 .footer-left {
-	display: flex;
-	align-items: center;
+	display: flex; /* Flexbox를 사용하여 레이아웃 구성 */
+	flex-direction: column; /* 세로 방향으로 배치 */
+	align-items: flex-start; /* 왼쪽 정렬 */
+	width: 100%; /* 전체 너비 사용 */
 }
 
-.footer-logo {
-	width: 100px;
-	height: auto;
-	margin-right: 20px;
+/* Footer address list style */
+.footer-address {
+	list-style-type: none; /* 리스트 스타일 없음 */
+	padding: 0; /* 기본 패딩 제거 */
+	margin-bottom: 15px; /* 주소와 링크 사이의 간격 */
 }
 
-.footer-menu ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	display: flex;
+.footer-address li {
+	margin-bottom: 5px; /* 각 주소 항목 사이의 간격 */
 }
 
-.footer-menu li {
-	margin-right: 20px;
+/* Footer link list style */
+.footer-links {
+	display: flex; /* Flexbox를 사용하여 레이아웃 구성 */
+	justify-content: space-between; /* 링크 항목 사이의 공간 균등 배분 */
+	list-style-type: none; /* 리스트 스타일 없음 */
+	padding: 0; /* 기본 패딩 제거 */
+	margin: 0; /* 기본 마진 제거 */
 }
 
-.footer-menu li:last-child {
-	margin-right: 0;
+.footer-links li {
+	font-style: italic;
+	margin-right: 15px; /* 링크 항목 사이의 간격 */
 }
 
-.footer-menu a {
-	text-decoration: none;
-	color: #01530c;
-	font-size: 16px;
+/* Copyright text style */
+.footer-copy {
+	margin: 20px 0; /* 상하 마진: 20px */
+	text-align: center; /* 가운데 정렬 */
+	font-size: 0.9em; /* 폰트 크기: 0.9em (조금 작게 설정) */
+	color: #6c757d; /* 폰트 색상: 연한 회색 */
 }
 
-.footer-left p {
-	color: #01530c;
-	font-size: 16px;
-}
-
-/* 반응형 디자인: 화면 너비가 1400px 이하일 때 */
+/* Style when the screen width is less than 1000px */
 @media ( max-width : 1400px) {
 	.footer-container {
-		flex-direction: column; /* 열 방향으로 레이아웃 설정 */
-		align-items: flex-start; /* 왼쪽 정렬 */
+		flex-direction: column; /* 세로 방향으로 배치 */
+		align-items: center; /* 중앙 정렬 */
+		width: 80%;
 	}
-	.footer-menu ul {
-		flex-direction: column;
-		align-items: flex-start;
+	.footer-left {
+		width: 100%; /* 전체 너비 사용 */
 	}
-	.footer-menu li {
-		margin-bottom: 10px;
+	.footer-address {
+		margin-bottom: 10px; /* 주소와 링크 사이의 간격 감소 */
 	}
-	.footer-menu li:last-child {
-		margin-bottom: 0;
+	.footer-links {
+		flex-direction: column; /* 세로 방향으로 배치 */
+		margin-bottom: 0; /* 링크와 주소 사이의 간격 제거 */
+	}
+	.footer-links li {
+		margin: 8px 0; /* 링크 항목 사이의 간격 감소 */
 	}
 }
