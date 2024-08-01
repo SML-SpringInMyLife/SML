@@ -12,6 +12,7 @@ MANIFEST.MF
 
 ### Eclipse ###
 .metadata
+target/
 bin/
 tmp/
 *.tmp

@@ -13,28 +13,28 @@ public class PageDTO {
 	
 	public PageDTO(Criteria cri, int total) {
 		
-		/* cri, total ÃÊ±âÈ­ */
+		/* cri, total ì´ˆê¸°í™” */
         this.cri = cri;
         this.total = total;
         
-        /* ÆäÀÌÁö ³¡ ¹øÈ£ */
+        /* í˜ì´ì§€ ë ë²ˆí˜¸ */
         this.pageEnd = (int)(Math.ceil(cri.getPageNum()/10.0))*10;
         
-        /* ÆäÀÌÁö ½ÃÀÛ ¹øÈ£ */
+        /* í˜ì´ì§€ ì‹œì‘ ë²ˆí˜¸ */
         this.pageStart = this.pageEnd - 9;
         
-        /* ÀüÃ¼ ¸¶Áö¸· ÆäÀÌÁö ¹øÈ£ */
+        /* ì „ì²´ ë§ˆì§€ë§‰ í˜ì´ì§€ ë²ˆí˜¸ */
         int realEnd = (int)(Math.ceil(total*1.0/cri.getAmount()));
         
-        /* ÆäÀÌÁö ³¡ ¹øÈ£ À¯È¿¼º Ã¼Å© */
+        /* í˜ì´ì§€ ë ë²ˆí˜¸ ìœ íš¨ì„± ì²´í¬ */
         if(realEnd < pageEnd) {
             this.pageEnd = realEnd;
         }
         
-        /* ÀÌÀü ¹öÆ° °ª ÃÊ±âÈ­ */
+        /* ì´ì „ ë²„íŠ¼ ê°’ ì´ˆê¸°í™” */
         this.prev = this.pageStart > 1;
         
-        /* ´ÙÀ½ ¹öÆ° °ª ÃÊ±âÈ­ */
+        /* ë‹¤ìŒ ë²„íŠ¼ ê°’ ì´ˆê¸°í™” */
         this.next = this.pageEnd < realEnd;
         
 		

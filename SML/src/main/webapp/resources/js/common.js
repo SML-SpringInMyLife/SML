@@ -66,9 +66,58 @@ function reduceFont() {
     }
 }
 
-// 채팅 상담 연결 전임을 알리는 함수
+
+// 채팅 상담 함수
 function chatConsultation() {
-    alert('아직 채팅상담 연결 전입니다~!');
+    const chatContainer = document.getElementById('chat-container');
+    const chatBox = document.getElementById('chat-box');
+    chatBox.innerHTML = '';
+    
+    // 기본 메시지 추가
+    const defaultMessage = document.createElement('div');
+    defaultMessage.textContent = '무엇을 도와드릴까요?';
+    chatBox.appendChild(defaultMessage);
+
+    chatContainer.classList.remove('hidden');
+}
+
+function closeChat() {
+    document.getElementById('close-chat-modal').classList.remove('hidden');
+}
+
+function confirmCloseChat() {
+    document.getElementById('chat-container').classList.add('hidden');
+    document.getElementById('close-chat-modal').classList.add('hidden');
+    if (ws) {
+        ws.close();
+    }
+}
+
+function cancelCloseChat() {
+    document.getElementById('close-chat-modal').classList.add('hidden');
+}
+
+const ws = new WebSocket('ws://localhost:8082/chat');
+
+ws.onmessage = function(event) {
+    appendMessage(event.data);
+};
+
+function sendMessage() {
+    const input = document.getElementById('message-input');
+    const message = input.value;
+    if (message.trim() !== '') {
+        ws.send(message);
+        appendMessage(message);
+        input.value = '';
+    }
+}
+
+function appendMessage(message) {
+    const chatBox = document.getElementById('chat-box');
+    const messageDiv = document.createElement('div');
+    messageDiv.textContent = message;
+    chatBox.appendChild(messageDiv);
 }
 
 // 페이지 상단으로 부드럽게 스크롤하는 함수

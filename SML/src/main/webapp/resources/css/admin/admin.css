@@ -280,7 +280,6 @@
 }
 
 /* 관리자페이지 - 테이블/차트 반응형 */
-/* 모바일 화면에서 테이블 디자인을 적용하는 반응형 스타일 */
 @media all and (max-width: 1200px) {
 	/* 테이블 테두리 및 기타 기본 스타일 설정 */
 	.chat-table, .stats-table, .member-table, .course-table, .sms-table {
