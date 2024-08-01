@@ -18,6 +18,7 @@ if (pagePath == null || pagePath.isEmpty()) {
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="${webappRoot}/resources/css/course/courseMenu.css">
 </head>
 <body>
 
@@ -26,11 +27,10 @@ if (pagePath == null || pagePath.isEmpty()) {
 		<hr>
 		<ul>
 			<li><a href="/course/boardList">수강 신청</a></li>
-			<li><a href="/course/enroll">글 등록 - admin only</a></li>
-			<li><a href="/admin/courses">수강한 강의 보러가기</a></li>
+			<li><a href="/course/enroll">수업 등록 - admin only</a></li>
+			<li><a href="/member/courses">신청한 강의 보러가기</a></li>
 		</ul>
 	</nav>
 
-	<script src="${webappRoot}/resources/js/admin/admin.js"></script>
 </body>
 </html>

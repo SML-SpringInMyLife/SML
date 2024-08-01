@@ -18,7 +18,7 @@
 	<main>
 	<h1>커뮤니티 글 작성</h1>
 	<div class="community_enroll">
-		<jsp:include page="/WEB-INF/views/community/communityMenu.jsp" />
+		<%-- <jsp:include page="/WEB-INF/views/community/communityMenu.jsp" /> --%>
 		<form action="/community/enroll" method="post" id="enrollForm">
 			<div class="form_section">
 				<div class="form_section_title">

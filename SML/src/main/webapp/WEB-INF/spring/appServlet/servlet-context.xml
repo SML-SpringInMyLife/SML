@@ -31,8 +31,8 @@
         </interceptor>
         <interceptor>
             <mapping path="/admin/**"></mapping>
-            <mapping path="/course/enroll"></mapping>
-            <mapping path="/course/modify"></mapping>
+            <!-- <mapping path="/course/enroll"></mapping>
+            <mapping path="/course/modify"></mapping> -->
             <beans:bean id="AdminIntreceptor" class="com.sml.interceptor.AdminInterceptor"></beans:bean>
         </interceptor>
     </interceptors>

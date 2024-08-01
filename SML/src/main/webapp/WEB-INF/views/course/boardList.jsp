@@ -18,9 +18,8 @@
 	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
 	<h1>준비중입니다</h1>
-	
-	
-		
+	<jsp:include page="/WEB-INF/views/course/courseMenu.jsp" />
+
 	</main>
 
 	<!-- 푸터 영역 포함 -->

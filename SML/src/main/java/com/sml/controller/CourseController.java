@@ -22,5 +22,10 @@ private static final Logger logger = LoggerFactory.getLogger(AdminController.cla
 	public void booardListGET() throws Exception{
 		logger.info("수강신청 페이지 이동");
 	}
+	
+	@GetMapping("/enroll")
+	public void courseEnrollGET() throws Exception{
+		logger.info("수업 등록 페이지 이동");
+	}
 
 }
