@@ -34,7 +34,7 @@
 			</a>
 			<nav class="main-menu" id="main-menu">
 				<ul>
-					<li><a href="/notice">공지사항</a></li>
+					<li><a href="/notice/main">공지사항</a></li>
 					<li><a href="/life">생활정보</a></li>
 					<li><a href="/location">위치찾기</a></li>
 					<li><a href="/course">취미교실</a></li>
