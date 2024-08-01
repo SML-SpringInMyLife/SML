@@ -22,7 +22,7 @@
 }
 .subjecet span{
 	margin-left: 31px;
-    font-size: 80px;
+    font-size: 1.75em;
     font-weight: 900;
     color: white;
 }
@@ -33,7 +33,7 @@
     margin-top: 20px;
 }
 .id_name{
-	font-size: 25px;
+	font-size: 1.75em;
     font-weight: bold;
 }
 .id_input_box{
@@ -46,7 +46,7 @@
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;
+	font-size:1.75em;
 }
 
 /*중복아이디 존재하지 않는 경우*/
@@ -66,7 +66,7 @@
     margin-top: 20px;
 }
 .pw_name{
-	font-size: 25px;
+	font-size: 1.75em;
     font-weight: bold;
 }
 .pw_input_box{
@@ -79,7 +79,7 @@
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;
+	font-size:1.75em;
 }
 
 /* 비밀번호 확인 영역 */
@@ -88,7 +88,7 @@
     margin-top: 20px;
 }
 .pwck_name{
-	font-size: 25px;
+	font-size: 1.75em;
     font-weight: bold;
 }
 .pwck_input_box{
@@ -101,7 +101,7 @@
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;
+	font-size:1.75px;
 }
 
 /* 이름 영역 */
@@ -110,7 +110,7 @@
     margin-top: 20px;
 }
 .user_name{
-	font-size: 25px;
+	font-size: 1.75em;
     font-weight: bold;
 }
 .user_input_box{
@@ -123,8 +123,86 @@
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;
+	font-size:1.75em;
 }
+
+/*생년월일 영역*/
+.birth_wrap {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.user_birth {
+    font-size: 1.75em;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.birth_wrap select {
+    width: 30%;
+    height: 51px;
+    font-size: 1.75em;
+    border: 1px solid black;
+    margin-right: 5%;
+}
+
+.birth_wrap select:last-child {
+    margin-right: 0;
+}
+
+/* 이메일 도메인 선택 스타일 */
+.mail_box {
+    width: 30%;
+    height: 51px;
+    font-size: 0.75em;
+    border: 1px solid black;
+}
+
+/* 연락처 영역 */
+.phone_wrap{
+	width: 100%;
+    margin-top: 20px;
+}
+.user_phone{
+	font-size: 1.75em;
+    font-weight: bold;
+}
+.phone_input_box{
+	border: 1px solid black;
+	height:31px;
+	padding: 10px 14px;	
+	
+}
+.phone_input{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:1.75em;
+}
+
+/* 비상연락처 영역 */
+.ememrphone_wrap{
+	width: 100%;
+    margin-top: 20px;
+}
+.user_emerphone{
+	font-size: 1.75em;
+    font-weight: bold;
+}
+.ememrphone_input_box{
+	border: 1px solid black;
+	height:31px;
+	padding: 10px 14px;	
+	
+}
+.ememrphone_input{
+	width:100%;
+	height:100%;
+	border:none;
+	font-size:1.75em;
+}
+
+
 
 /* 메일 영역 */
 .mail_wrap{
@@ -132,7 +210,7 @@
     margin-top: 20px;
 }
 .mail_name{
-	font-size: 25px;
+	font-size: 1.75em;
     font-weight: bold;
 }
 .mail_input_box{
@@ -145,8 +223,32 @@
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;
+	font-size:1.75em;
 }
+
+.mail_box{
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  margin-left: 5px;
+  padding: 5px 0 5px 10px;
+  border-radius: 4px;
+  border: 1px solid #d9d6d6;
+  color: #383838;
+  background-color: #ffffff;
+  font-family: 'Montserrat', 'Pretendard', sans-serif;
+	
+}
+
+option {
+  font-size: 1.75em;
+}
+
+.info .mail_box#domain-list option {
+  font-size: 1.75em;
+  background-color: #ffffff;
+}
+
 .mail_check_wrap{
 	margin-top: 20px;	
 }
@@ -169,7 +271,7 @@
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;
+	font-size:1.75em;
 }
 .mail_check_button{
     border: 1px solid black;
@@ -178,7 +280,7 @@
     float: right;
     line-height: 50px;
     text-align: center;
-    font-size: 30px;
+    font-size: 1.75px;
     font-weight: 900;
     background-color: #ececf7;
     cursor: pointer;
@@ -197,7 +299,7 @@
     margin-top: 20px;
 }
 .address_name{
-	font-size: 25px;
+	font-size: 1.75em;
     font-weight: bold;
 }
 .address_input_1_box{
@@ -211,7 +313,7 @@
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;	
+	font-size:1.75em;	
 }
 .address_button{
     border: 1px solid black;
@@ -220,7 +322,7 @@
     float: right;
     line-height: 50px;
     text-align: center;
-    font-size: 30px;
+    font-size: 1.75em;
     font-weight: 900;
     background-color: #ececf7;
     cursor: pointer;	
@@ -238,7 +340,7 @@
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;
+	font-size:1.75em;
 }
 
 .address_input_3_wrap{
@@ -254,7 +356,7 @@
 	width:100%;
 	height:100%;
 	border:none;
-	font-size:28px;
+	font-size:1.75em;
 }
 
 /* 가입하기 버튼 */
@@ -266,7 +368,7 @@
 	width: 100%;
     height: 80px;
     background-color: #6AAFE6;
-    font-size: 40px;
+    font-size: 20em;
     font-weight: 900;
     color: white;
 }
