@@ -14,7 +14,7 @@ public class MemberVO {
 	private int money;
 	private int point;
 
-	test
+    test
 	
 	public String getMemberId() {
 		return memberId;
