@@ -337,6 +337,48 @@
 	    var form = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 	    return form.test(email);
 	}
+	 
+	 $(document).ready(function() {
+	        // 현재 연도 구하기
+	        var today = new Date();
+	        var currentYear = today.getFullYear();
+
+	        // 연도 옵션 추가
+	        for (var year = currentYear; year >= 1900; year--) {
+	            $('#birth-year').append(new Option(year, year));
+	        }
+
+	        // 월 옵션 추가
+	        for (var month = 1; month <= 12; month++) {
+	            $('#birth-month').append(new Option(month, month));
+	        }
+
+	        // 일 옵션 추가 (기본: 31일까지)
+	        for (var day = 1; day <= 31; day++) {
+	            $('#birth-day').append(new Option(day, day));
+	        }
+
+	        // 월 선택 시 일 옵션 변경
+	        $('#birth-month').change(function() {
+	            var selectedYear = $('#birth-year').val();
+	            var selectedMonth = $('#birth-month').val();
+	            $('#birth-day').empty().append('<option disabled selected>일</option>');
+
+	            // 선택한 월의 마지막 날짜 구하기
+	            if (selectedYear && selectedMonth) {
+	                var lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
+
+	                for (var day = 1; day <= lastDay; day++) {
+	                    $('#birth-day').append(new Option(day, day));
+	                }
+	            }
+	        });
+
+	        // 연도 선택 시 일 옵션 변경 (윤년 체크)
+	        $('#birth-year').change(function() {
+	            $('#birth-month').trigger('change');
+	        });
+	    }); 
 	</script>
 
 </body>
