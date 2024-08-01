@@ -5,7 +5,7 @@
 <%@ page session="false"%>
 <html>
 <head>
-<title>Home</title>
+<title>커뮤니티 게시판</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 <link rel="stylesheet" href="../resources/css/community/boardList.css">
 
@@ -17,11 +17,12 @@
 
 	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
-		<div class="community_board_list">
+		<div class="community_container">
+			<jsp:include page="/WEB-INF/views/community/communityMenu.jsp" />
 			<div class="community_boardList_wrap">
 				<!-- 게시물 O -->
 				<c:if test="${listCheck != 'empty'}">
-					<table class="community_list_table">
+					<table class="community_boardList">
 						<thead>
 							<tr>
 								<td class="th_column_1">#</td>
@@ -34,10 +35,11 @@
 						<c:forEach items="${list}" var="item">
 							<tr>
 								<td><c:out value="${item.commCode}" /></td>
-								<td><a class="move"
-									href="<c:out value='${item.authorId}'/>"> <c:out
-											value="${item.commTitle}" />
-								</a></td>
+								<td>
+									<a class="move" href="<c:out value='${item.commCode}'/>"> 
+										<c:out value="${item.commTitle}" />
+									</a>
+								</td>
 								<td><c:out value="${item.commWriter}" /></td>
 								<td><fmt:formatDate value="${item.enrollDate}"
 										pattern="yyyy-MM-dd" /></td>
