@@ -36,11 +36,11 @@
 			</a>
 			<nav class="main-menu" id="main-menu">
 				<ul>
-					<li><a href="/notice">공지사항</a></li>
-					<li><a href="/life">생활정보</a></li>
-					<li><a href="/location">위치찾기</a></li>
-					<li><a href="/course">취미교실</a></li>
-					<li><a href="/community">커뮤니티</a></li>
+					<li><a href="/notice/list">공지사항</a></li>
+					<li><a href="/life/">생활정보</a></li>
+					<li><a href="/location/">위치찾기</a></li>
+					<li><a href="/course/boardList">취미교실</a></li>
+					<li><a href="/community/boardList">커뮤니티</a></li>
 				</ul>
 			</nav>
 			<nav class="auth-menu" id="auth-menu">
@@ -52,11 +52,11 @@
 			<button class="hamburger" id="hamburger">&#9776;</button>
 			<div class="mobile-menu" id="mobile-menu">
 				<ul>
-					<li><a href="/notice">공지사항</a></li>
+					<li><a href="/notice/list">공지사항</a></li>
 					<li><a href="/life">생활정보</a></li>
 					<li><a href="/location">위치찾기</a></li>
-					<li><a href="/course">취미교실</a></li>
-					<li><a href="/community">커뮤니티</a></li>
+					<li><a href="/course/boardList">취미교실</a></li>
+					<li><a href="/community/boardList">커뮤니티</a></li>
 					<p>----------------</p>
 					<li><a href="/login">로그인</a></li>
 					<li><a href="/join">회원가입</a></li>

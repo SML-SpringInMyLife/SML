@@ -38,7 +38,7 @@
 						</tr>
 					</thead>
 					<tbody id="smsList">
-						<!-- 샘플 -->
+						<!-- 샘플 데이터 -->
 						<tr>
 							<td data-label="No.">1</td>
 							<td data-label="발송일시">2024-07-31 10:00</td>
@@ -66,8 +66,7 @@
 		</div>
 	</main>
 
-
-
+	<!-- SMS 발송 팝업 -->
 	<div id="smsPopup" class="sms-popup">
 		<div class="sms-popup-content">
 			<span class="close" onclick="closeSmsPopup()">&times;</span>
@@ -84,20 +83,20 @@
 			<div>
 				<ul id="searchResults"></ul>
 			</div>
-			<div>
+			<form id="sendSms" method="post">
 				<label for="recipientNumber" class="sms-label">수신인 번호:</label> <input
 					type="text" id="recipientNumber" readonly>
-			</div>
 			<div>
 				<label for="senderNumber" class="sms-label">발신인 번호:</label> <input
-					type="text" id="senderNumber">
+					type="text" id="senderNumber" value="01091933200">
 			</div>
 			<div>
 				<label for="smsContent" class="sms-label">내용:</label>
 				<textarea id="smsContent" rows="4" cols="50"></textarea>
 			</div>
-			<button class="send-button" onclick="sendSms()">보내기</button>
-		</div>
+			<button type="submit" class="send-button" onclick="sendSms()">보내기</button>
+			</div>
+		</form>
 	</div>
 
 	<!-- SMS 상세보기 팝업 -->
@@ -108,7 +107,7 @@
 			<div id="smsDetailsContent"></div>
 		</div>
 	</div>
-
+	
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
