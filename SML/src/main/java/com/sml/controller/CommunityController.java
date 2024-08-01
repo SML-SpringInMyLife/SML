@@ -27,7 +27,7 @@ public class CommunityController {
    @GetMapping("/boardList")
    public void boardListGET(Model model) throws Exception {
       
-      logger.info("커뮤니티 페이지 이동");
+      logger.info("커뮤니티 페이지 이동!");
       
       List<CommunityVO> list = service.getBoardList();
       
