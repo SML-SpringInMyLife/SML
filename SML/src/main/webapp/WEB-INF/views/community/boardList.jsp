@@ -5,10 +5,11 @@
 <%@ page session="false"%>
 <html>
 <head>
-<title>Home</title>
-<link rel="stylesheet"
-	href="${webappRoot}/resources/css/common/common.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<title>커뮤니티 게시판</title>
+<link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="../resources/css/community/boardList.css">
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 	<!-- 헤더 영역 포함 -->
@@ -16,11 +17,12 @@
 
 	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
-		<div class="community_board_list">
+		<div class="community_container">
+			<jsp:include page="/WEB-INF/views/community/communityMenu.jsp" />
 			<div class="community_boardList_wrap">
 				<!-- 게시물 O -->
 				<c:if test="${listCheck != 'empty'}">
-					<table class="author_table">
+					<table class="community_boardList">
 						<thead>
 							<tr>
 								<td class="th_column_1">#</td>
@@ -30,15 +32,18 @@
 								<td class="th_column_5">조회수</td>
 							</tr>
 						</thead>
-						<c:forEach items="${list}" var="list">
+						<c:forEach items="${list}" var="item">
 							<tr>
-								<td><c:out value="${list.commCode}"/></td>
-								<td><a class="move" href='<c:out value="${list.authorId}"/>'> 
-								<c:out value="${list.commTitle}"/>
-								</a></td>
-								<td><c:out value="${list.commWriter}"/></td>
-								<td><fmt:formatDate value="${list.enrollDate}" pattern="yyyy-MM-dd" /></td>
-								<td><c:out value="${list.commCount}"/></td>
+								<td><c:out value="${item.commCode}" /></td>
+								<td>
+									<a class="move" href="<c:out value='${item.commCode}'/>"> 
+										<c:out value="${item.commTitle}" />
+									</a>
+								</td>
+								<td><c:out value="${item.commWriter}" /></td>
+								<td><fmt:formatDate value="${item.enrollDate}"
+										pattern="yyyy-MM-dd" /></td>
+								<td><c:out value="${item.commCount}" /></td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -99,36 +104,16 @@
 
 	<script>
 		$(document).ready(function() {
-			let eResult = '<c:out value="${enroll_result}"/>';
-			checkResult(eResult);
-			function checkResult(result) {
-				if (result === '') {
-					return;
-				}
-				alert("글'" + eResult + "'을 등록하였습니다.");
-			}
-		});
-		$(document).ready(function() {
 			let result = '<c:out value="${enroll_result}"/>';
-			let mresult = '<c:out value="${modify_result}"/>';
-			checkResult(result);
-			checkmResult(mresult);
-			function checkResult(result) {
-				if (result === '') {
-					return;
-				}
-				alert("글'${enroll_result}'을 등록하였습니다.");
-
-			}
-
-			function checkmResult(mresult) {
-				if (mresult === '1') {
-					alert("글 수정을 완료하였습니다.");
-				} else if (mresult === '0') {
-					alert("글 수정을 하지 못하였습니다.")
-				}
-			}
-
+		    checkResult(result);
+		    function checkResult(result){
+		        if(result === ''){
+		            return;
+		        }		        
+		        alert("글'${enroll_result}' 을 등록하였습니다.");        
+		    }
+		});
+		
 			/* 삭제 결과 경고창 */
 			let delete_result = '${delete_result}';
 

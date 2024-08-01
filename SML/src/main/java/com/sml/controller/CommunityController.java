@@ -15,31 +15,31 @@ import com.sml.service.CommunityService;
 @Controller
 @RequestMapping("/community")
 public class CommunityController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
-	
-	@Autowired
-	private CommunityService service;
-	
-//	@RequestMapping(value = "boardList", method = RequestMethod.GET)
-//	public void adminMainGET() throws Exception{
-//		logger.info("커뮤니티 페이지 이동");
-//	}
-	
-	@GetMapping("/boardList")
-	public void boardListGET(Model model) throws Exception {
-		
-		logger.info("커뮤니티 페이지 이동");
-		
-		List list = service.getBoardList();
-		
-		if(!list.isEmpty()) {
-    		model.addAttribute("list", list);
-    	} else {
-    		model.addAttribute("listCheck", "empty");
-    	}
-		
-		
-	}
-	
+   
+   private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+   
+   @Autowired
+   private CommunityService service;
+   
+//   @RequestMapping(value = "boardList", method = RequestMethod.GET)
+//   public void adminMainGET() throws Exception{
+//      logger.info("커뮤니티 페이지 이동");
+//   }
+   
+   @GetMapping("/boardList")
+   public void boardListGET(Model model) throws Exception {
+      
+      logger.info("커뮤니티 페이지 이동");
+      
+      List list = service.getBoardList();
+      
+      if(!list.isEmpty()) {
+          model.addAttribute("list", list);
+       } else {
+          model.addAttribute("listCheck", "empty");
+       }
+      
+      
+   }
+   
 }
