@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
-
 // Chart.js를 사용하여 차트를 설정하고 업데이트하는 부분
 var registrationChart;
 
@@ -181,9 +179,9 @@ function sendSms() {
     var smsContent = document.getElementById('smsContent').value; // SMS 내용 가져오기
 
     // 실제로는 AJAX 호출을 통해 서버에 SMS 발송 요청 필요
-    console.log('Recipient Number:', recipientNumber); // 수신인 번호를 콘솔에 출력
-    console.log('Sender Number:', senderNumber); // 발신인 번호를 콘솔에 출력
-    console.log('SMS Content:', smsContent); // SMS 내용을 콘솔에 출력
+    console.log('수신번호 : ', recipientNumber); // 수신인 번호를 콘솔에 출력
+    console.log('발신번호 : ', senderNumber); // 발신인 번호를 콘솔에 출력
+    console.log('내용 : ', smsContent); // SMS 내용을 콘솔에 출력
 
     // SMS 발송 후 팝업 닫기
     closeSmsPopup();
@@ -212,8 +210,8 @@ function popupSearchMember() {
 
     // 샘플 데이터: 실제로는 AJAX 호출을 통해 서버에서 검색 결과를 받아옴
     var sampleResults = [
-        { id: '1', name: 'Hong Gil-dong', phone: '010-1234-5678' },
-        { id: '2', name: 'Im Keok-jeong', phone: '010-9876-5432' }
+        { id: '1', name: '홍길동', phone: '010-9193-3200' },
+        { id: '2', name: '임꺽정', phone: '010-9876-5432' }
     ];
 
     // 쿼리로 필터링된 결과
@@ -293,3 +291,82 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+// Admin 채팅 멀티창 구현 예정
+var stompClient = null;
+var chatBoxes = {};
+
+// WebSocket 연결을 설정하는 함수
+function connect() {
+    var socket = new SockJS('/chat'); // WebSocket 소켓 생성
+    stompClient = Stomp.over(socket); // STOMP 클라이언트 생성
+
+    stompClient.connect({}, function (frame) {
+        console.log('Connected: ' + frame); // 연결 성공 시 콘솔에 출력
+        stompClient.subscribe('/topic/public', function (message) {
+            var chatMessage = JSON.parse(message.body); // 메시지를 JSON으로 파싱
+            showMessage(chatMessage); // 메시지 표시 함수 호출
+        });
+    });
+}
+
+// 메시지를 화면에 표시하는 함수
+function showMessage(message) {
+    var chatBox = chatBoxes[message.sender];
+    if (!chatBox) {
+        chatBox = createChatBox(message.sender); // 채팅 박스가 없으면 생성
+        chatBoxes[message.sender] = chatBox;
+    }
+    var messageElement = document.createElement('div'); // 메시지 요소 생성
+    messageElement.className = 'message';
+    messageElement.innerHTML = `<b>${message.sender}:</b> ${message.content} <i>${message.time}</i>`; // 메시지 내용 설정
+    chatBox.appendChild(messageElement); // 채팅 박스에 메시지 추가
+}
+
+// 새로운 채팅 박스를 생성하는 함수
+function createChatBox(sender) {
+    var chatContainer = document.getElementById('chat-container'); // 채팅 컨테이너 요소 가져오기
+    var chatBox = document.createElement('div'); // 채팅 박스 요소 생성
+    chatBox.className = 'chat-box';
+    chatBox.id = 'chat-' + sender;
+
+    var header = document.createElement('h3'); // 채팅 박스 헤더 생성
+    header.innerHTML = 'Chat with ' + sender;
+    chatBox.appendChild(header);
+
+    var messageInput = document.createElement('input'); // 메시지 입력 필드 생성
+    messageInput.type = 'text';
+    messageInput.id = 'input-' + sender;
+
+    var sendButton = document.createElement('button'); // 메시지 전송 버튼 생성
+    sendButton.innerHTML = 'Send';
+    sendButton.onclick = function() {
+        sendMessage(sender); // 메시지 전송 함수 호출
+    };
+
+    chatBox.appendChild(messageInput); // 입력 필드 추가
+    chatBox.appendChild(sendButton); // 버튼 추가
+    chatContainer.appendChild(chatBox); // 채팅 컨테이너에 채팅 박스 추가
+
+    return chatBox;
+}
+
+// 메시지를 전송하는 함수
+function sendMessage(receiver) {
+    var inputElement = document.getElementById('input-' + receiver); // 입력 필드 가져오기
+    var messageContent = inputElement.value; // 메시지 내용 가져오기
+    if(messageContent && stompClient) {
+        var chatMessage = {
+            sender: '관리자',
+            content: messageContent,
+            type: 'CHAT',
+            time: new Date().toLocaleTimeString() // 현재 시간 설정
+        };
+        stompClient.send("/app/chat.sendMessage", {}, JSON.stringify(chatMessage)); // 메시지 전송
+        inputElement.value = ''; // 입력 필드 초기화
+        showMessage(chatMessage); // 관리자 자신의 메시지도 바로 채팅창에 표시
+    }
+}
+
+// WebSocket 연결 설정
+connect();

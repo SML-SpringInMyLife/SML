@@ -215,11 +215,16 @@ main {
 	bottom: 0;
 	right: 0;
 	width: 300px;
+	height: 300px; /* 기본 높이 설정 */
+	min-width: 300px; /* 최소 너비 설정 */
+	min-height: 200px; /* 최소 높이 설정 */
 	background-color: white;
 	border: 1px solid #ccc;
 	box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2);
 	border-radius: 10px;
 	z-index: 900;
+	resize: both; /* 상하좌우 리사이즈 가능하게 설정 */
+	overflow: hidden; /* 리사이즈 크기에 맞게 스크롤을 숨김 */
 }
 
 #chat-container.hidden {
@@ -233,28 +238,34 @@ main {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+	cursor: move; /* 드래그할 수 있게 커서 변경 */
 }
 
 #chat-box {
-	height: 200px;
+	flex: 1;
 	padding: 10px;
 	overflow-y: auto;
 	border-bottom: 1px solid #ccc;
 }
 
 #chat-input {
-	margin: 0 auto;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
 	display: flex;
 	justify-content: space-between;
-	display: flex;
-	width: 100%;
+	padding: 10px;
+	background-color: white;
+	border-top: 1px solid #ccc;
+	box-sizing: border-box;
 }
 
 #message-input {
-	width: 83%;
+	flex: 1;
 	padding: 10px;
 	border: 1px solid #ccc;
 	border-radius: 4px;
+	margin-right: 10px;
 }
 
 #chat-container button {
@@ -295,7 +306,8 @@ main {
 	position: fixed;
 	z-index: 1000;
 	width: 300px;
-	background-color: white;
+	color:white;
+	background-color: rgba(0, 0, 0, 0.7);;
 	border: 1px solid #ccc;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
