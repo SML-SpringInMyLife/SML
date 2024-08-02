@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.sml.controller.CommunityController;
 import com.sml.model.CommunityVO;
+import com.sml.model.MemberVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -24,12 +25,14 @@ public class CommunityMapperTest {
 	
 //	@Test
 //	public void communityEnrollTest() throws Exception {
-//		
-//		CommunityVO community= new CommunityVO();
-//		
+//
+//		MemberVO member = new MemberVO();
+//	    member.setMemCode(5); 
+//	    
+//	    CommunityVO community= new CommunityVO();
 //		community.setCommTitle("mapperTest");
 //		community.setCommContent("mapperTest");
-//		community.setMemberCode(4);
+//		community.setCommWriter(member);
 //		
 //		mapper.communityEnroll(community);
 //		

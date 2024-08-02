@@ -7,6 +7,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.sml.model.CommunityVO;
+import com.sml.model.MemberVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -18,10 +19,13 @@ public class CommunityServiceTest {
 	@Test
 	public void communityEnrollTest() throws Exception{
 		
+		MemberVO member = new MemberVO();
+	    member.setMemCode(5);
+		
 		CommunityVO community = new CommunityVO();
 		community.setCommTitle("serviceTest");
 		community.setCommContent("serviceTest");
-		community.setMemberCode(4);
+		community.setCommWriter(member);
 		
 		service.communityEnroll(community);
 		

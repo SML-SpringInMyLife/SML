@@ -20,7 +20,7 @@
 	<div class="community_enroll">
 		<jsp:include page="/WEB-INF/views/community/communityMenu.jsp" />
 		<div class="community_enroll_wrap">
-		<form action="/community/enroll" method="post" id="enrollForm">
+		<form action="/community/enroll.do" method="post" id="enrollForm">
 			<div class="form_section">
 				<div class="form_section_title">
 					<label>글 제목</label>
@@ -35,9 +35,7 @@
 					<label>글 내용</label>
 				</div>
 				<div class="form_section_content">
-					<!-- <input name="commContent" type="text"> --> 
 					<textarea name="commContent" id="commContent_textarea"></textarea>
-					<span id="warn_commContent">글 내용을 입력해주세요.</span>
 				</div>
 			</div>
 			<div class="form_section">
@@ -88,11 +86,9 @@
 		    
 		    /* 입력값 변수 */
 		    let commTitle = $('input[name=commTitle]').val(); 
-		    let commContent = $('textarea[name=commContent]').val();
 		    
 		    /* 공란 경고 span태그 */
 		    let wCommTitle = $('#warn_commTitle');
-		    let wCommContent = $('#warn_commContent');
 		    
 		    /* 제목 공백 체크 */
 		    if(commTitle ===''){
@@ -103,17 +99,8 @@
 		    	titleCheck = true;
 		    }
 		    
-		    /* 내용 공백 체크 */
-		    if(commContent ===''){
-		    	wCommContent.css('display', 'block');
-		    	contentCheck = false;
-		    } else {
-		    	wCommContent.css('display', 'none');
-		    	contentCheck = true;
-		    }
-		    
 		    /* 최종 검사 */
-		    if(titleCheck && contentCheck){
+		    if(titleCheck){
 		    	$("#enrollForm").submit();
 		    } else {
 		    	return;

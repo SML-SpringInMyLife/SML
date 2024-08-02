@@ -42,10 +42,10 @@ public class CommunityController {
    public void enrollGET() throws Exception{
 	   logger.info("커뮤니티 글 등록");
    }
-   @PostMapping("/enroll")
-   public String enrollPOST(CommunityVO community, RedirectAttributes rttr) {
+   @PostMapping("/enroll.do")
+   public String enrollPOST(CommunityVO community, RedirectAttributes rttr) throws Exception {
 	   logger.info("글 등록" +community);
-//	   service.communityEnroll(community);
+	   service.communityEnroll(community);
 	   rttr.addFlashAttribute("enroll_result", community.getCommTitle());
 	   return "redirect:/community/boardList";
    }

@@ -6,10 +6,10 @@
   <mapper namespace="com.sml.mapper.CommunityMapper">
   
   	<insert id="communityEnroll">
-  		INSERT INTO COMMUNITY(COMM_TITLE, COMM_CONTENT, MEM_CODE) VALUES(
+  		INSERT INTO COMMUNITY(COMM_TITLE, COMM_CONTENT, COMM_WRITER) VALUES(
   			#{commTitle},
   			#{commContent},
-  			#{memberCode}
+  			#{commWriter.memCode}
   		)
   	</insert>
   	

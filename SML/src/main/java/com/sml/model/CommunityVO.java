@@ -9,7 +9,7 @@ public class CommunityVO {
 	
 	private int commCode;
 	private String commTitle;
-	private String commWriter;
+	private MemberVO commWriter;
 	private String commContent;
 	private Date enrollDate;
 	private Date modifyDate;
@@ -18,6 +18,6 @@ public class CommunityVO {
 	private String commSecretPwd;
 	private int commCount;
 	private String commStatus;
-	private int memberCode;
+	private MemberVO memCode;
 
 }
