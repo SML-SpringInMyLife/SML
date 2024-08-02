@@ -25,8 +25,12 @@ public class CommunityServiceImpl implements CommunityService{
 
 	@Override
 	public List<CommunityVO> getBoardList() throws Exception {
-		// TODO Auto-generated method stub
 		return communityMapper.getBoardList();
+	}
+
+	@Override
+	public CommunityVO communityDetail(int commCode) throws Exception {
+		return communityMapper.communityDetail(commCode);
 	}
 
 	
