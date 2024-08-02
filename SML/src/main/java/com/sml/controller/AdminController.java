@@ -1,62 +1,103 @@
 package com.sml.controller;
 
+import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+
+import net.nurigo.java_sdk.api.Message;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Controller
 @RequestMapping(value = "/admin")
 public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-	/* ê´€ë¦¬ì ë©”ì¸ í˜ì´ì§€ ì´ë™ */
+	/* °ü¸®ÀÚ ¸ŞÀÎ ÆäÀÌÁö ÀÌµ¿ */
 	@RequestMapping(value = "main", method = RequestMethod.GET)
 	public void adminMainGET() throws Exception {
 
-		logger.info("ê´€ë¦¬ì í˜ì´ì§€ ì´ë™");
+		logger.info("°ü¸®ÀÚ ÆäÀÌÁö ÀÌµ¿");
 
 	}
-	
+
 	@RequestMapping(value = "courses", method = RequestMethod.GET)
 	public void adminCoursesGET() throws Exception {
 
-		logger.info("ê´€ë¦¬ì - ìˆ˜ê°•ì‹ ì²­ê´€ë¦¬ í˜ì´ì§€ ì´ë™");
+		logger.info("°ü¸®ÀÚ - ¼ö°­½ÅÃ»°ü¸® ÆäÀÌÁö ÀÌµ¿");
 
 	}
-	
+
 	@RequestMapping(value = "members", method = RequestMethod.GET)
 	public void adminMembersGET() throws Exception {
 
-		logger.info("ê´€ë¦¬ì - íšŒì›ê´€ë¦¬í˜ì´ì§€ ì´ë™");
+		logger.info("°ü¸®ÀÚ - È¸¿ø°ü¸®ÆäÀÌÁö ÀÌµ¿");
 
 	}
-	
+
 	@RequestMapping(value = "edit", method = RequestMethod.GET)
 	public void adminEditGET() throws Exception {
 
-		logger.info("ê´€ë¦¬ì - ì •ë³´ìˆ˜ì •í˜ì´ì§€ ì´ë™");
+		logger.info("°ü¸®ÀÚ - Á¤º¸¼öÁ¤ÆäÀÌÁö ÀÌµ¿");
 
 	}
-	
+
 	@RequestMapping(value = "sms", method = RequestMethod.GET)
 	public void adminSmsGET() throws Exception {
 
-		logger.info("ê´€ë¦¬ì - ë¬¸ìê´€ë¦¬í˜ì´ì§€ ì´ë™");
+		logger.info("°ü¸®ÀÚ - ¹®ÀÚ°ü¸®ÆäÀÌÁö ÀÌµ¿");
 
 	}
-	
+
+	@PostMapping(value = "sms/sendSms.do")
+	public String sendSms(HttpServletRequest request) throws Exception {
+
+		// API Key¿Í Secret Key¸¦ ÀÔ·Â (Coolsms¿¡¼­ ¹ß±Ş¹ŞÀº °ª)
+		String api_key = "";
+		String api_secret = "";
+		Message coolsms = new Message(api_key, api_secret);
+
+		// SMS Àü¼ÛÀ» À§ÇÑ ÆÄ¶ó¹ÌÅÍ ¼³Á¤
+		HashMap<String, String> set = new HashMap<>();
+		set.put("to", request.getParameter("recipientNumber")); // ¼ö½Å¹øÈ£
+		set.put("from", request.getParameter("senderNumber")); // ¹ß½Å¹øÈ£
+		set.put("text", request.getParameter("smsContent")); // ¹®ÀÚ ³»¿ë
+		set.put("type", "sms"); // ¹®ÀÚ Å¸ÀÔ
+		set.put("app_version", "test app 1.2"); // ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ¹öÀü
+
+		System.out.println(set);
+
+		try {
+			// SMS Àü¼Û ¹× °á°ú ¹Ş±â
+			JSONObject result = coolsms.send(set);
+			System.out.println(result.toString());
+		} catch (CoolsmsException e) {
+			System.out.println("Error Message: " + e.getMessage());
+			System.out.println("Error Code: " + e.getCode());
+		}
+
+		// SMS Àü¼Û ÈÄ ÀÀ´ä ÆäÀÌÁö·Î ÀÌµ¿
+		return "admin/sms"; // SMS Àü¼Û °á°ú ÆäÀÌÁö
+	}
+
 	@RequestMapping(value = "chat", method = RequestMethod.GET)
 	public void adminChatGET() throws Exception {
 
-		logger.info("ê´€ë¦¬ì - ì±„íŒ…ìƒë‹´ê´€ë¦¬í˜ì´ì§€ ì´ë™");
+		logger.info("°ü¸®ÀÚ - Ã¤ÆÃ»ó´ã°ü¸®ÆäÀÌÁö ÀÌµ¿");
 
 	}
+
 	@RequestMapping(value = "login", method = RequestMethod.GET)
 	public void adminLoginGET() throws Exception {
-		
-		logger.info("ë¡œê·¸ì¸í˜ì´ì§€ ì´ë™");
-		
+
+		logger.info("·Î±×ÀÎÆäÀÌÁö ÀÌµ¿");
+
 	}
 }
