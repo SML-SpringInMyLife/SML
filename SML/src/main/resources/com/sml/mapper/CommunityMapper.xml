@@ -13,8 +13,26 @@
   		)
   	</insert>
   	
-  	<select id="boardList" resultType="com.sml.model.CommunityVO">
-  		SELECT COMM_CODE, COMM_TITLE, MEM_CODE, COMM_ENROLL_DATE, COMM_COUNT FROM COMMUNITY
+  	<select id="getBoardList" resultType="com.sml.model.CommunityVO">
+  		<!-- SELECT COMM_CODE, COMM_TITLE, MEM_CODE, COMM_ENROLL_DATE, COMM_COUNT FROM COMMUNITY WHERE COMM_STATUS='N' -->
+  		<!-- <![CDATA[
+  			SELECT COMM_CODE, COMM_TITLE, MEM_CODE, COMM_ENROLL_DATE, COMM_COUNT FROM (
+  				SELECT /*+INDEX_DESC(COMMUNITY COMM_CODE) */ 
+  					ROWNUM AS 
+  				FROM COMMUNITY
+  				WHERE COMM_STATUS = 'N'
+  		]]>
+  		<if test="keyword != null">
+  			AND COMM_TITLE LIKE '%'||#{keyword}||'%' AND
+  		</if>
+  		<![CDATA[
+  				ROWNUM <= #{pageNum}*#{amount}
+  				)
+        	WHERE rn > (#{pageNum} - 1) * #{amount}
+  		]]> -->
+  		
+  		
+  		SELECT * FROM COMMUNITY
   	</select>
   	
   	<select id="board">

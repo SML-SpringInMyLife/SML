@@ -13,7 +13,11 @@
 <link rel="stylesheet" href="/resources/css/member/login.css">
 </head>
 <body>
-<main>
+
+	<!-- 헤더 영역 포함 -->
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	
+	<main>
       <div class="login-container">
          <p class="login-title">Login</p>
          <form class="login-form" class="login-form" method="post">
@@ -34,6 +38,9 @@
          </form>
       </div>
    </main>
+   
+   <!-- 푸터 영역 포함 -->
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
 <script>
  

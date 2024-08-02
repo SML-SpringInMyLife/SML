@@ -18,7 +18,7 @@ public class AdminInterceptor implements HandlerInterceptor {
 
 		MemberVO lvo = (MemberVO) session.getAttribute("member");
 
-		if (lvo == null || lvo.getAdminCk() == 0) { // 관리자 계정 아닌 경우
+		if (lvo == null || lvo.getMemAdminCheck() == 0) { // 관리자 계정 아닌 경우
 
 			response.sendRedirect("/"); // 오류 페이지로 리다이렉트 - 예정
 
