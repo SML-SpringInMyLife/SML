@@ -8,9 +8,9 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -21,35 +21,35 @@ public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	/* 관리자 메인 페이지 이동 */
-	@RequestMapping(value = "main", method = RequestMethod.GET)
+	@GetMapping(value = "main")
 	public void adminMainGET() throws Exception {
 
 		logger.info("관리자 페이지 이동");
 
 	}
 
-	@RequestMapping(value = "courses", method = RequestMethod.GET)
+	@GetMapping(value = "courses")
 	public void adminCoursesGET() throws Exception {
 
 		logger.info("관리자 - 수강신청관리 페이지 이동");
 
 	}
 
-	@RequestMapping(value = "members", method = RequestMethod.GET)
+	@GetMapping(value = "members")
 	public void adminMembersGET() throws Exception {
 
 		logger.info("관리자 - 회원관리페이지 이동");
 
 	}
 
-	@RequestMapping(value = "edit", method = RequestMethod.GET)
+	@GetMapping(value = "edit")
 	public void adminEditGET() throws Exception {
 
 		logger.info("관리자 - 정보수정페이지 이동");
 
 	}
 
-	@RequestMapping(value = "sms", method = RequestMethod.GET)
+	@GetMapping(value = "sms")
 	public void adminSmsGET() throws Exception {
 
 		logger.info("관리자 - 문자관리페이지 이동");
@@ -87,14 +87,14 @@ public class AdminController {
 		return "admin/sms"; // SMS 전송 결과 페이지
 	}
 
-	@RequestMapping(value = "chat", method = RequestMethod.GET)
+	@GetMapping(value = "chat")
 	public void adminChatGET() throws Exception {
 
 		logger.info("관리자 - 채팅상담관리페이지 이동");
 
 	}
 
-	@RequestMapping(value = "login", method = RequestMethod.GET)
+	@GetMapping(value = "login")
 	public void adminLoginGET() throws Exception {
 
 		logger.info("로그인페이지 이동");
