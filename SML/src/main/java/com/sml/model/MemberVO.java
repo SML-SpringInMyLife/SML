@@ -29,19 +29,13 @@ public class MemberVO {
     //회원 탈퇴일
     private Date memQuitDate;
     
-    private Integer memStatus;
+    private int memStatus;
     
     //회원 포인트
-    private Integer memTotalPoint;
+    private int memTotalPoint;
     
     //관리자 구분(0:일반사용자, 1:관리자)
-    private Integer memAdminCheck;
+    private int memAdminCheck;
     
-    private Integer pointCode;
-
-<<<<<<< HEAD
-    test
-=======
->>>>>>> 66bcad6a7d022d3d93afb90b7b4acd81356dd71f
-	
+    private int pointCode;
 }
