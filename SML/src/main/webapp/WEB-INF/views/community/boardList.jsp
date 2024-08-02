@@ -7,7 +7,92 @@
 <head>
 <title>커뮤니티 게시판</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/community/boardList.css">
+<link rel="stylesheet" href="../resources/css/community/community.css">
+ <style>
+        .community_container {
+            padding: 20px;
+        }
+        .community_boardList {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .community_boardList th, .community_boardList td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        .community_boardList th {
+            background-color: #f2f2f2;
+        }
+        .community_boardList tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .community_boardList tr:hover {
+            background-color: #ddd;
+        }
+        .community_boardList a.move {
+            color: #007bff;
+            text-decoration: none;
+        }
+        .community_boardList a.move:hover {
+            text-decoration: underline;
+        }
+        .table_empty {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 18px;
+            color: #999;
+        }
+        .search_wrap {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .search_wrap .search_input {
+            display: inline-block;
+        }
+        .search_wrap input[type="text"] {
+            padding: 5px 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .search_wrap button.search_btn {
+            padding: 5px 10px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .search_wrap button.search_btn:hover {
+            background-color: #0056b3;
+        }
+        .pageMaker_wrap {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .pageMaker {
+            list-style-type: none;
+            padding: 0;
+        }
+        .pageMaker li {
+            display: inline;
+            margin: 0 5px;
+        }
+        .pageMaker a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        .pageMaker a:hover {
+            text-decoration: underline;
+        }
+        .pageMaker .active a {
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -17,6 +102,7 @@
 
 	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
+		<h1>커뮤니티 게시판</h1>
 		<div class="community_container">
 			<jsp:include page="/WEB-INF/views/community/communityMenu.jsp" />
 			<div class="community_boardList_wrap">
@@ -78,8 +164,7 @@
 							href="${pageMaker.pageStart - 1}">이전</a></li>
 					</c:if>
 					<!-- 페이지 번호 -->
-					<c:forEach begin="${pageMaker.pageStart}"
-						end="${pageMaker.pageEnd}" var="num">
+					<c:forEach begin="${pageMaker.pageStart}" end="${pageMaker.pageEnd}" var="num">
 						<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":""}">
 							<a href="${num}">${num}</a>
 						</li>
@@ -91,7 +176,7 @@
 					</c:if>
 				</ul>
 			</div>
-			<form id="moveForm" action="/admin/authorManage" method="get">
+			<form id="moveForm" action="/community/boardList" method="get">
 				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
@@ -103,6 +188,7 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 	<script>
+		// alert
 		$(document).ready(function() {
 			let result = '<c:out value="${enroll_result}"/>';
 		    checkResult(result);
@@ -114,16 +200,16 @@
 		    }
 		});
 		
-			/* 삭제 결과 경고창 */
-			let delete_result = '${delete_result}';
-
-			if (delete_result == 1) {
-				alert("삭제 완료");
-			} else if (delete_result == 2) {
-				alert("해당 글 데이터를 사용하고 있는 데이터가 있어서 삭제할 수 없습니다.")
-			}
+		// 삭제 결과 경고창 
+		let delete_result = '${delete_result}';
+		if (delete_result == 1) {
+			alert("삭제 완료");
+		} else if (delete_result == 2) {
+			alert("해당 글 데이터를 사용하고 있는 데이터가 있어서 삭제할 수 없습니다.")
+		}
 
 		});
+		
 		let moveForm = $('#moveForm');
 		let searchForm = $('#searchForm');
 
@@ -134,7 +220,7 @@
 			moveForm.submit();
 		});
 
-		/* 작가 검색 버튼 동작 */
+		/* 검색 버튼 동작 */
 		$("#searchForm button").on("click", function(e) {
 			e.preventDefault();
 			/* 검색 키워드 유효성 검사 */
@@ -147,16 +233,11 @@
 		});
 
 		// 상세 페이지 이동
-		$(".move")
-				.on(
-						"click",
-						function(e) {
-							e.preventDefault();
-							moveForm
-									.append("<input type='hidden' name='authorId' value='"
-											+ $(this).attr("href") + "'>");
-							moveForm.submit();
-						});
+		$(".move").on("click", function(e) {
+			e.preventDefault();	
+			moveForm.append("<input type='hidden' name='commCode' value='" + $(this).attr("href") + "'>");
+			moveForm.submit();	
+		});
 	</script>
 </body>
 </html>

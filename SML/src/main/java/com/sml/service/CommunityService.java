@@ -8,9 +8,9 @@ public interface CommunityService {
 	
 	public void communityEnroll(CommunityVO community)throws Exception;
 
-	 public List<CommunityVO> getBoardList()throws Exception;
+	public List<CommunityVO> getBoardList()throws Exception;
 	
-	// public CommunityVO getBoard(int authorId) throws Exception;
+	public CommunityVO communityDetail(int commCode) throws Exception;
 	
 	// modify
 	
