@@ -12,6 +12,10 @@
 </head>
 <body>
 
+	<!-- 헤더 영역 포함 -->
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
+	
+	<main>
 	<div class="wrapper">
 		<form id="join_form" method="post">
 			<div class="wrap">
@@ -133,6 +137,10 @@
 			</div>
 		</form>
 	</div>
+	</main>
+	
+	<!-- 푸터 영역 포함 -->
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 	<script>
 	$(document).ready(function(){
