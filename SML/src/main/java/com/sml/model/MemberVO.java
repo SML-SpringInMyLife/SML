@@ -39,5 +39,9 @@ public class MemberVO {
     
     private Integer pointCode;
 
+<<<<<<< HEAD
+    test
+=======
+>>>>>>> 66bcad6a7d022d3d93afb90b7b4acd81356dd71f
 	
 }
