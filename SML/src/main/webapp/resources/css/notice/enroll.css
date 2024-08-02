@@ -1,0 +1,78 @@
+@charset "UTF-8";
+
+.enroll-container {
+	font-family: Arial, sans-serif;
+	max-width: 800px;
+	margin: 20px auto;
+	padding: 20px;
+	border: 1px solid #ccc;
+	border-radius: 10px;
+	background-color: #f9f9f9;
+}
+
+.enroll-container h1 {
+	font-size: 24px;
+	border-bottom: 2px solid #000;
+	padding-bottom: 10px;
+}
+
+.enroll-container .category {
+	display: flex;
+	justify-content: right;
+}
+
+.enroll-container .category select {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 10px 30px;
+	margin-bottom: 15px;
+	background-color: #6BAE7390;
+	color: white;
+	font-size: medium;
+}
+
+.enroll-container .content {
+	background-color: #e0f2e9;
+	padding: 20px;
+	border-radius: 10px;
+	margin-bottom: 20px;
+	line-height: 1.5;
+}
+
+.enroll-container .file-upload {
+	display: flex;
+	justify-content: right;
+	margin-top: 40px;
+}
+
+.enroll-container .file-upload input[type="file"] {
+	padding: 10px 20px;
+	border: 1px solid #ccc;
+	border-radius: 3px;
+	background-color: #e0e0e0;
+	cursor: pointer;
+	width: 180px;
+}
+
+.enroll-container .actions {
+	display: flex;
+	justify-content: center;
+}
+
+.enroll-container .actions button {
+	padding: 10px 20px;
+	margin: 0 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.enroll-container .actions .update {
+	background-color: #6BAE73;
+	color: white;
+}
+
+.enroll-container .actions .cancel {
+	background-color: #e0e0e0;
+	color: black;
+}

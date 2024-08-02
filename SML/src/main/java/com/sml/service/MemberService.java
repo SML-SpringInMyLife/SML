@@ -4,12 +4,12 @@ import com.sml.model.MemberVO;
 
 public interface MemberService {
 	
-	//È¸¿ø°¡ÀÔ
+	//íšŒì›ê°€ì…
 	public void MemberJoin(MemberVO member) throws Exception;
 	
-	//¾ÆÀÌµğ Áßº¹ °Ë»ç
+	//ì•„ì´ë”” ì¤‘ë³µ ê²€ì‚¬
 	public int idCheck(String memberId) throws Exception;
 
-	//·Î±×ÀÎ
+	//ë¡œê·¸ì¸
 	public MemberVO memberLogin(MemberVO member) throws Exception;
 }

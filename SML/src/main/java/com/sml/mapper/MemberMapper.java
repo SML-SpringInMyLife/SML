@@ -4,13 +4,13 @@ import com.sml.model.MemberVO;
 
 public interface MemberMapper {
 	
-	//È¸¿ø°¡ÀÔ
+	//íšŒì›ê°€ì…
 	public void memberJoin(MemberVO member);
 	
-	//¾ÆÀÌµğ Áßº¹ °Ë»ç
+	//ì•„ì´ë”” ì¤‘ë³µ ê²€ì‚¬
 	public int idCheck (String memberId);
 	
-	//·Î±×ÀÎ
+	//ë¡œê·¸ì¸
 	public MemberVO memberLogin(MemberVO member);
 
 }

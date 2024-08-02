@@ -7,7 +7,7 @@ import com.sml.model.Criteria;
 
 public interface CommunityMapper {
 	
-	public List<CommunityVO> getBoardList(Criteria cri);
+	public List<CommunityVO> getBoardList();
 	
 	public void communityEnroll (CommunityVO community);
 	

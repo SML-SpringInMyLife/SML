@@ -18,15 +18,15 @@ public class AdminInterceptor implements HandlerInterceptor {
 
 		MemberVO lvo = (MemberVO) session.getAttribute("member");
 
-		if (lvo == null || lvo.getAdminCk() == 0) { // °ü¸®ÀÚ °èÁ¤ ¾Æ´Ñ °æ¿ì
+		if (lvo == null || lvo.getMemAdminCheck() == 0) { // ê´€ë¦¬ì ê³„ì • ì•„ë‹Œ ê²½ìš°
 
-			response.sendRedirect("/"); // ¿À·ù ÆäÀÌÁö·Î ¸®´ÙÀÌ·ºÆ® - ¿¹Á¤
+			response.sendRedirect("/"); // ì˜¤ë¥˜ í˜ì´ì§€ë¡œ ë¦¬ë‹¤ì´ë ‰íŠ¸ - ì˜ˆì •
 
 			return false;
 
 		}
 
-		return true; // °ü¸®ÀÚ °èÁ¤ ·Î±×ÀÎ °æ¿ì(lvo != null && lvo.getAdminCk() == 1)
+		return true; //ê´€ë¦¬ì ê³„ì • ë¡œê·¸ì¸ ê²½ìš°(lvo != null && lvo.getAdminCk() == 1)
 
 	}
 
