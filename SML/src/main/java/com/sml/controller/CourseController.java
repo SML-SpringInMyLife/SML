@@ -21,12 +21,12 @@ private static final Logger logger = LoggerFactory.getLogger(CourseController.cl
 	
 	@GetMapping("/boardList")
 	public void booardListGET() throws Exception{
-		logger.info("¼ö°­½ÅÃ» ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½");
 	}
 	
 	@GetMapping("/enroll")
 	public void courseEnrollGET() throws Exception{
-		logger.info("¼ö¾÷ µî·Ï ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½");
 	}
 	@PostMapping("/enroll")
 	public String enrollPOST() throws Exception{
@@ -35,11 +35,11 @@ private static final Logger logger = LoggerFactory.getLogger(CourseController.cl
 	
 	@GetMapping("/modify")
 	   public void modifyGET() throws Exception{
-		   logger.info("¼ö¾÷ ¼öÁ¤");
+		   logger.info("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 	   }
 	   @PostMapping("/modify")
 	   public String modifyPOST() throws Exception{
-		   //ÇØ´ç ÆäÀÌÁö·Î ´Ù½Ã return - ¹Ù²Ù±â 
+		   //ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ return - ï¿½Ù²Ù±ï¿½ 
 		   return "redirect:/course/boardList";
 	   }
 	   
