@@ -12,19 +12,19 @@ public class MemberServiceImpl implements MemberService {
 	@Autowired
 	MemberMapper memberMapper;
 	
-	//È¸¿ø°¡ÀÔ
+	//íšŒì›ê°€ì…
     @Override
     public void MemberJoin(MemberVO member) throws Exception {
     	memberMapper.memberJoin(member);
     }
     
-    //¾ÆÀÌµğÁßº¹°Ë»ç
+    //ì•„ì´ë””ì¤‘ë³µê²€ì‚¬
 	@Override
 	public int idCheck(String memberId) throws Exception {
 		return memberMapper.idCheck(memberId);
 	}
 	
-	//·Î±×ÀÎ
+	//ë¡œê·¸ì¸
 	@Override
 	public MemberVO memberLogin(MemberVO member) throws Exception {
 		return memberMapper.memberLogin(member);
