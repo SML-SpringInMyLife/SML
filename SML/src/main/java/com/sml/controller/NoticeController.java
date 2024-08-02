@@ -12,9 +12,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class NoticeController {
 	private static final Logger logger = LoggerFactory.getLogger(NoticeController.class);
 
-	/* 공지사항 메인페이지(목록페이지) 이동 */
+	/* 공지사항 조회페이지 이동 */
 	@GetMapping("/list")
-	public void noticeMainGET() throws Exception {
+	public void noticeListGET() throws Exception {
+
+		logger.info("공지사항 페이지 이동");
+
+	}
+	
+	/* 공지사항 상제조회페이지 이동 */
+	@GetMapping("/detail")
+	public void noticeDetailGET() throws Exception {
 
 		logger.info("공지사항 페이지 이동");
 
