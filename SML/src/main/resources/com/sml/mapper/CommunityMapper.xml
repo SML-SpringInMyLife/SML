@@ -30,9 +30,22 @@
   				)
         	WHERE rn > (#{pageNum} - 1) * #{amount}
   		]]> -->
-  		
-  		
-  		SELECT * FROM COMMUNITY
+  		  		
+  		SELECT 
+            COMM_CODE as commCode, 
+            COMM_TITLE as commTitle, 
+            COMM_CONTENT as commContent, 
+            COMM_ENROLL_DATE as enrollDate, 
+            COMM_MODIFY_DATE as modifyDate, 
+            COMM_POINT as commPoint, 
+            COMM_SECRET as commSecret, 
+            COMM_PASSWORD as commSecretPwd, 
+            COMM_COUNT as commCount, 
+            COMM_STATUS as commStatus, 
+            COMM_WRITER as commWriter
+        FROM COMMUNITY
+         WHERE COMM_STATUS='N'
+
   	</select>
   	
   	<select id="board">

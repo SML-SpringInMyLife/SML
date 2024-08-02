@@ -14,7 +14,7 @@ public class CommunityVO {
 	private Date enrollDate;
 	private Date modifyDate;
 	private int commPoint;
-	private int commSecret;
+	private String commSecret;
 	private String commSecretPwd;
 	private int commCount;
 	private String commStatus;
