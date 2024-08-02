@@ -21,7 +21,7 @@
 				<div class="id_wrap">
 					<div class="id_name">아이디</div>
 					<div class="id_input_box">
-						<input class="id_input" name="memberId">
+						<input class="id_input" name="memId">
 					</div>
 					<span class="id_input_re_1">사용 가능한 아이디입니다.</span> 
 					<span class="id_input_re_2">아이디가 이미 존재합니다.</span>
@@ -30,7 +30,7 @@
 				<div class="pw_wrap">
 					<div class="pw_name">비밀번호</div>
 					<div class="pw_input_box">
-						<input class="pw_input" name="memberPw">
+						<input class="pw_input" name="memPw">
 					</div>
 					<span class="final_pw_ck">비밀번호를 입력해주세요.</span>
 				</div>
@@ -46,14 +46,36 @@
 				<div class="user_wrap">
 					<div class="user_name">이름</div>
 					<div class="user_input_box">
-						<input class="user_input" name="memberName">
+						<input class="user_input" name="memName">
 					</div>
 					<span class="final_name_ck">이름을 입력해주세요.</span>
 				</div>
+				<div class="birth_wrap">
+					<div class="user_birth">생년월일</div>
+				
+  				<select class="box" id="birth-year">
+    				<option disabled selected>출생 연도</option>
+  				</select>
+  				<select class="box" id="birth-month">
+    				<option disabled selected>월</option>
+				 </select>
+				 <select class="box" id="birth-day">
+    				<option disabled selected>일</option>
+  				</select>
+				</div>
 				<div class="mail_wrap">
-					<div class="mail_name">이메일</div>
+					<div class="user_mail">이메일</div>
 					<div class="mail_input_box">
 						<input class="mail_input" name="memberMail">
+						<!--  
+						<select class="mail_box" id="domain-list">
+						  <option value="naver.com">naver.com</option>
+						  <option value="google.com">google.com</option>
+						  <option value="hanmail.net">hanmail.net</option>
+						  <option value="nate.com">nate.com</option>
+						  <option value="kakao.com">kakao.com</option>
+						</select>
+						-->
 					</div>
 					<span class="final_mail_ck">이메일을 입력해주세요.</span>
 					<sapn class="mail_input_box_warn"></sapn>
@@ -67,7 +89,20 @@
 						<div class="clearfix"></div>
 						<span id="mail_check_input_box_warn" />
 					</div>
+				<div class="phone_wrap">
+					<div class="user_phone">연락처</div>
+					<div class="phone_input_box">
+						<input class="phone_input" name="memPhone">
+					</div>
+					<span class="final_phone_ck">연락처를 입력해주세요.</span> 	
 					
+				</div>
+				<div class="emerphone_wrap">
+					<div class="user_emerphone">비상연락처</div>
+					<div class="emerphone_input_box">
+						<input class="emerphone_input" name="memEmerPhone">
+					</div>
+					<span class="final_emerphone_ck">비상연락처를 입력해주세요.</span>
 				</div>
 				<div class="address_wrap">
 					<div class="address_name">주소</div>
@@ -100,6 +135,15 @@
 	</div>
 
 	<script>
+	$(document).ready(function(){
+		//회원가입 버튼(회원가입 기능 작동)
+		$(".join_button").click(function(){
+			$("#join_form").attr("action", "/member/join");
+			$("#join_form").submit();
+		});
+	});
+
+
 	// 인증번호 저장
 	var code = "";
 	
@@ -337,6 +381,48 @@
 	    var form = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 	    return form.test(email);
 	}
+	 
+	 $(document).ready(function() {
+	        // 현재 연도 구하기
+	        var today = new Date();
+	        var currentYear = today.getFullYear();
+
+	        // 연도 옵션 추가
+	        for (var year = currentYear; year >= 1900; year--) {
+	            $('#birth-year').append(new Option(year, year));
+	        }
+
+	        // 월 옵션 추가
+	        for (var month = 1; month <= 12; month++) {
+	            $('#birth-month').append(new Option(month, month));
+	        }
+
+	        // 일 옵션 추가 (기본: 31일까지)
+	        for (var day = 1; day <= 31; day++) {
+	            $('#birth-day').append(new Option(day, day));
+	        }
+
+	        // 월 선택 시 일 옵션 변경
+	        $('#birth-month').change(function() {
+	            var selectedYear = $('#birth-year').val();
+	            var selectedMonth = $('#birth-month').val();
+	            $('#birth-day').empty().append('<option disabled selected>일</option>');
+
+	            // 선택한 월의 마지막 날짜 구하기
+	            if (selectedYear && selectedMonth) {
+	                var lastDay = new Date(selectedYear, selectedMonth, 0).getDate();
+
+	                for (var day = 1; day <= lastDay; day++) {
+	                    $('#birth-day').append(new Option(day, day));
+	                }
+	            }
+	        });
+
+	        // 연도 선택 시 일 옵션 변경 (윤년 체크)
+	        $('#birth-year').change(function() {
+	            $('#birth-month').trigger('change');
+	        });
+	    }); 
 	</script>
 
 </body>
