@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.sml.mapper.MemberMapper">  
+
+<resultMap id="userResultMap" type="com.sml.model.MemberVO">
+    <result property="memCode" column="MEM_CODE"/>
+    <result property="memId" column="MEM_ID"/>
+    <result property="memPw" column="MEM_PW"/>
+    <result property="memName" column="MEM_NAME"/>
+    <result property="memMail" column="MEM_MAIL"/>
+    <result property="memPhone" column="MEM_PHONE"/>
+    <result property="memEmerPhone" column="MEM_EMER_PHONE"/>
+    <result property="memAddr1" column="MEM_ADDR1"/>
+    <result property="memAddr2" column="MEM_ADDR2"/>
+    <result property="memAddr3" column="MEM_ADDR3"/>
+    <result property="memBirth" column="MEM_BIRTH"/>
+    <result property="memJoinDate" column="MEM_JOIN_DATE"/>
+    <result property="memQuitDate" column="MEM_QUIT_DATE"/>
+    <result property="memStatus" column="MEM_STATUS"/>
+    <result property="memTotalPoint" column="MEM_TOTAL_POINT"/>
+    <result property="memAdminCheck" column="MEM_ADMIN_CHECK"/>
+    <result property="pointCode" column="POINT_CODE"/>
+</resultMap>
+
+  <!-- 회원가입 -->
+  <insert id="memberJoin">
+  	INSERT INTO TB_MEMBER (
+            MEM_ID, MEM_PW, MEM_NAME, MEM_MAIL, MEM_PHONE, MEM_EMER_PHONE,
+            MEM_ADDR1, MEM_ADDR2, MEM_ADDR3, MEM_BIRTH, MEM_JOIN_DATE,
+            MEM_QUIT_DATE, MEM_STATUS, MEM_TOTAL_POINT, MEM_ADMIN_CHECK, POINT_CODE
+        ) VALUES (
+            #{memId}, #{memPw}, #{memName}, #{memMail}, #{memPhone}, #{memEmerPhone},
+            #{memAddr1}, #{memAddr2}, #{memAddr3}, #{memBirth}, #{memJoinDate},
+            #{memQuitDate}, #{memStatus}, #{memTotalPoint}, #{memAdminCheck}, #{pointCode}
+        )
+      	
+  </insert>
+  
+   <!-- 로그인 -->
+   <select id="memberLogin" resultMap="userResultMap">
+   
+   	 SELECT     	 
+   	 	MEM_CODE, MEM_ID, MEM_PW, MEM_NAME, MEM_MAIL, MEM_PHONE, MEM_EMER_PHONE,
+        MEM_ADDR1, MEM_ADDR2, MEM_ADDR3, MEM_BIRTH, MEM_JOIN_DATE,
+        MEM_QUIT_DATE, MEM_STATUS, MEM_TOTAL_POINT, MEM_ADMIN_CHECK, POINT_CODE 
+   	    
+   	 FROM TB_MEMBER   	 
+   	 WHERE MEM_ID=#{memId} and MEM_PW = #{memPw}
+   
+   
+   </select>
+  	
+</mapper>
+  
