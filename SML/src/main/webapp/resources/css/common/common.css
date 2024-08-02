@@ -27,7 +27,7 @@ header {
 	align-items: center;
 	position: fixed; /* 위치 고정 */
 	top: 0; /* 화면 상단에 위치 */
-	z-index: 900;
+	z-index: 700;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 	border-bottom: 10px solid #01530c;
 }
@@ -38,12 +38,19 @@ a {
 }
 
 .container {
-	width: 80%;
-	max-width: 1240px;
+	width: 95%;
+	max-width: 1920px;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 	position: relative; /* 상대적 위치 설정 (모바일 메뉴 조정용) */
+}
+
+.left-menu {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
 
 .logo {
@@ -51,11 +58,20 @@ a {
 	height: auto;
 }
 
+.main-menu {
+	display: inline-block;
+	align-items: center;
+	justify-items: center;
+	margin-left: 60px;
+}
+
 .main-menu ul, .auth-menu ul {
 	list-style: none;
 	padding: 0;
 	margin: 0;
 	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 .main-menu li {
@@ -66,11 +82,6 @@ a {
 	margin-left: 20px;
 }
 
-.auth-menu {
-	display: flex;
-	align-items: right;
-	position: relative; /* 상대적 위치 설정 (햄버거 메뉴 조정용) */
-}
 
 .main-menu a, .auth-menu a, .mobile-menu a {
 	color: #01530c;
@@ -79,6 +90,10 @@ a {
 
 .main-menu li a:hover, .auth-menu li a:hover, .mobile-menu li a:hover {
 	color: #ec7c00;
+}
+
+.welcome {
+	align-items: center;
 }
 
 .hamburger-container {
@@ -98,12 +113,13 @@ a {
 .mobile-menu {
 	display: none;
 	position: absolute;
+	text-align : center;
 	top: calc(100% + 5px); /* 버튼 아래에 약간의 여백 추가 */
 	right: 0; /* 버튼 오른쪽 끝에 위치 */
-	width: 150px;
+	width: 180px;
 	background-color: #f8f8f8;
 	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	z-index: 888; /* 햄버거 버튼보다 뒤에 위치하도록 설정 */
+	z-index: 900;
 	border: 1px solid #ddd;
 }
 
@@ -176,7 +192,7 @@ a {
 	border-radius: 50px;
 	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 	padding: 10px;
-	z-index: 800;
+	z-index: 50;
 }
 
 #quick-menu button {
@@ -306,7 +322,7 @@ main {
 	position: fixed;
 	z-index: 1000;
 	width: 300px;
-	color:white;
+	color: white;
 	background-color: rgba(0, 0, 0, 0.7);;
 	border: 1px solid #ccc;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
