@@ -21,8 +21,7 @@
     <result property="memQuitDate" column="MEM_QUIT_DATE"/>
     <result property="memStatus" column="MEM_STATUS"/>
     <result property="memTotalPoint" column="MEM_TOTAL_POINT"/>
-    <result property="memAdminCheck" column="MEM_ADMIN_CHECK"/>
-    <result property="pointCode" column="POINT_CODE"/>
+    <result property="memAdminCheck" column="MEM_ADMIN_CHECK"/>   
 </resultMap>
 
   <!-- 회원가입 -->
@@ -30,14 +29,19 @@
   	INSERT INTO TB_MEMBER (
             MEM_ID, MEM_PW, MEM_NAME, MEM_MAIL, MEM_PHONE, MEM_EMER_PHONE,
             MEM_ADDR1, MEM_ADDR2, MEM_ADDR3, MEM_BIRTH, MEM_JOIN_DATE,
-            MEM_QUIT_DATE, MEM_STATUS, MEM_TOTAL_POINT, MEM_ADMIN_CHECK, POINT_CODE
+            MEM_QUIT_DATE, MEM_STATUS, MEM_TOTAL_POINT, MEM_ADMIN_CHECK
         ) VALUES (
             #{memId}, #{memPw}, #{memName}, #{memMail}, #{memPhone}, #{memEmerPhone},
             #{memAddr1}, #{memAddr2}, #{memAddr3}, #{memBirth}, #{memJoinDate},
-            #{memQuitDate}, #{memStatus}, #{memTotalPoint}, #{memAdminCheck}, #{pointCode}
+            #{memQuitDate}, #{memStatus}, #{memTotalPoint}, #{memAdminCheck}
         )
       	
   </insert>
+  
+  <!-- 아이디 중복검사 -->
+  <select id="idCheck" resultType="int">
+  	select count(*) from tb_member where MEM_ID = #{memId}
+  </select>
   
    <!-- 로그인 -->
    <select id="memberLogin" resultMap="userResultMap">
@@ -45,10 +49,10 @@
    	 SELECT     	 
    	 	MEM_CODE, MEM_ID, MEM_PW, MEM_NAME, MEM_MAIL, MEM_PHONE, MEM_EMER_PHONE,
         MEM_ADDR1, MEM_ADDR2, MEM_ADDR3, MEM_BIRTH, MEM_JOIN_DATE,
-        MEM_QUIT_DATE, MEM_STATUS, MEM_TOTAL_POINT, MEM_ADMIN_CHECK, POINT_CODE 
+        MEM_QUIT_DATE, MEM_STATUS, MEM_TOTAL_POINT, MEM_ADMIN_CHECK 
    	    
    	 FROM TB_MEMBER   	 
-   	 WHERE MEM_ID=#{memId} and MEM_PW = #{memPw}
+   	 WHERE MEM_ID=#{memId} 
    
    
    </select>

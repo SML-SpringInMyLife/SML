@@ -35,12 +35,11 @@ public class MemberMapperTest {
 		member.setMemQuitDate(new Date()); // 탈퇴하지 않은 상태
 		member.setMemStatus(1); // 활성 상태라고 가정
 		member.setMemAdminCheck(1);
-		member.setMemTotalPoint(1000); // 초기 포인트
-		member.setPointCode(1);
+		member.setMemTotalPoint(1000); // 초기 포인트		
 		membermapper.memberJoin(member);
 		
 	}
-	*/
+	
 	
 	//로그인 메퍼 메서드 테스트
 	@Test
@@ -52,6 +51,16 @@ public class MemberMapperTest {
 		
 		membermapper.memberLogin(member);
 		System.out.println("결과" + membermapper.memberLogin(member));
+	}
+	*/
+	
+	//아이디 중복 검사
+	@Test
+	public void memberIdChk() throws Exception{
+		String id = "test";
+		String id2 = "test2";
+		membermapper.idCheck(id);
+		membermapper.idCheck(id2);	
 	}
 
 }

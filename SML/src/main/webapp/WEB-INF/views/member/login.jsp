@@ -25,12 +25,15 @@
                placeholder="아이디를 입력하세요." required> 
              <input type="password" id="memPw" name="memPw"
                placeholder="비밀번호를 입력하세요." required>
+            
+             <c:if test = "${result == 0}">   
+             <div class ="login_warn">사용자 ID 또는 비밀번호를 잘못 입력하였습니다.</div>  
+             </c:if>
 
             <button type="submit" class="login-button">SML 로그인</button>
             <button type="button" class="login-button kakao">Kakao 로그인</button>
             <button type="button" class="login-button naver">Naver 로그인</button>
-            <button type="button" class="login-button google">Google
-               로그인</button>
+            <button type="button" class="login-button google">Google 로그인</button>
 
             <p class="join-link">
                아직 회원이 아니신가요? <a href="/join">회원가입</a>

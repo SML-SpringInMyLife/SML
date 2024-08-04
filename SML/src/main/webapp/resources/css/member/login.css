@@ -60,6 +60,13 @@
    background-color: #db4437; /* Google color */
 }
 
+.login_warn{	
+	margin-bottom : 10px;
+	text-align: center;
+	padding : 10px;
+	color: red;
+}
+
 /* 회원가입 링크 */
 .join-link {
    text-align: center;
