@@ -44,28 +44,20 @@
 					</thead>
 					<tbody id="memberList">
 						<!-- 샘플 -->
-						<tr>
-							<td data-label="No.">1</td>
-							<td data-label="ID">Hong</td>
-							<td data-label="성명">홍길동</td>
-							<td data-label="생년월일">1990-01-01</td>
-							<td data-label="전화번호">010-1234-5678</td>
-							<td data-label="잔여포인트">1500 point</td>
-							<td data-label="회원상태">Y /
-								<button class="changeStatus">휴면처리</button>
-							</td>
-						</tr>
-						<tr>
-							<td data-label="No.">2</td>
-							<td data-label="ID">Lim</td>
-							<td data-label="성명">임꺽정</td>
-							<td data-label="생년월일">1990-01-01</td>
-							<td data-label="전화번호">010-1234-5678</td>
-							<td data-label="잔여포인트">2000 point</td>
-							<td data-label="회원상태">N /
-								<button class="changeStatus">복구처리</button>
-							</td>
-						</tr>
+						<c:forEach var="member" items="${members}">
+							<tr>
+								<td data-label="No."><c:out value="${member.memCode}" /></td>
+								<td data-label="ID"><c:out value="${member.memId}" /></td>
+								<td data-label="성명"><c:out value="${member.memName}" /></td>
+								<td data-label="생년월일"><c:out value="${member.memPhone}" /></td>
+								<td data-label="전화번호"><c:out value="${member.memCode}" /></td>
+								<td data-label="잔여포인트"><c:out
+										value="${member.memTotalPoint}" /></td>
+								<td data-label="회원상태"><c:out value="${member.memStatus}" />
+									/
+									<button class="changeStatus">휴면처리</button></td>
+							</tr>
+						</c:forEach>
 
 					</tbody>
 				</table>

@@ -26,9 +26,8 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-	/*
-	 * @Autowired private AdminService service;
-	 */
+	@Autowired
+	private AdminService service;
 
 	/* 관리자 메인 페이지 이동 */
 	@GetMapping(value = "main")
@@ -46,15 +45,16 @@ public class AdminController {
 	}
 
 	@GetMapping(value = "members")
-	public void adminMembersGET() throws Exception {
+	public void adminMembersGET(Model model) throws Exception {
 
 		logger.info("관리자 - 회원관리페이지 이동");
 
-		/*
-		 * List<MemberVO> list = service.getMemberList(); if (!list.isEmpty()) {
-		 * model.addAttribute("list", list); } else { model.addAttribute("listCheck",
-		 * "empty"); }
-		 */
+		List<MemberVO> list = service.getMemberList();
+		if (!list.isEmpty()) {
+			model.addAttribute("list", list);
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
 
 	}
 

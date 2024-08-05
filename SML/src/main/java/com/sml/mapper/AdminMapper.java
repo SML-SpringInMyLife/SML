@@ -1,5 +1,11 @@
 package com.sml.mapper;
 
-public class AdminMapper {
+import java.util.List;
+
+import com.sml.model.MemberVO;
+
+public interface AdminMapper {
+
+	List<MemberVO> getMemberList();
 
 }

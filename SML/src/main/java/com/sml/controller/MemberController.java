@@ -29,12 +29,12 @@ public class MemberController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
-  //MemberService�� MemberController�� �ڵ����Եǵ��� �ڵ��߰�
+  //MemberService가 MemberController에 자동주입되도록 코드추가
     @Autowired
     private MemberService memberService;
     
 <<<<<<< HEAD
-  //ȸ������ ������ �̵�  		
+  //회원가입 페이지 이동  		
 =======
     @Autowired
     private JavaMailSender mailSender;
@@ -42,31 +42,31 @@ public class MemberController {
     @Autowired
     private BCryptPasswordEncoder pwEncoder;
     
-  //회원가입 페이지 이동  		
+  //�쉶�썝媛��엯 �럹�씠吏� �씠�룞  		
 >>>>>>> member
   	@GetMapping("join")
   	public void joinGET() {
-  		logger.info("ȸ������ ������ ����");
+  		logger.info("회원가입 페이지 진입");
   	}		
   	
-  //�α��� ������ �̵�
+  //로그인 페이지 이동
   	@GetMapping("login")
   	public void loginGET() {
-  		logger.info("�α��� ������ ����");
+  		logger.info("로그인 페이지 진입");
   	}
   	
-  //ȸ������
+  //회원가입
   	@PostMapping("/join")
   	public String joinPOST(MemberVO member) throws Exception{
   		
 <<<<<<< HEAD
-  		logger.info("ȸ������ ����");
-=======
   		logger.info("회원가입 진입");
-  		System.out.println("회원가입 데이터 : " + member);
+=======
+  		logger.info("�쉶�썝媛��엯 吏꾩엯");
+  		System.out.println("�쉶�썝媛��엯 �뜲�씠�꽣 : " + member);
   		
-  		String rawPw = ""; //인코딩전 비밀번호
-  		String encodePw = ""; //인코딩후 비밀번호
+  		String rawPw = ""; //�씤肄붾뵫�쟾 鍮꾨�踰덊샇
+  		String encodePw = ""; //�씤肄붾뵫�썑 鍮꾨�踰덊샇
   		
   		rawPw = member.getMemPw();
   		encodePw = pwEncoder.encode(rawPw);
@@ -79,61 +79,61 @@ public class MemberController {
   		}
 >>>>>>> member
   		
-  		//ȸ������ ���� ����
+  		//회원가입 서비스 실행
   		memberService.MemberJoin(member);
   		
-  		logger.info("�α��� ���� ����");
+  		logger.info("로그인 서비스 성공");
   		
   		return "redirect:/";
   	}
 <<<<<<< HEAD
 
-  	/* �α��� */
+  	/* 로그인 */
     @RequestMapping("/login")
     public String loginPOST(HttpServletRequest request, MemberVO member, RedirectAttributes rttr) throws Exception{
         
-        System.out.println("login �޼��� ����");
-        System.out.println("���޵� ������ : " + member);
+        System.out.println("login 메서드 진입");
+        System.out.println("전달된 데이터 : " + member);
 =======
   	
-  //아이디 중복 검사
+  //�븘�씠�뵒 以묐났 寃��궗
   	@PostMapping("/memberIdChk")
   	@ResponseBody
   	public String memberIdChkPOST(String memId) throws Exception{
-  		//logger.info("memberIdChk() 진입 :" + memId);
+  		//logger.info("memberIdChk() 吏꾩엯 :" + memId);
   		
   		int result = memberService.idCheck(memId);
   		
-  		logger.info("결과값 = " + result );
+  		logger.info("寃곌낵媛� = " + result );
   		
   		if(result != 0) {
-  			return "fail"; //중복 아이디가 존재
+  			return "fail"; //以묐났 �븘�씠�뵒媛� 議댁옱
   		}else {
   			return "success"; 
   		}
   	} 
   	
-  	//이메일 인증//
+  	//�씠硫붿씪 �씤利�//
   	@GetMapping("/mailCheck")
   	@ResponseBody
   	public String mailCheckGET(String email) throws Exception{
   		
-  		logger.info("이메일 데이터 전송 확인");
-  		logger.info("인증번호:" + email);
+  		logger.info("�씠硫붿씪 �뜲�씠�꽣 �쟾�넚 �솗�씤");
+  		logger.info("�씤利앸쾲�샇:" + email);
   		
-  		//인증번호 난수 생성//
+  		//�씤利앸쾲�샇 �궃�닔 �깮�꽦//
   		Random random = new Random();
   		int checkNum = random.nextInt(888888) + 111111;
-  		logger.info("인증번호" + checkNum);
+  		logger.info("�씤利앸쾲�샇" + checkNum);
   		
-  		//이메일 보내기//
+  		//�씠硫붿씪 蹂대궡湲�//
   		String setFrom = "jin22636@naver.com";
   		String tomail = email;
-  		String title = "회원가입 인증 이메일";
+  		String title = "�쉶�썝媛��엯 �씤利� �씠硫붿씪";
   		String content = 
-  				"SML 홈페이지에 오신 것을 환영합니다!!" + "<br><br>" +
-  				"인증번호는 " + checkNum + " 입니다" + "<br>" +
-  				"해당 인증번호를 인증번호 확인란에 기입하여 주세요";
+  				"SML �솃�럹�씠吏��뿉 �삤�떊 寃껋쓣 �솚�쁺�빀�땲�떎!!" + "<br><br>" +
+  				"�씤利앸쾲�샇�뒗 " + checkNum + " �엯�땲�떎" + "<br>" +
+  				"�빐�떦 �씤利앸쾲�샇瑜� �씤利앸쾲�샇 �솗�씤���뿉 湲곗엯�븯�뿬 二쇱꽭�슂";
   		
   		try {
   			MimeMessage message = mailSender.createMimeMessage();
@@ -151,12 +151,12 @@ public class MemberController {
   		return num;
   		
   	}
-  	/* 로그인 */
+  	/* 濡쒓렇�씤 */
     @RequestMapping("/login")
     public String loginPOST(HttpServletRequest request, MemberVO member, RedirectAttributes rttr) throws Exception{
         
-        //System.out.println("login 메서드 진입");
-        //System.out.println("전달된 데이터 : " + member);
+        //System.out.println("login 硫붿꽌�뱶 吏꾩엯");
+        //System.out.println("�쟾�떖�맂 �뜲�씠�꽣 : " + member);
 >>>>>>> member
     	
     	HttpSession session = request.getSession();
@@ -164,19 +164,19 @@ public class MemberController {
     	String encodePw = "";
     	 
     	 
-    	 MemberVO lvo = memberService.memberLogin(member); //제출한 아이디와 일치하는 아이디 있는지
+    	 MemberVO lvo = memberService.memberLogin(member); //�젣異쒗븳 �븘�씠�뵒�� �씪移섑븯�뒗 �븘�씠�뵒 �엳�뒗吏�
     	 
     	 System.out.println("111 : " + lvo);
     	 
 <<<<<<< HEAD
-    	 if(lvo == null) {                    // ��ġ���� �ʴ� ���̵�, ��й�ȣ �Է� ���
+    	 if(lvo == null) {                    // 일치하지 않는 아이디, 비밀번호 입력 경우
              
              int result = 0;
              rttr.addFlashAttribute("result", result);
              return "redirect:/member/login";             
          }
          
-         session.setAttribute("member", lvo);    // ��ġ�ϴ� ���̵�, ��й�ȣ ��� (�α��� ����)
+         session.setAttribute("member", lvo);    // 일치하는 아이디, 비밀번호 경우 (로그인 성공)
          
          return "redirect:/";        
 =======
@@ -194,18 +194,18 @@ public class MemberController {
     			 rttr.addFlashAttribute("result", 0);
                  return "redirect:/member/login";
     		 }
-    	 }else { //일치하는 아이디가 존재하지 않을때 (로그인실패)
+    	 }else { //�씪移섑븯�뒗 �븘�씠�뵒媛� 議댁옱�븯吏� �븡�쓣�븣 (濡쒓렇�씤�떎�뙣)
     		 rttr.addFlashAttribute("result", 0);
              return "redirect:/member/login";
     	 }	    		 
    
     }
     
-    /* 로그아웃 */
+    /* 濡쒓렇�븘�썐 */
     @RequestMapping("logout")
     public String logout(HttpServletRequest request) {
     	
-    	System.out.println("로그아웃 메서드 진입");    	
+    	System.out.println("濡쒓렇�븘�썐 硫붿꽌�뱶 吏꾩엯");    	
     	
         HttpSession session = request.getSession(false);
 >>>>>>> member

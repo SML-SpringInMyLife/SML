@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class MemberVO {
 <<<<<<< HEAD
-	//È¸¿ø°¡ÀÔ ÀÔ·Â»çÇ× : ¾ÆÀÌµğ,ºñ¹Ğ¹øÈ£,ÀÌ¸§,¸ŞÀÏ,¿¬¶ôÃ³,ºñ»ó¿¬¶ôÃ³,ÁÖ¼Ò,»ı³â¿ùÀÏ
+	//íšŒì›ê°€ì… ì…ë ¥ì‚¬í•­ : ì•„ì´ë””,ë¹„ë°€ë²ˆí˜¸,ì´ë¦„,ë©”ì¼,ì—°ë½ì²˜,ë¹„ìƒì—°ë½ì²˜,ì£¼ì†Œ,ìƒë…„ì›”ì¼
 =======
 	
 >>>>>>> member
@@ -29,11 +29,11 @@ public class MemberVO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date memBirth;
     
-    //ê°€ì…ì¼
+    //åª›ï¿½ï¿½ì—¯ï¿½ì”ª
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date memJoinDate;
     
-    //íƒˆí‡´ì¼
+    //ï¿½ê¹‰ï¿½ëˆœï¿½ì”ª
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date memQuitDate;
     
@@ -41,7 +41,7 @@ public class MemberVO {
     
     private int memTotalPoint;
     
-    //ê¶Œí•œì²´í¬(ê´€ë¦¬ì = 1, íšŒì› = 0)
+    //æ²…ëš°ë¸³ï§£ëŒ„ê²•(æ„¿ï¿½ç”±ÑŠì˜„ = 1, ï¿½ì‰¶ï¿½ì = 0)
     private int memAdminCheck;
     
     
