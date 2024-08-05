@@ -1,16 +1,26 @@
 package com.sml.controller;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.sml.model.MemberVO;
+import com.sml.service.AdminService;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -20,72 +30,105 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
+	@Autowired
+	private AdminService service;
+
+	/* ê´€ë¦¬ì ë©”ì¸ í˜ì´ì§€ ì´ë™ */
+	@GetMapping(value = "main")
+	public void adminMainGET(Model model) throws Exception {
+		logger.info("ê´€ë¦¬ì í˜ì´ì§€ ì´ë™");
+
+		int memberCnt = service.getMemberCnt();
+		model.addAttribute("memberCnt", memberCnt);
+
+		Map<String, Integer> ageGroupCnt = service.getAgeGroupCnt();
+		model.addAttribute("ageGroupCnt", ageGroupCnt);
+
+		/*
+		 * if (memberCnt <= 0) { model.addAttribute("cntCheck", "empty"); // ê¸°ë³¸ ì—°ë„ì— ëŒ€í•œ
+		 * ì°¨íŠ¸ ë°ì´í„° ì¶”ê°€ String year = "2024"; // ê¸°ë³¸ ì—°ë„ Map<String, int[]> chartData =
+		 * service.getAgeGroupCountsByMonth(year); model.addAttribute("chartData",
+		 * chartData); }
+		 */
+	}
+
 	/*
-	 * @Autowired private AdminService service;
+	 * @GetMapping(value = "getDataForYear")
+	 * 
+	 * @ResponseBody public Map<String, int[]> getDataForYear(@RequestParam("year")
+	 * String year) { return service.getAgeGroupCountsByMonth(year); }
 	 */
 
-	/* °ü¸®ÀÚ ¸ŞÀÎ ÆäÀÌÁö ÀÌµ¿ */
-	@GetMapping(value = "main")
-	public void adminMainGET() throws Exception {
+	@GetMapping(value = "members")
+	public void adminMembersGET(Model model) throws Exception {
 
-		logger.info("°ü¸®ÀÚ ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ê´€ë¦¬ì - íšŒì›ê´€ë¦¬í˜ì´ì§€ ì´ë™");
+		List<MemberVO> members = service.getMemberList();
 
+		if (!members.isEmpty()) {
+			model.addAttribute("members", members);
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
+
+	}
+
+	@PostMapping(value = "updateStatus")
+	public String updateStatus(@RequestParam int memCode, @RequestParam int memStatus, RedirectAttributes rttr) {
+		logger.info("ìƒíƒœ ì—…ë°ì´íŠ¸ ë©¤ë²„Code: " + memCode + ", ìƒíƒœ: " + memStatus);
+
+		try {
+			service.updateStatus(memCode, memStatus);
+			rttr.addFlashAttribute("result", "success");
+		} catch (Exception e) {
+			logger.error("ì—…ë°ì´íŠ¸ ì‹¤íŒ¨ : ", e);
+			rttr.addFlashAttribute("result", "fail");
+		}
+
+		return "redirect:/admin/members";
 	}
 
 	@GetMapping(value = "courses")
 	public void adminCoursesGET() throws Exception {
 
-		logger.info("°ü¸®ÀÚ - ¼ö°­½ÅÃ»°ü¸® ÆäÀÌÁö ÀÌµ¿");
-
-	}
-
-	@GetMapping(value = "members")
-	public void adminMembersGET() throws Exception {
-
-		logger.info("°ü¸®ÀÚ - È¸¿ø°ü¸®ÆäÀÌÁö ÀÌµ¿");
-
-		/*
-		 * List<MemberVO> list = service.getMemberList(); if (!list.isEmpty()) {
-		 * model.addAttribute("list", list); } else { model.addAttribute("listCheck",
-		 * "empty"); }
-		 */
+		logger.info("ê´€ë¦¬ì - ìˆ˜ê°•ì‹ ì²­ê´€ë¦¬ í˜ì´ì§€ ì´ë™");
 
 	}
 
 	@GetMapping(value = "edit")
 	public void adminEditGET() throws Exception {
 
-		logger.info("°ü¸®ÀÚ - Á¤º¸¼öÁ¤ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ê´€ë¦¬ì - ì •ë³´ìˆ˜ì •í˜ì´ì§€ ì´ë™");
 
 	}
 
 	@GetMapping(value = "sms")
 	public void adminSmsGET() throws Exception {
 
-		logger.info("°ü¸®ÀÚ - ¹®ÀÚ°ü¸®ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ê´€ë¦¬ì - ë¬¸ìê´€ë¦¬í˜ì´ì§€ ì´ë™");
 
 	}
 
 	@PostMapping(value = "sms/sendSms.do")
 	public String sendSms(HttpServletRequest request) throws Exception {
 
-		// API Key¿Í Secret Key¸¦ ÀÔ·Â (Coolsms¿¡¼­ ¹ß±Ş¹ŞÀº °ª)
+		// API Keyì™€ Secret Keyë¥¼ ì…ë ¥ (Coolsmsì—ì„œ ë°œê¸‰ë°›ì€ ê°’)
 		String api_key = "";
 		String api_secret = "";
 		Message coolsms = new Message(api_key, api_secret);
 
-		// SMS Àü¼ÛÀ» À§ÇÑ ÆÄ¶ó¹ÌÅÍ ¼³Á¤
+		// SMS ì „ì†¡ì„ ìœ„í•œ íŒŒë¼ë¯¸í„° ì„¤ì •
 		HashMap<String, String> set = new HashMap<>();
-		set.put("to", request.getParameter("recipientNumber")); // ¼ö½Å¹øÈ£
-		set.put("from", request.getParameter("senderNumber")); // ¹ß½Å¹øÈ£
-		set.put("text", request.getParameter("smsContent")); // ¹®ÀÚ ³»¿ë
-		set.put("type", "sms"); // ¹®ÀÚ Å¸ÀÔ
-		set.put("app_version", "test app 1.2"); // ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ¹öÀü
+		set.put("to", request.getParameter("recipientNumber")); // ìˆ˜ì‹ ë²ˆí˜¸
+		set.put("from", request.getParameter("senderNumber")); // ë°œì‹ ë²ˆí˜¸
+		set.put("text", request.getParameter("smsContent")); // ë¬¸ì ë‚´ìš©
+		set.put("type", "sms"); // ë¬¸ì íƒ€ì…
+		set.put("app_version", "test app 1.2"); // ì• í”Œë¦¬ì¼€ì´ì…˜ ë²„ì „
 
 		System.out.println(set);
 
 		try {
-			// SMS Àü¼Û ¹× °á°ú ¹Ş±â
+			// SMS ì „ì†¡ ë° ê²°ê³¼ ë°›ê¸°
 			JSONObject result = coolsms.send(set);
 			System.out.println(result.toString());
 		} catch (CoolsmsException e) {
@@ -93,21 +136,21 @@ public class AdminController {
 			System.out.println("Error Code: " + e.getCode());
 		}
 
-		// SMS Àü¼Û ÈÄ ÀÀ´ä ÆäÀÌÁö·Î ÀÌµ¿
-		return "admin/sms"; // SMS Àü¼Û °á°ú ÆäÀÌÁö
+		// SMS ì „ì†¡ í›„ ì‘ë‹µ í˜ì´ì§€ë¡œ ì´ë™
+		return "admin/sms"; // SMS ì „ì†¡ ê²°ê³¼ í˜ì´ì§€
 	}
 
 	@GetMapping(value = "chat")
 	public void adminChatGET() throws Exception {
 
-		logger.info("°ü¸®ÀÚ - Ã¤ÆÃ»ó´ã°ü¸®ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ê´€ë¦¬ì - ì±„íŒ…ìƒë‹´ê´€ë¦¬í˜ì´ì§€ ì´ë™");
 
 	}
 
 	@GetMapping(value = "login")
 	public void adminLoginGET() throws Exception {
 
-		logger.info("·Î±×ÀÎÆäÀÌÁö ÀÌµ¿");
+		logger.info("ë¡œê·¸ì¸í˜ì´ì§€ ì´ë™");
 
 	}
 }

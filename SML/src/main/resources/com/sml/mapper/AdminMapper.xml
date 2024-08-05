@@ -3,11 +3,101 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.sml.mapper.AdminMapper">
-  
-  <select id="getMemberList" resultType="com.sml.model.MemberVO">
-  		SELECT * FROM TB_MEMBER
-  	</select>
-  
-  </mapper>
+
+<mapper namespace="com.sml.mapper.AdminMapper">
+
+	<resultMap id="userResultMap" type="com.sml.model.MemberVO">
+		<result property="memCode" column="MEM_CODE" />
+		<result property="memId" column="MEM_ID" />
+		<result property="memPw" column="MEM_PW" />
+		<result property="memName" column="MEM_NAME" />
+		<result property="memMail" column="MEM_MAIL" />
+		<result property="memPhone" column="MEM_PHONE" />
+		<result property="memEmerPhone" column="MEM_EMER_PHONE" />
+		<result property="memAddr1" column="MEM_ADDR1" />
+		<result property="memAddr2" column="MEM_ADDR2" />
+		<result property="memAddr3" column="MEM_ADDR3" />
+		<result property="memBirth" column="MEM_BIRTH" />
+		<result property="memJoinDate" column="MEM_JOIN_DATE" />
+		<result property="memQuitDate" column="MEM_QUIT_DATE" />
+		<result property="memStatus" column="MEM_STATUS" />
+		<result property="memTotalPoint" column="MEM_TOTAL_POINT" />
+		<result property="memAdminCheck" column="MEM_ADMIN_CHECK" />
+	</resultMap>
+
+	<select id="getMemberList" resultType="com.sml.model.MemberVO"
+		resultMap="userResultMap">
+		SELECT * FROM TB_MEMBER
+	</select>
+
+	<select id="getMemberCnt" resultType="int">
+		SELECT COUNT(*) FROM
+		TB_MEMBER WHERE MEM_STATUS = 1
+	</select>
+
+	<select id="getAgeGroupCnt" resultType="java.util.Map">
+    <![CDATA[
+    SELECT
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) < 50
+        THEN 1
+        END) AS under50,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 50 AND 59
+        THEN 1
+        END) AS age50s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 60 AND 69
+        THEN 1
+        END) AS age60s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 70 AND 79
+        THEN 1
+        END) AS age70s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 80 AND 89
+        THEN 1
+        END) AS age80s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) >= 90
+        THEN 1
+        END) AS age90plus
+    FROM TB_MEMBER WHERE MEM_STATUS = 1
+    ]]>
+	</select>
+
+
+	<select id="getMonthlyAgeGroupCounts" parameterType="int"
+		resultType="java.util.Map">
+    <![CDATA[
+    SELECT
+        TO_CHAR(MEM_JOIN_DATE, 'MM') AS month,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) < 50
+        THEN 1
+        END) AS under50,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 50 AND 59
+        THEN 1
+        END) AS age50s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 60 AND 69
+        THEN 1
+        END) AS age60s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 70 AND 79
+        THEN 1
+        END) AS age70s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 80 AND 89
+        THEN 1
+        END) AS age80s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) >= 90
+        THEN 1
+        END) AS age90plus
+    FROM TB_MEMBER
+    WHERE MEM_STATUS = 1
+      AND EXTRACT(YEAR FROM MEM_JOIN_DATE) = #{year}
+    GROUP BY TO_CHAR(MEM_JOIN_DATE, 'MM')
+    ORDER BY month
+    ]]>
+	</select>
+
+
+	<update id="updateStatus">
+		UPDATE TB_MEMBER
+		SET MEM_STATUS = #{memStatus}
+		WHERE
+		MEM_CODE = #{memCode}
+	</update>
+
+</mapper>
