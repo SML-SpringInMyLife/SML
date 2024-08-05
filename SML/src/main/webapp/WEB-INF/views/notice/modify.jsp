@@ -41,7 +41,20 @@
             <button class="update">수정</button>
             <button class="cancel">취소</button>
         </div>
-    </div>
+        </div>
+        <div class="pagination">
+				<button>1</button>
+				<button>2</button>
+				<button>3</button>
+			</div>
+			<script>
+        document.querySelectorAll('.page-btn').forEach(button => {
+            button.addEventListener('click', function () {
+                document.querySelectorAll('.page-btn').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    </script>
 </main>
 
 <!-- 푸터 영역 포함 -->

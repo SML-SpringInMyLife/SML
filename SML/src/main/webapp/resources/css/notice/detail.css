@@ -1,11 +1,11 @@
 @charset "UTF-8";
 
 .detail-container {
-    margin: 200px;
+ margin: 200px; 
 	max-width: 900px;
 	background-color: white;
 	border: 1px solid #ddd;
-	padding: 20px;
+	padding: 20px; 
 	border-radius: 5px;
 	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -15,7 +15,7 @@
 	justify-content: right;
 	align-items: center;
 	border-bottom: 3px solid #0a0a0a;
-	padding-bottom: 10px;
+	/* padding-bottom: 10px; */
 	font-size: 14px;
 	color: #555;
 }
@@ -28,11 +28,16 @@
 	display: flex;
 	margin: 10px;
 	align-items: center;
-	font-size: 18px;
+	font-size: 40px;
 	border: none;
 	background-color: transparent;
-	
+	cursor: pointer;
+	color: black;
 }
+
+ .like.active {
+            color: red; 
+        }
 
 .detail-container .title {
 	display: flex;
@@ -48,7 +53,6 @@
 	line-height: 1.6;
 	margin-bottom: 20px;
 	font-size: 16px;
-	
 }
 
 .detail-container .line {
@@ -60,7 +64,6 @@
 	border-radius: 1px;
 	background-color: #e0f2e9;
 	border-top: 3px solid #0a0a0a;
-	
 }
 
 .detail-container .btn-container {
@@ -103,4 +106,27 @@
 	font-size: 16px;
 	border: none;
 }
+ .pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
 
+.pagination button {
+	border-radius: 10px;
+	margin: 0 5px;
+	padding: 10px 15px;
+	border: none;
+	background-color: #e0e0e0;
+	cursor: pointer;
+}
+
+.pagination button.active {
+	background-color: #4caf50;
+	color: white;
+}
+
+ .pagination button:hover {
+	background-color: #45a049;
+	color: white;
+}

@@ -76,3 +76,28 @@
 	background-color: #e0e0e0;
 	color: black;
 }
+
+.pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+ .pagination button {
+	border-radius: 10px;
+	margin: 0 5px;
+	padding: 10px 15px;
+	border: none;
+	background-color: #e0e0e0;
+	cursor: pointer;
+}
+
+ .pagination button.active {
+	background-color: #4caf50;
+	color: white;
+}
+
+ .pagination button:hover {
+	background-color: #45a049;
+	color: white;
+}
