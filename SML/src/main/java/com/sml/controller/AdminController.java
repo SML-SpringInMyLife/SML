@@ -1,16 +1,22 @@
 package com.sml.controller;
 
 import java.util.HashMap;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import com.sml.model.MemberVO;
+import com.sml.service.AdminService;
 
 import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
@@ -19,6 +25,10 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 @RequestMapping(value = "/admin")
 public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
+
+	/*
+	 * @Autowired private AdminService service;
+	 */
 
 	/* 관리자 메인 페이지 이동 */
 	@GetMapping(value = "main")
@@ -39,6 +49,12 @@ public class AdminController {
 	public void adminMembersGET() throws Exception {
 
 		logger.info("관리자 - 회원관리페이지 이동");
+
+		/*
+		 * List<MemberVO> list = service.getMemberList(); if (!list.isEmpty()) {
+		 * model.addAttribute("list", list); } else { model.addAttribute("listCheck",
+		 * "empty"); }
+		 */
 
 	}
 
