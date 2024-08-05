@@ -2,11 +2,17 @@ package com.sml.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
 public class MemberVO {
+<<<<<<< HEAD
 	//È¸¿ø°¡ÀÔ ÀÔ·Â»çÇ× : ¾ÆÀÌµğ,ºñ¹Ğ¹øÈ£,ÀÌ¸§,¸ŞÀÏ,¿¬¶ôÃ³,ºñ»ó¿¬¶ôÃ³,ÁÖ¼Ò,»ı³â¿ùÀÏ
+=======
+	
+>>>>>>> member
 	private int memCode;
 	private String memId;
 	private String memPw;
@@ -15,27 +21,28 @@ public class MemberVO {
     private String memPhone;
     private String memEmerPhone;
     
-    //È¸¿ø ÁÖ¼Ò
+    
     private String memAddr1;
     private String memAddr2;
     private String memAddr3;
     
-    //È¸¿ø »ı³â¿ùÀÏ
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date memBirth;
     
-    //È¸¿ø °¡ÀÔÀÏ
+    //ê°€ì…ì¼
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date memJoinDate;
     
-    //È¸¿ø Å»ÅğÀÏ
+    //íƒˆí‡´ì¼
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date memQuitDate;
     
-    private int memStatus;
+    private int memStatus;    
     
-    //È¸¿ø Æ÷ÀÎÆ®
     private int memTotalPoint;
     
-    //°ü¸®ÀÚ ±¸ºĞ(0:ÀÏ¹İ»ç¿ëÀÚ, 1:°ü¸®ÀÚ)
+    //ê¶Œí•œì²´í¬(ê´€ë¦¬ì = 1, íšŒì› = 0)
     private int memAdminCheck;
     
-    private int pointCode;
+    
 }

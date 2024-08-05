@@ -426,3 +426,16 @@
 .clearfix {
   clear: both;
 }
+
+.com_input_box {
+  border: 1px solid black;
+  height: 31px;
+  padding: 10px 14px;
+}
+
+.com_input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  font-size: 28px;
+}

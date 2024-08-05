@@ -56,8 +56,8 @@
 				</div>
 				<div class="birth_wrap">
 					<div class="user_birth">생년월일</div>
-				
-  				<select class="box" id="birth-year">
+				<!-- 
+				<select class="box" id="birth-year">
     				<option disabled selected>출생 연도</option>
   				</select>
   				<select class="box" id="birth-month">
@@ -66,11 +66,19 @@
 				 <select class="box" id="birth-day">
     				<option disabled selected>일</option>
   				</select>
+				-->
+				 
+					<div class="com_input_box">
+						<input type=date class="com_input" name="memBirth" max="9999-12-31">
+					</div>
+				
+
+ 
 				</div>
 				<div class="mail_wrap">
 					<div class="user_mail">이메일</div>
 					<div class="mail_input_box">
-						<input class="mail_input" name="memberMail">
+						<input class="mail_input" name="memMail">
 						<!--  
 						<select class="mail_box" id="domain-list">
 						  <option value="naver.com">naver.com</option>
@@ -112,7 +120,7 @@
 					<div class="address_name">주소</div>
 					<div class="address_input_1_wrap">
 						<div class="address_input_1_box">
-							<input class="address_input_1" name="memberAddr1" readonly="readonly">
+							<input class="address_input_1" name="memAddr1" readonly="readonly">
 						</div>
 						<div class="address_button" onclick="execution_daum_address()">
 							<span>주소 찾기</span>
@@ -121,12 +129,12 @@
 					</div>
 					<div class="address_input_2_wrap">
 						<div class="address_input_2_box">
-							<input class="address_input_2" name="memberAddr2" readonly="readonly">
+							<input class="address_input_2" name="memAddr2" readonly="readonly">
 						</div>
 					</div>
 					<div class="address_input_3_wrap">
 						<div class="address_input_3_box">
-							<input class="address_input_3" name="memberAddr3" readonly="readonly">
+							<input class="address_input_3" name="memAddr3" readonly="readonly">
 						</div>
 					</div>
 					<span class="final_addr_ck">주소를 입력해주세요.</span>
@@ -143,19 +151,10 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 	<script>
-	$(document).ready(function(){
-		//회원가입 버튼(회원가입 기능 작동)
-		$(".join_button").click(function(){
-			$("#join_form").attr("action", "/member/join");
-			$("#join_form").submit();
-		});
-	});
-
-
 	// 인증번호 저장
-	var code = "";
+	var code = ""; //이메일 전송 인증번호 저장위한 코드 
 	
-	 /* 유효성 검사 통과유무 변수 */
+	/* 유효성 검사 통과유무 변수 */	
 	 var idCheck = false;            
 	 var idckCheck = false;            
 	 var pwCheck = false;            
@@ -167,7 +166,12 @@
 	 var addressCheck = false 
 	
 	$(document).ready(function(){
+		//회원가입 버튼(회원가입 기능 작동)
 		$(".join_button").click(function(){
+			//$("#join_form").attr("action", "/member/join");
+			//$("#join_form").submit();
+			
+			//입력란 변수
 			var id = $('.id_input').val();                 
 	        var pw = $('.pw_input').val();                
 	        var pwck = $('.pwck_input').val();            
@@ -175,7 +179,7 @@
 	        var mail = $('.mail_input').val();            
 	        var addr = $('.address_input_3').val(); 
 	        
-	        /* 아이디 유효성검사 */
+	      //아이디 유효성검사 //
 	        if(id == ""){
 	            $('.final_id_ck').css('display','block');
 	            idCheck = false;
@@ -183,8 +187,8 @@
 	            $('.final_id_ck').css('display', 'none');
 	            idCheck = true;
 	        }
-	        
-	     	// 비밀번호 유효성 검사
+	      
+	     // 비밀번호 유효성 검사
 	    	if(pw == ""){
 	        	$('.final_pw_ck').css('display','block');
 	            pwCheck = false;
@@ -192,7 +196,8 @@
 	            $('.final_pw_ck').css('display', 'none');
 	            pwCheck = true;
 	         }
-	    	// 비밀번호 확인 유효성 검사
+	     
+	    // 비밀번호 확인 유효성 검사
 	    	if(pwck == ""){
 	            $('.final_pwck_ck').css('display','block');
 	            pwckCheck = false;
@@ -200,7 +205,8 @@
 	        	$('.final_pwck_ck').css('display', 'none');
 	            pwckCheck = true;
 	        }
-	    	/* 이름 유효성 검사 */
+	    
+	    //이름 유효성 검사 //
 	        if(name == ""){
 	            $('.final_name_ck').css('display','block');
 	            nameCheck = false;
@@ -208,7 +214,8 @@
 	            $('.final_name_ck').css('display', 'none');
 	            nameCheck = true;
 	        }
-	        /* 이메일 유효성 검사 */
+	    
+	    //이메일 유효성 검사 //
 	        if(mail == ""){
 	            $('.final_mail_ck').css('display','block');
 	            mailCheck = false;
@@ -216,7 +223,7 @@
 	            $('.final_mail_ck').css('display', 'none');
 	            mailCheck = true;
 	        }
-	        /* 주소 유효성 검사 */
+	        // 주소 유효성 검사 //
 	        if(addr == ""){
 	            $('.final_addr_ck').css('display','block');
 	            addressCheck = false;
@@ -224,56 +231,89 @@
 	            $('.final_addr_ck').css('display', 'none');
 	            addressCheck = true;
 	        }
-	        /* 최종 유효성 검사 */
-	        if(idCheck&&idckCheck&&pwCheck&&pwckCheck&&pwckcorCheck&&nameCheck&&mailCheck&&mailnumCheck&&addressCheck ){
+	        
+	       // 최종 유효성 검사 //
+	       if(idCheck&&idckCheck&&pwCheck&&pwckCheck&&pwckcorCheck&&nameCheck&&mailCheck&&mailnumCheck&&addressCheck ){
 	        	$("#join_form").attr("action", "/member/join");
 	    		$("#join_form").submit();
-	        }  
+	       }  
 	        
 	        return false;
+	    
 		});
 	});
 	
-	// 아이디 중복 검사
-	$('.id_input').on("propertychange change keyup paste input", function(){
-		var memberId = $('.id_input').val();
-		var data = {memberId : memberId}
+	//아이디 중복 검사
+	$('.id_input').on("propertychange change keyup paste input",function(){
+		console.log("아이디중복검사테스트")
+		
+		var memId = $('.id_input').val();
+		var data = {memId : memId}
 		
 		$.ajax({
 			type : "post",
 			url : "/member/memberIdChk",
 			data : data,
-			success : function(result) {
-				// console.log("성공 여부" +result);
+			success : function(result){
+				//console.log("성공여부" + result);
 				if(result != 'fail'){
 					$('.id_input_re_1').css("display","inline-block");
-					$('.id_input_re_2').css("display", "none");	
-					idckCheck = true;
-				} else {
+					$('.id_input_re_2').css("display", "none");
+					//아이디 중복이 없는 경우
+					idckCheck = true;			
+				}else{
 					$('.id_input_re_2').css("display","inline-block");
 					$('.id_input_re_1').css("display", "none");
+					//아이디 중복된 경우
 					idckCheck = false;
-				}
-			}
+				}				
+			}//success 종료
+		}); //ajax 종료
+	}); //function 종료
+     
+	
+	
+	
+	 /*
+	$(document).ready(function(){
+		
+		$(".join_button").click(function(){
+			
+		    var year = $('.birth-year').val();
+		    var month = $('.birth-month').val();
+		    var day = $('.birth-day').val();
+
+		    var birthDate = '${year}-${month}-${day}';
+		    birthDate.val(birthDate);			
+			
+			
+	        
+	        
+	     	
+	    	
+	    
 		});
 	});
+	*/		
 	
 	
-	/* 인증번호 이메일 전송 */
-	$(".mail_check_button").click(function(){
-	    
-	    var email = $(".mail_input").val();        // 입력한 이메일
-	    
-	});
-	/* 인증번호 이메일 전송 */
+	// 입력 이메일 형식 유효성 검사 //
+	 function mailFormCheck(email){
+	    var form = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
+	    return form.test(email);
+	}
+	 
+	
+	// 인증번호 이메일 전송 //
 	$(".mail_check_button").click(function(){
 	    
 	    var email = $(".mail_input").val();        // 입력한 이메일
 	    var checkBox = $(".mail_check_input");
-	    var boxWrap = $(".mail_check_input_box");
+	    var boxWrap = $(".mail_check_input_box");  
 	    var warnMsg = $(".mail_input_box_warn");
 	    
-	    /* 이메일 형식 유효성 검사 */
+	    
+	    //이메일 형식 유효성 검사 //
 	    if(mailFormCheck(email)){
 	        warnMsg.html("이메일이 전송 되었습니다. 이메일을 확인해주세요.");
 	        warnMsg.css("display", "inline-block");
@@ -281,7 +321,8 @@
 	        warnMsg.html("올바르지 못한 이메일 형식입니다.");
 	        warnMsg.css("display", "inline-block");
 	        return false;
-	    }    
+	    }
+	    
 	    
 	    $.ajax({
 	        
@@ -297,7 +338,7 @@
 	    });
 	    
 	});
-	/* 인증번호 비교 */
+	// 인증번호 비교 //
 	$(".mail_check_input").blur(function(){
 	    
 	    var inputCode = $(".mail_check_input").val();        // 입력코드    
@@ -306,7 +347,7 @@
 	    if(inputCode == code){                            // 일치할 경우
 	        checkResult.html("인증번호가 일치합니다.");
 	        checkResult.attr("class", "correct");
-	        mailnumCheck = true;
+	        mailnumCheck = true; 
 	    } else {                                            // 일치하지 않을 경우
 	        checkResult.html("인증번호를 다시 확인해주세요.");
 	        checkResult.attr("class", "incorrect");
@@ -315,7 +356,7 @@
 	        
 	});
 	
-	/* 다음 주소 연동 */
+	// 다음 주소 연동 //
 	function execution_daum_address(){
 	 
 	    new daum.Postcode({
@@ -368,7 +409,7 @@
 	 
 		}
 	
-	/* 비밀번호 확인 일치 유효성 검사 */
+	// 비밀번호 확인 일치 유효성 검사 //
 	$('.pwck_input').on("propertychange change keyup paste input", function(){
 		var pw = $('.pw_input').val();
 	    var pwck = $('.pwck_input').val();
@@ -383,13 +424,11 @@
 	        $('.pwck_input_re_2').css('display','block');
 	        pwckcorCheck = false;
 	    } 
+	
 	}); 
-	 /* 입력 이메일 형식 유효성 검사 */
-	 function mailFormCheck(email){
-	    var form = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
-	    return form.test(email);
-	}
 	 
+	 /* 생년월일 */
+/*
 	 $(document).ready(function() {
 	        // 현재 연도 구하기
 	        var today = new Date();
@@ -431,6 +470,7 @@
 	            $('#birth-month').trigger('change');
 	        });
 	    }); 
+	 */
 	</script>
 
 </body>
