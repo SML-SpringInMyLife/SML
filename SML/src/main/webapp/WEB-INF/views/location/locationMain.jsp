@@ -18,23 +18,24 @@
     <div class="map_wrap">
         <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
         <ul id="category">
-            <li id="HP8" data-order="0">
-                <span class="category_bg hospital"></span>
-                병원
-            </li>
-            <li id="PO3" data-order="1">
-                <span class="category_bg public_office"></span>
-                공공기관
-            </li>
-            <li id="PM9" data-order="2">
-                <span class="category_bg pharmacy"></span>
-                약국
-            </li>
-            <li id="SW8" data-order="3">
-                <span class="category_bg subway"></span>
-                지하철
-            </li>
-        </ul>
+    <li id="HP8" data-order="0">
+        <span class="category_bg hospital"></span>
+        병원
+    </li>
+    <li id="PO3" data-order="1">
+        <span class="category_bg public_office"></span>
+        공공기관
+    </li>
+    <li id="PM9" data-order="2">
+        <span class="category_bg pharmacy"></span>
+        약국
+    </li>
+    <li id="SW8" data-order="3">
+        <span class="category_bg subway"></span>
+        지하철
+    </li>
+</ul>
+
         <div id="menu_wrap" class="bg_white">
             <div class="option">
                 <div>
