@@ -6,7 +6,8 @@
 <head>
 <title>Home</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/community/board.css">
+<link rel="stylesheet" href="../resources/css/community/community.css">
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
@@ -61,7 +62,7 @@
 		</div>
 		
 		<form id="moveForm" method="get">
-            <input type="hidden" name="authorId" value="<c:out value='${authorInfo.authorId}'/>">
+            <input type="hidden" name="commCode" value="<c:out value='${communityDetail.commCode}'/>">
             <input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum}'/>">
             <input type="hidden" name="amount" value="<c:out value='${cri.amount}'/>">
             <input type="hidden" name="keyword" value="<c:out value='${cri.keyword}'/>">
@@ -78,7 +79,7 @@
 		$("#BoardListBtn").on("click", function(e){
 			e.preventDefault();
 		
-			$("input[name=authorId]").remove();
+			$("input[name=commCode]").remove();
 			moveForm.attr("action", "/community/boardList")
 			moveForm.submit();
 		});

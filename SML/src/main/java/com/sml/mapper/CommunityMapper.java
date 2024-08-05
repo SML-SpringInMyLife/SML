@@ -7,20 +7,11 @@ import com.sml.model.Criteria;
 
 public interface CommunityMapper {
 	
-	public List<CommunityVO> getBoardList();
+	public List<CommunityVO> getBoardList(Criteria cri);
+	public int communityGetTotal(Criteria cri);
 	
 	public void communityEnroll (CommunityVO community);
 	
 	public CommunityVO communityDetail (int commCode);
-	
-	// modify
-	
-	// delete
-	
-	// paging
-	
-	// search
-	
-	// Á¶È¸¼ö
 	
 }
