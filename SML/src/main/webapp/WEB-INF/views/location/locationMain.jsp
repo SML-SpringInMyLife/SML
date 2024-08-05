@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>
 <!DOCTYPE html>
@@ -7,224 +6,269 @@
 <head>
     <meta charset="utf-8">
     <title>지도 검색</title>
-<link rel="stylesheet" href="../resources/css/location/location.css">
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-
+    <link rel="stylesheet" href="../resources/css/location/location.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 </head>
 <body>
 <!-- 헤더 영역 포함 -->
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-<div style="margin-top: 200px;"></div> <!-- 헤더와 지도 간의 간격 추가 -->
-<div class="map_title">지도 검색</div> <!-- 지도 검색 제목 -->
-<div class="map_wrap">
-    <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+<main>
+    <div class="map_title">지도 검색</div> <!-- 지도 검색 제목 -->
+    <div class="map_wrap">
+        <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
+        <ul id="category">
+    <li id="HP8" data-order="0">
+        <span class="category_bg hospital"></span>
+        병원
+    </li>
+    <li id="PO3" data-order="1">
+        <span class="category_bg public_office"></span>
+        공공기관
+    </li>
+    <li id="PM9" data-order="2">
+        <span class="category_bg pharmacy"></span>
+        약국
+    </li>
+    <li id="SW8" data-order="3">
+        <span class="category_bg subway"></span>
+        지하철
+    </li>
+</ul>
 
-    <div id="menu_wrap" class="bg_white">
-        <div class="option">
-            <div>
-                <form onsubmit="searchPlaces(); return false;">
-                    키워드 : <input type="text" value="송파구 병원" id="keyword" size="15"> 
-                    <button type="submit">검색하기</button> 
-                </form>
+        <div id="menu_wrap" class="bg_white">
+            <div class="option">
+                <div>
+                    <form onsubmit="searchPlacesByKeyword(); return false;">
+                        키워드 : <input type="text" value="" id="keyword" size="15">
+                        <button type="submit">검색하기</button>
+                    </form>
+                </div>
             </div>
+            <hr>
+            <ul id="placesList"></ul>
+            <div id="pagination"></div>
         </div>
-        <hr>
-        <ul id="placesList"></ul>
-        <div id="pagination"></div>
     </div>
-</div>
-
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=36ac063fd0533ae2bce9b847fb4f47fe"></script>
+</main>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=36ac063fd0533ae2bce9b847fb4f47fe&libraries=services"></script>
 <script>
 // 마커를 담을 배열입니다
 var markers = [];
+var currCategory = '';
+var mapContainer = document.getElementById('map');
+var mapOption = {
+    center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
+    level: 5 // 지도의 확대 레벨
+};
+var map = new kakao.maps.Map(mapContainer, mapOption);
+var ps = new kakao.maps.services.Places(map);
+var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
+var placeOverlay = new kakao.maps.CustomOverlay({zIndex: 1}),
+    contentNode = document.createElement('div');
 
-var mapContainer = document.getElementById('map'), // 지도를 표시할 div 
-    mapOption = {
-        center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-        level: 3 // 지도의 확대 레벨
-    };  
+// 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다 
+contentNode.className = 'placeinfo_wrap';
 
-// 지도를 생성합니다    
-var map = new kakao.maps.Map(mapContainer, mapOption); 
+// 커스텀 오버레이의 컨텐츠 노드에 mousedown, touchstart 이벤트가 발생했을때
+// 지도 객체에 이벤트가 전달되지 않도록 이벤트 핸들러로 kakao.maps.event.preventMap 메소드를 등록합니다 
+addEventHandle(contentNode, 'mousedown', kakao.maps.event.preventMap);
+addEventHandle(contentNode, 'touchstart', kakao.maps.event.preventMap);
 
-// 장소 검색 객체를 생성합니다
-var ps = new kakao.maps.services.Places();  
+// 커스텀 오버레이 컨텐츠를 설정합니다
+placeOverlay.setContent(contentNode);  
 
-// 검색 결과 목록이나 마커를 클릭했을 때 장소명을 표출할 인포윈도우를 생성합니다
-var infowindow = new kakao.maps.InfoWindow({zIndex:1});
+// 엘리먼트에 이벤트 핸들러를 등록하는 함수입니다
+function addEventHandle(target, type, callback) {
+    if (target.addEventListener) {
+        target.addEventListener(type, callback);
+    } else {
+        target.attachEvent('on' + type, callback);
+    }
+}
 
-// 키워드로 장소를 검색합니다
-searchPlaces();
+// 카테고리 클릭 이벤트 등록
+addCategoryClickEvent();
 
-// 키워드 검색을 요청하는 함수입니다
-function searchPlaces() {
-
+function searchPlacesByKeyword() {
+    currCategory = '';
+    changeCategoryClass();
     var keyword = document.getElementById('keyword').value;
-
     if (!keyword.replace(/^\s+|\s+$/g, '')) {
         alert('키워드를 입력해주세요!');
         return false;
     }
-
-    // 장소검색 객체를 통해 키워드로 장소검색을 요청합니다
-    ps.keywordSearch( keyword, placesSearchCB); 
+    ps.keywordSearch(keyword, placesSearchCB);
 }
 
-// 장소검색이 완료됐을 때 호출되는 콜백함수 입니다
+function searchPlaces() {
+    if (!currCategory) return;
+    placeOverlay.setMap(null);
+    removeMarker();
+    ps.categorySearch(currCategory, placesSearchCB, {useMapBounds: true});
+}
+
 function placesSearchCB(data, status, pagination) {
     if (status === kakao.maps.services.Status.OK) {
-
-        // 정상적으로 검색이 완료됐으면
-        // 검색 목록과 마커를 표출합니다
         displayPlaces(data);
-
-        // 페이지 번호를 표출합니다
         displayPagination(pagination);
-
     } else if (status === kakao.maps.services.Status.ZERO_RESULT) {
-
         alert('검색 결과가 존재하지 않습니다.');
-        return;
-
     } else if (status === kakao.maps.services.Status.ERROR) {
-
         alert('검색 결과 중 오류가 발생했습니다.');
-        return;
-
     }
 }
 
-// 검색 결과 목록과 마커를 표출하는 함수입니다
 function displayPlaces(places) {
+    var listEl = document.getElementById('placesList'),
+        fragment = document.createDocumentFragment(),
+        bounds = new kakao.maps.LatLngBounds();
 
-    var listEl = document.getElementById('placesList'), 
-    menuEl = document.getElementById('menu_wrap'),
-    fragment = document.createDocumentFragment(), 
-    bounds = new kakao.maps.LatLngBounds(), 
-    listStr = '';
-    
-    // 검색 결과 목록에 추가된 항목들을 제거합니다
     removeAllChildNods(listEl);
-
-    // 지도에 표시되고 있는 마커를 제거합니다
     removeMarker();
-    
-    for ( var i=0; i<places.length; i++ ) {
 
-        // 마커를 생성하고 지도에 표시합니다
+    for (var i = 0; i < places.length; i++) {
         var placePosition = new kakao.maps.LatLng(places[i].y, places[i].x),
-            marker = addMarker(placePosition, i), 
-            itemEl = getListItem(i, places[i]); // 검색 결과 항목 Element를 생성합니다
+            marker = addMarker(placePosition, i),
+            itemEl = getListItem(i, places[i]);
 
-        // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해
-        // LatLngBounds 객체에 좌표를 추가합니다
         bounds.extend(placePosition);
 
-        // 마커와 검색결과 항목에 mouseover 했을때
-        // 해당 장소에 인포윈도우에 장소명을 표시합니다
-        // mouseout 했을 때는 인포윈도우를 닫습니다
-        (function(marker, title) {
-            kakao.maps.event.addListener(marker, 'mouseover', function() {
-                displayInfowindow(marker, title);
+        (function(marker, place) {
+            kakao.maps.event.addListener(marker, 'click', function() {
+                displayPlaceInfo(place);
             });
-
-            kakao.maps.event.addListener(marker, 'mouseout', function() {
-                infowindow.close();
-            });
-
-            itemEl.onmouseover =  function () {
-                displayInfowindow(marker, title);
-            };
-
-            itemEl.onmouseout =  function () {
-                infowindow.close();
-            };
-        })(marker, places[i].place_name);
+        })(marker, places[i]);
 
         fragment.appendChild(itemEl);
     }
 
-    // 검색결과 항목들을 검색결과 목록 Element에 추가합니다
     listEl.appendChild(fragment);
-    menuEl.scrollTop = 0;
-
-    // 검색된 장소 위치를 기준으로 지도 범위를 재설정합니다
     map.setBounds(bounds);
 }
 
-// 검색결과 항목을 Element로 반환하는 함수입니다
 function getListItem(index, places) {
-
     var el = document.createElement('li'),
-    itemStr = '<span class="markerbg marker_' + (index+1) + '"></span>' +
-                '<div class="info">' +
-                '   <h5>' + places.place_name + '</h5>';
+        itemStr = '<span class="markerbg marker_' + (index + 1) + '"></span>' +
+            '<div class="info">' +
+            '   <h5>' + places.place_name + '</h5>';
 
     if (places.road_address_name) {
         itemStr += '    <span>' + places.road_address_name + '</span>' +
-                    '   <span class="jibun gray">' +  places.address_name  + '</span>';
+            '   <span class="jibun gray">' + places.address_name + '</span>';
     } else {
-        itemStr += '    <span>' +  places.address_name  + '</span>'; 
+        itemStr += '    <span>' + places.address_name + '</span>';
     }
-                 
-      itemStr += '  <span class="tel">' + places.phone  + '</span>' +
-                '</div>';           
+
+    itemStr += '  <span class="tel">' + places.phone + '</span>' +
+        '</div>';
 
     el.innerHTML = itemStr;
     el.className = 'item';
-
     return el;
 }
 
-// 마커를 생성하고 지도 위에 마커를 표시하는 함수입니다
-function addMarker(position, idx, title) {
-    var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png', // 마커 이미지 url, 스프라이트 이미지를 씁니다
-        imageSize = new kakao.maps.Size(36, 37),  // 마커 이미지의 크기
-        imgOptions =  {
-            spriteSize : new kakao.maps.Size(36, 691), // 스프라이트 이미지의 크기
-            spriteOrigin : new kakao.maps.Point(0, (idx*46)+10), // 스프라이트 이미지 중 사용할 영역의 좌상단 좌표
-            offset: new kakao.maps.Point(13, 37) // 마커 좌표에 일치시킬 이미지 내에서의 좌표
+function addMarker(position, idx) {
+    var imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_number_blue.png',
+        imageSize = new kakao.maps.Size(36, 37),
+        imgOptions = {
+            spriteSize: new kakao.maps.Size(36, 691),
+            spriteOrigin: new kakao.maps.Point(0, (idx * 46) + 10),
+            offset: new kakao.maps.Point(13, 37)
         },
         markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imgOptions),
-            marker = new kakao.maps.Marker({
-            position: position, // 마커의 위치
-            image: markerImage 
+        marker = new kakao.maps.Marker({
+            position: position,
+            image: markerImage
         });
 
-    marker.setMap(map); // 지도 위에 마커를 표출합니다
-    markers.push(marker);  // 배열에 생성된 마커를 추가합니다
-
+    marker.setMap(map);
+    markers.push(marker);
     return marker;
 }
 
-// 지도 위에 표시되고 있는 마커를 모두 제거합니다
 function removeMarker() {
-    for ( var i = 0; i < markers.length; i++ ) {
+    for (var i = 0; i < markers.length; i++) {
         markers[i].setMap(null);
-    }   
+    }
     markers = [];
 }
 
-// 검색결과 목록 하단에 페이지번호를 표시는 함수입니다
+function displayPlaceInfo(place) {
+    var content = '<div class="placeinfo">' +
+        '   <a class="title" href="' + place.place_url + '" target="_blank" title="' + place.place_name + '">' + place.place_name + '</a>';
+
+    if (place.road_address_name) {
+        content += '    <span title="' + place.road_address_name + '">' + place.road_address_name + '</span>' +
+            '  <span class="jibun" title="' + place.address_name + '">(지번 : ' + place.address_name + ')</span>';
+    } else {
+        content += '    <span title="' + place.address_name + '">' + place.address_name + '</span>';
+    }
+
+    content += '    <span class="tel">' + place.phone + '</span>' +
+        '</div>' +
+        '<div class="after"></div>';
+
+    contentNode.innerHTML = content;
+    placeOverlay.setPosition(new kakao.maps.LatLng(place.y, place.x));
+    placeOverlay.setMap(map);
+}
+
+function addCategoryClickEvent() {
+    var category = document.getElementById('category'),
+        children = category.children;
+
+    for (var i = 0; i < children.length; i++) {
+        children[i].onclick = onClickCategory;
+    }
+}
+
+function onClickCategory() {
+    var id = this.id,
+        className = this.className;
+
+    placeOverlay.setMap(null);
+
+    if (className === 'on') {
+        currCategory = '';
+        changeCategoryClass();
+        removeMarker();
+    } else {
+        currCategory = id;
+        changeCategoryClass(this);
+        searchPlaces();
+    }
+}
+
+function changeCategoryClass(el) {
+    var category = document.getElementById('category'),
+        children = category.children,
+        i;
+
+    for (i = 0; i < children.length; i++) {
+        children[i].className = '';
+    }
+
+    if (el) {
+        el.className = 'on';
+    }
+}
+
 function displayPagination(pagination) {
     var paginationEl = document.getElementById('pagination'),
         fragment = document.createDocumentFragment(),
-        i; 
+        i;
 
-    // 기존에 추가된 페이지번호를 삭제합니다
     while (paginationEl.hasChildNodes()) {
-        paginationEl.removeChild (paginationEl.lastChild);
+        paginationEl.removeChild(paginationEl.lastChild);
     }
 
-    for (i=1; i<=pagination.last; i++) {
+    for (i = 1; i <= pagination.last; i++) {
         var el = document.createElement('a');
         el.href = "#";
         el.innerHTML = i;
 
-        if (i===pagination.current) {
+        if (i === pagination.current) {
             el.className = 'on';
         } else {
             el.onclick = (function(i) {
@@ -239,23 +283,19 @@ function displayPagination(pagination) {
     paginationEl.appendChild(fragment);
 }
 
-// 검색결과 목록 또는 마커를 클릭했을 때 호출되는 함수입니다
-// 인포윈도우에 장소명을 표시합니다
-function displayInfowindow(marker, title) {
-    var content = '<div style="padding:5px;z-index:1;">' + title + '</div>';
-
-    infowindow.setContent(content);
-    infowindow.open(map, marker);
-}
-
- // 검색결과 목록의 자식 Element를 제거하는 함수입니다
-function removeAllChildNods(el) {   
+function removeAllChildNods(el) {
     while (el.hasChildNodes()) {
-        el.removeChild (el.lastChild);
+        el.removeChild(el.lastChild);
     }
 }
-</script>
 
+kakao.maps.event.addListener(map, 'idle', function() {
+    if (!currCategory) {
+        return;
+    }
+    searchPlaces();
+});
+</script>
 <!-- 푸터 영역 포함 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
 </body>

@@ -1,0 +1,124 @@
+@charset "UTF-8";
+
+.safty-containery {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+	/* 컨테이너의 넓이 조절 */
+}
+
+.safty-containery .filter-section {
+	width: 1240px;
+	display: flex;
+	justify-content: flex-start; /* 수정된 부분 */
+	/* 필터 섹션의 넓이 조절 */
+	margin-bottom: 20px;
+	/* 필터 섹션과 그리드 사이의 간격 */
+}
+
+.safty-containery .category {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 10px 40px;
+	margin-left: 75px;
+}
+
+.safty-containery .searchBar {
+	display: flex;
+	align-items: center;
+	margin-left: 550px;
+}
+
+.safty-containery
+        .searchBar select, .searchBar input, .searchBar button {
+	margin: 0 5px;
+	padding: 10px;
+	border: 1px solid #ccc;
+	border-radius: 5px;
+}
+
+.safty-containery .searchBar button {
+	background-color: #4caf50;
+	color: white;
+	border: none;
+	cursor: pointer;
+}
+
+.safty-containery .searchBar button:hover {
+	background-color: #45a049;
+}
+
+.safty-containery .grid-container {
+	display: grid;
+	grid-template-columns: repeat(3, 1fr);
+	gap: 40px;
+	margin-bottom: 20px;
+}
+
+.safty-containery .grid-item {
+	background-color: #e0f2e9;
+	padding: 5px;
+	text-align: center;
+	height: 450px;
+	width: 333px;
+	display: flex;
+	flex-direction: column;
+	border-radius: 15px;
+}
+
+.safty-containery .grid-item .date {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.safty-containery.grid-item img {
+	margin: 5%;
+	padding: 5%;
+	/*  margin: 30px 0; */
+}
+
+.safty-containery .grid-item label {
+	border-radius: 10px;
+	padding: 10px;
+	margin: 0 30px;
+	background-color: #f9f9f9;
+	font-weight: bold;
+}
+
+.safty-containery .grid-item .info {
+	margin-top: 20px;
+	display: flex;
+	justify-content: center;
+	gap: 100px;
+}
+
+.safty-containery  .grid-item p {
+	margin: 0;
+}
+
+.safty-containery .pagination {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.safty-containery  .pagination button {
+	border-radius: 10px;
+	margin: 0 5px;
+	padding: 10px 15px;
+	border: none;
+	background-color: #e0e0e0;
+	cursor: pointer;
+}
+
+.safty-containery .pagination button.active {
+	background-color: #4caf50;
+	color: white;
+}
+
+.safty-containery .pagination button:hover {
+	background-color: #45a049;
+	color: white;
+}

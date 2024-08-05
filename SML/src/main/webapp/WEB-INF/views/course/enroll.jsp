@@ -18,7 +18,7 @@
 	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
 		<h1>수업 등록</h1>
-		<div class="course_enroll">
+		<div class="course-container">
 			<form action="/course/enroll" method="post" id="enrollForm">
 				<div class="form_section">
 					<div class="form_section_title">

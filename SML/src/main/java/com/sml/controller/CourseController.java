@@ -13,39 +13,41 @@ import com.sml.service.CourseService;
 @Controller
 @RequestMapping("/course")
 public class CourseController {
-	
-private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
-	
+
+	private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
+
 	@Autowired
 	private CourseService service;
-	
+
 	@GetMapping("/boardList")
-	public void booardListGET() throws Exception{
-		logger.info("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ã» ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½");
+	public void booardListGET() throws Exception {
+		logger.info("¼ö°­½ÅÃ» ÆäÀÌÁö ÁøÀÔ");
 	}
-	
+
 	@GetMapping("/enroll")
-	public void courseEnrollGET() throws Exception{
-		logger.info("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½");
+	public void courseEnrollGET() throws Exception {
+		logger.info("¼ö¾÷ µî·Ï ÆäÀÌÁö ÁøÀÔ");
 	}
+
 	@PostMapping("/enroll")
-	public String enrollPOST() throws Exception{
+	public String enrollPOST() throws Exception {
 		return "redirect:/course/boardList";
 	}
-	
+
 	@GetMapping("/modify")
-	   public void modifyGET() throws Exception{
-		   logger.info("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
-	   }
-	   @PostMapping("/modify")
-	   public String modifyPOST() throws Exception{
-		   //ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½ï¿½ return - ï¿½Ù²Ù±ï¿½ 
-		   return "redirect:/course/boardList";
-	   }
-	   
-	   @PostMapping("/delete")
-	   public String deletePOST() throws Exception{
-		   return "redirect:/course/boardList";
-	   }
+	public void modifyGET() throws Exception {
+		logger.info("¼ö¾÷ ¼öÁ¤ ÆäÀÌÁö ÁøÀÔ");
+	}
+
+	@PostMapping("/modify")
+	public String modifyPOST() throws Exception {
+		// ÇØ´ç »ó¼¼ ÆäÀÌÁö·Î ¸®ÅÏÇÒ ¼ö ÀÖ³ª..?
+		return "redirect:/course/boardList";
+	}
+
+	@PostMapping("/delete")
+	public String deletePOST() throws Exception {
+		return "redirect:/course/boardList";
+	}
 
 }

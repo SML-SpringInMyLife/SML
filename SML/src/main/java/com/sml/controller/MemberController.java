@@ -21,42 +21,42 @@ public class MemberController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
-  //MemberServiceê°€ MemberControllerì— ìë™ì£¼ì…ë˜ë„ë¡ ì½”ë“œì¶”ê°€
+  //MemberService°¡ MemberController¿¡ ÀÚµ¿ÁÖÀÔµÇµµ·Ï ÄÚµåÃß°¡
     @Autowired
     private MemberService memberService;
     
-  //íšŒì›ê°€ì… í˜ì´ì§€ ì´ë™  		
+  //È¸¿ø°¡ÀÔ ÆäÀÌÁö ÀÌµ¿  		
   	@GetMapping("join")
   	public void joinGET() {
-  		logger.info("íšŒì›ê°€ì… í˜ì´ì§€ ì§„ì…");
+  		logger.info("È¸¿ø°¡ÀÔ ÆäÀÌÁö ÁøÀÔ");
   	}		
   	
-  //ë¡œê·¸ì¸ í˜ì´ì§€ ì´ë™
+  //·Î±×ÀÎ ÆäÀÌÁö ÀÌµ¿
   	@GetMapping("login")
   	public void loginGET() {
-  		logger.info("ë¡œê·¸ì¸ í˜ì´ì§€ ì§„ì…");
+  		logger.info("·Î±×ÀÎ ÆäÀÌÁö ÁøÀÔ");
   	}
   	
-  //íšŒì›ê°€ì…
+  //È¸¿ø°¡ÀÔ
   	@PostMapping("/join")
   	public String joinPOST(MemberVO member) throws Exception{
   		
-  		logger.info("íšŒì›ê°€ì… ì§„ì…");
+  		logger.info("È¸¿ø°¡ÀÔ ÁøÀÔ");
   		
-  		//íšŒì›ê°€ì… ì„œë¹„ìŠ¤ ì‹¤í–‰
+  		//È¸¿ø°¡ÀÔ ¼­ºñ½º ½ÇÇà
   		memberService.MemberJoin(member);
   		
-  		logger.info("ë¡œê·¸ì¸ ì„œë¹„ìŠ¤ ì„±ê³µ");
+  		logger.info("·Î±×ÀÎ ¼­ºñ½º ¼º°ø");
   		
   		return "redirect:/";
   	}
 
-  	/* ë¡œê·¸ì¸ */
+  	/* ·Î±×ÀÎ */
     @RequestMapping("/login")
     public String loginPOST(HttpServletRequest request, MemberVO member, RedirectAttributes rttr) throws Exception{
         
-        System.out.println("login ë©”ì„œë“œ ì§„ì…");
-        System.out.println("ì „ë‹¬ëœ ë°ì´í„° : " + member);
+        System.out.println("login ¸Ş¼­µå ÁøÀÔ");
+        System.out.println("Àü´ŞµÈ µ¥ÀÌÅÍ : " + member);
     	
     	 HttpSession session = request.getSession();
     	 
@@ -64,14 +64,14 @@ public class MemberController {
     	 
     	 System.out.println("111 : " + lvo);
     	 
-    	 if(lvo == null) {                    // ì¼ì¹˜í•˜ì§€ ì•ŠëŠ” ì•„ì´ë””, ë¹„ë°€ë²ˆí˜¸ ì…ë ¥ ê²½ìš°
+    	 if(lvo == null) {                    // ÀÏÄ¡ÇÏÁö ¾Ê´Â ¾ÆÀÌµğ, ºñ¹Ğ¹øÈ£ ÀÔ·Â °æ¿ì
              
              int result = 0;
              rttr.addFlashAttribute("result", result);
              return "redirect:/member/login";             
          }
          
-         session.setAttribute("member", lvo);    // ì¼ì¹˜í•˜ëŠ” ì•„ì´ë””, ë¹„ë°€ë²ˆí˜¸ ê²½ìš° (ë¡œê·¸ì¸ ì„±ê³µ)
+         session.setAttribute("member", lvo);    // ÀÏÄ¡ÇÏ´Â ¾ÆÀÌµğ, ºñ¹Ğ¹øÈ£ °æ¿ì (·Î±×ÀÎ ¼º°ø)
          
          return "redirect:/";        
         

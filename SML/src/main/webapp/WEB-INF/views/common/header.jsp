@@ -27,28 +27,45 @@
 		</button>
 	</div>
 
-
 	<header>
 		<div class="container">
-			<a href="/" class="main-link"> <img
-				src="${webappRoot}/resources/images/logo.jpg" alt="Logo"
-				class="logo">
-			</a>
-			<nav class="main-menu" id="main-menu">
-				<ul>
-					<li><a href="/notice/list">공지사항</a></li>
-					<li><a href="/life/list">생활정보</a></li>
-					<li><a href="/location/map">위치찾기</a></li>
-					<li><a href="/course/boardList">취미교실</a></li>
-					<li><a href="/community/boardList">커뮤니티</a></li>
-				</ul>
-			</nav>
+			<div class="left-menu">
+				<a href="/" class="main-link"> <img
+					src="${webappRoot}/resources/images/logo.jpg" alt="Logo"
+					class="logo">
+				</a>
+				<nav class="main-menu" id="main-menu">
+					<ul>
+						<li><a href="/notice/list">공지사항</a></li>
+						<li><a href="/life/list">생활정보</a></li>
+						<li><a href="/location/map">위치찾기</a></li>
+						<li><a href="/course/boardList">취미교실</a></li>
+						<li><a href="/community/boardList">커뮤니티</a></li>
+					</ul>
+				</nav>
+			</div>
 			<nav class="auth-menu" id="auth-menu">
-				<ul>
-					<li><a href="/member/login">로그인</a></li>
-					<li><a href="/member/join">회원가입</a></li>
-				</ul>
-			</nav>
+					<ul>
+						<c:choose>
+							<c:when test="${not empty sessionScope.member}">
+								<li><span class="welcome">${sessionScope.member.memName} 님</span></li>
+								<c:choose>
+									<c:when test="${sessionScope.member.memAdminCheck == 1}">
+										<li><a href="/admin/main">관리자페이지</a></li>
+									</c:when>
+									<c:otherwise>
+										<li><a href="/member/mypage">마이페이지</a></li>
+									</c:otherwise>
+								</c:choose>
+								<li><a href="/member/logout">로그아웃</a></li>
+							</c:when>
+							<c:otherwise>
+								<li><a href="/member/login">로그인</a></li>
+								<li><a href="/member/join">회원가입</a></li>
+							</c:otherwise>
+						</c:choose>
+					</ul>
+				</nav>
 			<button class="hamburger" id="hamburger">&#9776;</button>
 			<div class="mobile-menu" id="mobile-menu">
 				<ul>
@@ -57,9 +74,24 @@
 					<li><a href="/location/map">위치찾기</a></li>
 					<li><a href="/course/boardList">취미교실</a></li>
 					<li><a href="/community/boardList">커뮤니티</a></li>
-					<p>----------------</p>
-					<li><a href="/member/login">로그인</a></li>
-					<li><a href="/member/join">회원가입</a></li>
+					<hr>
+					<c:choose>
+						<c:when test="${not empty sessionScope.member}">
+							<c:choose>
+								<c:when test="${sessionScope.member.memAdminCheck == 1}">
+									<li><a href="/admin/main">관리자페이지</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="/member/mypage">마이페이지</a></li>
+								</c:otherwise>
+							</c:choose>
+							<li><a href="/member/logout">로그아웃</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="/member/login">로그인</a></li>
+							<li><a href="/member/join">회원가입</a></li>
+						</c:otherwise>
+					</c:choose>
 				</ul>
 			</div>
 		</div>

@@ -2,11 +2,23 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.sml.mapper.CourseMapper">
-  
-  	<insert id="enroll">
-  	
-  	</insert>
-  	
-  </mapper>
+
+<mapper namespace="com.sml.mapper.CourseMapper">
+
+	<insert id="courseEnroll">
+    	INSERT INTO COURSE (CCAT_CODE, COURSE_NAME, COURSE_CONTENT, COURSE_LIMIT, COURSE_START_DATE, COURSE_END_DATE, TEA_CODE, COURSE_START_TIME, COURSE_END_TIME, COURSE_DAY) VALUES (
+        	#{ccatCode},
+        	#{courseName},
+        	#{courseContent},
+        	#{courseLimit},
+        	#{startDate},
+        	#{endDate},
+        	#{teacherCode},
+        	#{startTime},
+        	#{endTime},
+        	#{courseDay}
+    	)
+	</insert>
+
+
+</mapper>

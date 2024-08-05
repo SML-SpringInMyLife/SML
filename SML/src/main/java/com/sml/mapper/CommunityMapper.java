@@ -11,7 +11,7 @@ public interface CommunityMapper {
 	
 	public void communityEnroll (CommunityVO community);
 	
-	// public CommunityVO boardDetail (int commCode);
+	public CommunityVO communityDetail (int commCode);
 	
 	// modify
 	

@@ -1,9 +1,10 @@
 @charset "UTF-8";
 
-.notice-container{
-margin: 6%;
-  padding: 6%;
+.notice-container {
+	margin: 6%;
+	padding: 6%;
 }
+
 .notice-search {
 	margin: 0 auto;
 	margin-bottom: 50px;
@@ -11,30 +12,27 @@ margin: 6%;
 	padding: 20px;
 	border-radius: 10px;
 	background-color: #f9f9f9;
-	text-align : center;
+	text-align: center;
 }
 
-h1 {
+.notice-container h1 {
 	color: #6BAE73;
 }
 
-.search-box {
-
+.notice-container .search-box {
 	display: flex;
 	justify-content: center;
 	margin-bottom: 20px;
-	
 }
 
-.search-box select,.search-box input{
+.notice-container .search-box select, .search-box input {
 	margin: 0 5px;
 	padding: 5px 50px;
 	border: 1px solid #ccc;
 	border-radius: 5px;
-
 }
 
-.search-box button {
+.notice-container .search-box button {
 	margin: 0 5px;
 	padding: 5px 50px;
 	border: 1px solid #ccc;
@@ -42,46 +40,43 @@ h1 {
 	background-color: #6BAE7390;
 }
 
-.category{
-display: flex;
-	justify-content: right;
+.notice-container .category {
+	display: flex;
+	justify-content: flex-end;
 }
-.category select {
-border: 1px solid #ccc;
+
+.notice-container .category select {
+	border: 1px solid #ccc;
 	border-radius: 5px;
-  padding: 10px 40px;
-	
+	padding: 10px 40px;
 	margin-bottom: 15px;
 }
 
-
-table {
+.notice-container table {
 	width: 100%;
 	border-collapse: collapse;
 	margin-bottom: 20px;
 }
 
-table, th, td {
+.notice-container table, th, td {
 	border: 1px solid #ccc;
 }
 
-th, td {
+.notice-container th, td {
 	padding: 10px;
 	text-align: center;
-
 }
 
-th {
+.notice-container th {
 	background-color: #f1f1f1;
 }
 
-.button-container {
-	 display: flex; 
-	justify-content: right;
-
+.notice-container .button-container {
+	display: flex;
+	justify-content: flex-end;
 }
 
-.button-container button {
+.notice-container .button-container button {
 	padding: 10px 40px;
 	margin: 0 5px;
 	border: 1px solid #ccc;
@@ -89,25 +84,29 @@ th {
 	background-color: #6BAE73;
 	color: white;
 	cursor: pointer;
-	
 }
 
-.pagination{
-   
+.pagination {
 	display: flex;
 	justify-content: center;
-	margin: 100px;
+	align-items: center;
 }
 
-.pagination button {
-	padding: 10px 15px;
+ .pagination button {
+	border-radius: 10px;
 	margin: 0 5px;
-	border: 1px solid #ccc;
-	border-radius: 5px;
+	padding: 10px 15px;
+	border: none;
+	background-color: #e0e0e0;
 	cursor: pointer;
-	background-color: #6BAE73;
-	color: black;
 }
-.pagination button:focus{
-   color:white;
-} 
+
+.pagination button.active {
+	background-color: #4caf50;
+	color: white;
+}
+
+ .pagination button:hover {
+	background-color: #45a049;
+	color: white;
+}

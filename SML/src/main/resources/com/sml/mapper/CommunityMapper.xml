@@ -6,36 +6,38 @@
   <mapper namespace="com.sml.mapper.CommunityMapper">
   
   	<insert id="communityEnroll">
-  		INSERT INTO COMMUNITY(COMM_TITLE, COMM_CONTENT, MEM_CODE) VALUES(
+  		INSERT INTO COMMUNITY(COMM_TITLE, COMM_CONTENT, COMM_WRITER) VALUES(
   			#{commTitle},
   			#{commContent},
-  			#{memberCode}
+  			#{commWriter.memCode}
   		)
   	</insert>
   	
   	<select id="getBoardList" resultType="com.sml.model.CommunityVO">
-  		<!-- SELECT COMM_CODE, COMM_TITLE, MEM_CODE, COMM_ENROLL_DATE, COMM_COUNT FROM COMMUNITY WHERE COMM_STATUS='N' -->
-  		<!-- <![CDATA[
-  			SELECT COMM_CODE, COMM_TITLE, MEM_CODE, COMM_ENROLL_DATE, COMM_COUNT FROM (
-  				SELECT /*+INDEX_DESC(COMMUNITY COMM_CODE) */ 
-  					ROWNUM AS 
-  				FROM COMMUNITY
-  				WHERE COMM_STATUS = 'N'
-  		]]>
-  		<if test="keyword != null">
-  			AND COMM_TITLE LIKE '%'||#{keyword}||'%' AND
-  		</if>
-  		<![CDATA[
-  				ROWNUM <= #{pageNum}*#{amount}
-  				)
-        	WHERE rn > (#{pageNum} - 1) * #{amount}
-  		]]> -->
-  		
-  		
-  		SELECT * FROM COMMUNITY
+  		SELECT 
+        	c.COMM_CODE as commCode, 
+        	c.COMM_TITLE as commTitle,     
+        	c.COMM_ENROLL_DATE as enrollDate, 
+        	c.COMM_COUNT as commCount,  
+        	m.MEM_NAME as commWriter
+    	FROM COMMUNITY c
+    	JOIN TB_MEMBER m 
+    		ON c.COMM_WRITER = m.MEM_CODE
+    	WHERE c.COMM_STATUS = 'N'
   	</select>
   	
-  	<select id="board">
+  	<select id="communityDetail" resultType="com.sml.model.CommunityVO">
+  		SELECT 
+  			c.COMM_CODE AS commCode,
+  			c.COMM_TITLE AS commTitle,
+  			m.MEM_NAME as commWriter,
+  			c.COMM_CONTENT AS commContent,
+  			c.COMM_ENROLL_DATE AS enrollDate,
+  			c.COMM_MODIFY_DATE AS modifyDate
+  		 FROM COMMUNITY c
+  		 JOIN TB_MEMBER m
+  		 	ON c.COMM_WRITER = m.MEM_CODE
+  		 WHERE COMM_CODE = #{commCode}
   	</select>
   	
   	<update id="modify">
