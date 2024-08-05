@@ -8,11 +8,7 @@ import lombok.Data;
 
 @Data
 public class MemberVO {
-<<<<<<< HEAD
-	//회원가입 입력사항 : 아이디,비밀번호,이름,메일,연락처,비상연락처,주소,생년월일
-=======
 	
->>>>>>> member
 	private int memCode;
 	private String memId;
 	private String memPw;

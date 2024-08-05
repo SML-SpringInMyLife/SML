@@ -29,13 +29,10 @@ public class MemberController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MemberController.class);
 	
-  //MemberService°¡ MemberController¿¡ ÀÚµ¿ÁÖÀÔµÇµµ·Ï ÄÚµåÃß°¡
+  //MemberServiceê°€ MemberControllerì— ìë™ì£¼ì…ë˜ë„ë¡ ì½”ë“œì¶”ê°€
     @Autowired
     private MemberService memberService;
     
-<<<<<<< HEAD
-  //È¸¿ø°¡ÀÔ ÆäÀÌÁö ÀÌµ¿  		
-=======
     @Autowired
     private JavaMailSender mailSender;
     
@@ -43,25 +40,21 @@ public class MemberController {
     private BCryptPasswordEncoder pwEncoder;
     
   //íšŒì›ê°€ì… í˜ì´ì§€ ì´ë™  		
->>>>>>> member
   	@GetMapping("join")
   	public void joinGET() {
-  		logger.info("È¸¿ø°¡ÀÔ ÆäÀÌÁö ÁøÀÔ");
+  		logger.info("íšŒì›ê°€ì… í˜ì´ì§€ ì§„ì…");
   	}		
   	
-  //·Î±×ÀÎ ÆäÀÌÁö ÀÌµ¿
+  //ë¡œê·¸ì¸ í˜ì´ì§€ ì´ë™
   	@GetMapping("login")
   	public void loginGET() {
-  		logger.info("·Î±×ÀÎ ÆäÀÌÁö ÁøÀÔ");
+  		logger.info("ë¡œê·¸ì¸ í˜ì´ì§€ ì§„ì…");
   	}
   	
-  //È¸¿ø°¡ÀÔ
+  //íšŒì›ê°€ì…
   	@PostMapping("/join")
   	public String joinPOST(MemberVO member) throws Exception{
   		
-<<<<<<< HEAD
-  		logger.info("È¸¿ø°¡ÀÔ ÁøÀÔ");
-=======
   		logger.info("íšŒì›ê°€ì… ì§„ì…");
   		System.out.println("íšŒì›ê°€ì… ë°ì´í„° : " + member);
   		
@@ -77,24 +70,14 @@ public class MemberController {
   			member.setMemJoinDate(now);
   			member.setMemQuitDate(now);
   		}
->>>>>>> member
   		
-  		//È¸¿ø°¡ÀÔ ¼­ºñ½º ½ÇÇà
+  		//íšŒì›ê°€ì… ì„œë¹„ìŠ¤ ì‹¤í–‰
   		memberService.MemberJoin(member);
   		
-  		logger.info("·Î±×ÀÎ ¼­ºñ½º ¼º°ø");
+  		logger.info("ë¡œê·¸ì¸ ì„œë¹„ìŠ¤ ì„±ê³µ");
   		
   		return "redirect:/";
   	}
-<<<<<<< HEAD
-
-  	/* ·Î±×ÀÎ */
-    @RequestMapping("/login")
-    public String loginPOST(HttpServletRequest request, MemberVO member, RedirectAttributes rttr) throws Exception{
-        
-        System.out.println("login ¸Ş¼­µå ÁøÀÔ");
-        System.out.println("Àü´ŞµÈ µ¥ÀÌÅÍ : " + member);
-=======
   	
   //ì•„ì´ë”” ì¤‘ë³µ ê²€ì‚¬
   	@PostMapping("/memberIdChk")
@@ -155,9 +138,8 @@ public class MemberController {
     @RequestMapping("/login")
     public String loginPOST(HttpServletRequest request, MemberVO member, RedirectAttributes rttr) throws Exception{
         
-        //System.out.println("login ë©”ì„œë“œ ì§„ì…");
-        //System.out.println("ì „ë‹¬ëœ ë°ì´í„° : " + member);
->>>>>>> member
+        System.out.println("login ë©”ì„œë“œ ì§„ì…");
+        System.out.println("ì „ë‹¬ëœ ë°ì´í„° : " + member);
     	
     	HttpSession session = request.getSession();
     	String rawPw = "";
@@ -168,18 +150,6 @@ public class MemberController {
     	 
     	 System.out.println("111 : " + lvo);
     	 
-<<<<<<< HEAD
-    	 if(lvo == null) {                    // ÀÏÄ¡ÇÏÁö ¾Ê´Â ¾ÆÀÌµğ, ºñ¹Ğ¹øÈ£ ÀÔ·Â °æ¿ì
-             
-             int result = 0;
-             rttr.addFlashAttribute("result", result);
-             return "redirect:/member/login";             
-         }
-         
-         session.setAttribute("member", lvo);    // ÀÏÄ¡ÇÏ´Â ¾ÆÀÌµğ, ºñ¹Ğ¹øÈ£ °æ¿ì (·Î±×ÀÎ ¼º°ø)
-         
-         return "redirect:/";        
-=======
     	    	 
     	 if(lvo != null) {
     		 rawPw = member.getMemPw();
@@ -208,7 +178,6 @@ public class MemberController {
     	System.out.println("ë¡œê·¸ì•„ì›ƒ ë©”ì„œë“œ ì§„ì…");    	
     	
         HttpSession session = request.getSession(false);
->>>>>>> member
         
         if (session != null) {
             session.invalidate();

@@ -30,25 +30,25 @@ public class AdminController {
 	 * @Autowired private AdminService service;
 	 */
 
-	/* °ü¸®ÀÚ ¸ŞÀÎ ÆäÀÌÁö ÀÌµ¿ */
+	/* ê´€ë¦¬ì ë©”ì¸ í˜ì´ì§€ ì´ë™ */
 	@GetMapping(value = "main")
 	public void adminMainGET() throws Exception {
 
-		logger.info("°ü¸®ÀÚ ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ê´€ë¦¬ì í˜ì´ì§€ ì´ë™");
 
 	}
 
 	@GetMapping(value = "courses")
 	public void adminCoursesGET() throws Exception {
 
-		logger.info("°ü¸®ÀÚ - ¼ö°­½ÅÃ»°ü¸® ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ê´€ë¦¬ì - ìˆ˜ê°•ì‹ ì²­ê´€ë¦¬ í˜ì´ì§€ ì´ë™");
 
 	}
 
 	@GetMapping(value = "members")
 	public void adminMembersGET() throws Exception {
 
-		logger.info("°ü¸®ÀÚ - È¸¿ø°ü¸®ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ê´€ë¦¬ì - íšŒì›ê´€ë¦¬í˜ì´ì§€ ì´ë™");
 
 		/*
 		 * List<MemberVO> list = service.getMemberList(); if (!list.isEmpty()) {
@@ -61,37 +61,37 @@ public class AdminController {
 	@GetMapping(value = "edit")
 	public void adminEditGET() throws Exception {
 
-		logger.info("°ü¸®ÀÚ - Á¤º¸¼öÁ¤ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ê´€ë¦¬ì - ì •ë³´ìˆ˜ì •í˜ì´ì§€ ì´ë™");
 
 	}
 
 	@GetMapping(value = "sms")
 	public void adminSmsGET() throws Exception {
 
-		logger.info("°ü¸®ÀÚ - ¹®ÀÚ°ü¸®ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ê´€ë¦¬ì - ë¬¸ìê´€ë¦¬í˜ì´ì§€ ì´ë™");
 
 	}
 
 	@PostMapping(value = "sms/sendSms.do")
 	public String sendSms(HttpServletRequest request) throws Exception {
 
-		// API Key¿Í Secret Key¸¦ ÀÔ·Â (Coolsms¿¡¼­ ¹ß±Ş¹ŞÀº °ª)
+		// API Keyì™€ Secret Keyë¥¼ ì…ë ¥ (Coolsmsì—ì„œ ë°œê¸‰ë°›ì€ ê°’)
 		String api_key = "";
 		String api_secret = "";
 		Message coolsms = new Message(api_key, api_secret);
 
-		// SMS Àü¼ÛÀ» À§ÇÑ ÆÄ¶ó¹ÌÅÍ ¼³Á¤
+		// SMS ì „ì†¡ì„ ìœ„í•œ íŒŒë¼ë¯¸í„° ì„¤ì •
 		HashMap<String, String> set = new HashMap<>();
-		set.put("to", request.getParameter("recipientNumber")); // ¼ö½Å¹øÈ£
-		set.put("from", request.getParameter("senderNumber")); // ¹ß½Å¹øÈ£
-		set.put("text", request.getParameter("smsContent")); // ¹®ÀÚ ³»¿ë
-		set.put("type", "sms"); // ¹®ÀÚ Å¸ÀÔ
-		set.put("app_version", "test app 1.2"); // ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ¹öÀü
+		set.put("to", request.getParameter("recipientNumber")); // ìˆ˜ì‹ ë²ˆí˜¸
+		set.put("from", request.getParameter("senderNumber")); // ë°œì‹ ë²ˆí˜¸
+		set.put("text", request.getParameter("smsContent")); // ë¬¸ì ë‚´ìš©
+		set.put("type", "sms"); // ë¬¸ì íƒ€ì…
+		set.put("app_version", "test app 1.2"); // ì• í”Œë¦¬ì¼€ì´ì…˜ ë²„ì „
 
 		System.out.println(set);
 
 		try {
-			// SMS Àü¼Û ¹× °á°ú ¹Ş±â
+			// SMS ì „ì†¡ ë° ê²°ê³¼ ë°›ê¸°
 			JSONObject result = coolsms.send(set);
 			System.out.println(result.toString());
 		} catch (CoolsmsException e) {
@@ -99,21 +99,21 @@ public class AdminController {
 			System.out.println("Error Code: " + e.getCode());
 		}
 
-		// SMS Àü¼Û ÈÄ ÀÀ´ä ÆäÀÌÁö·Î ÀÌµ¿
-		return "admin/sms"; // SMS Àü¼Û °á°ú ÆäÀÌÁö
+		// SMS ì „ì†¡ í›„ ì‘ë‹µ í˜ì´ì§€ë¡œ ì´ë™
+		return "admin/sms"; // SMS ì „ì†¡ ê²°ê³¼ í˜ì´ì§€
 	}
 
 	@GetMapping(value = "chat")
 	public void adminChatGET() throws Exception {
 
-		logger.info("°ü¸®ÀÚ - Ã¤ÆÃ»ó´ã°ü¸®ÆäÀÌÁö ÀÌµ¿");
+		logger.info("ê´€ë¦¬ì - ì±„íŒ…ìƒë‹´ê´€ë¦¬í˜ì´ì§€ ì´ë™");
 
 	}
 
 	@GetMapping(value = "login")
 	public void adminLoginGET() throws Exception {
 
-		logger.info("·Î±×ÀÎÆäÀÌÁö ÀÌµ¿");
+		logger.info("ë¡œê·¸ì¸í˜ì´ì§€ ì´ë™");
 
 	}
 }
