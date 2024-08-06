@@ -46,6 +46,12 @@ public class CommunityServiceImpl implements CommunityService{
 		return mapper.communityModify(community);
 	}
 
+	@Override
+	public int communityDelete(int commCode) {
+		log.info("Delete......");
+		return mapper.communityDelete(commCode);
+	}
+
 	
 
 	

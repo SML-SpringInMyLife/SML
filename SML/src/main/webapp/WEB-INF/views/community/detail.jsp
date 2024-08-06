@@ -159,11 +159,18 @@
 		
 		// delete 버튼
 		$("deleteBtn").on("click", function(e){
-			e.preventDefault();
+			alert("삭제 버튼");
+			/* e.preventDefault();
+			moveForm.find("input").remove();
+			moveForm.append('<input type="hidden" name="commCode" value="${communityDetail.commCode}">');
+			moveForm.attr("action", "/community/delete");
+			moveForm.attr("method", "post");
+			moveForm.submit(); */
 		});
 
 		// 목록으로 이동 버튼
 		$("#BoardListBtn").on("click", function(e){
+			alert("없어져라!");
 			e.preventDefault();
 		
 			$("input[name=commCode]").remove();

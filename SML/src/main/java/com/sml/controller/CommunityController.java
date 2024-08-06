@@ -74,7 +74,19 @@ public class CommunityController {
    }
    
    @PostMapping("/delete")
-   public String deletePOST() throws Exception{
+   public String deletePOST(int commCode, RedirectAttributes rttr) throws Exception{
+	   logger.info("deletePOST......");
+	   int result = 0;
+	   try {
+		   result = service.communityDelete(commCode);
+	   } catch (Exception e) {
+		   e.printStackTrace();
+		   result = 2;
+		   rttr.addFlashAttribute("delete_result", result);
+		   return "redirect:/community/boardList";
+	   }
+	   
+	   rttr.addFlashAttribute("delete_result", result);
 	   return "redirect:/community/boardList";
    }
 

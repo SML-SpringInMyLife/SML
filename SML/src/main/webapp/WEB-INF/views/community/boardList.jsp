@@ -192,7 +192,7 @@
 			let mresult = '<c:out value="${modify_result}"/>';
 			
 			checkResult(result);
-			chekcmResult(mresult);
+			checkmResult(mresult);
 			
 			function checkResult(result){
 				if(result === ''){
@@ -207,6 +207,12 @@
 				} else if(mresult === '0'){
 					alert("게시글 수정에 실패했습니다.")
 				}
+			}
+			let dresult = '${delete_result}';
+			if(dresult == 1){
+				alert("삭제 완료");
+			} else if(delete_result == 2){
+				alert("삭제할 수 없습니다.")
 			}
 		});
 		
