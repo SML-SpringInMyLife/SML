@@ -6,10 +6,10 @@
 <meta charset="UTF-8">
 <title>공지사항 상세조회페이지</title>
 
+<!-- common.css 로드 -->
+<link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 
-<!-- enroll.css 로드 -->
-<link rel="stylesheet"
-	href="../resources/css/notice/detail.css">
+<link rel="stylesheet" href="${webappRoot}/resources/css/notice/detail.css">
 	
 </head>
 <body>
