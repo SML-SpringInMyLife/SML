@@ -7,6 +7,9 @@
 <title>게시글 상세 페이지</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 <link rel="stylesheet" href="../resources/css/community/community.css">
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script	src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <style>
         /* 게시글 상세 내용 스타일 */
         .community-container {
@@ -140,8 +143,17 @@
 					<button id="BoardListBtn" class="btn">목록</button>
 					<button id="modifyBtn" class="btn">수정</button>
 				</div>
-			</div>	
-		</div>
+			</div>
+			<div class="community-reply">
+				<h3>댓글</h3>
+				<form id="reply">
+					<textarea id="replyContent" name="content" rows="4" cols="50" placeholder="댓글을 입력하세요..."></textarea>
+        			<button type="button" id="submitReply" class="btn">댓글 등록</button>
+    			</form>
+   					<div id="replyList">
+        				<!-- 댓글 목록이 여기에 표시됩니다 -->
+    				</div>
+			</div>
 		
 		<form id="moveForm" method="get">
         	<input type="hidden" name="commCode" value='<c:out value="${communityDetail.commCode }"/>'>
@@ -184,6 +196,68 @@
 			moveForm.attr("action", "/community/modify");
 			moveForm.submit();
 		});
+		$(document).ready(function() {
+	        // 댓글 등록 버튼 클릭 이벤트
+	        $("#submitReply").on("click", function(e) {
+	            e.preventDefault();
+	            
+	            // 댓글 내용
+	            let replyContent = $("#replyContent").val();
+	            
+	            // 댓글 내용이 비어있지 않은지 확인
+	            if ($.trim(replyContent) === "") {
+	                alert("댓글 내용을 입력하세요.");
+	                return;
+	            }
+	            
+	            $.ajax({
+	                url: '/reply/enroll',
+	                type: 'POST',
+	                contentType: 'application/json; charset=utf-8',
+	                data: JSON.stringify({
+	                    commCode: $('input[name="commCode"]').val(),
+	                    content: replyContent
+	                }),
+	                success: function(response) {
+	                    // 댓글이 성공적으로 등록되면 댓글 목록을 업데이트
+	                    loadReplies();
+	                },
+	                error: function(xhr, status, error) {
+	                    alert("댓글 등록 실패: " + error);
+	                }
+	            });
+	        });
+
+	        // 댓글 목록을 로드하는 함수
+	        function loadReplies() {
+	            $.ajax({
+	                url: '/reply/list',
+	                type: 'GET',
+	                data: { commCode: $('input[name="commCode"]').val() },
+	                success: function(response) {
+	                    let replyList = $("#replyList");
+	                    replyList.empty();
+	                    
+	                    // 댓글 목록을 동적으로 생성
+	                    $.each(response.replies, function(index, reply) {
+	                        replyList.append(`
+	                            <div class="reply-item">
+	                                <p>${reply.content}</p>
+	                                <small>작성일: ${reply.date}</small>
+	                            </div>
+	                        `);
+	                    });
+	                },
+	                error: function(xhr, status, error) {
+	                    alert("댓글 목록 로드 실패: " + error);
+	                }
+	            });
+	        }
+
+	        // 페이지 로드 시 댓글 목록을 로드
+	        loadReplies();
+	    });
+		
 	</script>
 </body>
 </html>
