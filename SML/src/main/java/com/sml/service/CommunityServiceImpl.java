@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.sml.mapper.CommunityMapper;
 import com.sml.model.CommunityVO;
+import com.sml.model.Criteria;
 
 import lombok.extern.log4j.Log4j;
 
@@ -15,23 +16,43 @@ import lombok.extern.log4j.Log4j;
 public class CommunityServiceImpl implements CommunityService{
 
 	@Autowired
-	CommunityMapper communityMapper;
+	CommunityMapper mapper;
 
 	@Override
 	public void communityEnroll(CommunityVO community) throws Exception {
-		communityMapper.communityEnroll(community);
-		
+		mapper.communityEnroll(community);
 	}
 
 	@Override
-	public List<CommunityVO> getBoardList() throws Exception {
-		return communityMapper.getBoardList();
+	public List<CommunityVO> getBoardList(Criteria cri) throws Exception {
+		log.info("(service)getBoardList()......." +cri);
+		return mapper.getBoardList(cri);
+	}
+	@Override
+	public int communityGetTotal(Criteria cri) throws Exception {
+		log.info("(service)communityGetTotal()......" +cri);
+		return mapper.communityGetTotal(cri);
 	}
 
 	@Override
 	public CommunityVO communityDetail(int commCode) throws Exception {
-		return communityMapper.communityDetail(commCode);
+		log.info("상세 페이지 접속......" +commCode);
+		return mapper.communityDetail(commCode);
 	}
+
+	@Override
+	public int communityModify(CommunityVO community) throws Exception {
+		log.info("(service) modify....." +community);
+		return mapper.communityModify(community);
+	}
+
+	@Override
+	public int communityDelete(int commCode) {
+		log.info("Delete......");
+		return mapper.communityDelete(commCode);
+	}
+
+	
 
 	
 }

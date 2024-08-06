@@ -9,7 +9,6 @@ public class CourseVO {
 	
 	private int courseCode;
 	private int ccatCode;
-	// 카테고리 이름...?
 	private String ccatName;
 	private String courseName;
 	private String courseContent;

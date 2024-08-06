@@ -2,6 +2,7 @@ package com.sml.controller;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,6 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sml.model.MemberVO;
 import com.sml.service.AdminService;
@@ -26,35 +30,89 @@ import net.nurigo.java_sdk.exceptions.CoolsmsException;
 public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
-	/*
-	 * @Autowired private AdminService service;
-	 */
+	@Autowired
+	private AdminService service;
 
 	/* 관리자 메인 페이지 이동 */
 	@GetMapping(value = "main")
-	public void adminMainGET() throws Exception {
-
+	public void adminMainGET(Model model) throws Exception {
 		logger.info("관리자 페이지 이동");
 
+		int memberCnt = service.getMemberCnt();
+		model.addAttribute("memberCnt", memberCnt);
+
+		Map<String, Integer> ageGroupCnt = service.getAgeGroupCnt();
+		model.addAttribute("ageGroupCnt", ageGroupCnt);
+
+		// 기본 연도에 대한 차트 데이터 추가
+		String year = "2024"; // 기본 연도
+		Map<String, int[]> chartData = service.getAgeGroupCountsByMonth(year);
+		// 데이터 출력
+		for (Map.Entry<String, int[]> entry : chartData.entrySet()) {
+			String key = entry.getKey();
+			int[] values = entry.getValue();
+			logger.info("키: " + key + ", 값: " + arrayToString(values));
+		}
+		model.addAttribute("chartData", chartData);
+
+		if (memberCnt <= 0) {
+			model.addAttribute("cntCheck", "empty");
+		}
+	}
+	// 배열을 문자열로 변환하는 유틸리티 메소드
+	private String arrayToString(int[] array) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (int i = 0; i < array.length; i++) {
+			sb.append(array[i]);
+			if (i < array.length - 1) {
+				sb.append(", ");
+			}
+		}
+		sb.append("]");
+		return sb.toString();
+	}
+
+	@GetMapping(value = "getDataForYear")
+	@ResponseBody
+	public Map<String, int[]> getDataForYear(@RequestParam("year") String year) throws Exception {
+		logger.info("선택 년도 : " + year);
+		return service.getAgeGroupCountsByMonth(year);
+	}
+
+	@GetMapping(value = "members")
+	public void adminMembersGET(Model model) throws Exception {
+
+		logger.info("관리자 - 회원관리페이지 이동");
+		List<MemberVO> members = service.getMemberList();
+
+		if (!members.isEmpty()) {
+			model.addAttribute("members", members);
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
+
+	}
+
+	@PostMapping(value = "updateStatus")
+	public String updateStatus(@RequestParam int memCode, @RequestParam int memStatus, RedirectAttributes rttr) {
+		logger.info("상태 업데이트 멤버Code: " + memCode + ", 상태: " + memStatus);
+
+		try {
+			service.updateStatus(memCode, memStatus);
+			rttr.addFlashAttribute("result", "success");
+		} catch (Exception e) {
+			logger.error("업데이트 실패 : ", e);
+			rttr.addFlashAttribute("result", "fail");
+		}
+
+		return "redirect:/admin/members";
 	}
 
 	@GetMapping(value = "courses")
 	public void adminCoursesGET() throws Exception {
 
 		logger.info("관리자 - 수강신청관리 페이지 이동");
-
-	}
-
-	@GetMapping(value = "members")
-	public void adminMembersGET() throws Exception {
-
-		logger.info("관리자 - 회원관리페이지 이동");
-
-		/*
-		 * List<MemberVO> list = service.getMemberList(); if (!list.isEmpty()) {
-		 * model.addAttribute("list", list); } else { model.addAttribute("listCheck",
-		 * "empty"); }
-		 */
 
 	}
 
