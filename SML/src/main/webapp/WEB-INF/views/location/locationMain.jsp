@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%-- <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%> --%>
 <%@ page session="false"%>
 <!DOCTYPE html>
 <html>
@@ -18,23 +18,23 @@
     <div class="map_wrap">
         <div id="map" style="width:100%;height:100%;position:relative;overflow:hidden;"></div>
         <ul id="category">
-    <li id="HP8" data-order="0">
-        <span class="category_bg hospital"></span>
-        병원
-    </li>
-    <li id="PO3" data-order="1">
-        <span class="category_bg public_office"></span>
-        공공기관
-    </li>
-    <li id="PM9" data-order="2">
-        <span class="category_bg pharmacy"></span>
-        약국
-    </li>
-    <li id="SW8" data-order="3">
-        <span class="category_bg subway"></span>
-        지하철
-    </li>
-</ul>
+            <li id="HP8" data-order="0">
+                <span class="category_bg hospital"></span>
+                병원
+            </li>
+            <li id="PO3" data-order="1">
+                <span class="category_bg public_office"></span>
+                공공기관
+            </li>
+            <li id="PM9" data-order="2">
+                <span class="category_bg pharmacy"></span>
+                약국
+            </li>
+            <li id="SW8" data-order="3">
+                <span class="category_bg subway"></span>
+                지하철
+            </li>
+        </ul>
 
         <div id="menu_wrap" class="bg_white">
             <div class="option">
@@ -58,14 +58,24 @@ var markers = [];
 var currCategory = '';
 var mapContainer = document.getElementById('map');
 var mapOption = {
-    center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 중심좌표
-    level: 5 // 지도의 확대 레벨
+    center: new kakao.maps.LatLng(37.566826, 126.9786567), // 지도의 초기 중심좌표
+    level: 3 // 지도의 확대 레벨
 };
 var map = new kakao.maps.Map(mapContainer, mapOption);
 var ps = new kakao.maps.services.Places(map);
 var infowindow = new kakao.maps.InfoWindow({zIndex: 1});
 var placeOverlay = new kakao.maps.CustomOverlay({zIndex: 1}),
     contentNode = document.createElement('div');
+
+// 현재 위치로 지도 중심 설정
+if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(function(position) {
+        var lat = position.coords.latitude;
+        var lon = position.coords.longitude;
+        var locPosition = new kakao.maps.LatLng(lat, lon);
+        map.setCenter(locPosition);
+    });
+}
 
 // 커스텀 오버레이의 컨텐츠 노드에 css class를 추가합니다 
 contentNode.className = 'placeinfo_wrap';
@@ -105,7 +115,15 @@ function searchPlaces() {
     if (!currCategory) return;
     placeOverlay.setMap(null);
     removeMarker();
-    ps.categorySearch(currCategory, placesSearchCB, {useMapBounds: true});
+
+    // 현재 지도의 중심을 가져와서 검색합니다.
+    var center = map.getCenter();
+    var options = {
+        location: center,
+        radius: 2000 // 검색 반경을 설정합니다. (단위: 미터)
+    };
+
+    ps.categorySearch(currCategory, placesSearchCB, options);
 }
 
 function placesSearchCB(data, status, pagination) {
@@ -193,6 +211,8 @@ function removeMarker() {
     }
     markers = [];
 }
+
+
 
 function displayPlaceInfo(place) {
     var content = '<div class="placeinfo">' +
