@@ -83,19 +83,20 @@
 			<div>
 				<ul id="searchResults"></ul>
 			</div>
-			<form id="sendSms" method="post">
+			<form id="sendSms" method="post" action="sendSms.do">
 				<label for="recipientNumber" class="sms-label">수신인 번호:</label> <input
-					type="text" id="recipientNumber" readonly>
-			<div>
-				<label for="senderNumber" class="sms-label">발신인 번호:</label> <input
-					type="text" id="senderNumber" value="01091933200">
-			</div>
-			<div>
-				<label for="smsContent" class="sms-label">내용:</label>
-				<textarea id="smsContent" rows="4" cols="50"></textarea>
-			</div>
-			<button type="submit" class="send-button" onclick="sendSms()">보내기</button>
-			</div>
+					type="text" id="recipientNumber" name="recipientNumber" readonly>
+				<div>
+					<label for="senderNumber" class="sms-label">발신인 번호:</label> <input
+						type="text" id="senderNumber" name="senderNumber"
+						value="01091933200">
+				</div>
+				<div>
+					<label for="smsContent" class="sms-label">내용:</label>
+					<textarea id="smsContent" name="smsContent" rows="4" cols="50"></textarea>
+				</div>
+				<button type="submit" class="send-button" onclick="sendSms()">보내기</button>
+		</div>
 		</form>
 	</div>
 
@@ -107,7 +108,7 @@
 			<div id="smsDetailsContent"></div>
 		</div>
 	</div>
-	
+
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>

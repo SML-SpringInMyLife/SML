@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,6 +33,12 @@ public class AdminController {
 
 	@Autowired
 	private AdminService service;
+
+	@Value("${SMS_KEY}")
+	private String SMSapiKey;
+
+	@Value("${SMS_SecretKEY}")
+	private String SMSapiSecret;
 
 	/* 관리자 메인 페이지 이동 */
 	@GetMapping(value = "main")
@@ -59,6 +66,7 @@ public class AdminController {
 			model.addAttribute("cntCheck", "empty");
 		}
 	}
+
 	// 배열을 문자열로 변환하는 유틸리티 메소드
 	private String arrayToString(int[] array) {
 		StringBuilder sb = new StringBuilder();
@@ -77,7 +85,16 @@ public class AdminController {
 	@ResponseBody
 	public Map<String, int[]> getDataForYear(@RequestParam("year") String year) throws Exception {
 		logger.info("선택 년도 : " + year);
-		return service.getAgeGroupCountsByMonth(year);
+
+		Map<String, int[]> result = service.getAgeGroupCountsByMonth(year);
+		logger.info("★★★★★★★★★★result : " + result);
+		for (Map.Entry<String, int[]> entry : result.entrySet()) {
+			String key = entry.getKey();
+			int[] values = entry.getValue();
+			logger.info("키: " + key + ", 값: " + arrayToString(values));
+		}
+
+		return result;
 	}
 
 	@GetMapping(value = "members")
@@ -130,13 +147,8 @@ public class AdminController {
 
 	}
 
-	@PostMapping(value = "sms/sendSms.do")
+	@PostMapping(value = "sendSms.do")
 	public String sendSms(HttpServletRequest request) throws Exception {
-
-		// API Key와 Secret Key를 입력 (Coolsms에서 발급받은 값)
-		String api_key = "";
-		String api_secret = "";
-		Message coolsms = new Message(api_key, api_secret);
 
 		// SMS 전송을 위한 파라미터 설정
 		HashMap<String, String> set = new HashMap<>();
@@ -149,6 +161,8 @@ public class AdminController {
 		System.out.println(set);
 
 		try {
+			// Initialize the Message object with API key and secret key
+			Message coolsms = new Message(SMSapiKey, SMSapiSecret);
 			// SMS 전송 및 결과 받기
 			JSONObject result = coolsms.send(set);
 			System.out.println(result.toString());
