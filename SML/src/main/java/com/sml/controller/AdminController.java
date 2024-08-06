@@ -44,20 +44,41 @@ public class AdminController {
 		Map<String, Integer> ageGroupCnt = service.getAgeGroupCnt();
 		model.addAttribute("ageGroupCnt", ageGroupCnt);
 
-		/*
-		 * if (memberCnt <= 0) { model.addAttribute("cntCheck", "empty"); // 기본 연도에 대한
-		 * 차트 데이터 추가 String year = "2024"; // 기본 연도 Map<String, int[]> chartData =
-		 * service.getAgeGroupCountsByMonth(year); model.addAttribute("chartData",
-		 * chartData); }
-		 */
+		// 기본 연도에 대한 차트 데이터 추가
+		String year = "2024"; // 기본 연도
+		Map<String, int[]> chartData = service.getAgeGroupCountsByMonth(year);
+		// 데이터 출력
+		for (Map.Entry<String, int[]> entry : chartData.entrySet()) {
+			String key = entry.getKey();
+			int[] values = entry.getValue();
+			logger.info("키: " + key + ", 값: " + arrayToString(values));
+		}
+		model.addAttribute("chartData", chartData);
+
+		if (memberCnt <= 0) {
+			model.addAttribute("cntCheck", "empty");
+		}
+	}
+	// 배열을 문자열로 변환하는 유틸리티 메소드
+	private String arrayToString(int[] array) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("[");
+		for (int i = 0; i < array.length; i++) {
+			sb.append(array[i]);
+			if (i < array.length - 1) {
+				sb.append(", ");
+			}
+		}
+		sb.append("]");
+		return sb.toString();
 	}
 
-	/*
-	 * @GetMapping(value = "getDataForYear")
-	 * 
-	 * @ResponseBody public Map<String, int[]> getDataForYear(@RequestParam("year")
-	 * String year) { return service.getAgeGroupCountsByMonth(year); }
-	 */
+	@GetMapping(value = "getDataForYear")
+	@ResponseBody
+	public Map<String, int[]> getDataForYear(@RequestParam("year") String year) throws Exception {
+		logger.info("선택 년도 : " + year);
+		return service.getAgeGroupCountsByMonth(year);
+	}
 
 	@GetMapping(value = "members")
 	public void adminMembersGET(Model model) throws Exception {

@@ -84,6 +84,7 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script>
+	
 		// 현재 연도를 가져옴
 		var currentYear = new Date().getFullYear();
 		var selectElement = document.getElementById('yearSelect');
@@ -96,6 +97,99 @@
 			option.text = year;
 			selectElement.appendChild(option);
 		}
+		
+		// Chart.js를 사용하여 차트를 설정하고 업데이트하는 부분
+		var registrationChart;
+		
+		
+		function setupChart() {
+		    var ctx = document.getElementById('registrationChart').getContext('2d');
+
+		    registrationChart = new Chart(ctx, {
+		        type: 'line',
+		        data: {
+		            labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+		            datasets: [
+		                {
+		                    label: '50대 미만',
+		                    borderColor: 'blue',
+		                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
+		                    data: []
+		                },
+		                {
+		                    label: '50대',
+		                    borderColor: 'red',
+		                    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+		                    data: []
+		                },
+		                {
+		                    label: '60대',
+		                    borderColor: 'green',
+		                    backgroundColor: 'rgba(0, 255, 0, 0.1)',
+		                    data: []
+		                },
+		                {
+		                    label: '70대',
+		                    borderColor: 'purple',
+		                    backgroundColor: 'rgba(128, 0, 128, 0.1)',
+		                    data: []
+		                },
+		                {
+		                    label: '80대',
+		                    borderColor: 'orange',
+		                    backgroundColor: 'rgba(255, 165, 0, 0.1)',
+		                    data: []
+		                },
+		                {
+		                    label: '90대 이상',
+		                    borderColor: 'brown',
+		                    backgroundColor: 'rgba(165, 42, 42, 0.1)',
+		                    data: []
+		                }
+		            ]
+		        },
+		        options: {
+		            responsive: true,
+		            scales: {
+		                x: {
+		                    beginAtZero: true
+		                },
+		                y: {
+							beginAtZero: true,
+							min: 0,
+							max: 30,
+							ticks: {
+								stepSize: 1,
+								callback: function(value) {
+									return value; // y축 레이블 표시
+								}
+							}
+						}
+					}
+				}
+			});
+		    // 초기 데이터로 차트 업데이트
+		    updateChart();
+		}
+
+		// 차트를 업데이트하는 함수
+		function updateChart() {
+		    var year = document.getElementById('yearSelect').value;
+
+		    fetch('/admin/getDataForYear?year=' + year)
+		        .then(response => response.json())
+		        .then(data => {
+		            registrationChart.data.datasets[0].data = data.under50;
+		            registrationChart.data.datasets[1].data = data.fifties;
+		            registrationChart.data.datasets[2].data = data.sixties;
+		            registrationChart.data.datasets[3].data = data.seventies;
+		            registrationChart.data.datasets[4].data = data.eighties;
+		            registrationChart.data.datasets[5].data = data.ninetiesAndAbove;
+
+		            registrationChart.update();
+		        });
+		}
+
 	</script>
 
 	<script src="${webappRoot}/resources/js/admin/admin.js"></script>

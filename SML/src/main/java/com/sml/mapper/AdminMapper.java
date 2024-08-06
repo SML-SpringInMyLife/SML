@@ -17,6 +17,6 @@ public interface AdminMapper {
 
 	public Map<String, Integer> getAgeGroupCnt();
 
-	/* public Map<String, int[]> getMonthlyAgeGroupCounts(); */
+	public List<Map<String, Object>> getAgeGroupCountsByMonth(String year);
 
 }

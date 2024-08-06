@@ -17,6 +17,7 @@ public interface AdminService {
 
 	public Map<String, Integer> getAgeGroupCnt() throws Exception;
 
-	/* public Map<String, int[]> getAgeGroupCountsByMonth(String year); */
+	public Map<String, int[]> getAgeGroupCountsByMonth(String year) throws Exception ;
+
 
 }
