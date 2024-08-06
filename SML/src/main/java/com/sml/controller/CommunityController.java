@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
+import com.sml.model.PageDTO;
 import com.sml.service.CommunityService;
 
 @Controller
@@ -26,17 +27,22 @@ public class CommunityController {
    private CommunityService service;
    
    @GetMapping("/boardList")
-   public void boardListGET(Model model) throws Exception {
+   public void boardListGET(Criteria cri, Model model) throws Exception {
       
-      logger.info("커뮤니티 페이지 이동!");
+      logger.info("커뮤니티 페이지 이동" +cri);
       
-      List<CommunityVO> list = service.getBoardList();
+      List list = service.getBoardList(cri);
       
       if(!list.isEmpty()) {
-          model.addAttribute("list", list);
-       } else {
-          model.addAttribute("listCheck", "empty");
-       }
+			model.addAttribute("list",list);	
+		} else {
+			model.addAttribute("listCheck", "empty");	
+		}
+      
+      int total = service.communityGetTotal(cri);
+      PageDTO pageMaker = new PageDTO(cri, total);
+      model.addAttribute("pageMaker", pageMaker);
+//      model.addAttribute("pageMaker", new PageDTO(cri, service.communityGetTotal(cri)));
    }
    
    @GetMapping("/enroll")
@@ -51,10 +57,10 @@ public class CommunityController {
 	   return "redirect:/community/boardList";
    }
    
-   @GetMapping("/detail")
-   public void communityDetail(int commCode, Criteria cri, Model model) throws Exception {
+   @GetMapping({"/detail", "/modify"})
+   public void communityDetailGET(int commCode, Criteria cri, Model model) throws Exception {
 	   logger.info(commCode +"번 게시글 상세 페이지 이동");
-	   model.addAttribute("cri","cri");
+	   model.addAttribute("cri", cri);
 	   model.addAttribute("communityDetail", service.communityDetail(commCode));
    }
    

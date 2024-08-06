@@ -100,13 +100,11 @@
 	<!-- 헤더 영역 포함 -->
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
 		<h1>커뮤니티 게시판</h1>
 		<div class="community_container">
 			<jsp:include page="/WEB-INF/views/community/communityMenu.jsp" />
-			<div class="community_boardList_wrap">
-				<!-- 게시물 O -->
+			<div class="community_boardList_wrap">	
 				<c:if test="${listCheck != 'empty'}">
 					<table class="community_boardList">
 						<thead>
@@ -118,64 +116,64 @@
 								<td class="th_column_5">조회수</td>
 							</tr>
 						</thead>
-						<c:forEach items="${list}" var="item">
+						<c:forEach items="${list}" var="list">
 							<tr>
-								<td><c:out value="${item.commCode}" /></td>
+								<td><c:out value="${list.commCode}" /></td>
 								<td>
-									<a class="move" href="<c:out value='${item.commCode}'/>"> 
-										<c:out value="${item.commTitle}" />
+									<a class="move" href='<c:out value="${list.commCode}"/>'>
+										<c:out value="${list.commTitle}"></c:out>
 									</a>
 								</td>
-								<td><c:out value="${item.commWriter}" /></td>
-								<td><fmt:formatDate value="${item.enrollDate}"
-										pattern="yyyy-MM-dd" /></td>
-								<td><c:out value="${item.commCount}" /></td>
+								<td><c:out value="${list.commWriter}" /></td>
+								<td><fmt:formatDate value="${list.enrollDate}" pattern="yyyy-MM-dd" /></td>
+								<td><c:out value="${list.commCount}" /></td>
 							</tr>
 						</c:forEach>
 					</table>
 				</c:if>
-
-				<!-- 게시물 x -->
 				<c:if test="${listCheck == 'empty'}">
-					<div class="table_empty">작성된 글이 없습니다.</div>
+					<div class="table_empty">
+						등록된 글이 없습니다.
+					</div>
 				</c:if>
 			</div>
-
+			
 			<!-- 검색 영역 -->
-			<div class="search_wrap">
-				<form id="searchForm" action="/community/boardList" method="get">
-					<div class="search_input">
-						<input type="text" name="keyword"
-							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
-						<input type="hidden" name="pageNum"
-							value='<c:out value="${pageMaker.cri.pageNum}"></c:out>'>
-						<input type="hidden" name="amount" value='${pageMaker.cri.amount}'>
-						<button class='btn search_btn'>검색</button>
-					</div>
-				</form>
-			</div>
-
+            <div class="search_wrap">
+            	<form id="searchForm" action="/community/boardList" method="get">
+                	<div class="search_input">
+                    	<input type="text" name="keyword" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+                    	<input type="hidden" name="pageNum" value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
+                    	<input type="hidden" name="amount" value='${pageMaker.cri.amount}'>
+                    	<button class='btn search_btn'>검색</button>
+                    </div>
+                </form>
+            </div>  
+			
 			<!-- 페이지 이동 인터페이스 영역 -->
-			<div class="pageMaker_wrap">
-				<ul class="pageMaker">
-					<!-- 이전 버튼 -->
-					<c:if test="${pageMaker.prev}">
-						<li class="pageMaker_btn prev"><a
-							href="${pageMaker.pageStart - 1}">이전</a></li>
-					</c:if>
-					<!-- 페이지 번호 -->
-					<c:forEach begin="${pageMaker.pageStart}" end="${pageMaker.pageEnd}" var="num">
-						<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":""}">
-							<a href="${num}">${num}</a>
-						</li>
-					</c:forEach>
+            <div class="pageMaker_wrap" >
+            	<ul class="pageMaker">
+	            	<!-- 이전 버튼 -->
+	                <c:if test="${pageMaker.prev}">
+	                	<li class="pageMaker_btn prev">
+	                    	<a href="${pageMaker.pageStart - 1}">이전</a>
+	                    </li>
+	                </c:if>
+	                <!-- 페이지 번호 -->
+	                <c:forEach begin="${pageMaker.pageStart}" end="${pageMaker.pageEnd}" var="num">
+	                	<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":""}">
+	                    	<a href="${num}">${num}</a>
+	                    </li>
+	                </c:forEach>
 					<!-- 다음 버튼 -->
-					<c:if test="${pageMaker.next}">
-						<li class="pageMaker_btn next"><a
-							href="${pageMaker.pageEnd + 1 }">다음</a></li>
-					</c:if>
-				</ul>
+	                <c:if test="${pageMaker.next}">
+	                    <li class="pageMaker_btn next">
+	                    	<a href="${pageMaker.pageEnd + 1 }">다음</a>
+	                    </li>
+	                </c:if>
+				</ul>         
 			</div>
+			
 			<form id="moveForm" action="/community/boardList" method="get">
 				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
@@ -188,56 +186,44 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 	<script>
-		// alert
-		$(document).ready(function() {
-			let result = '<c:out value="${enroll_result}"/>';
-		    checkResult(result);
-		    function checkResult(result){
-		        if(result === ''){
-		            return;
-		        }		        
-		        alert("글'${enroll_result}' 을 등록하였습니다.");        
-		    }
-		});
-		
-		// 삭제 결과 경고창 
-		let delete_result = '${delete_result}';
-		if (delete_result == 1) {
-			alert("삭제 완료");
-		} else if (delete_result == 2) {
-			alert("해당 글 데이터를 사용하고 있는 데이터가 있어서 삭제할 수 없습니다.")
-		}
 
+		$(document).ready(function() {
 		});
 		
 		let moveForm = $('#moveForm');
-		let searchForm = $('#searchForm');
-
 		/* 페이지 이동 버튼 */
-		$(".pageMaker_btn a").on("click", function(e) {
+		$(".pageMaker_btn a").on("click", function(e){
+			alert('페이지 이동 버튼');
 			e.preventDefault();
-			moveForm.find("input[name='pageNum']").val($(this).attr("href"));
+			 moveForm.find("input[name='pageNum']").val($(this).attr("href"));
+			 moveForm.submit();
+		});
+		
+		let searchForm = $('#searchForm');
+		/* 검색 버튼 동작 */
+		$("#searchForm button").on("click", function(e){	
+			alert('검색 버튼');
+			e.preventDefault();
+			
+			/* 검색 키워드 유효성 검사 */
+			if(!searchForm.find("input[name='keyword']").val()){
+				alert("키워드를 입력하십시오");
+				return false;
+			}
+			
+			searchForm.find("input[name='pageNum']").val("1");
+			searchForm.submit();	
+		});	 
+		
+		/* 상세 페이지 이동 */
+		$(".move").on("click", function(e){
+			e.preventDefault();
+			moveForm.append("<input type='hidden' name='commCode' value='"+ $(this).attr("href") + "'>");
+			moveForm.attr("action", "/community/detail");
 			moveForm.submit();
 		});
 
-		/* 검색 버튼 동작 */
-		$("#searchForm button").on("click", function(e) {
-			e.preventDefault();
-			/* 검색 키워드 유효성 검사 */
-			if (!searchForm.find("input[name='keyword']").val()) {
-				alert("키워드를 입력하세요.");
-				return false;
-			}
-			searchForm.find("input[name='pageNum']").val("1");
-			searchForm.submit();
-		});
-
-		// 상세 페이지 이동
-		$(".move").on("click", function(e) {
-			e.preventDefault();	
-			moveForm.append("<input type='hidden' name='commCode' value='" + $(this).attr("href") + "'>");
-			moveForm.submit();	
-		});
 	</script>
+
 </body>
 </html>
