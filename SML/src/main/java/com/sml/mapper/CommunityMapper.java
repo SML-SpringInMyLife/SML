@@ -14,4 +14,6 @@ public interface CommunityMapper {
 	
 	public CommunityVO communityDetail (int commCode);
 	
+	public int communityModify(CommunityVO community);
+	
 }

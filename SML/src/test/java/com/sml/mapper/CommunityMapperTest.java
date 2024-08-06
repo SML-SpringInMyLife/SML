@@ -1,6 +1,8 @@
 package com.sml.mapper;
 
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +14,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.sml.controller.CommunityController;
 import com.sml.model.CommunityVO;
-import com.sml.model.Criteria;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -70,8 +71,24 @@ public class CommunityMapperTest {
 		
 		int commCode = 7;
 		CommunityVO community = mapper.communityDetail(commCode);
-		System.out.println("Detail........." +community);
+		logger.info("Detail........." +community);
 		
+	}
+	
+	@Test
+	public void communityModifyTest() {
+		
+		CommunityVO community = new CommunityVO();
+		
+		community.setCommCode(7);
+		logger.info("수정 전....." +mapper.communityModify(community));
+		
+		community.setCommTitle("modifyMapperTest");
+		community.setCommContent("modifyMapperTest");
+		community.setModifyDate(null);
+		
+		mapper.communityModify(community);
+		logger.info("수정 후......" +mapper.communityModify(community));
 	}
 
 }

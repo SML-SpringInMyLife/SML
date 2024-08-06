@@ -55,10 +55,23 @@
   		 WHERE COMM_CODE = #{commCode}
   	</select>
   	
-  	<update id="modify">
+  	<update id="communityModify">
+  		UPDATE COMMUNITY 
+  			SET
+  				COMM_TITLE = #{commTitle},
+  				COMM_CONTENT = #{commContent},
+  				COMM_MODIFY_DATE = CURRENT_DATE, 
+  			WHERE 
+  				COMM_CODE = #{commCode}
   	</update>
   	
-  	<update id="delete">
+  	<update id="communityDelete">
+  		UPDATE COMMUNITY
+  			SET 
+  				COMM_STATUS = 'N',
+  				COMM_MODIFY_DATE = CURRENT DATE
+  			WHERE 
+  				COMM_CODE = #{commCode}
   	</update>
   	
   </mapper>

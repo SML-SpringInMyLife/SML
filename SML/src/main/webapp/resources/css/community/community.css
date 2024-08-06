@@ -78,7 +78,7 @@ h1 {
 }
 
 /* 커뮤니티 등록 폼 */
-.community_enroll {
+.community_enroll, .community_boardDetail {
     background-color: #f9f9f9;
     padding: 20px;
     border-radius: 8px;

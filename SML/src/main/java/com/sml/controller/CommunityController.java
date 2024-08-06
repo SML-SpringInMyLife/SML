@@ -57,8 +57,8 @@ public class CommunityController {
 	   return "redirect:/community/boardList";
    }
    
-   @GetMapping("/detail")
-   public void communityDetail(int commCode, Criteria cri, Model model) throws Exception {
+   @GetMapping({"/detail", "/modify"})
+   public void communityDetailGET(int commCode, Criteria cri, Model model) throws Exception {
 	   logger.info(commCode +"번 게시글 상세 페이지 이동");
 	   model.addAttribute("cri", cri);
 	   model.addAttribute("communityDetail", service.communityDetail(commCode));
