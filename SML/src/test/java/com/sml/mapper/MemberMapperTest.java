@@ -15,6 +15,8 @@ import com.sml.model.MemberVO;
 public class MemberMapperTest {
 	@Autowired
 	private MemberMapper membermapper;
+	
+	
 
 	/*
 	@Test
@@ -52,7 +54,7 @@ public class MemberMapperTest {
 		membermapper.memberLogin(member);
 		System.out.println("결과" + membermapper.memberLogin(member));
 	}
-	*/
+	
 	
 	//아이디 중복 검사
 	@Test
@@ -62,5 +64,6 @@ public class MemberMapperTest {
 		membermapper.idCheck(id);
 		membermapper.idCheck(id2);	
 	}
+	*/
 
 }
