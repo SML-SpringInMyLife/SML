@@ -63,13 +63,12 @@ public class CommunityController {
 	   model.addAttribute("cri", cri);
 	   model.addAttribute("communityDetail", service.communityDetail(commCode));
    }
-   
-   @GetMapping("/modify")
-   public void modifyGET() throws Exception{
-	   logger.info("커뮤니티 글 수정");
-   }
+
    @PostMapping("/modify")
-   public String modifyPOST() throws Exception{
+   public String modifyPOST(CommunityVO community, RedirectAttributes rttr) throws Exception{
+	   logger.info("modifyPOST......" +community);
+	   int result = service.communityModify(community);
+	   rttr.addFlashAttribute("modify_result", result);
 	   //해당 페이지로 다시 return - 바꾸기 
 	   return "redirect:/community/boardList";
    }

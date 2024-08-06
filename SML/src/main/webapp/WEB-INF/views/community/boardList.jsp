@@ -188,12 +188,31 @@
 	<script>
 
 		$(document).ready(function() {
+			let result = '<c:out value="${enroll_result}"/>';
+			let mresult = '<c:out value="${modify_result}"/>';
+			
+			checkResult(result);
+			chekcmResult(mresult);
+			
+			function checkResult(result){
+				if(result === ''){
+					return;
+				}
+				alert("게시글 '${enroll_result}'을 등록하였습니다.'");
+			}
+			
+			function checkmResult(mresult){
+				if(mresult === '1'){
+					alert("게시글 수정을 완료하였습니다.");
+				} else if(mresult === '0'){
+					alert("게시글 수정에 실패했습니다.")
+				}
+			}
 		});
 		
 		let moveForm = $('#moveForm');
 		/* 페이지 이동 버튼 */
 		$(".pageMaker_btn a").on("click", function(e){
-			alert('페이지 이동 버튼');
 			e.preventDefault();
 			 moveForm.find("input[name='pageNum']").val($(this).attr("href"));
 			 moveForm.submit();

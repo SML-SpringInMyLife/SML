@@ -85,7 +85,6 @@ public class CommunityMapperTest {
 		
 		community.setCommTitle("modifyMapperTest");
 		community.setCommContent("modifyMapperTest");
-		community.setModifyDate(null);
 		
 		mapper.communityModify(community);
 		logger.info("수정 후......" +mapper.communityModify(community));

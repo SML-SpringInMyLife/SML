@@ -15,6 +15,7 @@ public interface CommunityService {
 	public CommunityVO communityDetail(int commCode) throws Exception;
 	
 	// modify
+	public int communityModify(CommunityVO community) throws Exception;
 	
 	// delete
 

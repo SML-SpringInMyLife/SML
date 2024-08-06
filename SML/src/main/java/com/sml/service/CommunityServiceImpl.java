@@ -40,6 +40,12 @@ public class CommunityServiceImpl implements CommunityService{
 		return mapper.communityDetail(commCode);
 	}
 
+	@Override
+	public int communityModify(CommunityVO community) throws Exception {
+		log.info("(service) modify....." +community);
+		return mapper.communityModify(community);
+	}
+
 	
 
 	
