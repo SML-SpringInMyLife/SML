@@ -58,18 +58,18 @@
   	<update id="communityModify">
   		UPDATE COMMUNITY 
   			SET
-  				COMM_TITLE = #{commTitle},
-  				COMM_CONTENT = #{commContent},
-  				COMM_MODIFY_DATE = CURRENT_DATE, 
+  				COMM_TITLE = #{commTitle, jdbcType=VARCHAR},
+  				COMM_CONTENT = #{commContent, jdbcType=CLOB},
+  				COMM_MODIFY_DATE AS modifyDate = SYSDATE
   			WHERE 
-  				COMM_CODE = #{commCode}
+  				COMM_CODE = #{commCode, jdbcType=INTEGER}
   	</update>
   	
   	<update id="communityDelete">
   		UPDATE COMMUNITY
   			SET 
   				COMM_STATUS = 'N',
-  				COMM_MODIFY_DATE = CURRENT DATE
+  				COMM_MODIFY_DATE = SYSDATE
   			WHERE 
   				COMM_CODE = #{commCode}
   	</update>

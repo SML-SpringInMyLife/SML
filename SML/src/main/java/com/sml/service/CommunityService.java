@@ -13,10 +13,11 @@ public interface CommunityService {
 	public int communityGetTotal(Criteria cri) throws Exception;
 	
 	public CommunityVO communityDetail(int commCode) throws Exception;
+
+	public int communityModify(CommunityVO community) throws Exception;
 	
-	// modify
+	public int communityDelete(int commCode);
 	
-	// delete
 
 	
 
