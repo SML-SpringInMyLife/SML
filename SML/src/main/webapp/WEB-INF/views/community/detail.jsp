@@ -70,38 +70,44 @@
     			</div>
 			</div>
 			<div class="community-reply">
-             <h3>댓글</h3>
-             <div id="replyListSection">
-                 <c:if test="${listCheck != 'empty'}">
-                    <c:forEach items="${list}" var="list">
-                     <table class="community_reply">
-                        <tr>
-                           <td>
-                              <c:out value="${list.repWriter}" />
-                              <br>
-                              <c:out value="${list.repContent}" />
-                              <br>
-                              <small>
-                                  <c:choose>
-                                      <c:when test="${not empty list.rmodifyDate}">
-                                          <fmt:formatDate value="${list.rmodifyDate}" pattern="yyyy-MM-dd"/>
-                                          <small><c:out value="${list.rmodifyDate}"/>수정됨</small>
-                                      </c:when>
-                                      <c:otherwise>
-                                             <fmt:formatDate value="${list.renrollDate}" pattern="yyyy-MM-dd"/>
-                                      </c:otherwise>
-                                  </c:choose>
-                              </small>
-                                   </td>
-                        </tr>
-                     </table>
-                  </c:forEach>
-               </c:if>
-            <c:if test="${listCheck == 'empty'}">
-               <div class="table_empty">
-                  등록된 글이 없습니다.
-               </div>
-            </c:if>
+            	<h3>댓글</h3>
+             	<div id="replyListSection">
+                	<c:if test="${listCheck != 'empty'}">
+                    	<c:forEach items="${list}" var="list">
+                     		<table class="community_reply">
+                        		<tr>
+                           			<td>
+                              			<c:out value="${list.repWriter}" />
+                              			<br>
+                              			<c:out value="${list.repContent}" />
+                              			<br>
+                              			<small>
+                                  			<c:choose>
+                                      			<c:when test="${not empty list.rmodifyDate}">
+                                          			<fmt:formatDate value="${list.rmodifyDate}" pattern="yyyy-MM-dd"/>
+                                          			<small><c:out value="${list.rmodifyDate}"/>(수정됨)</small>
+                                      			</c:when>
+                                      			<c:otherwise>
+                                             		<fmt:formatDate value="${list.renrollDate}" pattern="yyyy-MM-dd"/>
+                                      			</c:otherwise>
+                                  			</c:choose>
+                              			</small>
+                              			<c:if test="${sessionScope.member != null && sessionScope.member.memName eq list.repWriter}">
+                                			<div class="reply_detail_btn_section">
+                                    			<button id="detailDeleteBtn" class="btn">삭제</button>
+                                    			<button id="detailModifyBtn" class="btn">수정</button>
+                                			</div>
+                            			</c:if>
+                        			</td>
+                        		</tr>
+                     	</table>
+                  	</c:forEach>
+               	</c:if>
+            	<c:if test="${listCheck == 'empty'}">
+               		<div class="table_empty">
+                  		등록된 글이 없습니다.
+               		</div>
+            	</c:if>
              </div>
              <div id="replyEnrollSection">
                   <c:choose>
@@ -112,7 +118,6 @@
                          <form id="replyEnrollForm" method="post" action="/community/reply/enroll">
                              <textarea id="replyContentTextarea" name="replyContent" rows="4" cols="50" placeholder="댓글을 입력하세요..."></textarea>
                              <div class="reply_btn_section">
-                                 <button id="replyCancelBtn" type="button" class="btn">취소</button>
                                  <button id="replyEnrollBtn" type="submit" class="btn">댓글 등록</button>
                              </div>
                          </form>
@@ -168,8 +173,11 @@
 			moveForm.submit();
 		});
 		
-		// 댓글
+		
 		$(document).ready(function() {
+			
+			// 댓글 alert
+			
         
 			// 댓글 등록
 			$(".replyEnrollBtn").on("click", function(e){
@@ -186,22 +194,22 @@
 				$.ajax({
 					data : data,
 					type : 'POST',
-					url : '/reply/enroll',
+					url : '/community/reply/enroll',
 					success : function(result){
 						window.close();
 					}
 				});
 			});
 
-        // 댓글 목록을 로드하는 함수
-        function loadReplies() {
-            $.ajax({
-                url: '/reply/list',
-                type: 'GET',
-                data: { commCode: $('input[name="commCode"]').val() },
-                success: function(response) {
-                    let replyList = $("#replyList");
-                    replyList.empty();
+        	// 댓글 목록을 로드하는 함수
+        	function loadReplies() {
+            	$.ajax({
+                	url: '/reply/list',
+                	type: 'GET',
+                	data: { commCode: $('input[name="commCode"]').val() },
+                	success: function(response) {
+                    	let replyList = $("#replyList");
+                    	replyList.empty();
                     
                     // 댓글 목록을 동적으로 생성
                     $.each(response.replies, function(index, reply) {
