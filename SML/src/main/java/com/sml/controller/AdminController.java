@@ -82,6 +82,21 @@ public class AdminController {
 
 	}
 
+	@PostMapping(value = "updateAdm")
+	public String updateAdm(@RequestParam int memCode, @RequestParam int memAdminCheck, RedirectAttributes rttr) {
+		logger.info("관리권한 업데이트 멤버Code: " + memCode + ", 관리자 여부: " + memAdminCheck);
+
+		try {
+			service.updateAdm(memCode, memAdminCheck);
+			rttr.addFlashAttribute("result", "success");
+		} catch (Exception e) {
+			logger.error("업데이트 실패 : ", e);
+			rttr.addFlashAttribute("result", "fail");
+		}
+
+		return "redirect:/admin/members";
+	}
+
 	@PostMapping(value = "updateStatus")
 	public String updateStatus(@RequestParam int memCode, @RequestParam int memStatus, RedirectAttributes rttr) {
 		logger.info("상태 업데이트 멤버Code: " + memCode + ", 상태: " + memStatus);

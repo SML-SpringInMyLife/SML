@@ -154,23 +154,46 @@
 	width: 150px; /* 원하는 너비로 설정 */
 }
 
-.changeStatus {
+.status-container {
+	display: flex;
+	align-items: center; /* 세로 정렬 */
+	gap: 10px; /* 요소 간 간격 */
+}
+
+.status-form {
+	margin: 0; /* form의 기본 마진 제거 */
+}
+
+.changeStatus, .changeAdm {
 	width: 68px;
 	height: 22px;
-	display: inline-flex;
+	display: flex;
 	align-items: center; /* 수직 중앙 정렬 */
 	justify-content: center; /* 수평 중앙 정렬 */
 	border: 2px solid #314f2f;
 	border-radius: 50px;
 	cursor: pointer;
-	border: 2px solid #314f2f;
-	display: inline-flex;
+	white-space: nowrap;
+	margin: 0; /* 기본 마진 제거 */
+}
+
+.changeAdm {
+	border: 2px solid #93060a;
+}
+
+.makeAdm-form {
+	margin: 0; /* 기본 마진 제거 */
+	align-items: center; /* 수직 중앙 정렬 */
 }
 
 .changeStatus:hover {
 	color: #fff;
 	background-color: #314f2f;
+}
+
+.changeAdm:hover {
 	color: #fff;
+	background-color: #93060a;
 }
 
 /* 관리자 - 수강신청관리 : 수업묶음 */
@@ -281,7 +304,6 @@
 
 /* 관리자페이지 - 테이블/차트 반응형 */
 @media all and (max-width: 1200px) {
-
 	/* 테이블 테두리 및 기타 기본 스타일 설정 */
 	.chat-table, .stats-table, .member-table, .course-table, .sms-table {
 		border: 0; /* 테이블 테두리 제거 */
@@ -312,6 +334,8 @@
 		text-align: right; /* 셀 값 오른쪽 정렬 */
 		position: relative;
 		padding-left: 50%; /* 레이블을 위한 공간 확보 */
+		vertical-align: middle;
+		white-space: nowrap; /* 줄 바꿈 방지 */
 	}
 
 	/* 데이터 셀의 가상 요소에 데이터 레이블 표시 */
@@ -326,7 +350,6 @@
 		text-transform: uppercase; /* 텍스트를 대문자로 변환 */
 		text-align: left; /* 레이블 왼쪽 정렬 */
 		background: #f9f9f9; /* 배경색 지정 */
-		white-space: nowrap; /* 줄 바꿈 방지 */
 	}
 
 	/* 셀 값 오른쪽 정렬을 위한 추가 스타일 */

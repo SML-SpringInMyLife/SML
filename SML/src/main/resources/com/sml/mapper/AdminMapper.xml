@@ -91,7 +91,15 @@
 	</select>
 
 
-	<!-- 전체 활성화 회원 카운트 : 관리자페이지 회원관리 → 회원상태 변경 -->
+	<!-- 관리자페이지 회원관리 → 관리권한 변경 -->
+	<update id="updateAdm">
+		UPDATE TB_MEMBER
+		SET MEM_ADMIN_CHECK = #{memAdminCheck}
+		WHERE
+		MEM_CODE = #{memCode}
+	</update>
+
+	<!-- 관리자페이지 회원관리 → 회원상태 변경 -->
 	<update id="updateStatus">
 		UPDATE TB_MEMBER
 		SET MEM_STATUS = #{memStatus}

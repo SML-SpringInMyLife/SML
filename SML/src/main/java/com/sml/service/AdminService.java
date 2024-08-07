@@ -11,6 +11,8 @@ public interface AdminService {
 
 	public List<MemberVO> getMemberList() throws Exception;
 
+	public void updateAdm(@Param("memCode") int memCode, @Param("memAdminCheck") int memAdminCheck) throws Exception;
+
 	public void updateStatus(@Param("memCode") int memCode, @Param("memStatus") int memStatus) throws Exception;
 
 	public int getMemberCnt() throws Exception;;

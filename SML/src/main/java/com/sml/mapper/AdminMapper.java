@@ -11,6 +11,8 @@ public interface AdminMapper {
 
 	public List<MemberVO> getMemberList();
 
+	public void updateAdm(@Param("memCode") int memCode, @Param("memAdminCheck") int memAdminCheck);
+
 	public void updateStatus(@Param("memCode") int memCode, @Param("memStatus") int memStatus);
 
 	public int getMemberCnt();

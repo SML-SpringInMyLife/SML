@@ -1,7 +1,5 @@
 // DOM이 완전히 로드된 후 실행되는 코드
 document.addEventListener('DOMContentLoaded', function() {
-
-
     // 현재 경로의 메뉴 항목에 'active' 클래스를 추가하는 코드
     var currentPath = window.location.pathname;
     var menuItems = document.querySelectorAll('.admin-menu ul li a');
@@ -120,24 +118,23 @@ function setupChart() {
     updateChart();
 }
 
-		// 차트를 업데이트하는 함수
-		function updateChart() {
-		    var year = document.getElementById('yearSelect').value;
+// 차트를 업데이트하는 함수
+function updateChart() {
+    var year = document.getElementById('yearSelect').value;
 
-		    fetch('/admin/getDataForYear?year=' + year)
-		        .then(response => response.json())
-		        .then(data => {
-		            registrationChart.data.datasets[0].data = data.under50;
-		            registrationChart.data.datasets[1].data = data.age50s;
-		            registrationChart.data.datasets[2].data = data.age60s;
-		            registrationChart.data.datasets[3].data = data.age70s;
-		            registrationChart.data.datasets[4].data = data.age80s;
-		            registrationChart.data.datasets[5].data = data.age90plus;
+    fetch('/admin/getDataForYear?year=' + year)
+        .then(response => response.json())
+        .then(data => {
+            registrationChart.data.datasets[0].data = data.under50;
+            registrationChart.data.datasets[1].data = data.age50s;
+            registrationChart.data.datasets[2].data = data.age60s;
+            registrationChart.data.datasets[3].data = data.age70s;
+            registrationChart.data.datasets[4].data = data.age80s;
+            registrationChart.data.datasets[5].data = data.age90plus;
 
-		            registrationChart.update();
-		        });
-		}
-
+            registrationChart.update();
+        });
+}
 
 // 회원 검색 함수
 function searchMembers() {
@@ -344,7 +341,7 @@ function createChatBox(sender) {
 function sendMessage(receiver) {
     var inputElement = document.getElementById('input-' + receiver); // 입력 필드 가져오기
     var messageContent = inputElement.value; // 메시지 내용 가져오기
-    if(messageContent && stompClient) {
+    if (messageContent && stompClient) {
         var chatMessage = {
             sender: '관리자',
             content: messageContent,

@@ -39,6 +39,7 @@
 							<th data-label="전화번호">전화번호</th>
 							<th data-label="잔여포인트">잔여포인트</th>
 							<th data-label="회원구분">회원구분</th>
+							<th data-label="권한부여">권한부여</th>
 							<th data-label="회원상태">회원상태</th>
 						</tr>
 					</thead>
@@ -58,23 +59,45 @@
 										<c:when test="${member.memAdminCheck == 1}">관리자</c:when>
 										<c:otherwise>-</c:otherwise>
 									</c:choose></td>
-								<td data-label="회원상태"><c:choose>
-										<c:when test="${member.memStatus == 1}">Y</c:when>
-										<c:otherwise>N</c:otherwise>
-									</c:choose> /
-									<form action="/admin/updateStatus" method="post">
+								<td data-label="권한부여">
+									<form action="/admin/updateAdm" method="post"
+										class="makeAdm-form">
 										<input type="hidden" name="memCode" value="${member.memCode}" />
 										<c:choose>
-											<c:when test="${member.memStatus == 1}">
-												<input type="hidden" name="memStatus" value="0" />
-												<button type="submit" class="changeStatus">휴면처리</button>
+											<c:when test="${member.memAdminCheck == 1}">
+												<input type="hidden" name="memAdminCheck" value="0" />
+												<button type="submit" class="changeAdm">권한회수</button>
 											</c:when>
 											<c:otherwise>
-												<input type="hidden" name="memStatus" value="1" />
-												<button type="submit" class="changeStatus">복구처리</button>
+												<input type="hidden" name="memAdminCheck" value="1" />
+												<button type="submit" class="changeAdm">권한부여</button>
 											</c:otherwise>
 										</c:choose>
-									</form></td>
+									</form>
+								</td>
+								<td data-label="회원상태">
+									<div class="status-container">
+										<c:choose>
+											<c:when test="${member.memStatus == 1}">Y</c:when>
+											<c:otherwise>N</c:otherwise>
+										</c:choose>
+										/
+										<form action="/admin/updateStatus" method="post"
+											class="status-form">
+											<input type="hidden" name="memCode" value="${member.memCode}" />
+											<c:choose>
+												<c:when test="${member.memStatus == 1}">
+													<input type="hidden" name="memStatus" value="0" />
+													<button type="submit" class="changeStatus">휴면처리</button>
+												</c:when>
+												<c:otherwise>
+													<input type="hidden" name="memStatus" value="1" />
+													<button type="submit" class="changeStatus">복구처리</button>
+												</c:otherwise>
+											</c:choose>
+										</form>
+									</div>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -87,14 +110,19 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 	<script>
-    document.querySelectorAll('form').forEach(form => {
-        form.addEventListener('submit', () => {
-            console.log('Submitting form with values:', {
-                memCode: form.querySelector('input[name="memCode"]').value,
-                memStatus: form.querySelector('input[name="memStatus"]').value
-            });
-        });
-    });
+	document.querySelectorAll('form').forEach(form => {
+	    form.addEventListener('submit', (event) => {
+	        const memCode = form.querySelector('input[name="memCode"]').value;
+	        const memStatus = form.querySelector('input[name="memStatus"]') ? form.querySelector('input[name="memStatus"]').value : 'N/A';
+	        const memAdminCheck = form.querySelector('input[name="memAdminCheck"]') ? form.querySelector('input[name="memAdminCheck"]').value : 'N/A';
+
+	        console.log('폼 제출 시 값:', {
+	            memCode,
+	            memStatus,
+	            memAdminCheck
+	        });
+	    });
+	});
 </script>
 </body>
 </html>
