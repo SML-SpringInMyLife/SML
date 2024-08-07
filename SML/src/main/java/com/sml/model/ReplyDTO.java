@@ -10,6 +10,7 @@ public class ReplyDTO {
 	private int repCode;
 	private int commCode;
 	private String repContent;
+	private String repWriter;
 	private Date renrollDate;
 	private Date rmodifyDate;
 	private String repStatus;

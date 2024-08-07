@@ -19,7 +19,7 @@ public class CommunityReplyMapperTest {
 	public void enrollReplyTest() {
 		
 		int memCode = 5;
-		int commCode = 70;
+		int commCode = 158;
 		String repContent = "replyTest";
 		
 		ReplyDTO dto = new ReplyDTO();

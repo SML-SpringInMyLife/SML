@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sml.mapper.CommunityMapper;
+import com.sml.mapper.CommunityReplyMapper;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
+import com.sml.model.ReplyDTO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -52,7 +54,36 @@ public class CommunityServiceImpl implements CommunityService{
 		return mapper.communityDelete(commCode);
 	}
 
+	// 댓글
 	
+	@Autowired
+	private CommunityReplyMapper replyMapper;
+	
+	@Override
+	public int enrollReply(ReplyDTO dto) {
+		int result = replyMapper.enrollReply(dto);
+		return result;
+	}
 
+	@Override
+	public List<ReplyDTO> listReply() throws Exception {
+		log.info("(service)replyList().......");
+		return replyMapper.listReply();
+	}
+
+//	@Override
+//	public int replyGetTotal(Criteria cri) throws Exception {
+//		return replyMapper.replyGetTotal(cri);
+//	}
+//
+//	@Override
+//	public int replyModify(ReplyDTO dto) throws Exception {
+//		return replyMapper.replyModify(dto);
+//	}
+//
+//	@Override
+//	public int replyDelete(int repCode) throws Exception {
+//		return replyMapper.replyDelete(repCode);
+//	}
 	
 }
