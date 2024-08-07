@@ -30,9 +30,7 @@
 						placeholder="검색어를 입력하세요.">
 					<button onclick="searchMembers()">검색</button>
 				</div>
-
 				<table class="member-table">
-					<!-- Caption added for better accessibility -->
 					<thead>
 						<tr>
 							<th data-label="No.">No.</th>
@@ -47,9 +45,9 @@
 					</thead>
 					<tbody id="memberList">
 						<!-- 반복출력 -->
-						<c:forEach var="member" items="${members}">
+						<c:forEach var="member" items="${members}" varStatus="status">
 							<tr>
-								<td data-label="No."><c:out value="${member.memCode}" /></td>
+								<td data-label="No.">${totalCount - status.index}</td>
 								<td data-label="ID"><c:out value="${member.memId}" /></td>
 								<td data-label="성명"><c:out value="${member.memName}" /></td>
 								<td data-label="생년월일"><fmt:formatDate

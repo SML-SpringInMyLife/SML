@@ -33,6 +33,110 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Chart.js를 사용하여 차트를 설정하고 업데이트하는 부분
+var registrationChart;
+
+function setupChart() {
+    var ctx = document.getElementById('registrationChart').getContext('2d');
+
+    registrationChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            datasets: [
+                {
+                    label: '50대 미만',
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                    data: []
+                },
+                {
+                    label: '50대',
+                    borderColor: 'red',
+                    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                    data: []
+                },
+                {
+                    label: '60대',
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                    data: []
+                },
+                {
+                    label: '70대',
+                    borderColor: 'purple',
+                    backgroundColor: 'rgba(128, 0, 128, 0.1)',
+                    data: []
+                },
+                {
+                    label: '80대',
+                    borderColor: 'orange',
+                    backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                    data: []
+                },
+                {
+                    label: '90대 이상',
+                    borderColor: 'brown',
+                    backgroundColor: 'rgba(165, 42, 42, 0.1)',
+                    data: []
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 30,
+                    ticks: {
+                        stepSize: 1,
+                        callback: function(value) {
+                            return value; // y축 레이블 표시
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            let datasetLabel = tooltipItem.dataset.label || '';
+                            let value = tooltipItem.raw; // Chart.js v3 및 v4에서는 tooltipItem.raw를 사용하여 값 가져옴
+                            
+                            // 툴팁 레이블에 값 뒤에 "이름"을 추가합니다.
+                            return `${datasetLabel}: ${value} 명`;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+    // 초기 데이터로 차트 업데이트
+    updateChart();
+}
+
+		// 차트를 업데이트하는 함수
+		function updateChart() {
+		    var year = document.getElementById('yearSelect').value;
+
+		    fetch('/admin/getDataForYear?year=' + year)
+		        .then(response => response.json())
+		        .then(data => {
+		            registrationChart.data.datasets[0].data = data.under50;
+		            registrationChart.data.datasets[1].data = data.age50s;
+		            registrationChart.data.datasets[2].data = data.age60s;
+		            registrationChart.data.datasets[3].data = data.age70s;
+		            registrationChart.data.datasets[4].data = data.age80s;
+		            registrationChart.data.datasets[5].data = data.age90plus;
+
+		            registrationChart.update();
+		        });
+		}
 
 
 // 회원 검색 함수

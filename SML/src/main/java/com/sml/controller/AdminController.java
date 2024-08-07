@@ -54,46 +54,16 @@ public class AdminController {
 		// 기본 연도에 대한 차트 데이터 추가
 		String year = "2024"; // 기본 연도
 		Map<String, int[]> chartData = service.getAgeGroupCountsByMonth(year);
-		// 데이터 출력
-		for (Map.Entry<String, int[]> entry : chartData.entrySet()) {
-			String key = entry.getKey();
-			int[] values = entry.getValue();
-			logger.info("키: " + key + ", 값: " + arrayToString(values));
-		}
+		
+		// 차트 데이터를 모델에 추가
 		model.addAttribute("chartData", chartData);
-
-		if (memberCnt <= 0) {
-			model.addAttribute("cntCheck", "empty");
-		}
-	}
-
-	// 배열을 문자열로 변환하는 유틸리티 메소드
-	private String arrayToString(int[] array) {
-		StringBuilder sb = new StringBuilder();
-		sb.append("[");
-		for (int i = 0; i < array.length; i++) {
-			sb.append(array[i]);
-			if (i < array.length - 1) {
-				sb.append(", ");
-			}
-		}
-		sb.append("]");
-		return sb.toString();
 	}
 
 	@GetMapping(value = "getDataForYear")
 	@ResponseBody
 	public Map<String, int[]> getDataForYear(@RequestParam("year") String year) throws Exception {
 		logger.info("선택 년도 : " + year);
-
 		Map<String, int[]> result = service.getAgeGroupCountsByMonth(year);
-		logger.info("★★★★★★★★★★result : " + result);
-		for (Map.Entry<String, int[]> entry : result.entrySet()) {
-			String key = entry.getKey();
-			int[] values = entry.getValue();
-			logger.info("키: " + key + ", 값: " + arrayToString(values));
-		}
-
 		return result;
 	}
 
@@ -105,6 +75,7 @@ public class AdminController {
 
 		if (!members.isEmpty()) {
 			model.addAttribute("members", members);
+			model.addAttribute("totalCount", members.size());
 		} else {
 			model.addAttribute("listCheck", "empty");
 		}
@@ -141,9 +112,16 @@ public class AdminController {
 	}
 
 	@GetMapping(value = "sms")
-	public void adminSmsGET() throws Exception {
+	public void adminSmsGET(Model model) throws Exception {
 
 		logger.info("관리자 - 문자관리페이지 이동");
+		List<MemberVO> members = service.getMemberList();
+
+		if (!members.isEmpty()) {
+			model.addAttribute("members", members);
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
 
 	}
 
@@ -161,7 +139,7 @@ public class AdminController {
 		System.out.println(set);
 
 		try {
-			// Initialize the Message object with API key and secret key
+			// API key와 Secret Key 적용하여 Message 객체 생성
 			Message coolsms = new Message(SMSapiKey, SMSapiSecret);
 			// SMS 전송 및 결과 받기
 			JSONObject result = coolsms.send(set);

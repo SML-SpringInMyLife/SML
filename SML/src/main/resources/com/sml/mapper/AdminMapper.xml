@@ -6,6 +6,7 @@
 
 <mapper namespace="com.sml.mapper.AdminMapper">
 
+	<!-- 멤버 테이블 컬럼명맵핑 -->
 	<resultMap id="userResultMap" type="com.sml.model.MemberVO">
 		<result property="memCode" column="MEM_CODE" />
 		<result property="memId" column="MEM_ID" />
@@ -25,16 +26,20 @@
 		<result property="memAdminCheck" column="MEM_ADMIN_CHECK" />
 	</resultMap>
 
+	<!-- 전체 회원 정보 가져오기 : 관리자페이지 회원관리 -->
 	<select id="getMemberList" resultType="com.sml.model.MemberVO"
 		resultMap="userResultMap">
-		SELECT * FROM TB_MEMBER
+		SELECT * FROM TB_MEMBER ORDER BY MEM_ADMIN_CHECK DESC,
+		MEM_NAME
 	</select>
 
+	<!-- 전체 활성화 회원 카운트 : 관리자페이지 메인① (관리자 제외) -->
 	<select id="getMemberCnt" resultType="int">
 		SELECT COUNT(*) FROM
-		TB_MEMBER WHERE MEM_STATUS = 1
+		TB_MEMBER WHERE MEM_STATUS = 1 AND MEM_ADMIN_CHECK = 0
 	</select>
 
+	<!-- 전체 활성화 회원 연령구간대별 카운트 : 관리자페이지 메인① (관리자 제외) -->
 	<select id="getAgeGroupCnt" resultType="java.util.Map">
     <![CDATA[
     SELECT
@@ -56,27 +61,16 @@
         COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) >= 90
         THEN 1
         END) AS age90plus
-    FROM TB_MEMBER WHERE MEM_STATUS = 1
+    FROM TB_MEMBER WHERE MEM_STATUS = 1 AND MEM_ADMIN_CHECK = 0
     ]]>
 	</select>
 
-
+	<!-- 년/월/연령구간대별 회원가입 현황 : 관리자페이지 메인② (관리자 제외) -->
 	<select id="getAgeGroupCountsByMonth" parameterType="String"
 		resultType="java.util.Map">
     <![CDATA[
-   WITH Months AS (
-        SELECT '01' AS month FROM DUAL UNION ALL
-        SELECT '02' FROM DUAL UNION ALL
-        SELECT '03' FROM DUAL UNION ALL
-        SELECT '04' FROM DUAL UNION ALL
-        SELECT '05' FROM DUAL UNION ALL
-        SELECT '06' FROM DUAL UNION ALL
-        SELECT '07' FROM DUAL UNION ALL
-        SELECT '08' FROM DUAL UNION ALL
-        SELECT '09' FROM DUAL UNION ALL
-        SELECT '10' FROM DUAL UNION ALL
-        SELECT '11' FROM DUAL UNION ALL
-        SELECT '12' FROM DUAL
+    WITH Months AS (
+        SELECT LEVEL AS month FROM DUAL CONNECT BY LEVEL <= 12
     )
     SELECT
         m.month,
@@ -88,15 +82,16 @@
         COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) >= 90 THEN 1 ELSE 0 END), 0) AS age90plus
     FROM Months m
     LEFT JOIN TB_MEMBER t
-        ON TO_CHAR(t.MEM_JOIN_DATE, 'MM') = m.month
+        ON TO_CHAR(t.MEM_JOIN_DATE, 'MM') = LPAD(m.month, 2, '0')
         AND EXTRACT(YEAR FROM t.MEM_JOIN_DATE) = #{year}
-        AND t.MEM_STATUS = 1
+        AND t.MEM_STATUS = 1 AND t.MEM_ADMIN_CHECK = 0
     GROUP BY m.month
     ORDER BY m.month
     ]]>
 	</select>
 
 
+	<!-- 전체 활성화 회원 카운트 : 관리자페이지 회원관리 → 회원상태 변경 -->
 	<update id="updateStatus">
 		UPDATE TB_MEMBER
 		SET MEM_STATUS = #{memStatus}
