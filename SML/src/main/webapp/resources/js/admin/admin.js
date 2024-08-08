@@ -136,22 +136,13 @@ function updateChart() {
         });
 }
 
-// 회원 검색 함수
-function searchMembers() {
-    var category = document.getElementById("searchCategory").value; // 검색 카테고리 가져오기
-    var query = document.getElementById("searchQuery").value; // 검색 쿼리 가져오기
+// 검색 함수
+function search() {
+    var category = document.getElementById("category").value; // 검색 카테고리 가져오기
+    var keyword = document.getElementById("keyword").value; // 검색 쿼리 가져오기
 
     // 검색 로직의 예: 콘솔에 검색어와 카테고리 출력
-    console.log("Searching for " + query + " in category " + category);
-}
-
-// 수강신청 검색 함수
-function searchCourses() {
-    var category = document.getElementById("searchCategory").value; // 검색 카테고리 가져오기
-    var query = document.getElementById("searchQuery").value; // 검색 쿼리 가져오기
-
-    // 검색 로직의 예: 콘솔에 검색어와 카테고리 출력
-    console.log("Searching for " + query + " in category " + category);
+    console.log("Searching for " + keyword + " in category " + category);
 }
 
 // SMS 발송 팝업을 보여주는 함수

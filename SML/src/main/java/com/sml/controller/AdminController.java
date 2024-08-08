@@ -54,7 +54,7 @@ public class AdminController {
 		// 기본 연도에 대한 차트 데이터 추가
 		String year = "2024"; // 기본 연도
 		Map<String, int[]> chartData = service.getAgeGroupCountsByMonth(year);
-		
+
 		// 차트 데이터를 모델에 추가
 		model.addAttribute("chartData", chartData);
 	}
@@ -80,6 +80,20 @@ public class AdminController {
 			model.addAttribute("listCheck", "empty");
 		}
 
+	}
+
+	// 멤버 검색
+	@PostMapping(value = "members/search")
+	public String getMemberList(@RequestParam String category, @RequestParam String keyword, Model model) {
+		logger.info("검색 카테고리: " + category + ", 검색어: " + keyword);
+
+		List<MemberVO> members = service.getMemberList(category, keyword);
+		model.addAttribute("members", members);
+		model.addAttribute("totalCount", members.size());
+		model.addAttribute("category", category);
+		model.addAttribute("category", keyword);
+
+		return "admin/members"; // 검색 결과를 포함한 뷰를 반환합니다.
 	}
 
 	@PostMapping(value = "updateAdm")

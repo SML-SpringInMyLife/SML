@@ -22,9 +22,9 @@
 						<option value="courseName">수업명</option>
 						<option value="enrolleeName">성명</option>
 						<option value="phone">전화번호</option>
-					</select> <input type="text" id="searchQuery" class="search-bar"
-						placeholder="검색어를 입력하세요.">
-					<button onclick="searchCourses()">검색</button>
+					</select> <input type="text" id="search" class="search-bar"
+						placeholder="검색어를 입력하세요." name="keyword">
+					<button onclick="search()">검색</button>
 				</div>
 
 				<table class="course-table">

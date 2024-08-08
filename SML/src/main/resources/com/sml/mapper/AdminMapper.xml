@@ -29,8 +29,30 @@
 	<!-- 전체 회원 정보 가져오기 : 관리자페이지 회원관리 -->
 	<select id="getMemberList" resultType="com.sml.model.MemberVO"
 		resultMap="userResultMap">
-		SELECT * FROM TB_MEMBER ORDER BY MEM_ADMIN_CHECK DESC,
-		MEM_NAME
+		SELECT * FROM TB_MEMBER
+		<where>
+			<if test="category != null and category == 'all'">
+				(
+				MEM_ID LIKE '%' || #{keyword} || '%'
+				OR MEM_NAME LIKE '%' || #{keyword} || '%'
+				OR MEM_PHONE LIKE '%' || #{keyword} || '%'
+				)
+			</if>
+			<if test="category != null and category != 'all'">
+				<choose>
+					<when test="category == 'id'">
+						MEM_ID LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="category == 'name'">
+						MEM_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="category == 'phone'">
+						MEM_PHONE LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
+		ORDER BY MEM_ADMIN_CHECK DESC, MEM_NAME
 	</select>
 
 	<!-- 전체 활성화 회원 카운트 : 관리자페이지 메인① (관리자 제외) -->
@@ -94,7 +116,8 @@
 	<!-- 관리자페이지 회원관리 → 관리권한 변경 -->
 	<update id="updateAdm">
 		UPDATE TB_MEMBER
-		SET MEM_ADMIN_CHECK = #{memAdminCheck}
+		SET MEM_ADMIN_CHECK =
+		#{memAdminCheck}
 		WHERE
 		MEM_CODE = #{memCode}
 	</update>

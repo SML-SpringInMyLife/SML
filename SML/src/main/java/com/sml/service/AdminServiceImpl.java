@@ -27,12 +27,17 @@ public class AdminServiceImpl implements AdminService {
 	public List<MemberVO> getMemberList() throws Exception {
 		return adminMapper.getMemberList();
 	}
-	
+
+	@Override
+	public List<MemberVO> getMemberList(String category, String keyword) {
+		return adminMapper.getMemberList(category, keyword);
+	}
+
 	@Override
 	public void updateAdm(@Param("memCode") int memCode, @Param("memAdminCheck") int memAdminCheck) throws Exception {
 		adminMapper.updateAdm(memCode, memAdminCheck);
 	}
-	
+
 	@Override
 	public void updateStatus(@Param("memCode") int memCode, @Param("memStatus") int memStatus) throws Exception {
 		adminMapper.updateStatus(memCode, memStatus);
@@ -42,6 +47,7 @@ public class AdminServiceImpl implements AdminService {
 	public int getMemberCnt() throws Exception {
 		return adminMapper.getMemberCnt();
 	}
+
 
 	@Override
 	public Map<String, Integer> getAgeGroupCnt() throws Exception {

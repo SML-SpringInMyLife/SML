@@ -17,18 +17,17 @@
 			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
 			<div class="admin-main-content">
 				<h2>회원 목록</h2>
-				<div class="search-container">
-					<select id="searchCategory">
+				<form action="/admin/members/search" method="post"
+					class="search-container">
+					<select id="category" name="category">
 						<option value="all">전체</option>
 						<option value="id">ID</option>
 						<option value="name">성명</option>
 						<option value="phone">전화번호</option>
-						<option value="admCheck">회원구분</option>
-						<option value="status">회원상태</option>
-					</select> <input type="text" id="searchQuery" class="search-bar"
-						placeholder="검색어를 입력하세요.">
-					<button onclick="searchMembers()">검색</button>
-				</div>
+					</select> <input type="text" id="search" class="search-bar"
+						placeholder="검색어를 입력하세요." name="keyword">
+					<button onclick="search()">검색</button>
+				</form>
 				<table class="member-table">
 					<thead>
 						<tr>
