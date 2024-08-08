@@ -11,6 +11,10 @@ public interface AdminService {
 
 	public List<MemberVO> getMemberList() throws Exception;
 
+	public List<MemberVO> getMemberList(String category, String keyword);
+
+	public void updateAdm(@Param("memCode") int memCode, @Param("memAdminCheck") int memAdminCheck) throws Exception;
+
 	public void updateStatus(@Param("memCode") int memCode, @Param("memStatus") int memStatus) throws Exception;
 
 	public int getMemberCnt() throws Exception;;
@@ -18,6 +22,5 @@ public interface AdminService {
 	public Map<String, Integer> getAgeGroupCnt() throws Exception;
 
 	public Map<String, int[]> getAgeGroupCountsByMonth(String year) throws Exception ;
-
 
 }
