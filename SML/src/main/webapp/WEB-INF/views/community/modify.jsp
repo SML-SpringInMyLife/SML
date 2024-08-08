@@ -23,7 +23,7 @@
 				<form id="modifyForm" action="community/modify" method="post">
 					<div class="form_section_title">
 						<div class="form_section_title">
-							<label>#</label>
+							<label>글 제목</label>
 						</div>
 						<div class="form_section_content">
 							<input name="commTitle" value="<c:out value='${communityDetail.commTitle}'/>">
@@ -40,6 +40,11 @@
 						</div>
 						<div class="form_section_content">
 							<input class="input_block" type="text" name="enrollDate" readonly="readonly" value="<fmt:formatDate value="${communityDetail.enrollDate}" pattern="yyyy-mm-dd"/>">
+							<br>
+							<c:if test="${not empty communityDetail.modifyDate}">
+                                <fmt:formatDate value="${communityDetail.modifyDate}" pattern="yyyy-MM-dd" var="formattedModifyDate"/>
+                                <small class="small-text">마지막 수정일 : <c:out value="${formattedModifyDate}"/></small>
+                            </c:if>
 						</div>
 						<div class="form_section_title">
 							<label>게시글 내용</label>
@@ -54,11 +59,11 @@
 							<input class="input_block" name="commCount" readonly="readonly" value="<c:out value='${communityDetail.commCount}'/>"/>
 						</div>
 					</div>
+					<div class="btn_section">
+						<button id="cancelBtn" class="btn">취소</button>
+						<button id="modifyBtn" class="btn">수정</button>
+					</div>
 				</form>
-				<div class="btn_section">
-					<button id="cancelBtn" class="btn">취소</button>
-					<button id="modifyBtn" class="btn">수정</button>
-				</div>
 			</div>	
 		</div>
 		
@@ -84,6 +89,7 @@
 		let moveForm = $("#moveForm");
 		// 취소 버튼
 		$("#cancelBtn").on("click", function(e){
+			alert("취소 버튼");
 			e.preventDefault();
 
 			moveForm.attr("action", "/community/detail")
@@ -93,7 +99,10 @@
 		let modifyForm = $("#modifyForm");
 		// 수정 페이지 이동 버튼 
 		$("#modifyBtn").on("click", function(e){
+			alert("수정 버튼");
+			
 			let commTitle = $(".form_section_content input[name='commTitle']").val();
+			
 			let titleCheck = false; 
 			
 			e.preventDefault();

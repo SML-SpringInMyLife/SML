@@ -7,18 +7,21 @@
 <title>게시글 상세 페이지</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 <link rel="stylesheet" href="../resources/css/community/community.css">
+
+<script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script	src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 <style>
+        /* 게시글 상세 내용 스타일 */
         .community-container {
+            flex: 1;
             padding: 20px;
-            font-family: Arial, sans-serif;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .community-boardDetail-wrap {
             margin-top: 20px;
-            background-color: #f9f9f9;
-            border-radius: 8px;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
 
         .community_boardDetail {
@@ -29,29 +32,30 @@
         .community_boardDetail td {
             padding: 12px;
             border: 1px solid #ddd;
-            text-align: left;
+            vertical-align: top;
         }
 
-        .community_boardDetail .th_column {
-            width: 15%;
+        .community_boardDetail .label {
             font-weight: bold;
+            width: 150px; /* 레이블 열의 폭을 설정합니다. */
             background-color: #f2f2f2;
         }
 
-        .community_boardDetail .content_column {
+        .community_boardDetail input.input_block {
             width: 100%;
-            font-weight: normal;
-            background-color: #fff;
-        }
-
-        .input_block {
-            width: 100%;
-            padding: 8px;
+            padding: 10px;
             font-size: 16px;
             border: 1px solid #ddd;
             border-radius: 4px;
             background-color: #fff;
             box-sizing: border-box;
+        }
+
+        .community_boardDetail small {
+            display: block;
+            font-size: 14px; /* 수정일의 폰트 크기 */
+            color: #666; /* 수정일의 색상 */
+            margin-top: 5px; /* 수정일과 다른 내용 간의 간격 */
         }
 
         .btn_section {
@@ -79,11 +83,11 @@
             cursor: not-allowed;
         }
 
-        .table_empty {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 18px;
-            color: #999;
+        /* 게시글 내용 크게 */
+        .community_boardDetail .content {
+            font-size: 16px;
+            height: 200px; /* 원하는 높이로 조정 */
+            overflow-y: auto; /* 내용이 넘칠 경우 스크롤 추가 */
         }
     </style>
 
@@ -100,36 +104,38 @@
 			<div class="community-boardDetail-wrap">
 				<table class="community_boardDetail">
 					<tr>
-						<td class="th_column_1">글 제목</td>
+						<td>글 제목</td>
 						<td>
 							<input class="input_block" name="commTitle" readonly="readonly" value="<c:out value='${communityDetail.commTitle}'/>"/>
 						</td>
-						<td class="th_column_2">작성자</td>
+					</tr>
+					<tr>
+						<td>작성자</td>
 						<td>
 							<input class="input_block" name="commWriter" readonly="readonly" value="<c:out value='${communityDetail.commWriter}'/>"/>
 						</td>
-						<td class="th_column_3">등록일</td>
+					</tr>
+					<tr>
+						<td>등록일</td>
 						<td>
 							<fmt:formatDate value="${communityDetail.enrollDate}" pattern="yyyy-MM-dd" var="formattedEnrollDate"/>
 							<input class="input_block" name="enrollDate" readonly="readonly" value="<c:out value='${formattedEnrollDate}'/>"/>
+							<br>
+							<c:if test="${not empty communityDetail.modifyDate}">
+                                <fmt:formatDate value="${communityDetail.modifyDate}" pattern="yyyy-MM-dd" var="formattedModifyDate"/>
+                                <small class="small-text">마지막 수정일 : <c:out value="${formattedModifyDate}"/></small>
+                            </c:if>
 						</td>
-						<td class="th_column_4">수정일</td>
-						<td>
-							<fmt:formatDate value="${communityDetail.modifyDate}" pattern="yyyy-MM-dd" var="formattedModifyDate"/>
-							<input class="input_block" name="modifyDate" readonly="readonly" value="<c:out value='${formattedModifyDate}'/>"/>
-						</td>
-						<td class="th_column_4">게시글 내용</td>
-						<td>
-							<input class="input_block" name="commContent" readonly="readonly" value="<c:out value='${communityDetail.commContent}'/>"/>
-						</td>
-						<td class="th_column_5">조회수</td>
+						<td>조회수</td>
 						<td>
 							<input class="input_block" name="commCount" readonly="readonly" value="<c:out value='${communityDetail.commCount}'/>"/>
 						</td>
 					</tr>
 					<tr>
-						<td>댓글</td>
-						<td>댓글 내용 들어갈 자리</td>
+						<td>게시글 내용</td>
+						<td>
+							<input class="input_block" name="commContent" readonly="readonly" value="<c:out value='${communityDetail.commContent}'/>"/>
+						</td>
 					</tr>
 				</table>
 				<div class="btn_section">
@@ -137,8 +143,17 @@
 					<button id="BoardListBtn" class="btn">목록</button>
 					<button id="modifyBtn" class="btn">수정</button>
 				</div>
-			</div>	
-		</div>
+			</div>
+			<div class="community-reply">
+				<h3>댓글</h3>
+				<form id="reply">
+					<textarea id="replyContent" name="content" rows="4" cols="50" placeholder="댓글을 입력하세요..."></textarea>
+        			<button type="button" id="submitReply" class="btn">댓글 등록</button>
+    			</form>
+   					<div id="replyList">
+        				<!-- 댓글 목록이 여기에 표시됩니다 -->
+    				</div>
+			</div>
 		
 		<form id="moveForm" method="get">
         	<input type="hidden" name="commCode" value='<c:out value="${communityDetail.commCode }"/>'>
@@ -156,11 +171,18 @@
 		
 		// delete 버튼
 		$("deleteBtn").on("click", function(e){
-			e.preventDefault();
+			alert("삭제 버튼");
+			/* e.preventDefault();
+			moveForm.find("input").remove();
+			moveForm.append('<input type="hidden" name="commCode" value="${communityDetail.commCode}">');
+			moveForm.attr("action", "/community/delete");
+			moveForm.attr("method", "post");
+			moveForm.submit(); */
 		});
 
 		// 목록으로 이동 버튼
 		$("#BoardListBtn").on("click", function(e){
+			alert("없어져라!");
 			e.preventDefault();
 		
 			$("input[name=commCode]").remove();
@@ -174,6 +196,68 @@
 			moveForm.attr("action", "/community/modify");
 			moveForm.submit();
 		});
+		$(document).ready(function() {
+	        // 댓글 등록 버튼 클릭 이벤트
+	        $("#submitReply").on("click", function(e) {
+	            e.preventDefault();
+	            
+	            // 댓글 내용
+	            let replyContent = $("#replyContent").val();
+	            
+	            // 댓글 내용이 비어있지 않은지 확인
+	            if ($.trim(replyContent) === "") {
+	                alert("댓글 내용을 입력하세요.");
+	                return;
+	            }
+	            
+	            $.ajax({
+	                url: '/reply/enroll',
+	                type: 'POST',
+	                contentType: 'application/json; charset=utf-8',
+	                data: JSON.stringify({
+	                    commCode: $('input[name="commCode"]').val(),
+	                    content: replyContent
+	                }),
+	                success: function(response) {
+	                    // 댓글이 성공적으로 등록되면 댓글 목록을 업데이트
+	                    loadReplies();
+	                },
+	                error: function(xhr, status, error) {
+	                    alert("댓글 등록 실패: " + error);
+	                }
+	            });
+	        });
+
+	        // 댓글 목록을 로드하는 함수
+	        function loadReplies() {
+	            $.ajax({
+	                url: '/reply/list',
+	                type: 'GET',
+	                data: { commCode: $('input[name="commCode"]').val() },
+	                success: function(response) {
+	                    let replyList = $("#replyList");
+	                    replyList.empty();
+	                    
+	                    // 댓글 목록을 동적으로 생성
+	                    $.each(response.replies, function(index, reply) {
+	                        replyList.append(`
+	                            <div class="reply-item">
+	                                <p>${reply.content}</p>
+	                                <small>작성일: ${reply.date}</small>
+	                            </div>
+	                        `);
+	                    });
+	                },
+	                error: function(xhr, status, error) {
+	                    alert("댓글 목록 로드 실패: " + error);
+	                }
+	            });
+	        }
+
+	        // 페이지 로드 시 댓글 목록을 로드
+	        loadReplies();
+	    });
+		
 	</script>
 </body>
 </html>
