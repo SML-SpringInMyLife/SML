@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sml.mapper.LocationMapper">
+
+    <insert id="save" parameterType="com.sml.model.LocationVO">
+        INSERT INTO SEARCH_HISTORY (SEARCH_CODE, SEARCH_KEYWORD, SEARCH_TIME)
+        VALUES (search_history_seq.NEXTVAL, #{searchKeyword}, #{searchTime})
+    </insert>
+    
+    <select id="getRecentSearches" resultType="com.sml.model.LocationVO">
+        <![CDATA[
+        SELECT SEARCH_KEYWORD as searchKeyword
+        FROM (SELECT SEARCH_KEYWORD FROM SEARCH_HISTORY ORDER BY SEARCH_CODE DESC)
+        WHERE ROWNUM <= 10
+        ]]>
+    </select>
+
+</mapper>
