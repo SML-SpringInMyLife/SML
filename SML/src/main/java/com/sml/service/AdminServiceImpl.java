@@ -1,10 +1,13 @@
 package com.sml.service;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +19,23 @@ import lombok.extern.log4j.Log4j;
 @Service
 @Log4j
 public class AdminServiceImpl implements AdminService {
-
+	private static final Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
 	@Autowired
 	AdminMapper adminMapper;
 
 	@Override
 	public List<MemberVO> getMemberList() throws Exception {
 		return adminMapper.getMemberList();
+	}
+
+	@Override
+	public List<MemberVO> getMemberList(String category, String keyword) {
+		return adminMapper.getMemberList(category, keyword);
+	}
+
+	@Override
+	public void updateAdm(@Param("memCode") int memCode, @Param("memAdminCheck") int memAdminCheck) throws Exception {
+		adminMapper.updateAdm(memCode, memAdminCheck);
 	}
 
 	@Override
@@ -53,30 +66,28 @@ public class AdminServiceImpl implements AdminService {
 		int[] age80s = new int[12];
 		int[] age90plus = new int[12];
 
-		for (Map<String, Object> row : result) {
-			String month = (String) row.get("month");
-			Integer monthIndex = null;
-			if (month != null) {
-				try {
-					monthIndex = Integer.parseInt(month) - 1;
-				} catch (NumberFormatException e) {
-					// month가 올바르지 않은 형식일 경우, 로그를 기록하거나 기본값을 사용
-					monthIndex = -1; // 이 경우에는 예외를 피하기 위해 -1로 설정
-				}
-			}
+		// 결과가 null이 아니고 비어 있지 않을 경우에만 처리
+		if (result != null && !result.isEmpty()) {
+			for (Map<String, Object> row : result) {
+				if (row != null) {
+					Integer monthIndex = ((Number) row.get("MONTH")).intValue() - 1;
 
-			// monthIndex가 유효한지 확인
-			if (monthIndex != null && monthIndex >= 0 && monthIndex < 12) {
-				under50[monthIndex] = (row.get("under50") != null) ? ((Number) row.get("under50")).intValue() : 0;
-				age50s[monthIndex] = (row.get("age50s") != null) ? ((Number) row.get("age50s")).intValue() : 0;
-				age60s[monthIndex] = (row.get("age60s") != null) ? ((Number) row.get("age60s")).intValue() : 0;
-				age70s[monthIndex] = (row.get("age70s") != null) ? ((Number) row.get("age70s")).intValue() : 0;
-				age80s[monthIndex] = (row.get("age80s") != null) ? ((Number) row.get("age80s")).intValue() : 0;
-				age90plus[monthIndex] = (row.get("age90plus") != null) ? ((Number) row.get("age90plus")).intValue() : 0;
+					if (monthIndex >= 0 && monthIndex < 12) {
+						under50[monthIndex] = (row.get("UNDER50") != null) ? ((Number) row.get("UNDER50")).intValue()
+								: 0;
+						age50s[monthIndex] = (row.get("AGE50S") != null) ? ((Number) row.get("AGE50S")).intValue() : 0;
+						age60s[monthIndex] = (row.get("AGE60S") != null) ? ((Number) row.get("AGE60S")).intValue() : 0;
+						age70s[monthIndex] = (row.get("AGE70S") != null) ? ((Number) row.get("AGE70S")).intValue() : 0;
+						age80s[monthIndex] = (row.get("AGE80S") != null) ? ((Number) row.get("AGE80S")).intValue() : 0;
+						age90plus[monthIndex] = (row.get("AGE90PLUS") != null)
+								? ((Number) row.get("AGE90PLUS")).intValue()
+								: 0;
+					}
+				}
 			}
 		}
 
-		// 결과를 차트 데이터로 변환
+		// 차트 데이터에 배열 추가
 		chartData.put("under50", under50);
 		chartData.put("age50s", age50s);
 		chartData.put("age60s", age60s);
@@ -84,7 +95,13 @@ public class AdminServiceImpl implements AdminService {
 		chartData.put("age80s", age80s);
 		chartData.put("age90plus", age90plus);
 
+		// 콘솔에 로그 출력 (디버깅용)
+		for (Map.Entry<String, int[]> entry : chartData.entrySet()) {
+			String ageGroup = entry.getKey();
+			int[] monthlyCounts = entry.getValue();
+			logger.info("Age Group: {} - Monthly Counts: {}", ageGroup, Arrays.toString(monthlyCounts));
+		}
+
 		return chartData;
 	}
-
 }

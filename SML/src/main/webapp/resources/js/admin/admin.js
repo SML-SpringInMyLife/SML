@@ -1,7 +1,5 @@
 // DOM이 완전히 로드된 후 실행되는 코드
 document.addEventListener('DOMContentLoaded', function() {
-
-
     // 현재 경로의 메뉴 항목에 'active' 클래스를 추가하는 코드
     var currentPath = window.location.pathname;
     var menuItems = document.querySelectorAll('.admin-menu ul li a');
@@ -33,24 +31,118 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Chart.js를 사용하여 차트를 설정하고 업데이트하는 부분
+var registrationChart;
 
+function setupChart() {
+    var ctx = document.getElementById('registrationChart').getContext('2d');
 
-// 회원 검색 함수
-function searchMembers() {
-    var category = document.getElementById("searchCategory").value; // 검색 카테고리 가져오기
-    var query = document.getElementById("searchQuery").value; // 검색 쿼리 가져오기
+    registrationChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['1월', '2월', '3월', '4월', '5월', '6월', '7월', '8월', '9월', '10월', '11월', '12월'],
+            datasets: [
+                {
+                    label: '50대 미만',
+                    borderColor: 'blue',
+                    backgroundColor: 'rgba(0, 0, 255, 0.1)',
+                    data: []
+                },
+                {
+                    label: '50대',
+                    borderColor: 'red',
+                    backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                    data: []
+                },
+                {
+                    label: '60대',
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(0, 255, 0, 0.1)',
+                    data: []
+                },
+                {
+                    label: '70대',
+                    borderColor: 'purple',
+                    backgroundColor: 'rgba(128, 0, 128, 0.1)',
+                    data: []
+                },
+                {
+                    label: '80대',
+                    borderColor: 'orange',
+                    backgroundColor: 'rgba(255, 165, 0, 0.1)',
+                    data: []
+                },
+                {
+                    label: '90대 이상',
+                    borderColor: 'brown',
+                    backgroundColor: 'rgba(165, 42, 42, 0.1)',
+                    data: []
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                x: {
+                    beginAtZero: true
+                },
+                y: {
+                    beginAtZero: true,
+                    min: 0,
+                    max: 30,
+                    ticks: {
+                        stepSize: 1,
+                        callback: function(value) {
+                            return value; // y축 레이블 표시
+                        }
+                    }
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        label: function(tooltipItem) {
+                            let datasetLabel = tooltipItem.dataset.label || '';
+                            let value = tooltipItem.raw; // Chart.js v3 및 v4에서는 tooltipItem.raw를 사용하여 값 가져옴
+                            
+                            // 툴팁 레이블에 값 뒤에 "이름"을 추가합니다.
+                            return `${datasetLabel}: ${value} 명`;
+                        }
+                    }
+                }
+            }
+        }
+    });
 
-    // 검색 로직의 예: 콘솔에 검색어와 카테고리 출력
-    console.log("Searching for " + query + " in category " + category);
+    // 초기 데이터로 차트 업데이트
+    updateChart();
 }
 
-// 수강신청 검색 함수
-function searchCourses() {
-    var category = document.getElementById("searchCategory").value; // 검색 카테고리 가져오기
-    var query = document.getElementById("searchQuery").value; // 검색 쿼리 가져오기
+// 차트를 업데이트하는 함수
+function updateChart() {
+    var year = document.getElementById('yearSelect').value;
+
+    fetch('/admin/getDataForYear?year=' + year)
+        .then(response => response.json())
+        .then(data => {
+            registrationChart.data.datasets[0].data = data.under50;
+            registrationChart.data.datasets[1].data = data.age50s;
+            registrationChart.data.datasets[2].data = data.age60s;
+            registrationChart.data.datasets[3].data = data.age70s;
+            registrationChart.data.datasets[4].data = data.age80s;
+            registrationChart.data.datasets[5].data = data.age90plus;
+
+            registrationChart.update();
+        });
+}
+
+// 검색 함수
+function search() {
+    var category = document.getElementById("category").value; // 검색 카테고리 가져오기
+    var keyword = document.getElementById("keyword").value; // 검색 쿼리 가져오기
 
     // 검색 로직의 예: 콘솔에 검색어와 카테고리 출력
-    console.log("Searching for " + query + " in category " + category);
+    console.log("Searching for " + keyword + " in category " + category);
 }
 
 // SMS 발송 팝업을 보여주는 함수
@@ -116,10 +208,7 @@ function popupSearchMember() {
     var query = document.getElementById('popupSearchQuery').value; // 검색 쿼리 가져오기
 
     // 샘플 데이터: 실제로는 AJAX 호출을 통해 서버에서 검색 결과를 받아옴
-    var sampleResults = [
-        { id: '1', name: '홍길동', phone: '010-9193-3200' },
-        { id: '2', name: '임꺽정', phone: '010-9876-5432' }
-    ];
+    var searchResults = [];
 
     // 쿼리로 필터링된 결과
     var filteredResults = sampleResults.filter(function(result) {
@@ -240,7 +329,7 @@ function createChatBox(sender) {
 function sendMessage(receiver) {
     var inputElement = document.getElementById('input-' + receiver); // 입력 필드 가져오기
     var messageContent = inputElement.value; // 메시지 내용 가져오기
-    if(messageContent && stompClient) {
+    if (messageContent && stompClient) {
         var chatMessage = {
             sender: '관리자',
             content: messageContent,
