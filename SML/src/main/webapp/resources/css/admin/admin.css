@@ -77,6 +77,10 @@
 	margin-bottom: 1rem;
 }
 
+admin-main-content {
+	max-width : 974px;
+}
+
 .search-container select, .search-container input, .search-container button
 	{
 	margin-left: 0.5rem;
@@ -221,6 +225,7 @@
 /* SMS Popup 영역*/
 /* 회원검색 결과 */
 .sms-popup, .smsDetail-popup, .chatDetail-Popup {
+	margin: 0;
 	display: none;
 	position: fixed;
 	z-index: 950;
@@ -336,6 +341,17 @@
 		padding-left: 50%; /* 레이블을 위한 공간 확보 */
 		vertical-align: middle;
 		white-space: nowrap; /* 줄 바꿈 방지 */
+	}
+
+	/* 데이터 셀에 flexbox를 사용하여 버튼 오른쪽 정렬 */
+	.member-table td {
+		display: flex; /* 플렉스박스 레이아웃 적용 */
+		justify-content: flex-end; /* 아이템을 오른쪽으로 정렬 */
+	}
+
+	/* 버튼 간 간격 추가 */
+	.member-table td button {
+		margin-left: 10px; /* 버튼 간 간격 추가 */
 	}
 
 	/* 데이터 셀의 가상 요소에 데이터 레이블 표시 */

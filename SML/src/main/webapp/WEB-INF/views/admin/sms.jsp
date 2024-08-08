@@ -70,15 +70,16 @@
 		<div class="sms-popup-content">
 			<span class="close" onclick="closeSmsPopup()">&times;</span>
 			<h2>SMS 발송</h2>
-			<div class="search-container">
-				<select id="popupSearchCategory">
+			<form id="searchForm" onsubmit="return false;"
+				class="search-container">
+				<select id="popupSearchCategory" name="category">
 					<option value="name">성명</option>
 					<option value="id">ID</option>
 					<option value="phone">전화번호</option>
 				</select> <input type="text" class="search-bar" id="popupSearchQuery"
-					placeholder="검색어를 입력하세요.">
-				<button onclick="popupSearchMember()">검색</button>
-			</div>
+					placeholder="검색어를 입력하세요." name="keyword">
+				<button type="button" onclick="popupSearchMember()">검색</button>
+			</form>
 			<div>
 				<ul id="searchResults"></ul>
 			</div>
@@ -94,10 +95,11 @@
 					<label for="smsContent" class="sms-label">내용:</label>
 					<textarea id="smsContent" name="smsContent" rows="4" cols="50"></textarea>
 				</div>
-				<button type="submit" class="send-button" onclick="sendSms()">보내기</button>
+				<button type="submit" class="send-button">보내기</button>
+			</form>
 		</div>
-		</form>
 	</div>
+
 
 	<!-- SMS 상세보기 팝업 -->
 	<div id="smsDetailsPopup" class="smsDetail-popup">

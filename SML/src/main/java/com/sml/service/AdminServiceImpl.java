@@ -48,7 +48,6 @@ public class AdminServiceImpl implements AdminService {
 		return adminMapper.getMemberCnt();
 	}
 
-
 	@Override
 	public Map<String, Integer> getAgeGroupCnt() throws Exception {
 		return adminMapper.getAgeGroupCnt();

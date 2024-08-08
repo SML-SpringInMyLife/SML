@@ -23,6 +23,4 @@ public interface AdminService {
 
 	public Map<String, int[]> getAgeGroupCountsByMonth(String year) throws Exception ;
 
-
-
 }

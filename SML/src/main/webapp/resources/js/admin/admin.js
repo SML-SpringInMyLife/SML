@@ -208,10 +208,7 @@ function popupSearchMember() {
     var query = document.getElementById('popupSearchQuery').value; // 검색 쿼리 가져오기
 
     // 샘플 데이터: 실제로는 AJAX 호출을 통해 서버에서 검색 결과를 받아옴
-    var sampleResults = [
-        { id: '1', name: '홍길동', phone: '010-9193-3200' },
-        { id: '2', name: '임꺽정', phone: '010-9876-5432' }
-    ];
+    var searchResults = [];
 
     // 쿼리로 필터링된 결과
     var filteredResults = sampleResults.filter(function(result) {

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -91,7 +92,7 @@ public class AdminController {
 		model.addAttribute("members", members);
 		model.addAttribute("totalCount", members.size());
 		model.addAttribute("category", category);
-		model.addAttribute("category", keyword);
+		model.addAttribute("keyword", keyword);
 
 		return "admin/members"; // 검색 결과를 포함한 뷰를 반환합니다.
 	}
@@ -154,8 +155,19 @@ public class AdminController {
 
 	}
 
+	@PostMapping("sms/sendSearch")
+	public ResponseEntity<List<MemberVO>> searchMembers(@RequestParam String category, @RequestParam String keyword) {
+		logger.info("검색 카테고리: " + category + ", 검색어: " + keyword);
+
+		// 회원 목록을 검색하는 서비스 호출
+		List<MemberVO> members = service.getMemberList(category, keyword);
+
+		// 클라이언트에 MemberVO 객체 리스트를 직접 반환
+		return ResponseEntity.ok(members); // 검색 결과를 JSON으로 반환
+	}
+
 	@PostMapping(value = "sendSms.do")
-	public String sendSms(HttpServletRequest request) throws Exception {
+	public String sendSmsPost(HttpServletRequest request) throws Exception {
 
 		// SMS 전송을 위한 파라미터 설정
 		HashMap<String, String> set = new HashMap<>();
