@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,7 +13,8 @@
 <!-- 헤더 css -->
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- jQuery 로드 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 
@@ -36,6 +38,9 @@
 				</div>
 			</div>
 			
+			<!-- 게시물 O -->
+				<c:if test="${listCheck != 'empty'}">
+				
 			<div class="category">
 			<select>
 			  <option>카테고리</option> <!-- 카테고리를 클릭 했을 때, 원래 목록페이지로 돌아오기 -->
@@ -55,63 +60,53 @@
 						<th>좋아요</th>
 					</tr>
 				</thead>
+				
+				<c:forEach items="${list}" var="notice">
 				<tbody>
 					<tr>
-						<td>5</td>
-						<td>사이트 이용안내</td>
-						<td>2024-00-00</td>
-						<td>0</td>
-						<td>1</td>
-					</tr>
-					<tr>
-						<td>4</td>
-						<td>사이트 이용안내</td>
-						<td>2024-00-00</td>
-						<td>0</td>
-						<td>1</td>
-					</tr>
-					<tr>
-						<td>3</td>
-						<td>사이트 이용안내</td>
-						<td>2024-00-00</td>
-						<td>0</td>
-						<td>1</td>
-					</tr>
-					<tr>
-						<td>2</td>
-						<td>사이트 이용안내</td>
-						<td>2024-00-00</td>
-						<td>0</td>
-						<td>1</td>
-					</tr>
-					<tr>
-						<td>1</td>
-						<td>사이트 이용안내</td>
-						<td>2024-00-00</td>
-						<td>0</td>
-						<td>1</td>
+						<td><c:out value="${notice.noticeCode}" /></td>
+						<td><c:out value="${notice.noticeTitle}" /></td>
+						<td><fmt:formatDate value="${notice.noticeEnroll}" pattern="yyyy-MM-dd"/></td>
+						<td><c:out value="${notice.noticeCount}" /></td>
+						<td><c:out value="${notice.noticeLike}" /></td>
 					</tr>
 				</tbody>
+				</c:forEach>
 			</table>
+			
+			</c:if>
+			
 			<div class="button-container">
-				<button onclick="">글쓰기</button>
+				<button id="write">글쓰기</button>
+			</div>
 			</div>
 			<div class="pagination">
             <button class="page-btn active">1</button>
             <button class="page-btn">2</button>
             <button class="page-btn">3</button>
         </div>
-        <script>
-        document.querySelectorAll('.page-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                document.querySelectorAll('.page-btn').forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-    </script>
+      
+       
 	</main>
 	<!-- 푸터 영역 포함 -->
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
+
+     <script>
+     /* 글쓰기 버튼 */
+     $("#write").click(function(){
+     location.href="/notice/enroll"
+     });
+      
+        let result = '<c:out value="${enroll_result}"/>';
+        checkResult(result);
+        
+        function checkResult(result){
+            if(result === ''){
+                return;
+            }		        
+            alert("글'${enroll_result}' 을 등록하였습니다.");        
+        }
+    </script>
 </body>
 </html>

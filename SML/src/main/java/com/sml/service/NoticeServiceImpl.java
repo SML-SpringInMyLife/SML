@@ -15,8 +15,22 @@ public class NoticeServiceImpl implements NoticeService {
 	@Autowired 
 	NoticeMapper noticeMapper;
 
+	@Override  //게시글 등록
+	public void noticeRegister(NoticeVO notice) throws Exception {
+		
+	    noticeMapper.noticeRegister(notice);
+	}
+
+	@Override  //게시글 조회
+	public List<NoticeVO> noticeGetList() throws Exception {
+		  
+		return noticeMapper.noticeGetList();
+	}
+    
+	
+	/*
 	@Override
-	public void noticeRegisterfile(NoticeVO notice,List<FileupVO> fileup) {
+	public void noticeRegisterfile(NoticeVO notice,List<FileupVO> fileup) throws Exception  {
 		 // 공지사항 등록
         noticeMapper.noticeRegister(notice);
 
@@ -29,7 +43,7 @@ public class NoticeServiceImpl implements NoticeService {
 		
 	}
 
-	
+	*/
 	
 	
 	
