@@ -31,7 +31,7 @@ if (pagePath == null || pagePath.isEmpty()) {
 			<li><a href="/member/myinfo">회원정보 수정</a></li>
 			<li><a href="/member/mycourses">수강신청 내역</a></li>
 			<li><a href="/member/point">적립금 내역</a></li>
-			<li><a href="/member/dailycheck">출석 체크</a></li>			
+			<li><a href="/member/memberCheck">출석 체크</a></li>			
 		</ul>
 	</nav>
 <script src="${webappRoot}/resources/js/member/mypage.js"></script>
