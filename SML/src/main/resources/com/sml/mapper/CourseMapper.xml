@@ -6,17 +6,17 @@
 <mapper namespace="com.sml.mapper.CourseMapper">
 
 	<insert id="courseEnroll">
-    	INSERT INTO COURSE (CCAT_CODE, COURSE_NAME, COURSE_CONTENT, COURSE_LIMIT, COURSE_START_DATE, COURSE_END_DATE, TEA_CODE, COURSE_START_TIME, COURSE_END_TIME, COURSE_DAY) VALUES (
-        	#{ccatCode},
-        	#{courseName},
-        	#{courseContent},
-        	#{courseLimit},
-        	#{startDate},
-        	#{endDate},
-        	#{teacherCode},
-        	#{startTime},
-        	#{endTime},
-        	#{courseDay}
+    	INSERT INTO COURSE (COURSE_NAME, CCAT_CODE, COURSE_CONTENT, COURSE_LIMIT, COURSE_START_DATE, COURSE_END_DATE, TEA_CODE, COURSE_START_TIME, COURSE_END_TIME, COURSE_DAY) VALUES (
+        	#{courseName, jdbcType=VARCHAR},
+        	#{ccatCode, jdbcType=INTEGER},
+        	#{courseContent, jdbcType=VARCHAR},
+        	#{courseLimit, jdbcType=INTEGER},
+        	#{startDate, jdbcType=DATE},
+        	#{endDate, jdbcType=DATE},
+        	#{teacherCode, jdbcType=INTEGER},
+        	#{startTime, jdbcType=TIMESTAMP},
+        	#{endTime, jdbcType=TIMESTAMP},
+        	#{courseDay, jdbcType=VARCHAR}
     	)
 	</insert>
 

@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sml.model.CourseVO;
 import com.sml.service.CourseService;
 
 @Controller
@@ -28,9 +30,11 @@ public class CourseController {
 	public void courseEnrollGET() throws Exception {
 		logger.info("수업 등록 페이지 진입");
 	}
-
 	@PostMapping("/enroll")
-	public String enrollPOST() throws Exception {
+	public String enrollPOST(CourseVO course, RedirectAttributes rttr) throws Exception {
+		logger.info("enrollPOST......" +course);
+		service.courseEnroll(course);
+		rttr.addFlashAttribute("enroll_result", course.getCourseName());
 		return "redirect:/course/boardList";
 	}
 

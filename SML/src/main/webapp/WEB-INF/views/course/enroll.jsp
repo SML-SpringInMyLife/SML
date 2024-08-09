@@ -31,11 +31,10 @@
 				</div>
 				<div class="form_section">
 					<div class="form_section_title">
-						<label>수업 소개</label>
+						<label>카테고리</label>
 					</div>
 					<div class="form_section_content">
-						<input name="courseContent"> 
-						<span id="warn_courseContent">수업 소개 내용을 입력해주세요.</span>
+						<input name="ccatCode" placeholder="카테고리를 선택해주세요.">
 					</div>
 				</div>
 				<div class="form_section">
@@ -53,9 +52,9 @@
 					</div>
 					<div class="form_section_content">
 						<label for="start_date">개강일</label> 
-							<input type="date" id="start_date" name="courseStartDate"> 
+							<input type="date" id="startDate" name="startDate"> 
 						<label for="end_date">종강일</label> 
-							<input type="date" id="end_date" name="courseEndDate"> 
+							<input type="date" id="endDate" name="endDate"> 
 						<span id="warn_coursePeriod">수강 기간을 선택해주세요.</span>
 					</div>
 				</div>
@@ -64,7 +63,7 @@
 						<label>강사</label>
 					</div>
 					<div class="form_section_content">
-						<input name="courseTeacher"> 
+						<input name="teacherCode"> 
 						<span id="warn_courseTeacher">강사를 선택해주세요.</span>
 					</div>
 				</div>
@@ -74,9 +73,9 @@
 					</div>
 					<div class="form_section_content">
 						<label for="start_time"></label> 
-							<input type="time" id="start_time" name="courseStartTime"> 
+							<input type="time" id="startTime" name="startTime"> 
 						<label for="end_time">~</label>
-							<input type="time" id="end_time" name="courseEndTime"> 
+							<input type="time" id="endTime" name="endTime"> 
 						<span id="warn_courseTime">수강 시간을 선택해주세요.</span>
 					</div>
 				</div>
@@ -87,6 +86,15 @@
 					<div class="form_section_content">
 						<input name="courseDay"> 
 						<span id="warn_courseDay">수강 요일을 선택해주세요.</span>
+					</div>
+				</div>
+				<div class="form_section">
+					<div class="form_section_title">
+						<label>수업 소개</label>
+					</div>
+					<div class="form_section_content">
+						<input name="courseContent"> 
+						<span id="warn_courseContent">수업 소개 내용을 입력해주세요.</span>
 					</div>
 				</div>
 			</form>
