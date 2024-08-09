@@ -16,7 +16,6 @@ import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
 import com.sml.model.PageDTO;
 import com.sml.model.ReplyDTO;
-import com.sml.service.CommunityReplyService;
 import com.sml.service.CommunityService;
 
 @Controller
@@ -27,9 +26,6 @@ public class CommunityController {
 
 	@Autowired
 	private CommunityService service;
-
-	@Autowired
-	private CommunityReplyService replyService;
 
 	@GetMapping("/boardList")
 	public void boardListGET(Criteria cri, Model model) throws Exception {
@@ -63,13 +59,30 @@ public class CommunityController {
 		return "redirect:/community/boardList";
 	}
 
-	@GetMapping({ "/detail", "/modify" })
+	@GetMapping("/detail")
 	public void communityDetailGET(int commCode, Criteria cri, Model model) throws Exception {
 		logger.info(commCode + "번 게시글 상세 페이지 이동");
 		model.addAttribute("cri", cri);
 		model.addAttribute("communityDetail", service.communityDetail(commCode));
+		
+		// 댓글 영역
+		List list = service.listReply();
+		if (!list.isEmpty()) {
+			model.addAttribute("list", list);
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
+		
+		int total = service.communityGetTotal(cri);
+		PageDTO pageMaker = new PageDTO(cri, total);
+		model.addAttribute("pageMaker", pageMaker);
 	}
-
+	@GetMapping("/modify")
+	public void communityModifyGET(int commCode, Criteria cri, Model model) throws Exception {
+		logger.info(commCode + "번 게시글 상세 페이지 이동");
+		model.addAttribute("cri", cri);
+		model.addAttribute("communityDetail", service.communityDetail(commCode));
+	}
 	@PostMapping("/modify")
 	public String modifyPOST(CommunityVO community, RedirectAttributes rttr) throws Exception {
 		logger.info("modifyPOST......" + community);
@@ -95,10 +108,39 @@ public class CommunityController {
 		rttr.addFlashAttribute("delete_result", result);
 		return "redirect:/community/boardList";
 	}
-
+	
+	
+	// 댓글
 	@PostMapping("/reply/enroll")
-	public void enrollReplyPOST(ReplyDTO dto) {
-		replyService.enrollReply(dto);
+	public void enrollReplyPOST(ReplyDTO dto) throws Exception {
+		service.enrollReply(dto);
 	}
-
+	
+//	@GetMapping("/reply/modify")
+//	public void replyModifyGET(int repCode, Criteria cri, Model model) {
+//		model.addAttribute("replyDetail", service.replyModify(repCode));
+//	}
+//	@PostMapping("/reply/modify")
+//	public String replyModifyGET(ReplyDTO reply, RedirectAttributes rttr) throws Exception{
+//		int result = service.replyModify(reply);
+//		rttr.addFlashAttribute("reply_modify_result", result);
+//		return "redirect:/detail";
+//	}
+//	
+//	@PostMapping("/delete")
+//	public String replyDeletePOST(int repCode, RedirectAttributes rttr) throws Exception {
+//		logger.info("deletePOST......");
+//		int result = 0;
+//		try {
+//			result = service.replyDelete(repCode);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			result = 2;
+//			rttr.addFlashAttribute("reply_delete_result", result);
+//			return "redirect:/community/detail";
+//		}
+//		rttr.addFlashAttribute("reply_delete_result", result);
+//		return "redirect:/community/detail";
+//	}
+	
 }
