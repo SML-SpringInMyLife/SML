@@ -12,10 +12,9 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-	<!-- 헤더 영역 포함 -->
+
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
 		<h1>수업 등록</h1>
 		<div class="course-container">
@@ -51,9 +50,9 @@
 						<label>수강 기간</label>
 					</div>
 					<div class="form_section_content">
-						<label for="start_date">개강일</label> 
+						<label>개강일</label>
 							<input type="date" id="startDate" name="startDate"> 
-						<label for="end_date">종강일</label> 
+						<label>종강일</label>
 							<input type="date" id="endDate" name="endDate"> 
 						<span id="warn_coursePeriod">수강 기간을 선택해주세요.</span>
 					</div>
@@ -94,7 +93,6 @@
 					</div>
 					<div class="form_section_content">
 						<input name="courseContent"> 
-						<span id="warn_courseContent">수업 소개 내용을 입력해주세요.</span>
 					</div>
 				</div>
 			</form>
@@ -105,16 +103,14 @@
 		</div>
 	</main>
 
-	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 	<script>
 		// 등록 버튼
 		$("#enrollBtn").click(
 				function() {
-					/* 검사 통과 유무 변수 */
+					/* 검사 통과 유무 변수 - 수업명, */
 					let nameCheck = false;
-					let contentCheck = false;
 					let limitCheck = false;
 					let periodCheck = false;
 					let teacherCheck = false;
@@ -123,7 +119,6 @@
 
 					/* 입력값 변수 */
 					let name = $('input[name=courseName]').val();
-					let content = $('input[name=courseContent]').val();
 					let limit = $('input[name=courseLimit]').val();
 					let startDate = $('input[name=courseStartDate]').val();
 					let endDate = $('input[name=courseEndDate]').val();
@@ -134,7 +129,6 @@
 
 					/* 공란 경고 span태그 */
 					let wCourseName = $('#warn_courseName');
-					let wCourseContent = $('#warn_courseContent');
 					let wCourseLimit = $('#warn_courseLimit');
 					let wCoursePeriod = $('#warn_coursePeriod');
 					let wCourseTeacher = $('#warn_courseTeacher');
@@ -149,16 +143,7 @@
 						wCourseName.css('display', 'none');
 						nameCheck = true;
 					}
-
-					/* 내용 공백 체크 */
-					if (content === '') {
-						wCourseContent.css('display', 'block');
-						contentCheck = false;
-					} else {
-						wCourseContent.css('display', 'none');
-						contentCheck = true;
-					}
-
+					
 					/* 수강 인원 공백 체크 */
 					if (limit === '') {
 						wCourseLimit.css('display', 'block');
@@ -169,8 +154,7 @@
 					}
 
 					/* 수강 기간 체크 */
-					if (startDate === '' || endDate === ''
-							|| new Date(startDate) > new Date(endDate)) {
+					if (startDate === '' || endDate === '' || new Date(startDate) > new Date(endDate)) {
 						wCoursePeriod.css('display', 'block');
 						periodCheck = false;
 					} else {
@@ -207,8 +191,7 @@
 					}
 
 					/* 최종 검사 */
-					if (nameCheck && contentCheck && limitCheck && periodCheck
-							&& teacherCheck && timeCheck && dayCheck) {
+					if (nameCheck && limitCheck && periodCheck && teacherCheck && timeCheck && dayCheck) {
 						$("#enrollForm").submit();
 					} else {
 						return;
