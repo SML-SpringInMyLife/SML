@@ -134,8 +134,8 @@ public class AdminController {
 
 	}
 
-	@GetMapping(value = "edit")
-	public void adminEditGET() throws Exception {
+	@GetMapping(value = "adminInfo")
+	public void adminInfoGET() throws Exception {
 
 		logger.info("관리자 - 정보수정페이지 이동");
 
