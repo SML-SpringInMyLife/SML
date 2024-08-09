@@ -54,6 +54,7 @@ function scrollToTop() {
 
 // 채팅 상담창 활성화 함수
 function chatConsultation() {
+	startChat();
     const chatContainer = document.getElementById('chat-container');
     const chatBox = document.getElementById('chat-box');
     chatBox.innerHTML = ''; // 이전 채팅 내용 초기화
@@ -160,7 +161,7 @@ function sendMessage() {
             content: message
         });
         ws.send(jsonMessage); // 서버로 JSON 메시지 전송
-        appendMessage(message); // 채팅창에 메시지 추가
+        appendMessage("클라이언트가 쓴 메시지" + message); // 내가 쓴 메시지 채팅창에 추가
         input.value = ''; // 입력란 초기화
     }
 }
@@ -184,7 +185,3 @@ function appendMessage(message) {
     chatBox.scrollTop = chatBox.scrollHeight; // 스크롤을 가장 아래로 이동
 }
 
-// 페이지 로드 시 WebSocket 연결 시작
-document.addEventListener('DOMContentLoaded', (event) => {
-    startChat();
-});
