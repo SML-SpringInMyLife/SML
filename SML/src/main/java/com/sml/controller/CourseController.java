@@ -21,12 +21,12 @@ public class CourseController {
 
 	@GetMapping("/boardList")
 	public void booardListGET() throws Exception {
-		logger.info("¼ö°­½ÅÃ» ÆäÀÌÁö ÁøÀÔ");
+		logger.info("ìˆ˜ê°•ì‹ ì²­ í˜ì´ì§€ ì§„ì…");
 	}
 
 	@GetMapping("/enroll")
 	public void courseEnrollGET() throws Exception {
-		logger.info("¼ö¾÷ µî·Ï ÆäÀÌÁö ÁøÀÔ");
+		logger.info("ìˆ˜ì—… ë“±ë¡ í˜ì´ì§€ ì§„ì…");
 	}
 
 	@PostMapping("/enroll")
@@ -36,12 +36,12 @@ public class CourseController {
 
 	@GetMapping("/modify")
 	public void modifyGET() throws Exception {
-		logger.info("¼ö¾÷ ¼öÁ¤ ÆäÀÌÁö ÁøÀÔ");
+		logger.info("ìˆ˜ì—… ìˆ˜ì • í˜ì´ì§€ ì§„ì…");
 	}
 
 	@PostMapping("/modify")
 	public String modifyPOST() throws Exception {
-		// ÇØ´ç »ó¼¼ ÆäÀÌÁö·Î ¸®ÅÏÇÒ ¼ö ÀÖ³ª..?
+		// í•´ë‹¹ ìƒì„¸ í˜ì´ì§€ë¡œ ë¦¬í„´í•  ìˆ˜ ìˆë‚˜..?
 		return "redirect:/course/boardList";
 	}
 

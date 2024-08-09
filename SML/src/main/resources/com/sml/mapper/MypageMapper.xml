@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <mapper namespace="com.sml.mapper.MypageMapper"> 
+  
+    <!-- 출석체크 등록 -->
+  	<insert id="insertMemberCheck">
+    	INSERT INTO MEMBER_CHECK (CHECK_DATE, STATUS, MEM_CODE)
+    	 VALUES (        	
+        	#{checkDate},
+        	#{status},
+        	#{memCode}        	
+    	)
+	</insert>	
+
+    
+    <!-- 출석체크 조회 -->
+    <!--  
+    <select id="selectMemberCheck">
+        SELECT CHECK_CODE, CHECK_DATE, STATUS, MEM_CODE
+        FROM MEMBER_CHECK
+    </select>
+    -->
+	
+
+</mapper>
+  
