@@ -6,19 +6,50 @@
 <mapper namespace="com.sml.mapper.CourseMapper">
 
 	<insert id="courseEnroll">
-    	INSERT INTO COURSE (CCAT_CODE, COURSE_NAME, COURSE_CONTENT, COURSE_LIMIT, COURSE_START_DATE, COURSE_END_DATE, TEA_CODE, COURSE_START_TIME, COURSE_END_TIME, COURSE_DAY) VALUES (
-        	#{ccatCode},
-        	#{courseName},
-        	#{courseContent},
-        	#{courseLimit},
-        	#{startDate},
-        	#{endDate},
-        	#{teacherCode},
-        	#{startTime},
-        	#{endTime},
-        	#{courseDay}
+    	INSERT INTO COURSE (COURSE_NAME, CCAT_CODE, COURSE_CONTENT, COURSE_LIMIT, COURSE_START_DATE, COURSE_END_DATE, TEA_CODE, COURSE_START_TIME, COURSE_END_TIME, COURSE_DAY) VALUES (
+        	#{courseName, jdbcType=VARCHAR},
+        	#{ccatCode, jdbcType=INTEGER},
+        	#{courseContent, jdbcType=VARCHAR},
+        	#{courseLimit, jdbcType=INTEGER},
+        	#{startDate, jdbcType=DATE},
+        	#{endDate, jdbcType=DATE},
+        	#{teacherCode, jdbcType=INTEGER},
+        	#{startTime, jdbcType=TIMESTAMP},
+        	#{endTime, jdbcType=TIMESTAMP},
+        	#{courseDay, jdbcType=VARCHAR}
     	)
 	</insert>
-
-
+	
+	<!-- <select id="courseList" resultType="com.vam.model.CourseVO">
+    	SELECT
+    		c.COURSE_CODE AS courseCode,
+    		c.COURSE_START_DATE AS startDate,
+    		c.COURSE_END_DATE AS endDate,
+    		ccat.CCAT_NAME,
+    		t.TEA_NAME,
+    		c.COURSE_DAY AS courseDay,
+    		c.COURSE_START_TIME AS startTime,
+    		c.COURSE_END_TIME AS endTime,
+    		c.COURSE_LIMIT AS courseLimit 
+    	 FROM COURSE c
+    	 JOIN COURSE_CATEGORY ccat ON c.CCAT_CODE = ccat.CCAT_CODE
+    	 JOIN COURSE_TEACHER t ON c.TEA_CODE = t.TEA_CODE
+    	 WHERE c.COURSE_STATUS = 'N'	
+	</select> -->
+	
+	<select id="courseTotal" resultType="int">	
+		SELECT COUNT(*) FROM COURSE
+		
+		<if test="keyword != null">
+			WHERE COURSE_NAME LIKE '%' || #{keyword} || '%'
+		</if>
+	</select>
+	
+	<!-- <update id="courseModify">
+	
+	</update> -->
+	
+	<!-- <update id="courseDelete">
+	
+	</update> -->
 </mapper>

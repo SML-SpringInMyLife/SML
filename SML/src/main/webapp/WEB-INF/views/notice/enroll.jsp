@@ -24,6 +24,7 @@
 <main>
     <div class="enroll-container">
         <form action="/notice/enroll.do" method="post" id="enrollForm">
+        <input type="hidden" name="memCode" value="${sessionScope.member.memCode}">
             <div class="category">
                 <select>
                     <option>☰ 게시글카테고리</option>

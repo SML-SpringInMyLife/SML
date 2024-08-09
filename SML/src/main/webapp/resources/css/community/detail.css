@@ -1,0 +1,172 @@
+@charset "UTF-8";
+
+/* 게시글 상세 내용 스타일 */
+.community-container {
+	flex: 1;
+	padding: 20px;
+	background-color: #fff;
+	border-radius: 8px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.community-boardDetail-wrap {
+	margin-top: 20px;
+}
+
+.community_boardDetail {
+	width: 100%;
+	border-collapse: collapse;
+}
+
+.community_boardDetail td {
+	padding: 12px;
+	border: 1px solid #ddd;
+	vertical-align: top;
+}
+
+.community_boardDetail .label {
+	font-weight: bold;
+	width: 150px; /* 레이블 열의 폭을 설정합니다. */
+	background-color: #f2f2f2;
+}
+
+.community_boardDetail input.input_block {
+	width: 100%;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	background-color: #fff;
+	box-sizing: border-box;
+}
+
+.community_boardDetail small {
+	display: block;
+	font-size: 14px; /* 수정일의 폰트 크기 */
+	color: #666; /* 수정일의 색상 */
+	margin-top: 5px; /* 수정일과 다른 내용 간의 간격 */
+}
+
+.btn_section {
+	margin-top: 20px;
+	text-align: right;
+}
+
+.btn {
+	padding: 10px 20px;
+	font-size: 16px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+	margin-left: 10px;
+	background-color: #007bff;
+	color: white;
+}
+
+.btn:hover {
+	background-color: #0056b3;
+}
+
+.btn:disabled {
+	background-color: #cccccc;
+	cursor: not-allowed;
+}
+
+/* 게시글 내용 크게 */
+.community_boardDetail .content {
+	font-size: 16px;
+	height: 200px; /* 원하는 높이로 조정 */
+	overflow-y: auto; /* 내용이 넘칠 경우 스크롤 추가 */
+}
+
+/* 댓글 영역 전체 스타일 */
+.community-reply {
+    margin-top: 20px;
+}
+
+.community-reply h3 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+/* 댓글 리스트 스타일 */
+.community_reply {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.community_reply thead {
+    background-color: #f4f4f4;
+}
+
+.community_reply th,
+.community_reply td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.community_reply th {
+    background-color: #f4f4f4;
+}
+
+.community_reply td {
+    background-color: #fff;
+}
+
+/* 댓글 입력 폼 스타일 */
+#replyEnrollSection {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
+#replyEnrollSection textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1em;
+}
+
+.reply_btn_section {
+    margin-top: 10px;
+    text-align: right;
+}
+
+.reply_btn_section .btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+.reply_btn_section .btn:hover {
+    background-color: #0056b3;
+}
+
+/* 댓글 목록의 각 댓글 항목 스타일 */
+.reply-item {
+    margin-bottom: 15px;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.reply-item p {
+    margin: 0;
+    font-size: 1em;
+}
+
+.reply-item small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+}
