@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sml.model.Criteria;
 import com.sml.model.FileupVO;
 import com.sml.model.NoticeVO;
 import com.sml.service.NoticeService;
@@ -40,12 +41,19 @@ public class NoticeController {
 	       }
 	}
 	
-	/* 공지사항 상제조회페이지 이동 */
+
+	
+	/* 공지사항 상세조회페이지 이동 */
 	@GetMapping("/detail")
-	public void noticeDetailGET() throws Exception {
+	public void noticeDetailGET(int noticeCode,Criteria cri, Model model) throws Exception {
 
-		logger.info("공지사항 페이지 이동");
-
+		logger.info("공지사항 상세조회 이동 ");
+		
+	
+		/* 공지사항 조회 페이지 정보 */
+		model.addAttribute("cri",cri);
+			/* 선택 글 정보 */
+		model.addAttribute("noticeDetail", noticeservice.noticeGetDetail(noticeCode));
 	}
 	
 	/* 공지사항 등록페이지 이동 */

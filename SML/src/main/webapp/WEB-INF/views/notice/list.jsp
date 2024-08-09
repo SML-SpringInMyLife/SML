@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 <!DOCTYPE html>
@@ -9,9 +9,11 @@
 <meta charset="UTF-8">
 <title>공지사항 목록페이지</title>
 
-<link rel="stylesheet" href="${webappRoot}/resources/css/notice/main.css"> 
+<link rel="stylesheet"
+	href="${webappRoot}/resources/css/notice/main.css">
 <!-- 헤더 css -->
-<link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet"
+	href="${webappRoot}/resources/css/common/common.css">
 
 <!-- jQuery 로드 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -37,76 +39,95 @@
 					<button>검색하기</button>
 				</div>
 			</div>
-			
+
 			<!-- 게시물 O -->
-				<c:if test="${listCheck != 'empty'}">
-				
-			<div class="category">
-			<select>
-			  <option>카테고리</option> <!-- 카테고리를 클릭 했을 때, 원래 목록페이지로 돌아오기 -->
-			  <option>수강안내</option>
-			  <option>전체공지</option>
-			  <option>이벤트</option>			
-			</select>
-			</div>
-			
-			<table>
-				<thead>
-					<tr>
-						<th>번호</th>
-						<th>제목</th>
-						<th>등록일</th>
-						<th>조회</th>
-						<th>좋아요</th>
-					</tr>
-				</thead>
-				
-				<c:forEach items="${list}" var="notice">
-				<tbody>
-					<tr>
-						<td><c:out value="${notice.noticeCode}" /></td>
-						<td><c:out value="${notice.noticeTitle}" /></td>
-						<td><fmt:formatDate value="${notice.noticeEnroll}" pattern="yyyy-MM-dd"/></td>
-						<td><c:out value="${notice.noticeCount}" /></td>
-						<td><c:out value="${notice.noticeLike}" /></td>
-					</tr>
-				</tbody>
-				</c:forEach>
-			</table>
-			
+			<c:if test="${listCheck != 'empty'}">
+
+				<div class="category">
+					<select>
+						<option>카테고리</option>
+						<!-- 카테고리를 클릭 했을 때, 원래 목록페이지로 돌아오기 -->
+						<option>수강안내</option>
+						<option>전체공지</option>
+						<option>이벤트</option>
+					</select>
+				</div>
+
+				<table>
+					<thead>
+						<tr>
+							<th>번호</th>
+							<th>제목</th>
+							<th>등록일</th>
+							<th>조회</th>
+							<th>좋아요</th>
+						</tr>
+					</thead>
+
+					<c:forEach items="${list}" var="notice">
+						<tbody>
+							<tr>
+								<td><c:out value="${notice.noticeCode}" /></td>
+
+								<td><a class="move" href="<c:out value='${notice.noticeCode}'/>"> 
+									<c:out value="${notice.noticeTitle}" />
+								</a></td>
+
+								<td><fmt:formatDate value="${notice.noticeEnroll}"
+										pattern="yyyy-MM-dd" /></td>
+								<td><c:out value="${notice.noticeCount}" /></td>
+								<td><c:out value="${notice.noticeLike}" /></td>
+							</tr>
+						</tbody>
+					</c:forEach>
+				</table>
+
 			</c:if>
-			
+
 			<div class="button-container">
 				<button id="write">글쓰기</button>
 			</div>
-			</div>
-			<div class="pagination">
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn">3</button>
-        </div>
-      
-       
+		</div>
+		<div class="pagination">
+			<button class="page-btn active">1</button>
+			<button class="page-btn">2</button>
+			<button class="page-btn">3</button>
+
+			<form id="moveForm" action="/notice/detail" method="get"></form>
+
+		</div>
+
+
 	</main>
 	<!-- 푸터 영역 포함 -->
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 
-     <script>
-     /* 글쓰기 버튼 */
-     $("#write").click(function(){
-     location.href="/notice/enroll"
-     });
-      
-        let result = '<c:out value="${enroll_result}"/>';
-        checkResult(result);
-        
-        function checkResult(result){
-            if(result === ''){
-                return;
-            }		        
-            alert("글'${enroll_result}' 을 등록하였습니다.");        
-        }
-    </script>
+	<script>
+		/* 글쓰기 버튼 */
+		$("#write").click(function() {
+			location.href = "/notice/enroll"
+		});
+
+		/* 등록 알람 창 */
+		let result = '<c:out value="${enroll_result}"/>';
+		checkResult(result);
+
+		function checkResult(result) {
+			if (result === '') {
+				return;
+			}
+			alert("글'${enroll_result}' 을 등록하였습니다.");
+		}
+		
+		let moveForm = $("#moveForm");
+
+		/* 상세조회 페이지로 가기  */
+		$(".move").on("click", function(e) {
+			e.preventDefault();	
+			moveForm.append("<input type='hidden' name='noticeCode' value='" + $(this).attr("href") + "'>");
+			moveForm.submit();	
+		});
+	</script>
 </body>
 </html>

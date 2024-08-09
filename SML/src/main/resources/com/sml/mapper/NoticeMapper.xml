@@ -20,8 +20,10 @@
 
 	<!-- 공지사항 글 등록 -->
 	<insert id="noticeRegister">
-		insert into NOTICE (NOTICE_TITLE, NOTICE_BODY )
-		values (#{noticeTitle},#{noticeBody})
+		insert into NOTICE (NOTICE_TITLE, NOTICE_BODY,
+		MEM_CODE)
+		values (#{noticeTitle},#{noticeBody},#{memCode})
+
 	</insert>
 
 	<!-- 공지사항 글 등록 파일업로드에서 notice_code를 가져오기 위해 사용 <insert id="noticeRegister" 
@@ -49,7 +51,13 @@
 		NOTICE_LIKE
 		FROM
 		NOTICE
+	</select>
 
-
+	<!-- 공지사항 상세조회 -->
+	<select id="noticeGetDetail" resultType="com.sml.model.NoticeVO"
+		resultMap="noticeResultMap">
+		select *
+		from NOTICE
+		where NOTICE_CODE = #{noticeCode}
 	</select>
 </mapper>

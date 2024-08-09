@@ -26,6 +26,12 @@ public class NoticeServiceImpl implements NoticeService {
 		  
 		return noticeMapper.noticeGetList();
 	}
+
+	@Override //게시글 상세조회
+	public NoticeVO noticeGetDetail(int noticeCode) throws Exception {
+		
+		return noticeMapper.noticeGetDetail(noticeCode);
+	}
     
 	
 	/*
