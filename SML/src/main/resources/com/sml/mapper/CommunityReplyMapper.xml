@@ -9,8 +9,46 @@
   		INSERT INTO COMMUNITY_REPLY(COMM_CODE, MEM_CODE, REP_CONTENT) VALUES (
   			#{commCode},
   			#{memCode},
-  			#{repContent}
+  			#{repContent, jdbcType=VARCHAR}
   		)
   	</insert>
+  	
+  	<select id="listReply" resultType="com.sml.model.ReplyDTO">
+    		SELECT 
+            	r.REP_CODE AS repCode, 
+            	m.MEM_NAME AS repWriter, 
+            	r.REP_ENROLL_DATE AS renrollDate, 
+            	r.REP_CONTENT AS repContent
+        	FROM COMMUNITY_REPLY r
+        	JOIN TB_MEMBER m
+            	ON r.MEM_CODE = m.MEM_CODE
+        	WHERE r.REP_STATUS = 'N' 
+<!--         	 AND COMM_CODE = #{commCode} -->
+	</select>
+	
+<!-- 	<select id="replyGetTotal" resultType="int">
+		SELECT COUNT(*) FROM COMMUNITY_REPLY
+		<if test="keyword != null">
+			WHERE REP_CODE LIKE '%' || #{keyword} || '%'
+		</if>
+	</select> -->
+	
+<!-- 	<update id="replyModify">
+		UPDATE COMMUNITY_REPLY
+			SET
+				REP_CONTENT = #{},
+				REP_MODIFY_DATE AS rmodifyDate = SYSDATE
+			WHERE 
+				REP_CODE = #{repCode}
+	</update>
+	
+	<update id="replyDelete">
+		UPDATE COMMUNITY_REPLY
+			SET
+				REP_STATUS = 'N',
+				REP_MODIFY_DATE AS rmodifyDate = SYSDATE
+			WHERE
+				REP_CODE = #{repCode}
+	</update> -->
   
   </mapper>

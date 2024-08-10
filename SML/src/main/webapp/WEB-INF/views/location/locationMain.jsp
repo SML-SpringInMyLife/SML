@@ -47,7 +47,14 @@
             <ul id="placesList"></ul>
             <div id="pagination"></div>
         </div>
+
     </div>
+    
+                       <!-- 지도 사용법 버튼 추가 -->
+        <div id="mapInstructionsButton">
+		    <button onclick="openMapInstructions()">지도 사용법</button>
+		</div>
+
 </main>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=36ac063fd0533ae2bce9b847fb4f47fe&libraries=services"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -361,6 +368,11 @@
         }
         searchPlaces();
     });
+    
+    function openMapInstructions() {
+        window.location.href = '/location/guide'; // 컨트롤러에 정의된 엔드포인트로 이동
+    }
+
 </script>
 <!-- 푸터 영역 포함 -->
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

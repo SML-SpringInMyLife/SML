@@ -14,4 +14,7 @@ public interface NoticeService {
 
 	/* 공지사항 조회 */
 	public List<NoticeVO> noticeGetList() throws Exception;
+
+	/* 공지사항 상세 조회 */
+	public NoticeVO noticeGetDetail(int noticeCode) throws Exception;
 }

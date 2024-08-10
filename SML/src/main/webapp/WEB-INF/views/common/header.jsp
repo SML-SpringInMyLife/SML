@@ -40,32 +40,34 @@
 						<li><a href="/life/list">생활정보</a></li>
 						<li><a href="/location/map">위치찾기</a></li>
 						<li><a href="/course/boardList">취미교실</a></li>
-						<li><a href="/community/boardList">커뮤니티</a></li>
+						<li><a href="/community/boardList">커뮤니티</a ></li>
+						<li><a href="/donation/main">후원하기</a ></li>
 					</ul>
 				</nav>
 			</div>
 			<nav class="auth-menu" id="auth-menu">
-					<ul>
-						<c:choose>
-							<c:when test="${not empty sessionScope.member}">
-								<li><span class="welcome">${sessionScope.member.memName} 님</span></li>
-								<c:choose>
-									<c:when test="${sessionScope.member.memAdminCheck == 1}">
-										<li><a href="/admin/main">관리자페이지</a></li>
-									</c:when>
-									<c:otherwise>
-										<li><a href="/member/mypage">마이페이지</a></li>
-									</c:otherwise>
-								</c:choose>
-								<li><a href="/member/logout">로그아웃</a></li>
-							</c:when>
-							<c:otherwise>
-								<li><a href="/member/login">로그인</a></li>
-								<li><a href="/member/join">회원가입</a></li>
-							</c:otherwise>
-						</c:choose>
-					</ul>
-				</nav>
+				<ul>
+					<c:choose>
+						<c:when test="${not empty sessionScope.member}">
+							<li><span class="welcome" id="memName">${sessionScope.member.memName}
+									님</span></li>
+							<c:choose>
+								<c:when test="${sessionScope.member.memAdminCheck == 1}">
+									<li><a href="/admin/main">관리자페이지</a></li>
+								</c:when>
+								<c:otherwise>
+									<li><a href="/member/mypage">마이페이지</a></li>
+								</c:otherwise>
+							</c:choose>
+							<li><a href="/member/logout">로그아웃</a></li>
+						</c:when>
+						<c:otherwise>
+							<li><a href="/member/login">로그인</a></li>
+							<li><a href="/member/join">회원가입</a></li>
+						</c:otherwise>
+					</c:choose>
+				</ul>
+			</nav>
 			<button class="hamburger" id="hamburger">&#9776;</button>
 			<div class="mobile-menu" id="mobile-menu">
 				<ul>
@@ -74,6 +76,7 @@
 					<li><a href="/location/map">위치찾기</a></li>
 					<li><a href="/course/boardList">취미교실</a></li>
 					<li><a href="/community/boardList">커뮤니티</a></li>
+					<li><a href="/donation/main">후원하기</a ></li>
 					<hr>
 					<c:choose>
 						<c:when test="${not empty sessionScope.member}">
@@ -97,6 +100,7 @@
 		</div>
 	</header>
 
+	<!-- 채팅 팝업 설정 -->
 	<div id="chat-container" class="hidden">
 		<div id="chat-header">
 			<span><< 채팅 상담 >></span>
@@ -118,5 +122,7 @@
 	</div>
 
 	<script src="${webappRoot}/resources/js/common.js"></script>
+
+
 </body>
 </html>

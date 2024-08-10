@@ -1,5 +1,8 @@
 package com.sml.mapper;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,12 +25,10 @@ public class CourseMapperTest {
 		course.setCourseName("mapperTest");
 		course.setCourseContent("mapperTest");
 		course.setCourseLimit(30);
-		course.setStartDate("2024-08-02");
-		course.setEndDate("2024-08-31");
 		course.setTeacherCode(2);
 		course.setStartTime("3:15");
 		course.setEndTime("5:50");
-		course.setCourseDay("¿ù, ¼ö, ±Ý");
+		course.setCourseDay("ì›”, ìˆ˜ ê¸ˆ");
 		mapper.courseEnroll(course);
 	}
 

@@ -52,7 +52,7 @@
 							<td data-label="수신인">임꺽정</td>
 							<td data-label="내용"><span class="sms-content"
 								onclick="showSmsDetails('[안부문자] 안녕하세요, 임꺽정님! 1주일간 출석이 없으셔서 문자 보냅니다.')">[안부문자]
-									안녕하세요, 임꺽정님! 1주일간 출석이 없으셔서 문자 보냅니다.</span></td>
+									안녕하세요, 임꺽정님!</span></td>
 							<td data-label="발신누적횟수">3</td>
 						</tr>
 					</tbody>

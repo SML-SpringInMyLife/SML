@@ -41,4 +41,11 @@ public class LocationController {
         logger.info("Recent searches retrieved: " + searches);
         return searches;
     }
+    
+    
+    @GetMapping("/guide")
+    public String guide() {
+        logger.info("Guide page accessed");
+        return "location/guide"; // guide.jsp 페이지로 이동
+    }
 }

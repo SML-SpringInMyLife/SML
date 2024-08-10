@@ -6,10 +6,10 @@
   <mapper namespace="com.sml.mapper.CommunityMapper">
   
   	<insert id="communityEnroll">
-  		INSERT INTO COMMUNITY(COMM_TITLE, COMM_CONTENT, COMM_WRITER) VALUES (
+  		INSERT INTO COMMUNITY(COMM_TITLE, COMM_CONTENT, COMM_MEM_CODE) VALUES (
   			#{commTitle},
   			#{commContent},
-  			#{commWriter.memCode}
+  			#{commMemCode}
   		)
   	</insert>
 
@@ -20,9 +20,8 @@
   					ROWNUM AS rn, c.COMM_CODE AS commCode, c.COMM_TITLE AS commTitle, m.MEM_NAME AS commWriter, c.COMM_ENROLL_DATE AS enrollDate, c.COMM_COUNT AS commCount
   				FROM COMMUNITY c
   				JOIN TB_MEMBER m
-  					ON c.COMM_WRITER = m.MEM_CODE
-  				WHERE c.COMM_STATUS = 'N'
-  				AND
+  					ON c.COMM_MEM_CODE = m.MEM_CODE
+  				WHERE c.COMM_STATUS = 'N' AND
   		]]>
   			<if test="keyword != null">
                 COMM_TITLE like '%'||#{keyword}||'%' AND
@@ -45,13 +44,13 @@
   		SELECT 
   			c.COMM_CODE AS commCode,
   			c.COMM_TITLE AS commTitle,
-  			m.MEM_NAME as commWriter,
+  			m.MEM_NAME AS commWriter,
   			c.COMM_CONTENT AS commContent,
   			c.COMM_ENROLL_DATE AS enrollDate,
   			c.COMM_MODIFY_DATE AS modifyDate
   		 FROM COMMUNITY c
   		 JOIN TB_MEMBER m
-  		 	ON c.COMM_WRITER = m.MEM_CODE
+  		 	ON c.COMM_MEM_CODE = m.MEM_CODE
   		 WHERE COMM_CODE = #{commCode}
   	</select>
   	

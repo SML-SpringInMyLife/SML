@@ -4,7 +4,7 @@
 
 <html>
 <head>
-<title>Home</title>
+<title>SML Home</title>
 <link rel="stylesheet"
 	href="${webappRoot}/resources/css/common/common.css">
 </head>

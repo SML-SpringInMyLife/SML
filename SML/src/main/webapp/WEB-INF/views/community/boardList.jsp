@@ -187,34 +187,23 @@
 
 	<script>
 
-		$(document).ready(function() {
-			let result = '<c:out value="${enroll_result}"/>';
-			let mresult = '<c:out value="${modify_result}"/>';
+	$(document).ready(function(){
+		
+		let eResult = '<c:out value="${enroll_result}"/>';
+		
+		checkResult(eResult);
+		
+		function checkResult(result){
 			
-			checkResult(result);
-			checkmResult(mresult);
-			
-			function checkResult(result){
-				if(result === ''){
-					return;
-				}
-				alert("게시글 '${enroll_result}'을 등록하였습니다.'");
+			if(result === ''){
+				return;
 			}
 			
-			function checkmResult(mresult){
-				if(mresult === '1'){
-					alert("게시글 수정을 완료하였습니다.");
-				} else if(mresult === '0'){
-					alert("게시글 수정에 실패했습니다.")
-				}
-			}
-			let dresult = '${delete_result}';
-			if(dresult == 1){
-				alert("삭제 완료");
-			} else if(delete_result == 2){
-				alert("삭제할 수 없습니다.")
-			}
-		});
+			alert("수업을 정상적으로 등록하였습니다.");
+			
+		}
+
+	});
 		
 		let moveForm = $('#moveForm');
 		/* 페이지 이동 버튼 */

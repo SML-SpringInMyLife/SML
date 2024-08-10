@@ -6,28 +6,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.sml.model.ReplyDTO;
+import com.sml.model.NoticeVO;
+
+
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
-public class CommunityReplyMapperTest {
-	
-	@Autowired
-	private CommunityReplyMapper mapper;
+public class NoticeMapperTest {
+
+	@Autowired 
+	private NoticeMapper mapper;
 	
 	@Test
-	public void enrollReplyTest() {
+	public void communityDetail() {
 		
-		int memCode = 5;
-		int commCode = 158;
-		String repContent = "replyTest";
+		int noticeCode = 4;
+		NoticeVO notice = mapper.noticeGetDetail(noticeCode);
+		System.out.println("notice........." +notice);
 		
-		ReplyDTO dto = new ReplyDTO();
-		dto.setMemCode(memCode);
-		dto.setCommCode(commCode);
-		dto.setRepContent(repContent);
-		
-		mapper.enrollReply(dto);
 	}
-
+	
 }

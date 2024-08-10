@@ -12,21 +12,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // 초기 데이터로 차트 설정 및 업데이트
     setupChart();
 
-    // SMS 내용이 20자 이상인 경우 '...'으로 자르는 CSS 적용
+    // SMS 내용이 15자 이상인 경우 '...'으로 자르는 CSS 적용
     var smsContents = document.querySelectorAll('.sms-content');
     smsContents.forEach(function(content) {
         var text = content.innerText;
-        if (text.length > 20) {
-            content.innerText = text.slice(0, 20) + '...'; // 20자를 초과하면 '...'으로 자르기
+        if (text.length > 15) {
+            content.innerText = text.slice(0, 15) + '...'; // 15자를 초과하면 '...'으로 자르기
         }
     });
 
-    // 채팅 내용이 20자 이상인 경우 '...'으로 자르는 CSS 적용
+    // 채팅 내용이 15자 이상인 경우 '...'으로 자르는 CSS 적용
     var chatContents = document.querySelectorAll('.chat-content');
     chatContents.forEach(function(content) {
         var text = content.innerText;
-        if (text.length > 20) {
-            content.innerText = text.slice(0, 20) + '...'; // 20자를 초과하면 '...'으로 자르기
+        if (text.length > 15) {
+            content.innerText = text.slice(0, 15) + '...'; // 15자를 초과하면 '...'으로 자르기
         }
     });
 });
