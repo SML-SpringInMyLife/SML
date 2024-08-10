@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>    
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>  
 <%
 String requestURI = request.getRequestURI();
 String basePath = "/member/";
@@ -13,6 +13,7 @@ if (pagePath == null || pagePath.isEmpty()) {
 }
 %>
 
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,6 +25,7 @@ if (pagePath == null || pagePath.isEmpty()) {
 	href="${webappRoot}/resources/css/common/common.css">
 </head>
 <body>
+    
 	<nav class="member-menu">
 		<a href="/member/mypage"><h3>마이 페이지</h3></a>
 		<hr>
@@ -33,7 +35,11 @@ if (pagePath == null || pagePath.isEmpty()) {
 			<li><a href="/member/point">적립금 내역</a></li>
 			<li><a href="/member/memberCheck">출석 체크</a></li>			
 		</ul>
-	</nav>
-<script src="${webappRoot}/resources/js/member/mypage.js"></script>
+	</nav>	
+  
+
 </body>
+<script src="${webappRoot}/resources/js/member/mypage.js">
+
+</script>
 </html>

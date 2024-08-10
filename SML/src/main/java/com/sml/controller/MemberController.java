@@ -1,6 +1,8 @@
 package com.sml.controller;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -185,4 +188,53 @@ public class MemberController {
         return "redirect:/"; 
     }
 	
+
+  
+    /*
+    @ResponseBody
+    public Map<String, String> updateMember(@RequestParam String memMail,
+    		                                @RequestParam String memPhone,
+    		                                @RequestParam String memEmerPhone,
+    		                                @RequestParam String memAddr1,
+    		                                @RequestParam String memAddr2,
+    		                                @RequestParam String memAddr3,
+                                            HttpSession session) {
+    	Map<String, String> response = new HashMap<>();
+        
+        // 세션에서 회원 ID를 가져옵니다. (세션에 'memId'라는 이름으로 저장되어 있다고 가정)
+        Integer memId = (Integer) session.getAttribute("memId");
+        
+        if (memId == null) {
+            // 세션에 memId가 없으면 에러 응답을 반환합니다.
+            response.put("status", "error");
+            response.put("message", "Session expired or invalid.");
+            return response;
+        }
+
+        // 여기서 서비스 레이어를 호출하여 회원 정보를 업데이트합니다.
+        try {
+            MemberVO member = new MemberVO();           
+            member.setMemMail(memMail);
+            member.setMemPhone(memPhone);
+            member.setMemEmerPhone(memEmerPhone);
+            member.setMemAddr1(memAddr1);
+            member.setMemAddr2(memAddr2);
+            member.setMemAddr3(memAddr3);
+
+            // 예시로 memberService.updateMember를 호출한다고 가정합니다.
+            memberService.updateMember(member);
+
+            response.put("status", "success");
+            response.put("message", "업데이트 성공");
+        } catch (Exception e) {
+            response.put("status", "error");
+            response.put("message", "업데이트 실패");
+        }
+
+        return response;
+        */
+    //}
+    
+    
+  
 }

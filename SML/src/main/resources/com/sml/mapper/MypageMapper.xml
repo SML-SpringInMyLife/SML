@@ -5,6 +5,15 @@
   
   <mapper namespace="com.sml.mapper.MypageMapper"> 
   
+  <resultMap id="pointResultMap" type="com.sml.model.PointVO">
+    <id property="pointCode" column="POINT_CODE"/>
+    <result property="pointPrice" column="POINT_PRICE"/>
+    <result property="pointDate" column="POINT_DATE"/>
+    <result property="pointComment" column="POINT_COMMENT"/>
+    <result property="status" column="POINT_STATUS"/>
+    <result property="memCode" column="MEM_CODE"/>
+  </resultMap>
+  
     <!-- 출석체크 등록 -->
   	<insert id="insertMemberCheck">
     	INSERT INTO MEMBER_CHECK (CHECK_DATE, STATUS, MEM_CODE)
@@ -23,7 +32,45 @@
         FROM MEMBER_CHECK
     </select>
     -->
+    
+   <!--  회원 정보 조회 -->
+   <select id="selectMemberList">
+   	   SELECT 	MEM_CODE, MEM_ID, MEM_PW, MEM_NAME, MEM_MAIL, MEM_PHONE, MEM_EMER_PHONE,
+	            MEM_ADDR1, MEM_ADDR2, MEM_ADDR3, MEM_BIRTH, MEM_JOIN_DATE,
+	            MEM_QUIT_DATE, MEM_STATUS, MEM_TOTAL_POINT, MEM_ADMIN_CHECK
+	   FROM TB_MEMBER
+	   WHERE MEM_CODE=#{memCode}
+	            
+   </select>
+    
+    
+	<!-- memCode 로 회원의 정보 수정 --> 
+	<update id="updateMember">
+	UPDATE TB_MEMBER   
+	SET MEM_PW = #{ memPw }, MEM_MAIL = #{ memMail }, MEM_EMER_PHONE =#{ memEmerPhone },
+	 MEM_PHONE = #{ memPhone },MEM_ADDR1 = #{ memAddr1 }
+	 ,MEM_ADDR2 = #{ memAddr2 },MEM_ADDR3 = #{ memAddr3 }
 	
+	WHERE MEM_ID=#{memId}   
+   
+	</update>
+	
+	 <!--  회원 포인트 조회 -->
+   <select id="selectPointList" resultMap="pointResultMap">   
+   	   SELECT POINT_CODE,POINT_PRICE,POINT_DATE
+   	          ,POINT_COMMENT,POINT_STATUS,MEM_CODE
+	   FROM TB_POINT	
+	   WHERE MEM_CODE=#{memCode} AND TO_CHAR(POINT_DATE, 'YYYY-MM')=#{selectDate}
+	            
+   </select>
+   
+   <!--  회원 잔여포인트 조회 -->
+   <select id="selectTotalPoint" resultType="int">   
+   	   SELECT MEM_TOTAL_POINT
+	   FROM TB_MEMBER
+	   WHERE MEM_CODE=#{memCode}
+	            
+   </select>
 
 </mapper>
   
