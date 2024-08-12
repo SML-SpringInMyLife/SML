@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ page session="false"%>
+
 <html>
 <head>
 <title>수강신청</title>
@@ -39,9 +39,7 @@
 							<tr>
 								<td><c:out value="${item.courseCode}" /></td>
 								<td>
-									<fmt:formatDate value="${item.startDate}" pattern="yyyy-MM-dd"/>
-									~
-									<fmt:formatDate value="${item.endDate}" pattern="yyyy-MM-dd"/>
+
 								</td>
 								<td><c:out value="${item.ccatCode}" /></td>
 								<td>
@@ -49,9 +47,8 @@
 										<c:out value="${item.courseName}" />
 									</a>
 								</td>
-								<td><c:out value="${item.TeacherCode}" /></td>
-								<td><fmt:formatDate value="${item.TeacherCode}"
-										pattern="yyyy-MM-dd" /></td>
+								<td><c:out value="${item.teaCode}" /></td>
+								<td></td>
 								<td>
 									<c:out value="${item.courseDay}"/>
 									<br>
@@ -115,5 +112,20 @@
 
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+	
+	<script>
+	$(document).ready(function(){	
+		let eResult = '<c:out value="${enroll_result}"/>';
+		
+		checkResult(eResult);
+		
+		function checkResult(result){
+			if(result === ''){
+				return;
+			}
+			alert("수업'"+ eResult +"'을 등록하였습니다.");
+		}
+	});
+	</script>
 </body>
 </html>

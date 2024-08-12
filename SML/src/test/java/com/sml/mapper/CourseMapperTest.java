@@ -1,6 +1,6 @@
 package com.sml.mapper;
 
-import java.util.List;
+import java.sql.Time;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,8 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.sml.model.CourseTeacherVO;
-import com.sml.model.Criteria;
+import com.sml.model.CourseVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -20,6 +19,8 @@ public class CourseMapperTest {
 	
 	@Autowired
 	private CourseTeacherMapper teaMapper;
+	
+	// 강사 테스트 
 	
 //	@Test
 //	public void teacherEnrollTest() throws Exception {
@@ -67,35 +68,32 @@ public class CourseMapperTest {
 //		System.out.println("수정 후........" +teaMapper.teacherDetail(teacher.getTeaCode()));
 //	}
 	
+//	@Test
+//	public void teacherDeleteTest() {
+//		int teaCode = 253;
+//		int result = teaMapper.teacherDelete(teaCode);
+//		
+//		if(result == 1) {
+//			System.out.println("삭제 정상 처리");
+//		}
+//	}
+	
+	// 게시판 테스트
 	@Test
-	public void teacherDeleteTest() {
-		int teaCode = 253;
-		int result = teaMapper.teacherDelete(teaCode);
+	public void courseEnroll() throws Exception{
+		CourseVO course = new CourseVO();
 		
-		if(result == 1) {
-			System.out.println("삭제 정상 처리");
-		}
+		course.setCourseName("mapperTest");
+		course.setCcatCode(109);
+		course.setCourseContent("mapperTest");
+		course.setCourseLimit(30);
+		course.setStartDate("2024-01-01");
+		course.setEndDate("2024-12-31");
+		course.setTeaCode(258);
+//		course.setStartTime("09:00:00");
+		course.setCourseDay("월, 수, 금");
+		
+		mapper.courseEnroll(course);
 	}
-	
-//	@Test
-//	public void courseEnrollTest() throws Exception{
-//		CourseVO course = new CourseVO();
-//		course.setCcatCode(101);
-//		course.setCourseName("mapperTest");
-//		course.setCourseContent("mapperTest");
-//		course.setCourseLimit(30);
-//		course.setTeacherCode(2);
-//		course.setStartTime("3:15");
-//		course.setEndTime("5:50");
-//		course.setCourseDay("월, 수 금");
-//		mapper.courseEnroll(course);
-//	}
-	
-//	@Test
-//	public void cateListTest() throws Exception{
-//		System.out.println("cateList()......" +mapper.cateList());
-//	}
-	
-	
 
 }

@@ -7,16 +7,16 @@
 
 	<insert id="courseEnroll">
     	INSERT INTO COURSE (COURSE_NAME, CCAT_CODE, COURSE_CONTENT, COURSE_LIMIT, COURSE_START_DATE, COURSE_END_DATE, TEA_CODE, COURSE_START_TIME, COURSE_END_TIME, COURSE_DAY) VALUES (
-        	#{courseName, jdbcType=VARCHAR},
-        	#{ccatCode, jdbcType=INTEGER},
-        	#{courseContent, jdbcType=VARCHAR},
-        	#{courseLimit, jdbcType=INTEGER},
+        	#{courseName},
+        	#{ccatCode},
+        	#{courseContent},
+        	#{courseLimit},
         	#{startDate, jdbcType=DATE},
         	#{endDate, jdbcType=DATE},
-        	#{teacherCode, jdbcType=INTEGER},
-        	#{startTime, jdbcType=TIMESTAMP},
-        	#{endTime, jdbcType=TIMESTAMP},
-        	#{courseDay, jdbcType=VARCHAR}
+        	#{teaCode},
+        	#{startTime, jdbcType=TIME},
+        	#{endTime, jdbcType=TIME}, 
+        	#{courseDay}
     	)
 	</insert>
 	
