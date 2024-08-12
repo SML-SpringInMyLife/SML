@@ -61,6 +61,25 @@ function chatConsultation() {
     chatContainer.classList.remove('hidden'); // 채팅창 표시
 }
 
+// 최소화/최대화 버튼 클릭 시 호출되는 함수
+function minimizeChat() {
+    const chatContainer = document.getElementById('chat-container');
+    const chatHeader = document.getElementById('chat-header');
+
+    if (chatContainer.classList.contains('minimized')) {
+        // 현재 상태가 최소화 상태일 때 최대화
+        chatContainer.classList.remove('minimized');
+        chatContainer.classList.add('expanded');
+        chatHeader.querySelector('button').textContent = '➖'; // 버튼 텍스트를 최소화 아이콘으로 변경
+    } else {
+        // 현재 상태가 최대화 상태일 때 최소화
+        chatContainer.classList.remove('expanded');
+        chatContainer.classList.add('minimized');
+        chatHeader.querySelector('button').textContent = '⬜'; // 버튼 텍스트를 최대화 아이콘으로 변경
+    }
+}
+
+
 // 채팅창 닫기 요청 함수
 function closeChat() {
     document.getElementById('close-chat-modal').classList.remove('hidden');

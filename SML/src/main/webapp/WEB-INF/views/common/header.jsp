@@ -104,7 +104,9 @@
 	<div id="chat-container" class="hidden">
 		<div id="chat-header">
 			<span><< 채팅 상담 >></span>
-			<button onclick="closeChat()">X</button>
+			<button onclick="minimizeChat()">➖</button>
+			<!-- 최소화 버튼 -->
+			<button onclick="closeChat()">❌</button>
 		</div>
 		<div id="chat-box"></div>
 		<div id="chat-input">

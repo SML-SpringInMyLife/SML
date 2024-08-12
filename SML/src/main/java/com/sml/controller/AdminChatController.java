@@ -41,7 +41,6 @@ public class AdminChatController {
 				// 클라이언트로 메시지 전송 (예시), 기본메시지 활용
 				try {
 					session.getBasicRemote().sendText("안녕하세요, " + member.getMemId() + " 님! 무엇을 도와드릴까요?");
-					session.getBasicRemote().sendText("안녕하세요, " + member.getMemId() + " 님! 무엇을 도와드릴까요?");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
