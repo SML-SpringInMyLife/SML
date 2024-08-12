@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.sml.model.ChatVO;
 import com.sml.model.MemberVO;
 
 public interface AdminMapper {
@@ -22,6 +23,10 @@ public interface AdminMapper {
 	public Map<String, Integer> getAgeGroupCnt();
 
 	public List<Map<String, Object>> getAgeGroupCountsByMonth(String year);
+
+	public int memberGetTotal();
+
+	public void saveChatContent(ChatVO chatVO);
 
 
 }

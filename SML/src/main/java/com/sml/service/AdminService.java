@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.sml.model.ChatVO;
+import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 
 public interface AdminService {
@@ -22,5 +24,9 @@ public interface AdminService {
 	public Map<String, Integer> getAgeGroupCnt() throws Exception;
 
 	public Map<String, int[]> getAgeGroupCountsByMonth(String year) throws Exception ;
+
+	public int memberGetTotal(Criteria cri);
+
+	public void saveChatContent(ChatVO chatVO);
 
 }
