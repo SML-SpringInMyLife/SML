@@ -1,13 +1,133 @@
-<!-- <?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-  
-  <mapper namespace="com.sml.mapper.AdminMapper">
-  
-  <select id="getMemberList" resultType="com.sml.model.MemberVO">
-  		SELECT * FROM TB_MEMBER
-  	</select>
-  
-  </mapper> -->
+
+<mapper namespace="com.sml.mapper.AdminMapper">
+
+	<!-- 멤버 테이블 컬럼명맵핑 -->
+	<resultMap id="userResultMap" type="com.sml.model.MemberVO">
+		<result property="memCode" column="MEM_CODE" />
+		<result property="memId" column="MEM_ID" />
+		<result property="memPw" column="MEM_PW" />
+		<result property="memName" column="MEM_NAME" />
+		<result property="memMail" column="MEM_MAIL" />
+		<result property="memPhone" column="MEM_PHONE" />
+		<result property="memEmerPhone" column="MEM_EMER_PHONE" />
+		<result property="memAddr1" column="MEM_ADDR1" />
+		<result property="memAddr2" column="MEM_ADDR2" />
+		<result property="memAddr3" column="MEM_ADDR3" />
+		<result property="memBirth" column="MEM_BIRTH" />
+		<result property="memJoinDate" column="MEM_JOIN_DATE" />
+		<result property="memQuitDate" column="MEM_QUIT_DATE" />
+		<result property="memStatus" column="MEM_STATUS" />
+		<result property="memTotalPoint" column="MEM_TOTAL_POINT" />
+		<result property="memAdminCheck" column="MEM_ADMIN_CHECK" />
+	</resultMap>
+
+	<!-- 전체 회원 정보 가져오기 : 관리자페이지 회원관리 -->
+	<select id="getMemberList" resultType="com.sml.model.MemberVO"
+		resultMap="userResultMap">
+		SELECT * FROM TB_MEMBER
+		<where>
+			<if test="category != null and category == 'all'">
+				(
+				MEM_ID LIKE '%' || #{keyword} || '%'
+				OR MEM_NAME LIKE '%' || #{keyword} || '%'
+				OR MEM_PHONE LIKE '%' || #{keyword} || '%'
+				)
+			</if>
+			<if test="category != null and category != 'all'">
+				<choose>
+					<when test="category == 'id'">
+						MEM_ID LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="category == 'name'">
+						MEM_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="category == 'phone'">
+						MEM_PHONE LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
+		ORDER BY MEM_ADMIN_CHECK DESC, MEM_NAME
+	</select>
+
+	<!-- 전체 활성화 회원 카운트 : 관리자페이지 메인① (관리자 제외) -->
+	<select id="getMemberCnt" resultType="int">
+		SELECT COUNT(*) FROM
+		TB_MEMBER WHERE MEM_STATUS = 1 AND MEM_ADMIN_CHECK = 0
+	</select>
+
+	<!-- 전체 활성화 회원 연령구간대별 카운트 : 관리자페이지 메인① (관리자 제외) -->
+	<select id="getAgeGroupCnt" resultType="java.util.Map">
+    <![CDATA[
+    SELECT
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) < 50
+        THEN 1
+        END) AS under50,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 50 AND 59
+        THEN 1
+        END) AS age50s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 60 AND 69
+        THEN 1
+        END) AS age60s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 70 AND 79
+        THEN 1
+        END) AS age70s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 80 AND 89
+        THEN 1
+        END) AS age80s,
+        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) >= 90
+        THEN 1
+        END) AS age90plus
+    FROM TB_MEMBER WHERE MEM_STATUS = 1 AND MEM_ADMIN_CHECK = 0
+    ]]>
+	</select>
+
+	<!-- 년/월/연령구간대별 회원가입 현황 : 관리자페이지 메인② (관리자 제외) -->
+	<select id="getAgeGroupCountsByMonth" parameterType="String"
+		resultType="java.util.Map">
+    <![CDATA[
+    WITH Months AS (
+        SELECT LEVEL AS month FROM DUAL CONNECT BY LEVEL <= 12
+    )
+    SELECT
+        m.month,
+        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) < 50 THEN 1 ELSE 0 END), 0) AS under50,
+        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 50 AND 59 THEN 1 ELSE 0 END), 0) AS age50s,
+        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 60 AND 69 THEN 1 ELSE 0 END), 0) AS age60s,
+        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 70 AND 79 THEN 1 ELSE 0 END), 0) AS age70s,
+        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 80 AND 89 THEN 1 ELSE 0 END), 0) AS age80s,
+        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) >= 90 THEN 1 ELSE 0 END), 0) AS age90plus
+    FROM Months m
+    LEFT JOIN TB_MEMBER t
+        ON TO_CHAR(t.MEM_JOIN_DATE, 'MM') = LPAD(m.month, 2, '0')
+        AND EXTRACT(YEAR FROM t.MEM_JOIN_DATE) = #{year}
+        AND t.MEM_STATUS = 1 AND t.MEM_ADMIN_CHECK = 0
+    GROUP BY m.month
+    ORDER BY m.month
+    ]]>
+	</select>
+
+
+	<!-- 관리자페이지 회원관리 → 관리권한 변경 -->
+	<update id="updateAdm">
+		UPDATE TB_MEMBER
+		SET MEM_ADMIN_CHECK =
+		#{memAdminCheck}
+		WHERE
+		MEM_CODE = #{memCode}
+	</update>
+
+	<!-- 관리자페이지 회원관리 → 회원상태 변경 -->
+	<update id="updateStatus">
+		UPDATE TB_MEMBER
+		SET MEM_STATUS = #{memStatus}
+		WHERE
+		MEM_CODE = #{memCode}
+	</update>
+
+</mapper>

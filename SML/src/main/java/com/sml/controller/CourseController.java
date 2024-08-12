@@ -1,13 +1,20 @@
 package com.sml.controller;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sml.model.CourseVO;
+import com.sml.model.Criteria;
+import com.sml.model.PageDTO;
 import com.sml.service.CourseService;
 
 @Controller
@@ -20,28 +27,40 @@ public class CourseController {
 	private CourseService service;
 
 	@GetMapping("/boardList")
-	public void booardListGET() throws Exception {
-		logger.info("¼ö°­½ÅÃ» ÆäÀÌÁö ÁøÀÔ");
+	public void booardListGET(Criteria cri, Model model) throws Exception {
+		logger.info("ìˆ˜ê°•ì‹ ì²­ í˜ì´ì§€ ì§„ì…");
+		List list = service.courseList(cri);
+		
+		if(!list.isEmpty()) {
+			model.addAttribute("list", list);
+		} else {
+			model.addAttribute("listCheck", "empty");
+			return;
+		}
+		
+		model.addAttribute("pageMaker", new PageDTO(cri, service.courseTotal(cri)));
 	}
 
 	@GetMapping("/enroll")
 	public void courseEnrollGET() throws Exception {
-		logger.info("¼ö¾÷ µî·Ï ÆäÀÌÁö ÁøÀÔ");
+		logger.info("ìˆ˜ì—… ë“±ë¡ í˜ì´ì§€ ì§„ì…");
 	}
-
 	@PostMapping("/enroll")
-	public String enrollPOST() throws Exception {
+	public String enrollPOST(CourseVO course, RedirectAttributes rttr) throws Exception {
+		logger.info("enrollPOST......" +course);
+		service.courseEnroll(course);
+		rttr.addFlashAttribute("enroll_result", course.getCourseName());
 		return "redirect:/course/boardList";
 	}
 
 	@GetMapping("/modify")
 	public void modifyGET() throws Exception {
-		logger.info("¼ö¾÷ ¼öÁ¤ ÆäÀÌÁö ÁøÀÔ");
+		logger.info("ìˆ˜ì—… ìˆ˜ì • í˜ì´ì§€ ì§„ì…");
 	}
 
 	@PostMapping("/modify")
 	public String modifyPOST() throws Exception {
-		// ÇØ´ç »ó¼¼ ÆäÀÌÁö·Î ¸®ÅÏÇÒ ¼ö ÀÖ³ª..?
+		// í•´ë‹¹ ìƒì„¸ í˜ì´ì§€ë¡œ ë¦¬í„´í•  ìˆ˜ ìˆë‚˜..?
 		return "redirect:/course/boardList";
 	}
 

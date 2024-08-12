@@ -7,7 +7,7 @@
 <head>
 <title>수강신청</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/course/boardList.css">
+<link rel="stylesheet" href="../resources/css/course/course.css">
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -26,26 +26,37 @@
 					<table class="course_boardList">
 						<thead>
 							<tr>
-								<td class="th_column_1">#</td>
-								<td class="th_column_2">카테고리</td>
-								<td class="th_column_3">강좌명</td>
-								<td class="th_column_4">강사명</td>
-								<td class="th_column_5">수강 기간</td>
-								<td class="th_column_6">수강 인원</td>
+								<td>#</td>
+								<td>수강 기간</td>
+								<td>카테고리</td>
+								<td>강좌명</td>
+								<td>강사명</td>
+								<td>수업 시간/요일</td>
+								<td>수강 인원</td>
 							</tr>
 						</thead>
 						<c:forEach items="${list}" var="item">
 							<tr>
 								<td><c:out value="${item.courseCode}" /></td>
+								<td>
+									<fmt:formatDate value='<c:out value="${item.startDate}"/>' pattern="yyyy=MM=dd"/>
+									~
+									<fmt:formatDate value='<c:out value="${item.endDate}"/>' pattern="yyyy-MM-dd"/>
+								</td>
 								<td><c:out value="${item.ccatCode}" /></td>
-								<td><a class="move"
-									href="<c:out value='${item.courseCode}'/>"> <c:out
-											value="${item.courseName}" />
-								</a></td>
+								<td>
+									<a class="move" href="<c:out value='${item.courseCode}'/>"> 
+										<c:out value="${item.courseName}" />
+									</a>
+								</td>
 								<td><c:out value="${item.TeacherCode}" /></td>
 								<td><fmt:formatDate value="${item.TeacherCode}"
 										pattern="yyyy-MM-dd" /></td>
-								<td><c:out value="${item.coursePeriod}" /></td>
+								<td>
+									<c:out value="${item.courseDay}"/>
+									<br>
+									<c:out value="${item.startTime}"/>~<c:out value="${item.endTime}"/>
+								</td>
 								<td><c:out value="${item.courseLimit}" /></td>
 							</tr>
 						</c:forEach>

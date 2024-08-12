@@ -82,7 +82,6 @@
 		$("#enrollBtn").click(function() {
 			/* 검사 통과 유무 변수 */
 		    let titleCheck = false;            
-		    let contentCheck = false; 
 		    
 		    /* 입력값 변수 */
 		    let commTitle = $('input[name=commTitle]').val(); 
