@@ -169,22 +169,40 @@ function appendMessage(message) {
     try {
         const jsonMessage = JSON.parse(message);
 
-        // 발신자 정보
+        // 발신자 정보와 메시지 내용
         const userId = jsonMessage.userId;
         const content = jsonMessage.content;
 
-        // 현재 사용자의 ID와 비교하여 스타일 결정
+        // 현재 사용자의 ID 가져오기
         const myUserId = document.getElementById('memId').textContent.trim();
 
+        // 메시지 컨테이너 스타일 결정
         if (userId === myUserId) {
             messageDiv.className = 'message my-message';
         } else {
             messageDiv.className = 'message other-message';
         }
-        messageDiv.textContent = userId +" : "+ content;
+
+        // 메시지 내용 HTML 구성
+        const userIdSpan = document.createElement('span');
+        userIdSpan.className = 'user-id'; // 사용자 ID 스타일 적용
+        userIdSpan.textContent = userId + ': ';
+
+        const contentSpan = document.createElement('span');
+        contentSpan.textContent = content;
+
+        // 사용자 ID와 메시지 내용을 포함하는 div 생성
+        const contentDiv = document.createElement('div');
+        contentDiv.appendChild(userIdSpan);
+        contentDiv.appendChild(contentSpan);
+
+        // 메시지 컨테이너에 메시지 내용 추가
+        messageDiv.appendChild(contentDiv);
+
     } catch (e) {
+        // JSON 파싱 오류 발생 시 처리
         messageDiv.className = 'message other-message';
-        messageDiv.textContent = userId +" : "+ content;
+        messageDiv.textContent = message;
     }
 
     chatBox.appendChild(messageDiv);
