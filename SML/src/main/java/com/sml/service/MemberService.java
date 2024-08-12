@@ -1,6 +1,9 @@
 package com.sml.service;
 
+import java.util.List;
+
 import com.sml.model.MemberVO;
+import com.sml.model.PointVO;
 
 public interface MemberService {
 	
@@ -12,4 +15,6 @@ public interface MemberService {
 
 	//로그인
 	public MemberVO memberLogin(MemberVO member) throws Exception;
+	
+	
 }

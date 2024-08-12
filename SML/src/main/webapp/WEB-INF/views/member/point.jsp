@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>    
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,32 +20,31 @@
 	<div class="member-container">
 		<jsp:include page="/WEB-INF/views/member/mypage.jsp" />
 			<div class="member-main-content">
-				<h2>나의 포인트 내역</h2>
+				<h2>나의 포인트</h2>
 				
 				<form
-				action="${appServlet}/member/point"
-				method="get" class="point-container">
-				<select id="selectbox" name="point">
-					<option value="none" ${registDate == 'none' ? 'selected' : ''}>===
-						선택 ===</option>
-					<option value="202401" ${registDate == '202401' ? 'selected' : ''}>2024년
-						1월</option>
-					<option value="202402" ${registDate == '202402' ? 'selected' : ''}>2024년
-						2월</option>
-					<option value="202403" ${registDate == '202403' ? 'selected' : ''}>2024년
-						3월</option>
-					<option value="202404" ${registDate == '202404' ? 'selected' : ''}>2024년
-						4월</option>
-					<option value="202405" ${registDate == '202405' ? 'selected' : ''}>2024년
-						5월</option>
-					<option value="202406" ${registDate == '202406' ? 'selected' : ''}>2024년
-						6월</option>
-					<option value="202407" ${registDate == '202407' ? 'selected' : ''}>2024년
-						7월</option>
-					<option value="202408" ${registDate == '202408' ? 'selected' : ''}>2024년
-						8월</option>	
-
-				</select>
+				action="${appServlet}/member/point" method="get" class="point-container">
+				
+				<!-- 현재시스템 년/월로 조회 --> 
+				<c:set var="now" value="<%= new java.util.Date() %>" />
+				<fmt:formatDate var="currentYear" value="${now}" pattern="yyyy" />
+				<fmt:formatDate var="currentMonth" value="${now}" pattern="MM" />
+				
+				<select id="selectbox" name="selectDate">
+		        <option value="none" selected>=== 선택 ===</option>
+		        <c:forEach begin="${currentYear - 0}" end="${currentYear}" var="year">
+            	<c:forEach begin="1" end="12" var="month">
+                <c:if test="${year < currentYear || (year == currentYear && month <= currentMonth)}">
+                    <c:set var="formattedMonth" value="${month < 10 ? '0' : ''}${month}" />
+                    <c:set var="optionValue" value="${year}${formattedMonth}" />
+                    <option value="${optionValue}">${year}년 ${month}월
+                    <!--  ${param.point == optionValue || (empty param.point && year == currentYear 
+                    && formattedMonth == currentMonth) ? 'selected' : ''}>-->                        
+                    </option>
+                </c:if>
+               </c:forEach>
+               </c:forEach>
+               </select>
 				<button class="submit-button" type="submit">조회</button>
 			</form>			
 
@@ -61,32 +62,23 @@
 					<tbody id="courseList">
 						<!-- Sample Group Row -->
 						<tr class="course-group">
-							<td colspan="8" data-label="포인트">잔여 포인트 : 11000</td>
+							<td colspan="8" data-label="포인트">현재 포인트 : <c:out value="${ TotalPoint }"/> 점 입니다.</td>
 						</tr>
-						<tr>
-							<th data-label="No.">1</th>
-							<th data-label="날짜">2024-08-01</th>
-							<th data-label="내용">회원가입 적립</th>
-							<th data-label="포인트">8000</th>
-							<th data-label="포인트유형">적립</th>														
-							<th data-label="비고">-</th>
-						</tr>
-						<tr>
-							<th data-label="No.">2</th>
-							<th data-label="날짜">2024-08-03</th>
-							<th data-label="내용">글쓰기 적립</th>
-							<th data-label="포인트">5000</th>
-							<th data-label="포인트유형">적립</th>								
-							<th data-label="비고">-</th>
-						</tr>
-						<tr>
-							<th data-label="No.">3</th>
-							<th data-label="날짜">2024-08-05</th>
-							<th data-label="내용">수강신청 사용</th>
-							<th data-label="포인트">-2000</th>
-							<th data-label="포인트유형">사용</th>								
-							<th data-label="비고">-</th>
-						</tr>
+					    <c:forEach items="${list}" var="list">
+					    <tr>
+						  <td><c:out value="${ list.pointCode }"/></td>
+						  <td><fmt:formatDate value="${list.pointDate}" pattern="yyyy-MM-dd HH:mm"/></td>
+						  <td><c:out value="${ list.pointComment }"/></td>
+						  <td><fmt:formatNumber value="${ list.pointPrice}" pattern="#,###" />P</td>	
+						  <td>
+						  	<c:choose>
+	            				<c:when test="${list.status == 1}">적립</c:when>
+	           				    <c:otherwise>사용</c:otherwise>	           				    
+	        			 	</c:choose>	
+	        			 </td>		
+						 <td>-</td>
+					    </tr>					
+					    </c:forEach>		
 					</tbody>
 				</table>
 			</div>

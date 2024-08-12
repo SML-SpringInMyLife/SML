@@ -2,11 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page session="false"%>	
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>myInfo</title>
+<title>myInfo(회원정보수정)</title>
 <link rel="stylesheet" href="/resources/css/member/join.css">
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -28,8 +30,10 @@
 				</div>
 				<div class="id_wrap">
 					<div class="id_name">아이디</div>
-					<div class="id_input_box">
-						<input class="id_input" name="memId">
+					<div class="id_input_box">	
+					 	<input type="text" class="id_input" name="memId" readonly="readonly" 
+					 	       value="${Member.memId}" >	
+						
 					</div>
 					<span class="id_input_re_1">사용 가능한 아이디입니다.</span> 
 					<span class="id_input_re_2">아이디가 이미 존재합니다.</span>
@@ -38,7 +42,7 @@
 				<div class="pw_wrap">
 					<div class="pw_name">비밀번호</div>
 					<div class="pw_input_box">
-						<input class="pw_input" name="memPw">
+						<input class="pw_input" name="memPw" value="${Member.memPw}">
 					</div>
 					<span class="final_pw_ck">비밀번호를 입력해주세요.</span>
 				</div>
@@ -54,11 +58,11 @@
 				<div class="user_wrap">
 					<div class="user_name">이름</div>
 					<div class="user_input_box">
-						<input class="user_input" name="memName">
+						<input class="user_input" name="memName" readonly="readonly" value="${Member.memName}">
 					</div>
 					<span class="final_name_ck">이름을 입력해주세요.</span>
 				</div>
-				<div class="birth_wrap">
+				<div class="birth_wrap">				 
 					<div class="user_birth">생년월일</div>
 				<!-- 
 				<select class="box" id="birth-year">
@@ -73,16 +77,13 @@
 				-->
 				 
 					<div class="com_input_box">
-						<input type=date class="com_input" name="memBirth" max="9999-12-31">
-					</div>
-				
-
- 
+						<input type=text class="com_input" name="memBirth" readonly="readonly" value="<fmt:formatDate value='${Member.memBirth}' pattern='yyyy-MM-dd'/>" >
+					</div>	
 				</div>
 				<div class="mail_wrap">
 					<div class="user_mail">이메일</div>
 					<div class="mail_input_box">
-						<input class="mail_input" name="memMail">
+						<input class="mail_input" name="memMail" value="${Member.memMail}" >
 						<!--  
 						<select class="mail_box" id="domain-list">
 						  <option value="naver.com">naver.com</option>
@@ -94,7 +95,7 @@
 						-->
 					</div>
 					<span class="final_mail_ck">이메일을 입력해주세요.</span>
-					<sapn class="mail_input_box_warn"></sapn>
+					<span class="mail_input_box_warn"></span>
 					<div class="mail_check_wrap">
 						<div class="mail_check_input_box" id="mail_check_input_box_false">
 							<input class="mail_check_input" disabled="disabled">
@@ -108,7 +109,7 @@
 				<div class="phone_wrap">
 					<div class="user_phone">연락처</div>
 					<div class="phone_input_box">
-						<input class="phone_input" name="memPhone">
+						<input class="phone_input" name="memPhone" value="${Member.memPhone}">
 					</div>
 					<span class="final_phone_ck">연락처를 입력해주세요.</span> 	
 					
@@ -116,7 +117,7 @@
 				<div class="emerphone_wrap">
 					<div class="user_emerphone">비상연락처</div>
 					<div class="emerphone_input_box">
-						<input class="emerphone_input" name="memEmerPhone">
+						<input class="emerphone_input" name="memEmerPhone" value="${Member.memEmerPhone}">
 					</div>
 					<span class="final_emerphone_ck">비상연락처를 입력해주세요.</span>
 				</div>
@@ -124,7 +125,7 @@
 					<div class="address_name">주소</div>
 					<div class="address_input_1_wrap">
 						<div class="address_input_1_box">
-							<input class="address_input_1" name="memAddr1" readonly="readonly">
+							<input class="address_input_1" name="memAddr1" value="${Member.memAddr1}">
 						</div>
 						<div class="address_button" onclick="execution_daum_address()">
 							<span>주소 찾기</span>
@@ -133,12 +134,12 @@
 					</div>
 					<div class="address_input_2_wrap">
 						<div class="address_input_2_box">
-							<input class="address_input_2" name="memAddr2" readonly="readonly">
+							<input class="address_input_2" name="memAddr2" value="${Member.memAddr2}">
 						</div>
 					</div>
 					<div class="address_input_3_wrap">
 						<div class="address_input_3_box">
-							<input class="address_input_3" name="memAddr3" readonly="readonly">
+							<input class="address_input_3" name="memAddr3" value="${Member.memAddr3}">
 						</div>
 					</div>
 					<span class="final_addr_ck">주소를 입력해주세요.</span>
@@ -174,7 +175,7 @@
 	
 	$(document).ready(function(){
 		//회원가입 버튼(회원가입 기능 작동)
-		$(".join_button").click(function(){
+		$(".save_button").click(function(){
 			//$("#join_form").attr("action", "/member/join");
 			//$("#join_form").submit();
 			
@@ -240,8 +241,8 @@
 	        }
 	        
 	       // 최종 유효성 검사 //
-	       if(idCheck&&idckCheck&&pwCheck&&pwckCheck&&pwckcorCheck&&nameCheck&&mailCheck&&mailnumCheck&&addressCheck ){
-	        	$("#join_form").attr("action", "/member/join");
+	       if(pwCheck&&pwckCheck&&pwckcorCheck&&nameCheck&&mailCheck&&mailnumCheck&&addressCheck ){
+	        	$("#join_form").attr("action", "/member/updateMember");
 	    		$("#join_form").submit();
 	       }  
 	        
@@ -291,13 +292,8 @@
 		    var day = $('.birth-day').val();
 
 		    var birthDate = '${year}-${month}-${day}';
-		    birthDate.val(birthDate);			
-			
-			
-	        
-	        
-	     	
-	    	
+		    birthDate.val(birthDate);	
+	
 	    
 		});
 	});
@@ -478,6 +474,8 @@
 	        });
 	    }); 
 	 */
+	 
+	 
 	</script>
 
 </body>
