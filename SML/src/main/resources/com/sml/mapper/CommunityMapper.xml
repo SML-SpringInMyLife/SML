@@ -16,7 +16,7 @@
   	<select id="getBoardList" resultType="com.sml.model.CommunityVO">
   		<![CDATA[
   			SELECT * FROM (
-  				SELECT /*+INDEX_DESC(COMMUNITY COMM_CODE) */
+  				SELECT /*+INDEX_DESC(COMMUNITY SYS_C008510) */
   					ROWNUM AS rn, c.COMM_CODE AS commCode, c.COMM_TITLE AS commTitle, m.MEM_NAME AS commWriter, c.COMM_ENROLL_DATE AS enrollDate, c.COMM_COUNT AS commCount
   				FROM COMMUNITY c
   				JOIN TB_MEMBER m
@@ -29,8 +29,7 @@
         <![CDATA[
         		ROWNUM <= #{pageNum}*#{amount}
             	)
-        	WHERE rn > (#{pageNum} - 1) * #{amount}
-        	
+        	WHERE rn > (#{pageNum} - 1) * #{amount}       	
         ]]>
   	</select>
   	<select id="communityGetTotal" resultType="int">

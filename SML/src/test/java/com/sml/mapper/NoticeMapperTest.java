@@ -17,7 +17,7 @@ public class NoticeMapperTest {
 	@Autowired 
 	private NoticeMapper mapper;
 	
-	@Test
+ /*	@Test
 	public void communityDetail() {
 		
 		int noticeCode = 4;
@@ -25,5 +25,20 @@ public class NoticeMapperTest {
 		System.out.println("notice........." +notice);
 		
 	}
+	*/
+	
+   @Test 
+	public void noticeModifyTest() {
+		NoticeVO notice = new NoticeVO();
+		
+	   	notice.setNoticeCode(4);
+		System.out.println("수정전..............." + mapper.noticeGetDetail(notice.getNoticeCode()));
+	  
+		notice.setNoticeTitle("글제목 수정하였습니다.");
+        notice.setNoticeBody("글수정 하였습니다 ");
+         
+        mapper.noticeModify(notice);
+        System.out.println("수정후..........." + mapper.noticeGetDetail(notice.getNoticeCode()));
+   }
 	
 }

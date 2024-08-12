@@ -33,10 +33,8 @@
 					
 					 <fmt:formatDate
 							value="${noticeDetail.noticeEnroll}" pattern="yyyy-MM-dd" /> 
-					
-					<label>작성일|
-					</label> <label>수정일 <fmt:formatDate
-							value="${noticeDetail.noticeModify}" pattern="yyyy-MM-dd" /> |
+					<label>작성일|</label>
+					 <label>수정일 <fmt:formatDate value="${noticeDetail.noticeModify}" pattern="yyyy-MM-dd" /> |
 					</label> <label >작성자: ${noticeDetail.memCode}</label>
 					 <label>| 조회수 <c:out value="${noticeDetail.noticeCount}" /></label> 
 					 <label>| 좋아요 <c:out value="${noticeDetail.noticeLike}" /></label>
@@ -83,6 +81,9 @@
             <input type="hidden" name="noticeCode" value="<c:out value='${noticeDetail.noticeCode}'/>">
         </form>
 	</main>
+   
+   	<!-- 푸터 영역 포함 -->
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
    
 	<script>
 	let moveForm = $("#moveForm");
