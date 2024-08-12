@@ -83,53 +83,53 @@
 
 						<div class="clearfix"></div>
 						<span id="mail_check_input_box_warn" />
-				
-				<div class="phone_wrap">
-								<div class="label">연락처</div>
-					<div class="input_box">
-						<input class="phone_input" name="memPhone"
-										value="${sessionScope.member.memPhone}">
-					</div>
-					<span class="final_phone_ck">연락처를 입력해주세요.</span>
 
-				</div>
-				<div class="emerphone_wrap">
-					<div class="label">비상연락처</div>
-					<div class="input_box">
-						<input class="emerphone_input" name="memEmerPhone"
-										value="${sessionScope.member.memEmerPhone}">
-					</div>
-					<span class="final_emerphone_ck">비상연락처를 입력해주세요.</span>
-				</div>
-				<div class="address_wrap">
-					<div class="label">주소</div>
-					<div class="input_box">
-						<div class="address_input_1_box">
-							<input class="address_input_1" name="memAddr1"
-											value="${sessionScope.member.memAddr1}" readonly="readonly">
+						<div class="phone_wrap">
+							<div class="label">연락처</div>
+							<div class="input_box">
+								<input class="phone_input" name="memPhone"
+									value="${sessionScope.member.memPhone}">
+							</div>
+							<span class="final_phone_ck">연락처를 입력해주세요.</span>
+
 						</div>
-						<div class="address_button" onclick="execution_daum_address()">
-							<span>주소 찾기</span>
+						<div class="emerphone_wrap">
+							<div class="label">비상연락처</div>
+							<div class="input_box">
+								<input class="emerphone_input" name="memEmerPhone"
+									value="${sessionScope.member.memEmerPhone}">
+							</div>
+							<span class="final_emerphone_ck">비상연락처를 입력해주세요.</span>
 						</div>
-						<div class="clearfix"></div>
-					</div>
-					<div class="address_input_2_wrap">
-						<div class="input_box">
-							<input class="address_input_2" name="memAddr2"
-											value="${sessionScope.member.memAddr2}" readonly="readonly">
+						<div class="address_wrap">
+							<div class="label">주소</div>
+							<div class="input_box">
+								<div class="address_input_1_box">
+									<input class="address_input_1" name="memAddr1"
+										value="${sessionScope.member.memAddr1}" readonly="readonly">
+									<div class="address_button" onclick="execution_daum_address()">
+										<span>주소 찾기</span>
+									</div>
+								</div>
+								<div class="clearfix"></div>
+							</div>
+							<div class="address_input_2_wrap">
+								<div class="input_box">
+									<input class="address_input_2" name="memAddr2"
+										value="${sessionScope.member.memAddr2}" readonly="readonly">
+								</div>
+							</div>
+							<div class="address_input_3_wrap">
+								<div class="input_box">
+									<input class="address_input_3" name="memAddr3"
+										value="${sessionScope.member.memAddr3}" readonly="readonly">
+								</div>
+							</div>
+							<span class="final_addr_ck">주소를 입력해주세요.</span>
 						</div>
-					</div>
-					<div class="address_input_3_wrap">
-						<div class="input_box">
-							<input class="address_input_3" name="memAddr3"
-											value="${sessionScope.member.memAddr3}" readonly="readonly">
-						</div>
-					</div>
-					<span class="final_addr_ck">주소를 입력해주세요.</span>
-				</div>
-				<div class="mypage_button_wrap">
-					<input type="button" class="save_button" value="저장"> <input
-									type="button" class="cancel_button" value="취소">
+						<div class="mypage_button_wrap">
+							<input type="button" class="save_button" value="저장"> <input
+								type="button" class="cancel_button" value="취소">
 					</form>
 				</div>
 			</div>

@@ -5,7 +5,6 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Logger;
 
-import javax.annotation.PreDestroy;
 import javax.servlet.http.HttpSession;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -15,6 +14,7 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.sml.model.ChatVO;
 import com.sml.model.MemberVO;
@@ -28,7 +28,8 @@ public class AdminChatController {
 	// 사용자 ID와 WebSocket 세션을 매핑하기 위한 Map
 	private static final Map<String, Session> sessions = new ConcurrentHashMap<>();
 	private static final Map<Session, StringBuilder> chatBuffers = new ConcurrentHashMap<>(); // 채팅 메시지를 누적할 버퍼
-	private AdminService service; // ChatService 인스턴스
+	@Autowired
+	private AdminService service; // AdminService 인스턴스
 
 	@OnOpen
 	public void onOpen(Session session) {
@@ -110,12 +111,19 @@ public class AdminChatController {
 	public void onClose(Session session) {
 		// 해당 세션과 연결된 사용자 ID를 찾아서 제거
 		String userId = null;
+		MemberVO member = null;
+
 		for (Map.Entry<String, Session> entry : sessions.entrySet()) {
 			if (entry.getValue().equals(session)) {
 				userId = entry.getKey();
+				HttpSession httpSession = (HttpSession) session.getUserProperties().get("httpSession");
+				if (httpSession != null) {
+					member = (MemberVO) httpSession.getAttribute("member");
+				}
 				break;
 			}
 		}
+
 		if (userId != null) {
 			sessions.remove(userId);
 			logger.info("연결 종료: " + userId);
@@ -124,35 +132,50 @@ public class AdminChatController {
 			StringBuilder buffer = chatBuffers.remove(session);
 			if (buffer != null) {
 				String chatContent = buffer.toString();
+				logger.info("chatContent : =============================> " + chatContent);
+				
 
-				// 카테고리 코드와 멤버 코드 예시 값, 실제 값으로 교체해야 함
-				int categoryCode = 1; // 실제 카테고리 코드로 교체
-				int memCode = 1; // 실제 멤버 코드로 교체하는 메서드 호출
-				int status = 1; // 채팅 상태 예시 값, 필요에 따라 조정
-
-				// ChatVO 객체 생성
+				// ChatVO 객체 생성 및 설정
 				ChatVO chatVo = new ChatVO();
+
+				// 카테고리 코드와 상태는 예시 값, 실제 값으로 교체해야 함
+				int categoryCode = 1; // 실제 카테고리 코드로 교체
+				int status = 1; // 채팅 상태 예시 값, 필요에 따라 조정
 				chatVo.setCategoryCode(categoryCode);
-				chatVo.setMemCode(memCode);
 				chatVo.setChatContent(chatContent);
 				chatVo.setStatus(status);
 
-				// 데이터베이스에 채팅 내용 저장
-				try {
-					service.saveChatContent(chatVo);
-					logger.info("채팅 내용 저장됨: " + chatContent);
-				} catch (Exception e) {
-					logger.severe("채팅 내용 저장 실패: " + e.getMessage());
-					e.printStackTrace();
-				}
-			}
-		}
-	}
+				// `memAdminCheck` 값 확인 및 저장
+				if (member != null) {
+					int memCode = member.getMemCode(); // 실제 멤버 코드로 설정
+					int memAdminCheck = member.getMemAdminCheck();
 
-	@PreDestroy
-	public void cleanup() {
-		logger.info("종료 전 리소스 정리");
-		sessions.clear(); // 애플리케이션 종료 시 모든 세션을 정리
-		chatBuffers.clear(); // 채팅 버퍼 정리
+					if (memAdminCheck != 1) {
+						chatVo.setMemCode(memCode);
+
+						// 데이터베이스에 채팅 내용 저장
+						try {
+							if (service != null) {
+								service.saveChatContent(chatVo);
+								logger.info("채팅 내용 저장됨: " + chatContent);
+							} else {
+								logger.severe("AdminService 인스턴스가 null입니다.");
+							}
+						} catch (Exception e) {
+							logger.severe("채팅 내용 저장 실패: " + e.getMessage());
+							e.printStackTrace();
+						}
+					} else {
+						logger.info("관리자 채팅 내용은 저장되지 않습니다.");
+					}
+				} else {
+					logger.warning("회원 정보가 존재하지 않아 채팅 내용을 저장할 수 없습니다.");
+				}
+			} else {
+				logger.warning("채팅 버퍼가 null입니다. 세션 종료 시 채팅 내용이 없습니다.");
+			}
+		} else {
+			logger.warning("연결 종료 시 사용자 ID를 찾을 수 없습니다.");
+		}
 	}
 }

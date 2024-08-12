@@ -212,4 +212,5 @@ public class AdminController {
 		logger.info("로그인페이지 이동");
 
 	}
+
 }
