@@ -32,7 +32,14 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		return noticeMapper.noticeGetDetail(noticeCode);
 	}
+ 
+	@Override //게시글 수정 
+	public int noticeModify(NoticeVO noticevo) throws Exception {
+		
+		return noticeMapper.noticeModify(noticevo);
+	}
     
+	
 	
 	/*
 	@Override

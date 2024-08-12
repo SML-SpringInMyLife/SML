@@ -30,7 +30,7 @@ public class NoticeController {
 	@GetMapping("/list")
 	public void noticeListGET(Model model) throws Exception {
 
-		logger.info("공지사항 페이지 이동");
+		logger.info("공지사항 조회페이지 이동");
       
 		List<NoticeVO> list = noticeservice.noticeGetList();
 		
@@ -44,7 +44,7 @@ public class NoticeController {
 
 	
 	/* 공지사항 상세조회페이지 이동 */
-	@GetMapping("/detail")
+	@GetMapping({"/detail" , "/modify"})
 	public void noticeDetailGET(int noticeCode,Criteria cri, Model model) throws Exception {
 
 		logger.info("공지사항 상세조회 이동 ");
@@ -63,13 +63,6 @@ public class NoticeController {
 		logger.info("공지사항 등록페이지 이동");
 
 	}
-  
-	/* 공지사항 수정페이지 이동 */
-	@GetMapping("/modify")
-	public void noticeModifyGET() throws Exception {
-
-		logger.info("공지사항 수정페이지 이동");
-	}
 	
 	
 	@PostMapping("/enroll.do")
@@ -80,6 +73,20 @@ public class NoticeController {
 		 rttr.addFlashAttribute("enroll_result", notice.getNoticeTitle());
 		return "redirect:/notice/list";
 	}
+  
+	
+	   @PostMapping("/modify")
+	   public String noticeModifyPOST(NoticeVO notice ,RedirectAttributes rttr) throws Exception{
+		   logger.info("공지사항 수정: " + notice); 
+		   
+		   int result= noticeservice.noticeModify(notice);
+		   
+		   rttr.addFlashAttribute("modify_result", result);
+		   
+		   return "redirect:/notice/list";
+	   }
+	
+
 	
 	
 	/*
