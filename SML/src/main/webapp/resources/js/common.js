@@ -165,6 +165,9 @@ function sendMessage() {
 function appendMessage(message) {
     const chatBox = document.getElementById('chat-box');
     const messageDiv = document.createElement('div');
+    
+    // 기본 메시지 스타일 적용
+    messageDiv.className = 'message-container';
 
     try {
         const jsonMessage = JSON.parse(message);
@@ -177,31 +180,26 @@ function appendMessage(message) {
         const myUserId = document.getElementById('memId').textContent.trim();
 
         // 메시지 컨테이너 스타일 결정
-        if (userId === myUserId) {
-            messageDiv.className = 'message my-message';
-        } else {
-            messageDiv.className = 'message other-message';
-        }
+        const isMyMessage = userId === myUserId;
+        messageDiv.classList.add(isMyMessage ? 'my-message-container' : 'other-message-container');
 
-        // 메시지 내용 HTML 구성
-        const userIdSpan = document.createElement('span');
-        userIdSpan.className = 'user-id'; // 사용자 ID 스타일 적용
-        userIdSpan.textContent = userId + ': ';
+        // 사용자 ID 스타일
+        const userIdDiv = document.createElement('div');
+        userIdDiv.className = 'user-id';
+        userIdDiv.textContent = userId;
 
-        const contentSpan = document.createElement('span');
-        contentSpan.textContent = content;
+        // 메시지 내용을 포함하는 div 생성
+        const messageBox = document.createElement('div');
+        messageBox.className = 'message-box'; // 메시지 내용 스타일 적용
+        messageBox.textContent = content;
 
         // 사용자 ID와 메시지 내용을 포함하는 div 생성
-        const contentDiv = document.createElement('div');
-        contentDiv.appendChild(userIdSpan);
-        contentDiv.appendChild(contentSpan);
-
-        // 메시지 컨테이너에 메시지 내용 추가
-        messageDiv.appendChild(contentDiv);
+        messageDiv.appendChild(userIdDiv);
+        messageDiv.appendChild(messageBox);
 
     } catch (e) {
         // JSON 파싱 오류 발생 시 처리
-        messageDiv.className = 'message other-message';
+        messageDiv.className = 'message-container other-message-container';
         messageDiv.textContent = message;
     }
 
