@@ -7,20 +7,28 @@
 
 	<insert id="courseEnroll">
     	INSERT INTO COURSE (COURSE_NAME, CCAT_CODE, COURSE_CONTENT, COURSE_LIMIT, COURSE_START_DATE, COURSE_END_DATE, TEA_CODE, COURSE_START_TIME, COURSE_END_TIME, COURSE_DAY) VALUES (
-        	#{courseName, jdbcType=VARCHAR},
-        	#{ccatCode, jdbcType=INTEGER},
-        	#{courseContent, jdbcType=VARCHAR},
-        	#{courseLimit, jdbcType=INTEGER},
+        	#{courseName},
+        	#{ccatCode},
+        	#{courseContent},
+        	#{courseLimit},
         	#{startDate, jdbcType=DATE},
         	#{endDate, jdbcType=DATE},
-        	#{teacherCode, jdbcType=INTEGER},
-        	#{startTime, jdbcType=TIMESTAMP},
-        	#{endTime, jdbcType=TIMESTAMP},
-        	#{courseDay, jdbcType=VARCHAR}
+        	#{teaCode},
+        	#{startTime, jdbcType=TIME},
+        	#{endTime, jdbcType=TIME}, 
+        	#{courseDay}
     	)
 	</insert>
 	
-	<!-- <select id="courseList" resultType="com.vam.model.CourseVO">
+	<select id="cateList" resultType="com.sml.model.CourseCategoryVO">
+		SELECT 
+			CCAT_TIER AS tier,
+			CCAT_NAME AS name,
+			CCAT_CODE AS code
+			FROM COURSE_CATEGORY ORDER BY CCAT_CODE
+	</select>
+	
+	<select id="courseList" resultType="com.sml.model.CourseVO">
     	SELECT
     		c.COURSE_CODE AS courseCode,
     		c.COURSE_START_DATE AS startDate,
@@ -35,7 +43,7 @@
     	 JOIN COURSE_CATEGORY ccat ON c.CCAT_CODE = ccat.CCAT_CODE
     	 JOIN COURSE_TEACHER t ON c.TEA_CODE = t.TEA_CODE
     	 WHERE c.COURSE_STATUS = 'N'	
-	</select> -->
+	</select>
 	
 	<select id="courseTotal" resultType="int">	
 		SELECT COUNT(*) FROM COURSE
