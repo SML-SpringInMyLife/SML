@@ -17,4 +17,7 @@ public interface NoticeMapper {
 	
 	/* 공지사항 상세조회 */
 	public NoticeVO noticeGetDetail(int noticeCode);
+	
+	/* 공지사항 수정 */
+	public int noticeModify(NoticeVO noticevo);
 }

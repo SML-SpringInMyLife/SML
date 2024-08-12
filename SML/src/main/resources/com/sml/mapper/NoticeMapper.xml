@@ -58,6 +58,14 @@
 		resultMap="noticeResultMap">
 		select *
 		from NOTICE
-		where NOTICE_CODE = #{noticeCode}
+		where NOTICE_CODE = #{noticeCode} 
 	</select>
+	
+	<!-- 공지사항 수정 -->
+	<update id="noticeModify">
+	  update NOTICE SET NOTICE_TITLE=#{noticeTitle}, NOTICE_BODY=#{noticeBody},
+	 NOTICE_MODIFY_DATE=sysdate  
+		where NOTICE_CODE=#{noticeCode} 
+	  
+	</update>
 </mapper>
