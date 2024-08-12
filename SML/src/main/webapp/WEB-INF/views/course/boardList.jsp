@@ -39,9 +39,9 @@
 							<tr>
 								<td><c:out value="${item.courseCode}" /></td>
 								<td>
-									<fmt:formatDate value='<c:out value="${item.startDate}"/>' pattern="yyyy=MM=dd"/>
+									<fmt:formatDate value="${item.startDate}" pattern="yyyy-MM-dd"/>
 									~
-									<fmt:formatDate value='<c:out value="${item.endDate}"/>' pattern="yyyy-MM-dd"/>
+									<fmt:formatDate value="${item.endDate}" pattern="yyyy-MM-dd"/>
 								</td>
 								<td><c:out value="${item.ccatCode}" /></td>
 								<td>

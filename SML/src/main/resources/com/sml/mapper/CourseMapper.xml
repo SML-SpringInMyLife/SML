@@ -20,7 +20,15 @@
     	)
 	</insert>
 	
-	<!-- <select id="courseList" resultType="com.vam.model.CourseVO">
+	<select id="cateList" resultType="com.sml.model.CourseCategoryVO">
+		SELECT 
+			CCAT_TIER AS tier,
+			CCAT_NAME AS name,
+			CCAT_CODE AS code
+			FROM COURSE_CATEGORY ORDER BY CCAT_CODE
+	</select>
+	
+	<select id="courseList" resultType="com.sml.model.CourseVO">
     	SELECT
     		c.COURSE_CODE AS courseCode,
     		c.COURSE_START_DATE AS startDate,
@@ -35,7 +43,7 @@
     	 JOIN COURSE_CATEGORY ccat ON c.CCAT_CODE = ccat.CCAT_CODE
     	 JOIN COURSE_TEACHER t ON c.TEA_CODE = t.TEA_CODE
     	 WHERE c.COURSE_STATUS = 'N'	
-	</select> -->
+	</select>
 	
 	<select id="courseTotal" resultType="int">	
 		SELECT COUNT(*) FROM COURSE
