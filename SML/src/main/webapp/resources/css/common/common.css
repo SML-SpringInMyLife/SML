@@ -82,7 +82,6 @@ a {
 	margin-left: 20px;
 }
 
-
 .main-menu a, .auth-menu a, .mobile-menu a {
 	color: #01530c;
 	font-size: 1.5em;
@@ -113,7 +112,7 @@ a {
 .mobile-menu {
 	display: none;
 	position: absolute;
-	text-align : center;
+	text-align: center;
 	top: calc(100% + 5px); /* 버튼 아래에 약간의 여백 추가 */
 	right: 0; /* 버튼 오른쪽 끝에 위치 */
 	width: 180px;
@@ -295,6 +294,29 @@ main {
 
 #chat-container button:hover {
 	background-color: #008000;
+}
+
+/* 메시지 컨테이너 */
+.message {
+	margin: 5px;
+	padding: 10px;
+	border-radius: 5px;
+	max-width: 70%;
+	clear: both;
+}
+
+/* 나의 메시지 스타일 */
+.my-message {
+	background-color: #d6e0d7;
+	text-align: right;
+	margin-left: auto;
+}
+
+/* 다른 사람 메시지 스타일 */
+.other-message {
+	background-color: #f0f0f0;
+	text-align: left;
+	margin-right: auto;
 }
 
 /* 채팅창 종료 경고창 */

@@ -1,19 +1,25 @@
 package com.sml.controller;
 
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.OnClose;
-import javax.websocket.Session;
-import javax.websocket.server.ServerEndpoint;
-import org.json.JSONException;
-import org.json.JSONObject;
 import java.io.IOException;
 import java.util.logging.Logger;
+
+import javax.annotation.PreDestroy;
+import javax.servlet.http.HttpSession;
+import javax.websocket.OnClose;
+import javax.websocket.OnMessage;
+import javax.websocket.OnOpen;
+import javax.websocket.Session;
+import javax.websocket.server.ServerEndpoint;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import com.sml.model.MemberVO;
 
 /**
  * WebSocket 서버 엔드포인트 클라이언트와의 WebSocket 통신을 처리하는 컨트롤러
  */
-@ServerEndpoint("/chat")
+@ServerEndpoint(value = "/chat", configurator = HttpSessionConfigurator.class)
 public class AdminChatController {
 
 	private static final Logger logger = Logger.getLogger(AdminChatController.class.getName());
@@ -25,7 +31,26 @@ public class AdminChatController {
 	 */
 	@OnOpen
 	public void onOpen(Session session) {
-		logger.info("새 연결 : " + session.getId());
+		// WebSocket 세션에서 HttpSession을 가져옴
+		HttpSession httpSession = (HttpSession) session.getUserProperties().get("httpSession");
+
+		if (httpSession != null) {
+			MemberVO member = (MemberVO) httpSession.getAttribute("member");
+			if (member != null) {
+				logger.info("연결된 회원: " + member.getMemId());
+				// 클라이언트로 메시지 전송 (예시), 기본메시지 활용
+				try {
+					session.getBasicRemote().sendText("안녕하세요, " + member.getMemId() + " 님! 무엇을 도와드릴까요?");
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				logger.warning("회원 정보가 존재하지 않습니다.");
+			}
+		} else {
+			logger.warning("HTTP 세션이 null입니다.");
+		}
 	}
 
 	/**
@@ -36,26 +61,32 @@ public class AdminChatController {
 	 */
 	@OnMessage
 	public void onMessage(String message, Session session) {
+		HttpSession httpSession = (HttpSession) session.getUserProperties().get("httpSession");
+		MemberVO member = (MemberVO) httpSession.getAttribute("member");
+
 		try {
-			// 메시지가 JSON 형식인지 확인
 			if (message.trim().startsWith("{")) {
-				// JSON 객체로 변환
 				JSONObject jsonMessage = new JSONObject(message);
-				// JSON 메시지 출력
 				logger.info("수신된 JSON 메시지: " + jsonMessage.toString());
 
-				// 클라이언트로 메시지 전송
-				session.getBasicRemote().sendText("서버 수신 메시지: " + jsonMessage.getString("content"));
+				String userId = member.getMemId(); // 발신자 ID
+
+				for (Session s : session.getOpenSessions()) {
+					if (s.isOpen()) {
+						JSONObject responseMessage = new JSONObject();
+						responseMessage.put("userId", userId);
+						responseMessage.put("content", jsonMessage.getString("content"));
+
+						s.getBasicRemote().sendText(responseMessage.toString());
+					}
+				}
 			} else {
-				// JSON 형식이 아닌 메시지 처리
 				logger.warning("수신된 메시지가 JSON 형식 아님 : " + message);
 			}
 		} catch (JSONException e) {
-			// JSON 처리 중 오류 발생 시
 			logger.severe("메시지 처리 중 JSON 오류 발생: " + message);
 			e.printStackTrace();
 		} catch (IOException e) {
-			// 클라이언트로 메시지를 전송하는 동안 오류 발생 시
 			logger.severe("클라이언트로 메시지 전송 중 오류 발생: " + e.getMessage());
 			e.printStackTrace();
 		}
@@ -69,5 +100,10 @@ public class AdminChatController {
 	@OnClose
 	public void onClose(Session session) {
 		logger.info("연결종료 : " + session.getId());
+	}
+
+	@PreDestroy
+	public void cleanup() {
+		logger.info("Cleaning up resources before shutdown");
 	}
 }

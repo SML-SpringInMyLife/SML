@@ -58,12 +58,6 @@ function chatConsultation() {
     const chatContainer = document.getElementById('chat-container');
     const chatBox = document.getElementById('chat-box');
     chatBox.innerHTML = ''; // 이전 채팅 내용 초기화
-    
-    // 기본 메시지 추가
-    const defaultMessage = document.createElement('div');
-    defaultMessage.textContent = '무엇을 도와드릴까요?';
-    chatBox.appendChild(defaultMessage);
-
     chatContainer.classList.remove('hidden'); // 채팅창 표시
 }
 
@@ -131,7 +125,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 let ws;
 
 function startChat() {
-    ws = new WebSocket('ws://192.168.1.114:8080/chat'); // WebSocket 서버 주소 설정
+    // ws = new WebSocket('ws://192.168.1.114:8080/chat'); // WebSocket 서버 주소 설정
+    ws = new WebSocket('ws://localhost:8080/chat');
 
     ws.onopen = function() {
         console.log('WebSocket 연결이 열렸습니다.');
@@ -161,7 +156,7 @@ function sendMessage() {
             content: message
         });
         ws.send(jsonMessage); // 서버로 JSON 메시지 전송
-        appendMessage("클라이언트가 쓴 메시지" + message); // 내가 쓴 메시지 채팅창에 추가
+        // appendMessage(message); // 내가 쓴 메시지 채팅창에 추가
         input.value = ''; // 입력란 초기화
     }
 }
@@ -170,18 +165,28 @@ function sendMessage() {
 function appendMessage(message) {
     const chatBox = document.getElementById('chat-box');
     const messageDiv = document.createElement('div');
-    const userName = document.getElementById('memName').textContent.trim(); // 사용자 이름 가져오기
-    
-    // 메시지가 JSON 형식일 경우 처리
+
     try {
         const jsonMessage = JSON.parse(message);
-        messageDiv.textContent = `${userName} : ${jsonMessage.content}`;
+
+        // 발신자 정보
+        const userId = jsonMessage.userId;
+        const content = jsonMessage.content;
+
+        // 현재 사용자의 ID와 비교하여 스타일 결정
+        const myUserId = document.getElementById('memId').textContent.trim();
+
+        if (userId === myUserId) {
+            messageDiv.className = 'message my-message';
+        } else {
+            messageDiv.className = 'message other-message';
+        }
+        messageDiv.textContent = userId +" : "+ content;
     } catch (e) {
-        // JSON 파싱 실패 시
-        messageDiv.textContent = `${userName} : ${message}`;
+        messageDiv.className = 'message other-message';
+        messageDiv.textContent = userId +" : "+ content;
     }
 
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight; // 스크롤을 가장 아래로 이동
 }
-
