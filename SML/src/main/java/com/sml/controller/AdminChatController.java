@@ -40,7 +40,8 @@ public class AdminChatController {
 				logger.info("연결된 회원: " + member.getMemId());
 				// 클라이언트로 메시지 전송 (예시), 기본메시지 활용
 				try {
-					session.getBasicRemote().sendText("안녕하세요, " + member.getMemId() + " 님! 무엇을 도와드릴까요?");
+					session.getBasicRemote().sendText("안녕하세요, " + member.getMemId() + " 님!");
+					session.getBasicRemote().sendText("무엇을 도와드릴까요?");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -76,6 +77,7 @@ public class AdminChatController {
 						JSONObject responseMessage = new JSONObject();
 						responseMessage.put("userId", userId);
 						responseMessage.put("content", jsonMessage.getString("content"));
+						responseMessage.put("timestamp", System.currentTimeMillis());
 
 						s.getBasicRemote().sendText(responseMessage.toString());
 					}

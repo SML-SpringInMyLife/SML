@@ -325,6 +325,7 @@ main {
 	border-radius: 5px; /* 둥근 모서리 */
 	max-width: 70%; /* 최대 너비 */
 	clear: both; /* 플로트 정리 */
+	overflow-wrap: anywhere;
 }
 
 /* 사용자가 보낸 메시지 스타일 */
@@ -393,6 +394,11 @@ main {
 	bottom: 0; /* 화면 하단 */
 	right: 0;
 	position: fixed;
+}
+
+.timestamp {
+	font-size : 0.7em;
+	color : #808080;
 }
 
 /* 채팅창 종료 경고창 */

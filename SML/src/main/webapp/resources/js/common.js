@@ -54,11 +54,20 @@ function scrollToTop() {
 
 // 채팅 상담창 활성화 함수
 function chatConsultation() {
-	startChat();
-    const chatContainer = document.getElementById('chat-container');
-    const chatBox = document.getElementById('chat-box');
-    chatBox.innerHTML = ''; // 이전 채팅 내용 초기화
-    chatContainer.classList.remove('hidden'); // 채팅창 표시
+    let memId = document.getElementById('memId');
+    
+    // 'memId' 요소가 없거나 텍스트가 비어 있는 경우
+    if (!memId) {
+        alert("로그인 후 이용할 수 있습니다.");
+        return;
+    } else {
+        // 로그인된 경우 채팅 창 활성화
+        startChat();
+        const chatContainer = document.getElementById('chat-container');
+        const chatBox = document.getElementById('chat-box');
+        chatBox.innerHTML = ''; // 이전 채팅 내용 초기화
+        chatContainer.classList.remove('hidden'); // 채팅창 표시
+    }
 }
 
 // 최소화/최대화 버튼 클릭 시 호출되는 함수
@@ -185,6 +194,7 @@ function appendMessage(message) {
     const chatBox = document.getElementById('chat-box');
     const messageDiv = document.createElement('div');
     
+    
     // 기본 메시지 스타일 적용
     messageDiv.className = 'message-container';
 
@@ -194,6 +204,7 @@ function appendMessage(message) {
         // 발신자 정보와 메시지 내용
         const userId = jsonMessage.userId;
         const content = jsonMessage.content;
+        const timestamp = jsonMessage.timestamp;
 
         // 현재 사용자의 ID 가져오기
         const myUserId = document.getElementById('memId').textContent.trim();
@@ -211,10 +222,15 @@ function appendMessage(message) {
         const messageBox = document.createElement('div');
         messageBox.className = 'message-box'; // 메시지 내용 스타일 적용
         messageBox.textContent = content;
+        
+        const timestampDiv = document.createElement('div');
+        timestampDiv.className = 'timestamp';
+        timestampDiv.textContent = new Date(timestamp).toLocaleTimeString();
 
         // 사용자 ID와 메시지 내용을 포함하는 div 생성
         messageDiv.appendChild(userIdDiv);
         messageDiv.appendChild(messageBox);
+        messageDiv.appendChild(timestampDiv);
 
     } catch (e) {
         // JSON 파싱 오류 발생 시 처리
