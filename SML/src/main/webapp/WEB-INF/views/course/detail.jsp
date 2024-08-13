@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ page session="false"%>
+
 <html>
 <head>
 <title>Home</title>
@@ -78,7 +78,17 @@
 					</tr>
 				</table>
 				<div class="btn_section">
-					<button id="applyBtn" class="btn">수강 신청</button>
+					<c:choose>
+            			<c:when test="${sessionScope.member.memStatus == 1}">
+                			<button id="deleteBtn" class="btn">삭제</button>
+                			<button id="listBtn" class="btn">목록</button>
+                			<button id="modifyBtn" class="btn">수정</button>
+            			</c:when>
+            			<c:otherwise>
+            				<button id="listBtn" class="btn">목록</button>
+                			<button id="applyBtn" class="btn">수강신청</button>
+            			</c:otherwise>
+        			</c:choose>
 				</div>
 			</div>
 		</div>

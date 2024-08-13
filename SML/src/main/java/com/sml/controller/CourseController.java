@@ -27,10 +27,8 @@ public class CourseController {
 	@Autowired
 	private CourseService service;
 
-	@GetMapping("/boardList")
-	public void booardListGET(Criteria cri, Model model) throws Exception {
-		logger.info("수강신청 페이지 진입");
-		
+	@GetMapping({"/boardList", "/manage"})
+	public void booardListGET(Criteria cri, Model model) throws Exception {		
 		List list = service.courseList(cri);
 		
 		if(!list.isEmpty()) {
@@ -62,6 +60,7 @@ public class CourseController {
 	@GetMapping("/detail")
 	public void detailGET(int courseCode, Criteria cri, Model model) throws Exception {
 		logger.info("상세 페이지........." +courseCode);
+ 
 		model.addAttribute("cri", cri);
 		model.addAttribute("detail", service.courseDetail(courseCode));
 	}
