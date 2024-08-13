@@ -15,7 +15,8 @@ public class CourseVO {
 	private int courseLimit;
 	private String startDate;
 	private String endDate;
-	private int teacherCode;
+	private int teaCode;
+	private String teaName;
 	private Date enrollDate;
 	private Date modifyDate;
 	private int coursePoint;

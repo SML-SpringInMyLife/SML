@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sml.mapper.CourseMapper;
+import com.sml.model.CourseCategoryVO;
 import com.sml.model.CourseVO;
 import com.sml.model.Criteria;
 
@@ -23,6 +24,12 @@ public class CourseServiceImpl implements CourseService {
 		log.info("(service)enroll.........");
 		mapper.courseEnroll(course);
 	}
+	
+	@Override
+	public List<CourseCategoryVO> cateList() {
+		log.info("(service) cateList......");
+		return mapper.cateList();
+	}
 
 	@Override
 	public List<CourseVO> courseList(Criteria cri) {
@@ -35,4 +42,6 @@ public class CourseServiceImpl implements CourseService {
 		log.info("courseTotal()...........");
 		return mapper.courseTotal(cri);
 	}
+
+	
 }

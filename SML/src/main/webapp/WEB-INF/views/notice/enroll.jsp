@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,7 +63,7 @@
 
 <script>
 $(document).ready(function() {
-    /* 등록 버튼 */
+    /* 등록 버튼 유효성검사 */
     $("#enrollbtn").click(function(event){	
         event.preventDefault(); // 기본 제출 동작을 막음
 

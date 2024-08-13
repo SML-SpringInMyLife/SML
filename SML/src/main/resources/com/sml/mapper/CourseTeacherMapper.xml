@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sml.mapper.CourseTeacherMapper">
+
+	<insert id="teacherEnroll">
+		INSERT INTO COURSE_TEACHER (TEA_NAME, TEA_INTRO) VALUES (
+			#{teaName},
+			#{teaIntro}
+		)
+	</insert>
+	
+	<select id="teacherList" resultType="com.sml.model.CourseTeacherVO">
+		<![CDATA[
+  			SELECT * FROM (
+  				SELECT /*+INDEX_DESC(COURSE_TEACHER SYS_C008629) */
+  					ROWNUM AS rn, TEA_CODE AS teaCode, TEA_NAME AS teaName, TEA_STATUS AS teaStatus, TEA_ENROLL_DATE AS teaEnrollDate
+  				FROM COURSE_TEACHER 
+  				WHERE TEA_STATUS = 'N' AND
+  		]]>
+  			<if test="keyword != null">
+                TEA_NAME like '%'||#{keyword}||'%' AND
+            </if>
+        <![CDATA[
+        		ROWNUM <= #{pageNum}*#{amount}
+            	)
+        	WHERE rn > (#{pageNum} - 1) * #{amount}	
+        ]]>
+	</select>
+	
+	<select id="teacherListTotal" resultType="int">
+		SELECT COUNT(*) FROM COURSE_TEACHER
+		<if test="keyword != null">
+			WHERE TEA_NAME LIKE '%' || #{keyword} || '%'
+		</if>
+	</select>
+	
+	<select id="teacherDetail" resultType="com.sml.model.CourseTeacherVO">
+		SELECT 
+			TEA_CODE AS teaCode,
+			TEA_NAME AS teaName,
+			TEA_STATUS AS teaStatus,
+			TEA_INTRO AS teaIntro,
+			TEA_ENROLL_DATE AS teaEnrollDate,
+			TEA_MODIFY_DATE AS teaModifyDate
+		 FROM COURSE_TEACHER
+		 WHERE TEA_CODE=#{teaCode}
+	</select>
+	
+	<update id="teacherModify">
+		UPDATE COURSE_TEACHER
+			SET
+				TEA_NAME = #{teaName},
+				TEA_INTRO = #{teaIntro},
+				TEA_MODIFY_DATE = SYSDATE
+			WHERE
+				TEA_CODE = #{teaCode}
+	</update>
+	
+	<update id="teacherDelete">
+		UPDATE COURSE_TEACHER
+			SET
+				TEA_STATUS = 'Y',
+				TEA_MODIFY_DATE = SYSDATE
+			WHERE
+				TEA_CODE = #{teaCode}
+	</update>
+	
+</mapper>

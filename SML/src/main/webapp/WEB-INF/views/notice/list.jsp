@@ -110,18 +110,29 @@
 		});
 
 		/* 등록 알람 창 */
-		let result = '<c:out value="${enroll_result}"/>';
-		checkResult(result);
+		let enroll = '<c:out value="${enroll_result}"/>';
+		let modify = '<c:out value="${modify_result}"/>';
+		
+		checkResult(enroll);
+		checkResult(modify);
 
-		function checkResult(result) {
-			if (result === '') {
+		function checkResult(enroll) {
+			if (enroll === '') {
 				return;
 			}
 			alert("글'${enroll_result}' 을 등록하였습니다.");
 		}
 		
+		function checkResult(modify) {
+			if (modify === '1') {
+				alert("글 수정을 완료 하였습니다");
+			}else if(modify === '0')
+			alert("글 수정을 실패 하였습니다");
+		}
+		
+		
+		
 		let moveForm = $("#moveForm");
-
 		/* 상세조회 페이지로 가기  */
 		$(".move").on("click", function(e) {
 			e.preventDefault();	
