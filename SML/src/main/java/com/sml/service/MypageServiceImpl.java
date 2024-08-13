@@ -1,5 +1,6 @@
 package com.sml.service;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +22,27 @@ public class MypageServiceImpl implements MypageService {
     public void updateMember(MemberVO member) throws Exception {
     	mypageMapper.updateMember(member);
     }
-
+    
+    //출석체크 등록
     @Override
     public void insertMemberCheck(MemberCheckVO memberCheck){
         mypageMapper.insertMemberCheck(memberCheck);
     }
 
+    //출석체크 조회
+    @Override
+    public List<MemberCheckVO> selectMemberCheckList(int memCode,String selectDate)throws Exception {
+        return mypageMapper.selectMemberCheckList(memCode,selectDate);
+   }
     
-    //@Override
-    //public List<MemberCheckVO> getMemberCheck() {
-      //  return mypageMapper.selectMemberCheck();
-    //}
+    //출석체크 중복검사
+   	@Override
+   	public int memberCheckTest(int memCode,String todayDate){   	
+   		return mypageMapper.memberCheckTest(memCode,todayDate);
+   	}
+    
+    
+    
     
     //포인트 조회
     @Override
