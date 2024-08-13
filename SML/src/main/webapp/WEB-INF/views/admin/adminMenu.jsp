@@ -29,6 +29,7 @@ if (pagePath == null || pagePath.isEmpty()) {
 		<hr>
 		<ul>
 			<li><a href="/admin/members">회원 관리</a></li>
+			<li><a href="/admin/teacher/list">강사 관리</a></li>
 			<li><a href="/admin/courses">수강신청 관리</a></li>
 			<li><a href="/admin/sms">SMS 관리</a></li>
 			<li><a href="/admin/chat">채팅상담 관리</a></li>

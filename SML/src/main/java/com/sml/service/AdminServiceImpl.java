@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sml.mapper.AdminMapper;
+import com.sml.model.ChatVO;
+import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 
 import lombok.extern.log4j.Log4j;
@@ -19,9 +21,16 @@ import lombok.extern.log4j.Log4j;
 @Service
 @Log4j
 public class AdminServiceImpl implements AdminService {
+	
 	private static final Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
+	
 	@Autowired
 	AdminMapper adminMapper;
+
+	@Override
+	public int memberGetTotal(Criteria cri) {
+		return adminMapper.memberGetTotal();
+	}
 
 	@Override
 	public List<MemberVO> getMemberList() throws Exception {
@@ -41,6 +50,11 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void updateStatus(@Param("memCode") int memCode, @Param("memStatus") int memStatus) throws Exception {
 		adminMapper.updateStatus(memCode, memStatus);
+	}
+
+	@Override
+	public void saveChatContent(ChatVO chatVO) {
+		adminMapper.saveChatContent(chatVO);
 	}
 
 	@Override

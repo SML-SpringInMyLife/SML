@@ -64,7 +64,11 @@
 						<c:forEach items="${list}" var="list">
 						<tr>
 							<td><c:out value="${list.teaCode}" /></td>
-							<td><c:out value="${list.teaName}"></c:out></td>
+							<td>
+    							<a class="move" href='<c:out value="${list.teaCode}"/>' data-name='<c:out value="${list.teaName}"/>'>
+        							<c:out value="${list.teaName}"/>
+    							</a>
+							</td>
 							<td>
 								<c:choose>
         							<c:when test="${list.teaStatus eq 'N'}">정상</c:when>
@@ -151,6 +155,18 @@
 		moveForm.find("input[name='pageNum']").val($(this).attr("href"));
 		moveForm.submit();
 	});	
+	
+	// 선택 및 팝업창 닫기
+	$(".move").on("click", function(e){	
+		e.preventDefault();
+			
+		let teaCode = $(this).attr("href");
+		let teaName= $(this).data("name");
+		$(opener.document).find("#teaCode_input").val(teaCode);
+		$(opener.document).find("#teaName_input").val(teaName);
+			
+		window.close();
+	});
 	</script>
 </body>
 </html>
