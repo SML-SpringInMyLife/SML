@@ -110,6 +110,7 @@
 				<input type="hidden" name="courseCode" value="${detail.courseCode}">
 			</form>
 			<div class="btn_section">
+				<button id="deleteBtn" class="btn delete_btn">삭제</button>
 				<button id="cancelBtn" class="btn">취소</button>
 				<button id="modifyBtn" class="btn modify_btn">수정</button>
 			</div>
@@ -210,6 +211,16 @@
 		$("#moveForm").submit();	
 	});	
 	
+	/* 삭제 버튼 */
+	$("#deleteBtn").on("click", function(e){
+		e.preventDefault();
+		let moveForm = $("#moveForm");
+		moveForm.find("input").remove();
+		moveForm.append('<input type="hidden" name="courseCode" value="${detail.courseCode}">');
+		moveForm.attr("action", "/course/delete");
+		moveForm.attr("method", "post");
+		moveForm.submit();
+	});
 	</script>
 </body>
 </html>

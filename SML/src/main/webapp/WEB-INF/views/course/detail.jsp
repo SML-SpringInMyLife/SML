@@ -80,7 +80,6 @@
 				<div class="btn_section">
 					<c:choose>
             			<c:when test="${sessionScope.member.memStatus == 1}">
-                			<button id="deleteBtn" class="btn">삭제</button>
                 			<button id="listBtn" class="btn">목록</button>
                 			<button id="modifyBtn" class="btn">수정</button>
             			</c:when>

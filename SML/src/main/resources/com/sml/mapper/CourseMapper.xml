@@ -105,7 +105,12 @@
 			WHERE COURSE_CODE = #{courseCode}
 	</update>
 	
-	<!-- <update id="courseDelete">
+	<update id="courseDelete">
+		UPDATE COURSE
+			SET 
+				COURSE_STATUS = 'Y'
+			WHERE 
+				COURSE_CODE = #{courseCode}
+	</update>
 	
-	</update> -->
 </mapper>

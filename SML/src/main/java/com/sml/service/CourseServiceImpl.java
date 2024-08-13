@@ -54,5 +54,10 @@ public class CourseServiceImpl implements CourseService {
 		return mapper.courseModify(vo);
 	}
 
+	@Override
+	public int courseDelete(int courseCode) {
+		return mapper.courseDelete(courseCode);
+	}
+
 	
 }

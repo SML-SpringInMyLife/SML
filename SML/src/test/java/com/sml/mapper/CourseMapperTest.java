@@ -122,14 +122,23 @@ public class CourseMapperTest {
 //		System.out.println("수업 조회 데이터 : " +result);
 //	}
 	
+//	@Test
+//	public void courseModifyTest() {
+//		CourseVO course = new CourseVO();
+//		course.setCourseName("modifyTest");
+//		course.setTeaCode(256);
+//		course.setCcatCode(201);
+//		course.setCourseLimit(30);
+//		course.setCourseDay("월, 수, 금");
+//	}
+	
 	@Test
-	public void courseModifyTest() {
-		CourseVO course = new CourseVO();
-		course.setCourseName("modifyTest");
-		course.setTeaCode(256);
-		course.setCcatCode(201);
-		course.setCourseLimit(30);
-		course.setCourseDay("월, 수, 금");
+	public void courseDeleteTest() {
+		int courseCode = 100;
+		int result = mapper.courseDelete(courseCode);
+		if(result == 1) {
+			System.out.println("삭제 성공");
+		}
 	}
 	
 }

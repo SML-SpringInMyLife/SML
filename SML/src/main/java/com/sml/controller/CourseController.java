@@ -72,7 +72,9 @@ public class CourseController {
 	}
 
 	@PostMapping("/delete")
-	public String deletePOST() throws Exception {
+	public String deletePOST(int courseCode, RedirectAttributes rttr) throws Exception {
+		int result = service.courseDelete(courseCode);
+		rttr.addFlashAttribute("delete_result", result);
 		return "redirect:/course/manage";
 	}
 
