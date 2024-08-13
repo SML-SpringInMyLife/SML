@@ -14,8 +14,17 @@ public class MypageMapperTest {
 	
 	@Autowired
 	private MypageMapper mypagemapper;
-		
+	
 	@Test
+	public void memberCheckTest() throws Exception{
+		MemberCheckVO membercheck = new MemberCheckVO();
+
+		membercheck.setCheckCode(1);  // int 타입으로 변경
+	    membercheck.setCheckDate(java.sql.Date.valueOf("2024-08-13"));  
+	}
+	
+	
+	//@Test
 	public void memberDailyCheck() throws Exception{
 		MemberCheckVO membercheck = new MemberCheckVO();
 

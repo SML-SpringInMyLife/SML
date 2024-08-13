@@ -36,7 +36,7 @@
             <button type="button" class="login-button google">Google 로그인</button>
 
             <p class="join-link">
-               아직 회원이 아니신가요? <a href="/join">회원가입</a>
+               아직 회원이 아니신가요? <a href="/member/join">회원가입</a>
             </p>
          </form>
       </div>

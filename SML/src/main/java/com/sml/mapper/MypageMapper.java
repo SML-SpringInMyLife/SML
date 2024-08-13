@@ -17,7 +17,12 @@ public interface MypageMapper {
     public void insertMemberCheck(MemberCheckVO memberCheck);
 
     // 출석체크 조회
-    //List<MemberCheck> selectMemberCheck();
+    public List<MemberCheckVO> selectMemberCheckList(@Param("memCode")int memCode
+    		                              , @Param("checkDate") String yearMonth);
+    
+    //출석체크 중복검사
+    public int memberCheckTest(@Param("memCode")int memCode
+    							,@Param("todayDate")String todayDate);
 	
     //포인트 조회
     public List<PointVO> selectPointList(@Param("memCode")int memCode
