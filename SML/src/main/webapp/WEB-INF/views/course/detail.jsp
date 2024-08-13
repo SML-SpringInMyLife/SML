@@ -4,7 +4,7 @@
 
 <html>
 <head>
-<title>Home</title>
+<title>수업 상세 페이지 - 취미 교실</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 <link rel="stylesheet" href="../resources/css/course/course.css">
 
@@ -92,11 +92,33 @@
 				</div>
 			</div>
 		</div>
-	
 		
+		<form id="moveForm" action="course/boardList" method="get">
+        	 <input type="hidden" name="courseCode" value='<c:out value="${detail.courseCode}"/>'>
+             <input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum}'/>">
+             <input type="hidden" name="amount" value='<c:out value="${cri.amount}"/>' >
+             <input type="hidden" name="keyword" value='<c:out value="${cri.keyword}"/>'>
+        </form>
 	</main>
 
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+	
+	<script>
+	/* 목록 이동 버튼 */
+	$("#listBtn").on("click", function(e){
+		e.preventDefault();
+		$("#moveForm").submit();	
+	});	
+	
+	/* 수정 페이지 이동 */
+	$("#modifyBtn").on("click", function(e){
+		e.preventDefault();
+		let addInput = '<input type="hidden" name="courseCode" value="${detail.courseCode}">';
+		$("#moveForm").append(addInput);
+		$("#moveForm").attr("action", "/course/modify");
+		$("#moveForm").submit();
+	});
+	</script>
 </body>
 </html>

@@ -57,17 +57,11 @@ public class CourseController {
 		return "redirect:/course/boardList";
 	}
 	
-	@GetMapping("/detail")
+	@GetMapping({"/detail", "/modify"})
 	public void detailGET(int courseCode, Criteria cri, Model model) throws Exception {
-		logger.info("상세 페이지........." +courseCode);
- 
+	
 		model.addAttribute("cri", cri);
 		model.addAttribute("detail", service.courseDetail(courseCode));
-	}
-
-	@GetMapping("/modify")
-	public void modifyGET() throws Exception {
-		logger.info("수업 수정 페이지 진입");
 	}
 
 	@PostMapping("/modify")
