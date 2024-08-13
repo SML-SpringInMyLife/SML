@@ -30,20 +30,34 @@
 	</select>
 	
 	<select id="courseList" resultType="com.sml.model.CourseVO">
-    	SELECT
-    		c.COURSE_CODE AS courseCode,
-    		c.COURSE_START_DATE AS startDate,
-    		c.COURSE_END_DATE AS endDate,
-    		ccat.CCAT_NAME,
-    		t.TEA_NAME,
-    		c.COURSE_DAY AS courseDay,
-    		c.COURSE_START_TIME AS startTime,
-    		c.COURSE_END_TIME AS endTime,
-    		c.COURSE_LIMIT AS courseLimit 
-    	 FROM COURSE c
-    	 JOIN COURSE_CATEGORY ccat ON c.CCAT_CODE = ccat.CCAT_CODE
-    	 JOIN COURSE_TEACHER t ON c.TEA_CODE = t.TEA_CODE
-    	 WHERE c.COURSE_STATUS = 'N'	
+    	<![CDATA[
+    		SELECT * FROM (
+    			SELECT /*+INDEX_DESC (COURSE SYS_C008689)*/
+    				ROWNUM AS rn,
+    				c.COURSE_CODE AS courseCode,
+    				c.COURSE_START_DATE AS startDate,
+    				c.COURSE_END_DATE AS endDate,
+    				ccat.CCAT_NAME AS ccatName,
+    				c.COURSE_NAME AS courseName,
+    				t.TEA_NAME AS teaName,
+    				c.COURSE_DAY AS courseDay,
+    				c.COURSE_START_TIME AS startTime,
+    				c.COURSE_END_TIME AS endTime,
+    				c.COURSE_LIMIT AS courseLimit
+    			 FROM COURSE c
+    			 JOIN COURSE_CATEGORY ccat ON c.CCAT_CODE = ccat.CCAT_CODE
+    	 		 JOIN COURSE_TEACHER t ON c.TEA_CODE = t.TEA_CODE
+    	 		 WHERE c.COURSE_STATUS = 'N' AND	
+    	]]>   	
+    		<if test="keyword != null">
+                COURSE_NAME like '%'||#{keyword}||'%' AND
+            </if>
+        <![CDATA[
+        		ROWNUM <= #{pageNum}*#{amount}
+            	)
+        	WHERE rn > (#{pageNum} - 1) * #{amount}       	
+        ]]> 
+    	 	
 	</select>
 	
 	<select id="courseTotal" resultType="int">	
@@ -52,6 +66,26 @@
 		<if test="keyword != null">
 			WHERE COURSE_NAME LIKE '%' || #{keyword} || '%'
 		</if>
+	</select>
+	
+	<select id="courseDetail" resultType="com.sml.model.CourseVO">
+		SELECT 
+			c.COURSE_CODE AS courseCode,
+			t.TEA_NAME AS teaName,
+			c.COURSE_NAME AS courseName,
+			c.COURSE_START_DATE AS startDate,
+			c.COURSE_END_DATE AS endDate,
+			c.COURSE_START_TIME AS startTime,
+			c.COURSE_END_TIME AS endTime,
+			c.COURSE_DAY AS courseDay,
+			c.COURSE_LIMIT AS courseLimit,
+			c.COURSE_POINT AS coursePoint,
+			c.COURSE_CONTENT AS courseContent,
+			ccat.CCAT_NAME AS ccatName
+		 FROM COURSE c
+		 JOIN COURSE_CATEGORY ccat ON c.CCAT_CODE = ccat.CCAT_CODE
+    	 JOIN COURSE_TEACHER t ON c.TEA_CODE = t.TEA_CODE	
+    	 WHERE COURSE_CODE = #{courseCode} 		
 	</select>
 	
 	<!-- <update id="courseModify">

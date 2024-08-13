@@ -30,6 +30,7 @@ public class CourseController {
 	@GetMapping("/boardList")
 	public void booardListGET(Criteria cri, Model model) throws Exception {
 		logger.info("수강신청 페이지 진입");
+		
 		List list = service.courseList(cri);
 		
 		if(!list.isEmpty()) {
@@ -56,6 +57,13 @@ public class CourseController {
 		service.courseEnroll(course);
 		rttr.addFlashAttribute("enroll_result", course.getCourseName());
 		return "redirect:/course/boardList";
+	}
+	
+	@GetMapping("/detail")
+	public void detailGET(int courseCode, Criteria cri, Model model) throws Exception {
+		logger.info("상세 페이지........." +courseCode);
+		model.addAttribute("cri", cri);
+		model.addAttribute("detail", service.courseDetail(courseCode));
 	}
 
 	@GetMapping("/modify")

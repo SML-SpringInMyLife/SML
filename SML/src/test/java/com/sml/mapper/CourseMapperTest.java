@@ -1,7 +1,5 @@
 package com.sml.mapper;
 
-import java.sql.Time;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,5 +100,26 @@ public class CourseMapperTest {
 //		mapper.courseEnroll(course);
 //	}
 	
-
+//	@Test
+//	public void courseListTest() {
+//		Criteria cri = new Criteria();
+//		
+//		cri.setKeyword("test");
+//		
+//		List list = mapper.courseList(cri);
+//		for(int i = 0; i < list.size(); i++) {
+//			System.out.println("result......." + i + " : " + list.get(i));
+//		}
+//		
+//		int result = mapper.courseTotal(cri);
+//		System.out.println("result.........." + result);
+//	}
+	
+	@Test
+	public void courseDetailTest() {
+		int courseCode = 100;
+		CourseVO result = mapper.courseDetail(courseCode);
+		System.out.println("수업 조회 데이터 : " +result);
+	}
+	
 }

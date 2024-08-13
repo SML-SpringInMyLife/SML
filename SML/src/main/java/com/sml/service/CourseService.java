@@ -15,5 +15,7 @@ public interface CourseService {
 	public List<CourseVO> courseList(Criteria cri);
 	
 	public int courseTotal(Criteria cri);
+	
+	public CourseVO courseDetail(int courseCode);
 
 }

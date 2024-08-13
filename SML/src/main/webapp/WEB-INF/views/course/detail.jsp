@@ -21,48 +21,65 @@
 			<div class="course-board-detail">
 				<table class="course-board-detail">
 					<tr>
+						<td>분류</td>
+						<td>
+							<input name="ccatName" readonly="readonly" value="<c:out value='${detail.ccatName}'/>">
+						</td>
+					</tr>
+					<tr>
 						<td>강좌명</td>
 						<td>
-                    		<input name="courseName" readonly="readonly" value="<c:out value='${list.courseName}'/>">
+                    		<input name="courseName" readonly="readonly" value="<c:out value='${detail.courseName}'/>">
                 		</td>
                 	</tr>
                 	<tr>
                 		<td>강사명</td>
                 		<td>
-                			<input name="teacherName" readonly="readonly" value="<c:out value='${list.teacherName}'/>">
+                			<input name="teaName" readonly="readonly" value="<c:out value='${detail.teaName}'/>">
 						</td>
 					</tr>
 					<tr>
 						<td>수강 기간</td>
 						<td>
-							<input type="date" readonly="readonly" value="<c:out value='${list.startDate}'/>">
+							<input type="date" readonly="readonly" value="<c:out value='${detail.startDate}'/>">
 							~
-							<input type="date" readonly="readonly" value="<c:out value='${list.endDate}'/>">
+							<input type="date" readonly="readonly" value="<c:out value='${detail.endDate}'/>">
 						</td>
 					</tr>
 					<tr>
 						<td>수업 시간/요일</td>
 						<td>
-							<input type="time" readonly="readonly" value="<c:out value='${list.startTime}'/>">
+							<input type="time" readonly="readonly" value="<c:out value='${detail.startTime}'/>">
 							~
-							<input type="time" readonly="readonly" value="<c:out value='${list.endTime}'/>">
+							<input type="time" readonly="readonly" value="<c:out value='${detail.endTime}'/>">
 							<br>
-							<input type="text" readonly="readonly" value="<c:out value='${list.courseDay}'/>">
+							<input type="text" readonly="readonly" value="<c:out value='${detail.courseDay}'/>">
 						</td>
 					</tr>	
 					<tr>
 						<td>수강 인원</td>
 						<td>
-							<input name="courseLimit" readonly="readonly" value="<c:out value='${list.courseLimit}'/>">
+							<span>수강 신청 인원</span>
+							/
+							<input name="courseLimit" readonly="readonly" value="<c:out value='${detail.courseLimit}'/>">
 						</td>
 					</tr>
 					<tr>
 						<td>차감 포인트</td>
 						<td>
-							<input name="course" readonly="readonly" value="<c:out value='${list.coursePoint}'/>">
+							<input name="course" readonly="readonly" value="<c:out value='${detail.coursePoint}'/>">
+						</td>
+					</tr>
+					<tr>
+						<td>수업 설명</td>
+						<td>
+							<input class="input_block" name="courseContent" readonly="readonly" value="<c:out value='${detail.courseContent}'/>"/>
 						</td>
 					</tr>
 				</table>
+				<div class="btn_section">
+					<button id="applyBtn" class="btn">수강 신청</button>
+				</div>
 			</div>
 		</div>
 	

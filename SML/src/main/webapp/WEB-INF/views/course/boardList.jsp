@@ -28,33 +28,43 @@
 							<tr>
 								<td>#</td>
 								<td>수강 기간</td>
-								<td>카테고리</td>
+								<td>분류</td>
 								<td>강좌명</td>
 								<td>강사명</td>
-								<td>수업 시간/요일</td>
+								<td>요일 / 시간</td>
 								<td>수강 인원</td>
+								<td>수강 신청</td>
 							</tr>
 						</thead>
 						<c:forEach items="${list}" var="item">
 							<tr>
 								<td><c:out value="${item.courseCode}" /></td>
 								<td>
-
+									<fmt:formatDate value="${item.startDate}" pattern="yy-MM-dd" />
+									~
+									<fmt:formatDate value="${item.endDate}" pattern="yy-MM-dd" />
 								</td>
-								<td><c:out value="${item.ccatCode}" /></td>
+								<td><c:out value="${item.ccatName}" /></td>
 								<td>
 									<a class="move" href="<c:out value='${item.courseCode}'/>"> 
 										<c:out value="${item.courseName}" />
 									</a>
 								</td>
-								<td><c:out value="${item.teaCode}" /></td>
-								<td></td>
+								<td><c:out value="${item.teaName}" /></td>
 								<td>
 									<c:out value="${item.courseDay}"/>
 									<br>
 									<c:out value="${item.startTime}"/>~<c:out value="${item.endTime}"/>
 								</td>
-								<td><c:out value="${item.courseLimit}" /></td>
+								<td>
+									<span>수강 신청 인원</span>
+									/
+									<c:out value="${item.courseLimit}"/>
+									명
+								</td>
+								<td>
+									<button id="applyBtn" class="btn">수강신청</button>
+								</td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -62,13 +72,13 @@
 
 				<!-- 게시물 x -->
 				<c:if test="${listCheck == 'empty'}">
-					<div class="table_empty">작성된 글이 없습니다.</div>
+					<div class="table_empty">개설된 수업이 없습니다.</div>
 				</c:if>
 			</div>
 
 			<!-- 검색 영역 -->
 			<div class="search_wrap">
-				<form id="searchForm" action="/community/boardList" method="get">
+				<form id="searchForm" action="/course/boardList" method="get">
 					<div class="search_input">
 						<input type="text" name="keyword"
 							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
@@ -102,7 +112,8 @@
 					</c:if>
 				</ul>
 			</div>
-			<form id="moveForm" action="/admin/authorManage" method="get">
+			
+			<form id="moveForm" action="/course/boardList" method="get">
 				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
@@ -125,6 +136,33 @@
 			}
 			alert("수업'"+ eResult +"'을 등록하였습니다.");
 		}
+	});
+	
+	let searchForm = $('#searchForm');
+	$("#searchForm button").on("click", function(e){
+		e.preventDefault();
+		/* 검색 키워드 유효성 검사 */
+		if(!searchForm.find("input[name='keyword']").val()){
+			alert("키워드를 입력하십시오");
+			return false;
+		}
+		searchForm.find("input[name='pageNum']").val("1");
+		searchForm.submit();
+	});
+	
+	let moveForm = $('#moveForm');
+	$(".pageMaker_btn a").on("click", function(e){		
+		e.preventDefault();
+		moveForm.find("input[name='pageNum']").val($(this).attr("href"));
+		moveForm.submit();
+	});
+	
+	$(".move").on("click", function(e){
+		e.preventDefault();
+		
+		moveForm.append("<input type='hidden' name='courseCode' value='"+$(this).attr("href") + "'>");
+		moveForm.attr("action", "/course/detail");
+		moveForm.submit();	
 	});
 	</script>
 </body>
