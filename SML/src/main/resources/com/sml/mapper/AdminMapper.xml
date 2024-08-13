@@ -34,7 +34,8 @@
 			<if test="category != null and category == 'all'">
 				(
 				MEM_ID LIKE '%' || #{keyword} || '%'
-				OR MEM_NAME LIKE '%' || #{keyword} || '%'
+				OR MEM_NAME LIKE '%'
+				|| #{keyword} || '%'
 				OR MEM_PHONE LIKE '%' || #{keyword} || '%'
 				)
 			</if>
@@ -53,6 +54,33 @@
 			</if>
 		</where>
 		ORDER BY MEM_ADMIN_CHECK DESC, MEM_NAME
+	</select>
+
+	<select id="memberGetTotal" resultType="int">
+		SELECT COUNT(*) FROM TB_MEMBER
+		<where>
+			<if test="category != null and category == 'all'">
+				(
+				MEM_ID LIKE '%' || #{keyword} || '%'
+				OR MEM_NAME LIKE '%'
+				|| #{keyword} || '%'
+				OR MEM_PHONE LIKE '%' || #{keyword} || '%'
+				)
+			</if>
+			<if test="category != null and category != 'all'">
+				<choose>
+					<when test="category == 'id'">
+						MEM_ID LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="category == 'name'">
+						MEM_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="category == 'phone'">
+						MEM_PHONE LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
 	</select>
 
 	<!-- 전체 활성화 회원 카운트 : 관리자페이지 메인① (관리자 제외) -->
@@ -129,5 +157,26 @@
 		WHERE
 		MEM_CODE = #{memCode}
 	</update>
+
+
+	<!-- 채팅 테이블 컬럼명맵핑 -->
+	<resultMap id="chatMap" type="com.sml.model.ChatVO">
+		<result property="chatCode" column="CHAT_CODE" />
+		<result property="categoryCode" column="CATEGORY_CODE" />
+		<result property="memCode" column="MEM_CODE" />
+		<result property="chatContent" column="CHAT_CONTENT" />
+		<result property="chatDate" column="CHAT_DATE" />
+		<result property="status" column="STATUS" />
+	</resultMap>
+
+	<insert id="saveChatContent"
+		parameterType="com.sml.model.ChatVO">
+		INSERT INTO CHAT (CHAT_CODE, CATEGORY_CODE, MEM_CODE, CHAT_CONTENT,
+		CHAT_DATE, STATUS)
+		VALUES (CHAT_SEQ.NEXTVAL, #{categoryCode}, #{memCode}, #{chatContent},
+		SYSDATE, #{status});
+	</insert>
+
+
 
 </mapper>
