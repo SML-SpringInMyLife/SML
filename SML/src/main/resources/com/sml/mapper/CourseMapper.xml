@@ -88,9 +88,22 @@
     	 WHERE COURSE_CODE = #{courseCode} 		
 	</select>
 	
-	<!-- <update id="courseModify">
-	
-	</update> -->
+	<update id="courseModify">
+		UPDATE COURSE
+			SET
+				COURSE_NAME = #{courseName},
+				TEA_CODE = #{teaCode},
+				CCAT_CODE = #{ccatCode},
+				COURSE_LIMIT = #{courseLimit},
+<!-- 				COURSE_START_DATE = #{startDate, jdbcType=DATE},
+				COURSE_END_DATE = #{endDate, jdbcType=DATE}, -->
+				COURSE_START_TIME = #{startTime},
+				COURSE_END_TIME = #{endTime},
+				COURSE_DAY = #{courseDay},
+				COURSE_CONTENT = #{courseContent},
+				COURSE_MODIFY_DATE = SYSDATE
+			WHERE COURSE_CODE = #{courseCode}
+	</update>
 	
 	<!-- <update id="courseDelete">
 	

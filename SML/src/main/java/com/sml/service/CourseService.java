@@ -17,5 +17,7 @@ public interface CourseService {
 	public int courseTotal(Criteria cri);
 	
 	public CourseVO courseDetail(int courseCode);
+	
+	public int courseModify(CourseVO vo);
 
 }

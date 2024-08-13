@@ -77,10 +77,10 @@ public class CourseMapperTest {
 //	}
 	
 	// 카테고리 테스트
-	@Test
-	public void cateListTest() throws Exception {
-		System.out.println("카테고리 리스트 구현" +mapper.cateList());
-	}
+//	@Test
+//	public void cateListTest() throws Exception {
+//		System.out.println("카테고리 리스트 구현" +mapper.cateList());
+//	}
 	
 	// 게시판 테스트
 //	@Test
@@ -115,11 +115,21 @@ public class CourseMapperTest {
 //		System.out.println("result.........." + result);
 //	}
 	
+//	@Test
+//	public void courseDetailTest() {
+//		int courseCode = 100;
+//		CourseVO result = mapper.courseDetail(courseCode);
+//		System.out.println("수업 조회 데이터 : " +result);
+//	}
+	
 	@Test
-	public void courseDetailTest() {
-		int courseCode = 100;
-		CourseVO result = mapper.courseDetail(courseCode);
-		System.out.println("수업 조회 데이터 : " +result);
+	public void courseModifyTest() {
+		CourseVO course = new CourseVO();
+		course.setCourseName("modifyTest");
+		course.setTeaCode(256);
+		course.setCcatCode(201);
+		course.setCourseLimit(30);
+		course.setCourseDay("월, 수, 금");
 	}
 	
 }

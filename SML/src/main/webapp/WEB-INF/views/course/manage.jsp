@@ -136,6 +136,12 @@
 			}
 			alert("수업'"+ eResult +"'을 등록하였습니다.");
 		}
+		
+		let modify_result = '${modify_result}';
+		
+		if(modify_result == 1){
+			alert("수정 완료");
+		}
 	});
 	
 	let searchForm = $('#searchForm');

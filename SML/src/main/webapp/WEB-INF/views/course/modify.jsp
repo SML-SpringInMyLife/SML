@@ -132,7 +132,7 @@
 	/* 등록 버튼 */
 	$("#modifyBtn").on("click",function(e){
 		e.preventDefault();
-		enrollForm.submit();
+		$("#modifyForm").submit();
 	});
 	
 	// 강사 선택 팝업

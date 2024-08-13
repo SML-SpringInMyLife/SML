@@ -65,14 +65,15 @@ public class CourseController {
 	}
 
 	@PostMapping("/modify")
-	public String modifyPOST() throws Exception {
-		// 해당 상세 페이지로 리턴할 수 있나..?
-		return "redirect:/course/boardList";
+	public String modifyPOST(CourseVO vo, RedirectAttributes rttr) throws Exception {
+		int result = service.courseModify(vo);
+		rttr.addFlashAttribute("modify_result", result);
+		return "redirect:/course/manage";
 	}
 
 	@PostMapping("/delete")
 	public String deletePOST() throws Exception {
-		return "redirect:/course/boardList";
+		return "redirect:/course/manage";
 	}
 
 }
