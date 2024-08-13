@@ -15,7 +15,7 @@ public class NoticeVO {
 	private Date noticeEnroll;
 	private Date noticeModify;
 	private int noticeLike;
-	private int noticeStatus;
+	private String noticeStatus;
 	private int noticeCount;
 	
 }

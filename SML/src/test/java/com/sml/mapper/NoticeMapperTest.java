@@ -1,11 +1,14 @@
 package com.sml.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.sml.model.Criteria;
 import com.sml.model.NoticeVO;
 
 
@@ -27,7 +30,7 @@ public class NoticeMapperTest {
 	}
 	*/
 	
-   @Test 
+/*   @Test 
 	public void noticeModifyTest() {
 		NoticeVO notice = new NoticeVO();
 		
@@ -40,5 +43,32 @@ public class NoticeMapperTest {
         mapper.noticeModify(notice);
         System.out.println("수정후..........." + mapper.noticeGetDetail(notice.getNoticeCode()));
    }
+*/
+	/* @Test
+    public void communityDetail() {
+		
+		int noticeCode = 1;
+		
+		int result = mapper.noticeDelete(noticeCode);
+		
+		if (result == 1) {
+			System.out.println("삭제 성공");
+		}
+		
+	} */
+	
+		@Test
+        public void noticeListGETTest() throws Exception {
+
+	Criteria cri = new Criteria(3, 10);
+		cri.setKeyword("mapperTest");
+		
+		List<NoticeVO> list = mapper.noticeGetList(cri);
+		
+		for(int i=0; i<list.size(); i++) {
+			System.out.println("list" +i +"......" +list.get(i));
+			
+		}
+	}
 	
 }

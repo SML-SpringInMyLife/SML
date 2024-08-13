@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sml.mapper.NoticeMapper;
+import com.sml.model.Criteria;
 import com.sml.model.FileupVO;
 import com.sml.model.NoticeVO;
 
@@ -22,9 +23,9 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override  //게시글 조회
-	public List<NoticeVO> noticeGetList() throws Exception {
+	public List<NoticeVO> noticeGetList(Criteria cri) throws Exception {
 		  
-		return noticeMapper.noticeGetList();
+		return noticeMapper.noticeGetList(cri);
 	}
 
 	@Override //게시글 상세조회
@@ -37,6 +38,18 @@ public class NoticeServiceImpl implements NoticeService {
 	public int noticeModify(NoticeVO noticevo) throws Exception {
 		
 		return noticeMapper.noticeModify(noticevo);
+	}
+    
+	@Override //게시글 삭제 
+	public int noticeDelete(int noticeCode) {
+		
+		return noticeMapper.noticeDelete(noticeCode);
+	}
+
+	@Override //페이징 처리
+	public int noticeGetTotal(Criteria cri) throws Exception {
+		
+		return noticeMapper.noticeGetTotal(cri);
 	}
     
 	

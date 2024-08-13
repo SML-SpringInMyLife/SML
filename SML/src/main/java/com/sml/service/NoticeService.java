@@ -13,11 +13,17 @@ public interface NoticeService {
 	// public void noticeRegisterfile(NoticeVO notice, List<FileupVO> fileup) throws Exception;
 
 	/* 공지사항 조회 */
-	public List<NoticeVO> noticeGetList() throws Exception;
-
+	public List<NoticeVO> noticeGetList(Criteria cri) throws Exception;
+	
+	/* 페이징 */
+	public int noticeGetTotal(Criteria cri) throws Exception;
+	
 	/* 공지사항 상세 조회 */
 	public NoticeVO noticeGetDetail(int noticeCode) throws Exception;
 	
 	/* 공지사항 수정 */
 	public int noticeModify(NoticeVO noticevo) throws Exception;
+	
+	/* 공지사항 삭제 */
+	public int noticeDelete(int noticeCode);
 }

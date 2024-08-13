@@ -15,6 +15,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.sml.model.Criteria;
 import com.sml.model.FileupVO;
 import com.sml.model.NoticeVO;
+import com.sml.model.PageDTO;
 import com.sml.service.NoticeService;
 
 
@@ -28,28 +29,34 @@ public class NoticeController {
 	
 	/* 공지사항 조회페이지 이동 */
 	@GetMapping("/list")
-	public void noticeListGET(Model model) throws Exception {
+	public void noticeListGET(Criteria cri, Model model) throws Exception {
 
-		logger.info("공지사항 조회페이지 이동");
+		logger.info("공지사항 조회페이지 이동" + cri);
       
-		List<NoticeVO> list = noticeservice.noticeGetList();
+		List<NoticeVO> list = noticeservice.noticeGetList(cri);
 		
 		if(!list.isEmpty()) {
 	          model.addAttribute("list", list);
 	       } else {
 	    	   model.addAttribute("listCheck", "empty");
 	       }
+		
+			/* 페이징처리 */
+		int total = noticeservice.noticeGetTotal(cri);
+		
+		PageDTO pageMaker = new PageDTO(cri, total);
+		
+		model.addAttribute("pageMaker", pageMaker);
+		
 	}
 	
-
 	
 	/* 공지사항 상세조회페이지 이동 */
 	@GetMapping({"/detail" , "/modify"})
 	public void noticeDetailGET(int noticeCode,Criteria cri, Model model) throws Exception {
 
 		logger.info("공지사항 상세조회 이동 ");
-		
-	
+			
 		/* 공지사항 조회 페이지 정보 */
 		model.addAttribute("cri",cri);
 			/* 선택 글 정보 */
@@ -64,7 +71,6 @@ public class NoticeController {
 
 	}
 	
-	
 	@PostMapping("/enroll.do")
 	public String noticeEnrollPOST(NoticeVO notice ,RedirectAttributes rttr) throws Exception {
 		 logger.info("공지사항 글 등록: " + notice);
@@ -74,7 +80,7 @@ public class NoticeController {
 		return "redirect:/notice/list";
 	}
   
-	
+	/* 공지사항 수정 */
 	   @PostMapping("/modify")
 	   public String noticeModifyPOST(NoticeVO notice ,RedirectAttributes rttr) throws Exception{
 		   logger.info("공지사항 수정: " + notice); 
@@ -86,7 +92,34 @@ public class NoticeController {
 		   return "redirect:/notice/list";
 	   }
 	
+		/* 공지사항 삭제 */
+	   
+	   @PostMapping("/delete")
+	   public String noticeDeletePOST(int noticeCode,RedirectAttributes rttr) throws Exception{
+		  
+			logger.info("공지사항 삭제.........." + noticeCode);
+			
+			int result = 0;
+			
+			try {
+				
+				result = noticeservice.noticeDelete(noticeCode);
+				
+			} catch (Exception e) {
+				
+				e.printStackTrace();
+				result = 2;
+				rttr.addFlashAttribute("delete_result", result);
+				
+				return "redirect:/notice/list";
+			}
 
+			logger.info("삭제 결과.........." + result);
+			rttr.addFlashAttribute("delete_result", result);
+			
+			return "redirect:/notice/list";
+		}
+		
 	
 	
 	/*

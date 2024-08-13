@@ -88,16 +88,40 @@
 				<button id="write">글쓰기</button>
 			</div>
 		</div>
-		<div class="pagination">
-			<button class="page-btn active">1</button>
-			<button class="page-btn">2</button>
-			<button class="page-btn">3</button>
+		
 
-			<form id="moveForm" action="/notice/detail" method="get"></form>
+	
 
-		</div>
-
-
+     
+     <!-- 페이지 이동 인터페이스 영역 -->
+            <div class="pageMaker_wrap" >
+            	<ul class="pageMaker">
+	            	<!-- 이전 버튼 -->
+	                <c:if test="${pageMaker.prev}">
+	                	<li class="pageMaker_btn prev">
+	                    	<a href="${pageMaker.pageStart - 1}">이전</a>
+	                    </li>
+	                </c:if>
+	                <!-- 페이지 번호 -->
+	                <c:forEach begin="${pageMaker.pageStart}" end="${pageMaker.pageEnd}" var="num">
+	                	<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":""}">
+	                    	<a href="${num}">${num}</a>
+	                    </li>
+	                </c:forEach>
+					<!-- 다음 버튼 -->
+	                <c:if test="${pageMaker.next}">
+	                    <li class="pageMaker_btn next">
+	                    	<a href="${pageMaker.pageEnd + 1 }">다음</a>
+	                    </li>
+	                </c:if>
+				</ul>         
+			</div>
+			
+     <form id="moveForm" action="/notice/list" method="get">
+			<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">		
+			</form>
 	</main>
 	<!-- 푸터 영역 포함 -->
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
@@ -108,13 +132,28 @@
 		$("#write").click(function() {
 			location.href = "/notice/enroll"
 		});
+		
+		
+		let moveForm = $('#moveForm');
+		/* 페이지 이동 버튼 */
+		$(".pageMaker_btn a").on("click", function(e){
+			
+			e.preventDefault();
+			
+			moveForm.find("input[name='pageNum']").val($(this).attr("href"));
+			 
+			moveForm.submit();
+		});
+		
 
-		/* 등록 알람 창 */
+		/* 알람 창 */
 		let enroll = '<c:out value="${enroll_result}"/>';
 		let modify = '<c:out value="${modify_result}"/>';
+	
 		
 		checkResult(enroll);
 		checkResult(modify);
+
 
 		function checkResult(enroll) {
 			if (enroll === '') {
@@ -130,13 +169,14 @@
 			alert("글 수정을 실패 하였습니다");
 		}
 		
-		
-		
-		let moveForm = $("#moveForm");
+
+			
+	
 		/* 상세조회 페이지로 가기  */
 		$(".move").on("click", function(e) {
 			e.preventDefault();	
 			moveForm.append("<input type='hidden' name='noticeCode' value='" + $(this).attr("href") + "'>");
+			moveForm.attr("action", "/notice/detail");
 			moveForm.submit();	
 		});
 	</script>

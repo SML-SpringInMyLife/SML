@@ -77,9 +77,6 @@
 				value="<c:out value='${noticeDetail.noticeCode}'/>">
 		</form>
         
-        <form id="moveForm" method="get">
-            <input type="hidden" name="noticeCode" value="<c:out value='${noticeDetail.noticeCode}'/>">
-        </form>
 	</main>
    
    	<!-- 푸터 영역 포함 -->
@@ -102,6 +99,19 @@
 			moveForm.attr("action", "/notice/modify");
 			moveForm.submit();
 		});
+		
+		 /* 공지사항 삭제 버튼 */
+		$("#deletebtn").on("click", function(e){
+			e.preventDefault();
+			moveForm.find("input").remove();
+			moveForm.append('<input type="hidden" name="noticeCode" value="${noticeDetail.noticeCode}">');
+			moveForm.attr("action", "/notice/delete");
+			moveForm.attr("method", "post");
+			moveForm.submit();
+		});
+		 
+		 
+
 	</script>
 
 	<!-- 푸터 영역 포함 -->
