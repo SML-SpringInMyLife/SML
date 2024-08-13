@@ -31,7 +31,9 @@
 						<label>강사</label>
 					</div>
 					<div class="form_section_content">
-						<input name="teaCode"> 
+						<input id="teaName_input" readonly="readonly">
+						<input id="teaCode_input" name="teaCode" type="hidden"> 
+						<button class="teaCode_btn">강사 선택</button>
 						<span id="warn_courseTeacher">강사를 선택해주세요.</span>
 					</div>
 				</div>
@@ -116,7 +118,14 @@
 		e.preventDefault();
 		enrollForm.submit();
 	});
-
+	
+	// 강사 선택 팝업
+	$('.teaCode_btn').on("click",function(e){
+		e.preventDefault();
+		let popUrl = "/admin/teacher/popup"
+		let popOption = "width = 650px, height=550px, top=300px, left=300px, scrollbars=yes";
+		window.open(popUrl, "강사 찾기", popOption);
+	});
 	</script>
 </body>
 </html>

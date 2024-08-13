@@ -4,7 +4,7 @@
 
 <html>
 <head>
-<title>강사 목록 - 관리자 페이지</title>
+<title>강사 선택 팝업</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 <style>
 /* 페이지 버튼 인터페이스 */
@@ -34,7 +34,8 @@
 .next a, .prev a {
     color: #ccc;
 }
-.active{							/* 현재 페이지 버튼 */
+/* 현재 페이지 버튼 */
+.active{							
 	border : 2px solid black;
 	font-weight:400;
 }
@@ -63,11 +64,7 @@
 						<c:forEach items="${list}" var="list">
 						<tr>
 							<td><c:out value="${list.teaCode}" /></td>
-							<td>
-								<a class="move" href='<c:out value="${list.teaCode}"/>'>
-									<c:out value="${list.teaName}"></c:out>
-								</a>
-							</td>
+							<td><c:out value="${list.teaName}"></c:out></td>
 							<td>
 								<c:choose>
         							<c:when test="${list.teaStatus eq 'N'}">정상</c:when>
@@ -86,7 +83,7 @@
 			</div>
 			
 			<div class="search_wrap">
-				<form id="searchForm" action="/admin/teacher/list" method="get">
+				<form id="searchForm" action="/admin/teacher/popup" method="get">
                 	<div class="search_input">
                     	<input type="text" name="keyword" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
                     	<input type="hidden" name="pageNum" value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
@@ -120,7 +117,7 @@
 				</ul>         
 			</div>
 			
-			<form id="moveForm" action="/admin/teacher/list" method="get">
+			<form id="moveForm" action="/admin/teacher/popup" method="get">
 				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
@@ -132,72 +129,28 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	
 	<script>
-
-	$(document).ready(function(){
-		
-		let eResult = '<c:out value="${enroll_result}"/>';
-		let mresult = '<c:out value="${modify_result}"/>';
-		
-		checkResult(eResult);
-		checkmResult(mresult);
-		
-		function checkResult(result){
-			if(result === ''){
-				return;
-			}
-			
-			alert("강사 정보를 정상적으로 등록하였습니다.");	
-		}
-		
-		function checkmResult(mresult){
-			if(mresult === '1'){
-				alert("강사 정보 수정을 완료하였습니다.");
-			} else if(mresult === '0') {
-				alert("강사 정보 수정을 하지 못하였습니다.")	
-			}
-		}
-		
-		/* 삭제 결과 경고창 */
-		let delete_result = '${delete_result}';
-		
-		if(delete_result == 1){
-			alert("삭제 완료");
-		} else if(delete_result == 2){
-			alert("삭제할 수 없습니다.")
-		}
-	});
-		
-	let moveForm = $('#moveForm');
-	/* 페이지 이동 버튼 */
-	$(".pageMaker_btn a").on("click", function(e){
-		e.preventDefault();
-		 moveForm.find("input[name='pageNum']").val($(this).attr("href"));
-		 moveForm.submit();
-	});
-		
 	let searchForm = $('#searchForm');
-	/* 검색 버튼 동작 */
-	$("#searchForm button").on("click", function(e){	
-		alert('검색 버튼');
+	let moveForm = $('#moveForm');
+	
+	/* 강사 검색 버튼 동작 */
+	$("#searchForm button").on("click", function(e){
 		e.preventDefault();
-			
 		/* 검색 키워드 유효성 검사 */
 		if(!searchForm.find("input[name='keyword']").val()){
 			alert("키워드를 입력하십시오");
 			return false;
 		}
-			
 		searchForm.find("input[name='pageNum']").val("1");
-		searchForm.submit();	
-	});	 
-		
-	/* 상세 페이지 이동 */
-	$(".move").on("click", function(e){
-		e.preventDefault();
-		moveForm.append("<input type='hidden' name='teaCode' value='"+ $(this).attr("href") + "'>");
-		moveForm.attr("action", "/admin/teacher/detail");
-		moveForm.submit();
+		searchForm.submit();
 	});
+	
+	/* 페이지 이동 버튼 */
+	$(".pageMaker_btn a").on("click", function(e){
+		e.preventDefault();
+		console.log($(this).attr("href"));
+		moveForm.find("input[name='pageNum']").val($(this).attr("href"));
+		moveForm.submit();
+	});	
 	</script>
 </body>
 </html>
