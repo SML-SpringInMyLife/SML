@@ -2,535 +2,556 @@
 
 /* 전체 기본 폰트 설정 */
 @font-face {
-	font-family: 'WAGURITTF';
-	src:
-		url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403@1.0/WAGURITTF.woff2')
-		format('woff2');
-	font-weight: normal;
-	font-style: normal;
+    font-family: 'WAGURITTF';
+    src:
+        url('https://fastly.jsdelivr.net/gh/projectnoonnu/2403@1.0/WAGURITTF.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
 }
 
 body {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 /* 헤더(네비게이션) 영역 */
 header {
-	font-family: 'WAGURITTF';
-	width: 100%;
-	height: 180px;
-	background-color: #f8f8f8;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	position: fixed; /* 위치 고정 */
-	top: 0; /* 화면 상단에 위치 */
-	z-index: 700;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	border-bottom: 10px solid #01530c;
+    font-family: 'WAGURITTF';
+    width: 100%;
+    height: 180px;
+    background-color: #f8f8f8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed; /* 위치 고정 */
+    top: 0; /* 화면 상단에 위치 */
+    z-index: 700;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-bottom: 10px solid #01530c;
 }
 
 a {
-	color: #333;
-	text-decoration: none;
+    color: #333;
+    text-decoration: none;
 }
 
 .container {
-	width: 95%;
-	max-width: 1920px;
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	position: relative; /* 상대적 위치 설정 (모바일 메뉴 조정용) */
+    width: 95%;
+    max-width: 1920px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative; /* 상대적 위치 설정 (모바일 메뉴 조정용) */
 }
 
 .left-menu {
-	display: flex;
-	flex-direction: row;
-	justify-content: center;
-	align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .logo {
-	width: 180px;
-	height: auto;
+    width: 180px;
+    height: auto;
 }
 
 .main-menu {
-	display: inline-block;
-	align-items: center;
-	justify-items: center;
-	margin-left: 60px;
+    display: inline-block;
+    align-items: center;
+    justify-items: center;
+    margin-left: 60px;
 }
 
 .main-menu ul, .auth-menu ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	display: flex;
-	flex-direction: row;
-	align-items: center;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .main-menu li {
-	margin-right: 50px;
+    margin-right: 50px;
 }
 
 .auth-menu li {
-	margin-left: 20px;
+    margin-left: 20px;
 }
 
 .main-menu a, .auth-menu a, .mobile-menu a {
-	color: #01530c;
-	font-size: 1.5em;
+    color: #01530c;
+    font-size: 1.5em;
 }
 
 .main-menu li a:hover, .auth-menu li a:hover, .mobile-menu li a:hover {
-	color: #ec7c00;
+    color: #ec7c00;
 }
 
 .welcome {
-	align-items: center;
+    align-items: center;
 }
 
 .hamburger-container {
-	position: relative;
+    position: relative;
 }
 
 .hamburger {
-	display: none;
-	background: none;
-	border: none;
-	font-size: 80px; /* 폰트 크기 설정 (햄버거 아이콘 크기) */
-	cursor: pointer; /* 클릭 가능한 커서 설정 */
-	margin-left: 20px;
-	color: #01530c;
+    display: none;
+    background: none;
+    border: none;
+    font-size: 80px; /* 폰트 크기 설정 (햄버거 아이콘 크기) */
+    cursor: pointer; /* 클릭 가능한 커서 설정 */
+    margin-left: 20px;
+    color: #01530c;
 }
 
 .mobile-menu {
-	display: none;
-	position: absolute;
-	text-align: center;
-	top: calc(100% + 5px); /* 버튼 아래에 약간의 여백 추가 */
-	right: 0; /* 버튼 오른쪽 끝에 위치 */
-	width: 180px;
-	background-color: #f8f8f8;
-	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-	z-index: 900;
-	border: 1px solid #ddd;
+    display: none;
+    position: absolute;
+    text-align: center;
+    top: calc(100% + 5px); /* 버튼 아래에 약간의 여백 추가 */
+    right: 0; /* 버튼 오른쪽 끝에 위치 */
+    width: 180px;
+    background-color: #f8f8f8;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 900;
+    border: 1px solid #ddd;
 }
 
 .mobile-menu ul {
-	list-style: none;
-	padding: 20px;
-	margin: 0;
+    list-style: none;
+    padding: 20px;
+    margin: 0;
 }
 
 .mobile-menu li {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 
 /* 화면 너비가 1400px 이하일 때, 네비게이션 메뉴 비활성화, 햄버거 버튼 및 메뉴 팝업 활성화 */
 @media ( max-width : 1400px) {
-	.main-menu, .auth-menu {
-		display: none; /* 메인 메뉴와 인증 메뉴 숨기기 */
-	}
-	.hamburger {
-		display: block; /* 햄버거 버튼 표시 */
-	}
+    .main-menu, .auth-menu {
+        display: none; /* 메인 메뉴와 인증 메뉴 숨기기 */
+    }
+    .hamburger {
+        display: block; /* 햄버거 버튼 표시 */
+    }
 }
 
 .main-container {
-	position: relative; /* 상대적 위치 설정 */
-	height: 100vh; /* 전체 뷰포트 높이 */
-	margin-top: 190px; /* 헤더 높이만큼 여백 추가 */
-	background-image: url('/resources/images/mainPage.jpg');
-	background-repeat: no-repeat;
-	background-size: cover;
-	background-position: center;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	overflow: hidden; /* 컨테이너의 오버플로우 방지 */
+    position: relative; /* 상대적 위치 설정 */
+    height: 100vh; /* 전체 뷰포트 높이 */
+    margin-top: 190px; /* 헤더 높이만큼 여백 추가 */
+    background-image: url('/resources/images/mainPage.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* 컨테이너의 오버플로우 방지 */
 }
 
 .main-container::before {
-	content: ""; /* 가상 요소에 내용 없음 */
-	position: absolute; /* 절대 위치 설정 */
-	top: 0;
-	left: 0;
-	right: 0;
-	bottom: 0;
-	background: rgba(0, 0, 0, 0.5); /* 50% 투명도의 검정색 오버레이 */
-	pointer-events: none; /* 오버레이 아래의 요소와 상호작용 가능 */
-	z-index: 1; /* 텍스트 위에 위치하도록 설정 */
+    content: ""; /* 가상 요소에 내용 없음 */
+    position: absolute; /* 절대 위치 설정 */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5); /* 50% 투명도의 검정색 오버레이 */
+    pointer-events: none; /* 오버레이 아래의 요소와 상호작용 가능 */
+    z-index: 1; /* 텍스트 위에 위치하도록 설정 */
 }
 
 .main-text {
-	position: relative; /* 오버레이 위에 위치하도록 설정 */
-	z-index: 2;
-	color: white; /* 흰색 텍스트 색상 */
-	font-size: 3em;
-	text-align: center; /* 텍스트 수평 중앙 정렬 */
-	line-height: 1.2; /* 텍스트 가독성을 위한 줄 높이 조정 */
+    position: relative; /* 오버레이 위에 위치하도록 설정 */
+    z-index: 2;
+    color: white; /* 흰색 텍스트 색상 */
+    font-size: 3em;
+    text-align: center; /* 텍스트 수평 중앙 정렬 */
+    line-height: 1.2; /* 텍스트 가독성을 위한 줄 높이 조정 */
 }
 
 /* 퀵 메뉴 */
 #quick-menu {
-	position: fixed;
-	right: 20px;
-	top: 50%;
-	transform: translateY(-50%);
-	display: flex;
-	flex-direction: column;
-	gap: 0;
-	background: rgba(255, 255, 255, 0.8);
-	border: 1px solid #ccc;
-	border-radius: 50px;
-	box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-	padding: 10px;
-	z-index: 50;
+    position: fixed;
+    right: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid #ccc;
+    border-radius: 50px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    z-index: 50;
 }
 
 #quick-menu button {
-	padding: 10px;
-	font-size: 32px;
-	cursor: pointer;
-	background: transparent;
-	border: none;
-	border-bottom: 1px solid #ccc;
+    padding: 10px;
+    font-size: 32px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #ccc;
 }
 
 #quick-menu button:last-child {
-	border-bottom: none;
+    border-bottom: none;
 }
 
 #quick-menu button:hover {
-	background-color: rgba(0, 0, 0, 0.1);
+    background-color: rgba(0, 0, 0, 0.1);
 }
 
 /* 페이지 본문 전체 영역 */
 main {
-	margin: 0;
-	width: 80%;
-	max-width: 1240px;
-	margin: 0 auto;
-	margin-top: 190px;
-	padding: 50px 0;
-	flex: 1;
-	min-height: 560px;
+    margin: 0;
+    width: 80%;
+    max-width: 1240px;
+    margin: 0 auto;
+    margin-top: 190px;
+    padding: 50px 0;
+    flex: 1;
+    min-height: 560px;
 }
 
 /* 채팅상담창 영역 */
 #chat-container {
-	position: fixed; /* 화면 고정 위치 */
-	bottom: 0; /* 화면 하단 */
-	right: 0; /* 화면 우측 */
-	width: 300px; /* 기본 너비 */
-	height: 300px; /* 기본 높이 */
-	min-width: 300px; /* 최소 너비 */
-	min-height: 65px; /* 최소 높이 */
-	background-color: white; /* 기본 배경색 */
-	border: 1px solid #ccc; /* 테두리 */
-	box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
-	border-radius: 10px; /* 둥근 모서리 */
-	z-index: 900; /* 다른 요소 위에 표시 */
-	resize: both; /* 상하좌우 리사이즈 가능 */
-	overflow: hidden; /* 넘치는 부분 숨김 */
+    position: fixed; /* 화면 고정 위치 */
+    bottom: 0; /* 화면 하단 */
+    right: 0; /* 화면 우측 */
+    width: 300px; /* 기본 너비 */
+    height: 300px; /* 기본 높이 */
+    min-width: 300px; /* 최소 너비 */
+    min-height: 65px; /* 최소 높이 */
+    background-color: white; /* 기본 배경색 */
+    border: 1px solid #ccc; /* 테두리 */
+    box-shadow: 0 0 0 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
+    border-radius: 10px; /* 둥근 모서리 */
+    z-index: 900; /* 다른 요소 위에 표시 */
+    resize: both; /* 상하좌우 리사이즈 가능 */
+    overflow: hidden; /* 넘치는 부분 숨김 */
 }
 
 /* 채팅창 숨김 */
 #chat-container.hidden {
-	display: none; /* 숨김 */
+    display: none; /* 숨김 */
 }
 
 /* 채팅창 헤더 스타일 */
 #chat-header {
-	background-color: #004000; /* 헤더 배경색 */
-	color: white; /* 헤더 텍스트 색상 */
-	padding: 10px; /* 패딩 */
-	display: flex; /* 플렉스 레이아웃 */
-	justify-content: flex-start; /* 시작 부분에 정렬 */
-	align-items: center; /* 세로 중앙 정렬 */
+    background-color: #004000; /* 헤더 배경색 */
+    color: white; /* 헤더 텍스트 색상 */
+    padding: 10px; /* 패딩 */
+    display: flex; /* 플렉스 레이아웃 */
+    justify-content: space-between; /* 공간 배분 */
+    align-items: center; /* 세로 중앙 정렬 */
 }
 
 /* 헤더 타이틀 스타일 */
 #chat-header span {
-	flex: 1; /* 가능한 모든 공간을 차지하도록 설정 */
+    flex: 1; /* 가능한 모든 공간을 차지하도록 설정 */
 }
 
 /* 버튼 스타일 */
 #chat-header button {
-	background: none; /* 기본 배경 제거 */
-	border: none; /* 기본 테두리 제거 */
-	color: white; /* 버튼 텍스트 색상 */
-	font-size: 20px; /* 버튼 폰트 크기 조정 */
-	cursor: pointer; /* 클릭 가능한 커서 */
-	padding: 0; /* 패딩 제거 */
+    background: none; /* 기본 배경 제거 */
+    border: none; /* 기본 테두리 제거 */
+    color: white; /* 버튼 텍스트 색상 */
+    font-size: 20px; /* 버튼 폰트 크기 조정 */
+    cursor: pointer; /* 클릭 가능한 커서 */
+    padding: 0; /* 패딩 제거 */
 }
 
 /* 마지막 버튼과 오른쪽 끝의 간격을 조정합니다. */
 #chat-header button:last-of-type {
-	margin-left: 5px; /* 마지막 버튼 왼쪽 여백 조정 */
+    margin-left: 5px; /* 마지막 버튼 왼쪽 여백 조정 */
 }
 
 /* 채팅 박스 스타일 */
 #chat-box {
-	flex: 1; /* 공간 차지 */
-	overflow-y: auto; /* 세로 스크롤 */
-	border-bottom: 1px solid #ccc; /* 하단 테두리 */
+    flex: 1; /* 공간 차지 */
+    overflow-y: auto; /* 세로 스크롤 */
+    border-bottom: 1px solid #ccc; /* 하단 테두리 */
 }
 
 /* 채팅 입력란 스타일 */
 #chat-input {
-	width: 100%; /* 전체 너비 */
-	display: flex; /* 플렉스 레이아웃 */
-	justify-content: space-between; /* 공간 배분 */
-	padding : 10px;
-	background-color: white; /* 배경색 */
-	border-top: 1px solid #ccc; /* 상단 테두리 */
-	box-sizing: border-box; /* 박스 사이징 */
+    width: 100%; /* 전체 너비 */
+    display: flex; /* 플렉스 레이아웃 */
+    justify-content: space-between; /* 공간 배분 */
+    padding: 10px;
+    background-color: white; /* 배경색 */
+    border-top: 1px solid #ccc; /* 상단 테두리 */
+    box-sizing: border-box; /* 박스 사이징 */
 }
 
 /* 메시지 입력란 스타일 */
 #message-input {
-	flex: 1; /* 공간 차지 */
-	padding: 10px; /* 패딩 */
-	border: 1px solid #ccc; /* 테두리 */
-	border-radius: 4px; /* 둥근 모서리 */
-	margin-right: 10px; /* 오른쪽 여백 */
+    flex: 1; /* 공간 차지 */
+    padding: 10px; /* 패딩 */
+    border: 1px solid #ccc; /* 테두리 */
+    border-radius: 4px; /* 둥근 모서리 */
+    margin-right: 10px; /* 오른쪽 여백 */
 }
 
 /* 채팅 버튼 스타일 */
 #chat-container button {
-	padding: 10px; /* 패딩 */
-	border: none; /* 테두리 없음 */
-	background-color: #004000; /* 버튼 배경색 */
-	color: white; /* 버튼 텍스트 색상 */
-	cursor: pointer; /* 커서 */
-	border-radius: 10px; /* 둥근 모서리 */
+    padding: 10px; /* 패딩 */
+    border: none; /* 테두리 없음 */
+    background-color: #004000; /* 버튼 배경색 */
+    color: white; /* 버튼 텍스트 색상 */
+    cursor: pointer; /* 커서 */
+    border-radius: 10px; /* 둥근 모서리 */
 }
 
 /* 버튼 호버 스타일 */
 #chat-container button:hover {
-	background-color: #008000; /* 버튼 호버 색상 */
+    background-color: #008000; /* 버튼 호버 색상 */
 }
 
 /* 메시지 컨테이너 스타일 */
 .message-container {
-	margin: 5px; /* 여백 */
-	padding: 5px; /* 패딩 */
-	border-radius: 5px; /* 둥근 모서리 */
-	max-width: 70%; /* 최대 너비 */
-	clear: both; /* 플로트 정리 */
-	overflow-wrap: anywhere;
+    margin: 5px; /* 여백 */
+    padding: 5px; /* 패딩 */
+    border-radius: 5px; /* 둥근 모서리 */
+    max-width: 70%; /* 최대 너비 */
+    clear: both; /* 플로트 정리 */
+    overflow-wrap: anywhere;
 }
 
 /* 사용자가 보낸 메시지 스타일 */
 .my-message-container {
-	text-align: right; /* 오른쪽 정렬 */
-	margin-left: auto; /* 왼쪽 여백 자동 설정 */
+    text-align: right; /* 오른쪽 정렬 */
+    margin-left: auto; /* 왼쪽 여백 자동 설정 */
 }
 
 /* 다른 사용자가 보낸 메시지 스타일 */
 .other-message-container {
-	text-align: left; /* 왼쪽 정렬 */
-	margin-right: auto; /* 오른쪽 여백 자동 설정 */
+    text-align: left; /* 왼쪽 정렬 */
+    margin-right: auto; /* 오른쪽 여백 자동 설정 */
 }
 
 /* 사용자 ID 스타일 */
 .user-id {
-	font-weight: bold; /* 굵은 글씨 */
-	margin-bottom: 5px; /* 아래쪽 여백 */
+    font-weight: bold; /* 굵은 글씨 */
+    margin-bottom: 5px; /* 아래쪽 여백 */
 }
 
 /* 메시지 박스 스타일 */
 .message-box {
-	padding: 10px; /* 패딩 */
-	border-radius: 5px; /* 둥근 모서리 */
+    padding: 10px; /* 패딩 */
+    border-radius: 5px; /* 둥근 모서리 */
 }
 
 /* 사용자가 보낸 메시지 박스 스타일 */
 .my-message-container .message-box {
-	background-color: #c4d2c5; /* 연두색 배경 */
+    background-color: #c4d2c5; /* 연두색 배경 */
 }
 
 /* 다른 사용자가 보낸 메시지 박스 스타일 */
 .other-message-container .message-box {
-	background-color: #f0f0f0; /* 회색 배경 */
+    background-color: #f0f0f0; /* 회색 배경 */
 }
 
 /* 채팅창 최소화 상태 */
 #chat-container.minimized {
-	height: 20px; /* 최소화된 상태의 높이 */
-	width: 300px; /* 최소화된 상태의 너비 */
-	overflow: hidden; /* 내용 숨김 */
-	bottom: 0; /* 화면 하단 */
-	right: 0;
+    height: 20px; /* 최소화된 상태의 높이 */
+    width: 300px; /* 최소화된 상태의 너비 */
+    overflow: hidden; /* 내용 숨김 */
+    bottom: 0; /* 화면 하단 */
+    right: 0;
 }
 
 /* 최소화된 상태의 채팅 헤더 스타일 */
 #chat-header.minimized {
-	height: 10px; /* 최소화된 상태의 헤더 높이 */
-	width: 100%; /* 너비를 100%로 설정 */
-	display: flex; /* 플렉스 레이아웃 */
-	justify-content: space-between; /* 공간 배분 */
-	align-items: center; /* 세로 중앙 정렬 */
-	bottom: 0; /* 화면 하단 */
-	right: 0;
+    height: 10px; /* 최소화된 상태의 헤더 높이 */
+    width: 100%; /* 너비를 100%로 설정 */
+    display: flex; /* 플렉스 레이아웃 */
+    justify-content: space-between; /* 공간 배분 */
+    align-items: center; /* 세로 중앙 정렬 */
+    bottom: 0; /* 화면 하단 */
+    right: 0;
 }
 
 /* 최소화 상태에서 채팅 박스와 입력란 숨김 처리 */
 #chat-box.minimized, #chat-input.minimized {
-	display: none; /* 숨김 */
+    display: none; /* 숨김 */
 }
 
 /* 채팅창 원래 크기 */
 #chat-container.expanded {
-	height: 300px; /* 원래 크기 높이 */
-	width: 300px; /* 원래 크기 너비 */
-	bottom: 0; /* 화면 하단 */
-	right: 0;
-	position: fixed;
+    height: 300px; /* 원래 크기 높이 */
+    width: 300px; /* 원래 크기 너비 */
+    bottom: 0; /* 화면 하단 */
+    right: 0;
+    position: fixed; /* 고정 위치 */
 }
 
 .timestamp {
-	font-size : 0.7em;
-	color : #808080;
+    font-size: 0.7em;
+    color: #808080;
 }
 
+/* CSS에 추가 */
+@keyframes blink {
+    0% { 
+        background-color: transparent; 
+        color: inherit; 
+        font-weight: normal; /* 기본 굵기 */
+    }
+    50% { 
+        background-color: yellow; 
+        color: black; 
+        font-weight: bold; /* 굵게 변경 */
+    }
+    100% { 
+        background-color: transparent; 
+        color: inherit; 
+        font-weight: normal; /* 기본 굵기로 복원 */
+    }
+}
+
+.blinking {
+    animation: blink 1s infinite;
+}
 
 /* 채팅창 종료 경고창 */
 .modal {
-	position: fixed;
-	bottom: 0;
-	right: 0;
-	background-color: white;
-	border: 1px solid #ccc;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-	border-radius: 10px;
-	z-index: 1000;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    z-index: 1000;
 }
 
 .modal-content {
-	padding: 20px;
-	text-align: center;
+    padding: 20px;
+    text-align: center;
 }
 
 .hidden {
-	display: none;
+    display: none;
 }
 
 #close-chat-modal {
-	position: fixed;
-	z-index: 1000;
-	width: 300px;
-	color: white;
-	background-color: rgba(0, 0, 0, 0.7);;
-	border: 1px solid #ccc;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    z-index: 1000;
+    width: 300px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.7);
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 #close-chat-modal .modal-content {
-	padding: 20px;
-	text-align: center;
+    padding: 20px;
+    text-align: center;
 }
 
 #close-chat-modal .modal-content button {
-	margin: 10px;
-	padding: 10px 20px;
-	color: white;
-	cursor: pointer;
-	border-radius: 10px;
-	border: 1px solid #008000;
-	background-color: #fff;
-	color: #008000;
-	border-radius: 10px;
+    margin: 10px;
+    padding: 10px 20px;
+    color: white;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid #008000;
+    background-color: #fff;
+    color: #008000;
+    border-radius: 10px;
 }
 
 #close-chat-modal .modal-content button:hover {
-	background-color: #008000;
-	color: white;
-	border-radius: 10px;
+    background-color: #008000;
+    color: white;
+    border-radius: 10px;
 }
 
 /* Footer area */
 /* Footer overall style */
 footer {
-	background-color: #edeff1;
-	padding: 15px 0 0 0;
+    background-color: #edeff1;
+    padding: 15px 0 0 0;
 }
 
 /* Footer container style */
 .footer-container {
-	display: flex; /* Flexbox를 사용하여 레이아웃 구성 */
-	flex-direction: column; /* 세로 방향으로 배치 */
-	max-width: 1200px; /* 최대 너비 설정 */
-	margin: 0 auto; /* 중앙 정렬을 위한 자동 마진 */
-	font-size: 0.8em; /* 폰트 크기 설정 */
+    display: flex; /* Flexbox를 사용하여 레이아웃 구성 */
+    flex-direction: column; /* 세로 방향으로 배치 */
+    max-width: 1200px; /* 최대 너비 설정 */
+    margin: 0 auto; /* 중앙 정렬을 위한 자동 마진 */
+    font-size: 0.8em; /* 폰트 크기 설정 */
 }
 
 /* Left section style */
 .footer-left {
-	display: flex; /* Flexbox를 사용하여 레이아웃 구성 */
-	flex-direction: column; /* 세로 방향으로 배치 */
-	align-items: flex-start; /* 왼쪽 정렬 */
-	width: 100%; /* 전체 너비 사용 */
+    display: flex; /* Flexbox를 사용하여 레이아웃 구성 */
+    flex-direction: column; /* 세로 방향으로 배치 */
+    align-items: flex-start; /* 왼쪽 정렬 */
+    width: 100%; /* 전체 너비 사용 */
 }
 
 /* Footer address list style */
 .footer-address {
-	list-style-type: none; /* 리스트 스타일 없음 */
-	padding: 0; /* 기본 패딩 제거 */
-	margin-bottom: 15px; /* 주소와 링크 사이의 간격 */
+    list-style-type: none; /* 리스트 스타일 없음 */
+    padding: 0; /* 기본 패딩 제거 */
+    margin-bottom: 15px; /* 주소와 링크 사이의 간격 */
 }
 
 .footer-address li {
-	margin-bottom: 5px; /* 각 주소 항목 사이의 간격 */
+    margin-bottom: 5px; /* 각 주소 항목 사이의 간격 */
 }
 
 /* Footer link list style */
 .footer-links {
-	display: flex; /* Flexbox를 사용하여 레이아웃 구성 */
-	justify-content: space-between; /* 링크 항목 사이의 공간 균등 배분 */
-	list-style-type: none; /* 리스트 스타일 없음 */
-	padding: 0; /* 기본 패딩 제거 */
-	margin: 0; /* 기본 마진 제거 */
+    display: flex; /* Flexbox를 사용하여 레이아웃 구성 */
+    justify-content: space-between; /* 링크 항목 사이의 공간 균등 배분 */
+    list-style-type: none; /* 리스트 스타일 없음 */
+    padding: 0; /* 기본 패딩 제거 */
+    margin: 0; /* 기본 마진 제거 */
 }
 
 .footer-links li {
-	font-style: italic;
-	margin-right: 15px; /* 링크 항목 사이의 간격 */
+    font-style: italic;
+    margin-right: 15px; /* 링크 항목 사이의 간격 */
 }
 
 /* Copyright text style */
 .footer-copy {
-	margin: 20px 0; /* 상하 마진: 20px */
-	text-align: center; /* 가운데 정렬 */
-	font-size: 0.9em; /* 폰트 크기: 0.9em (조금 작게 설정) */
-	color: #6c757d; /* 폰트 색상: 연한 회색 */
+    margin: 20px 0; /* 상하 마진: 20px */
+    text-align: center; /* 가운데 정렬 */
+    font-size: 0.9em; /* 폰트 크기: 0.9em (조금 작게 설정) */
+    color: #6c757d; /* 폰트 색상: 연한 회색 */
 }
 
-/* Style when the screen width is less than 1000px */
+/* 화면 너비가 1400px 이하일 때 스타일 조정 */
 @media ( max-width : 1400px) {
-	.footer-container {
-		flex-direction: column; /* 세로 방향으로 배치 */
-		align-items: center; /* 중앙 정렬 */
-		width: 80%;
-	}
-	.footer-left {
-		width: 100%; /* 전체 너비 사용 */
-	}
-	.footer-address {
-		margin-bottom: 10px; /* 주소와 링크 사이의 간격 감소 */
-	}
-	.footer-links {
-		flex-direction: column; /* 세로 방향으로 배치 */
-		margin-bottom: 0; /* 링크와 주소 사이의 간격 제거 */
-	}
-	.footer-links li {
-		margin: 8px 0; /* 링크 항목 사이의 간격 감소 */
-	}
+    .footer-container {
+        flex-direction: column; /* 세로 방향으로 배치 */
+        align-items: center; /* 중앙 정렬 */
+        width: 80%;
+    }
+    .footer-left {
+        width: 100%; /* 전체 너비 사용 */
+    }
+    .footer-address {
+        margin-bottom: 10px; /* 주소와 링크 사이의 간격 감소 */
+    }
+    .footer-links {
+        flex-direction: column; /* 세로 방향으로 배치 */
+        margin-bottom: 0; /* 링크와 주소 사이의 간격 제거 */
+    }
+    .footer-links li {
+        margin: 8px 0; /* 링크 항목 사이의 간격 감소 */
+    }
 }

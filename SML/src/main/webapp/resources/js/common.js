@@ -1,4 +1,4 @@
-// Enter 키 이벤트 처리
+// Enter 키 이벤트 처리 함수
 window.handleKeyPress = function(event) {
     if (event.key === 'Enter') { // Enter 키가 눌렸을 때
         event.preventDefault(); // 기본 동작(예: 폼 제출) 방지
@@ -54,12 +54,12 @@ function scrollToTop() {
 
 // 채팅 상담창 활성화 함수
 function chatConsultation() {
-	startChat();
+    startChat(); // 채팅 시작 함수 호출
     let memId = document.getElementById('memId');
     
     // 'memId' 요소가 없거나 텍스트가 비어 있는 경우
     if (!memId || memId.textContent.trim() === '') {
-        alert("로그인 후 이용할 수 있습니다.");
+        alert("로그인 후 이용할 수 있습니다."); // 로그인 필요 알림
         return;
     } else {
         // 로그인된 경우 채팅 창 활성화
@@ -90,13 +90,13 @@ function minimizeChat() {
 
 // 채팅창 닫기 요청 함수
 function closeChat() {
-    document.getElementById('close-chat-modal').classList.remove('hidden');
+    document.getElementById('close-chat-modal').classList.remove('hidden'); // 닫기 모달 표시
 }
 
 // 채팅 종료 확인 함수
 function confirmCloseChat() {
-    document.getElementById('chat-container').classList.add('hidden');
-    document.getElementById('close-chat-modal').classList.add('hidden');
+    document.getElementById('chat-container').classList.add('hidden'); // 채팅창 숨기기
+    document.getElementById('close-chat-modal').classList.add('hidden'); // 닫기 모달 숨기기
     if (ws) {
         ws.close(); // WebSocket 연결 종료
     }
@@ -104,7 +104,7 @@ function confirmCloseChat() {
 
 // 채팅 종료 취소 함수
 function cancelCloseChat() {
-    document.getElementById('close-chat-modal').classList.add('hidden');
+    document.getElementById('close-chat-modal').classList.add('hidden'); // 닫기 모달 숨기기
 }
 
 // 채팅창 드래그 및 리사이즈 기능 추가
@@ -155,20 +155,19 @@ function startChat() {
     ws = new WebSocket('ws://localhost:8080/chat');
 
     ws.onopen = function() {
-        console.log('WebSocket 연결이 열렸습니다.');
-        openChatWindow();
+        console.log('WebSocket 연결이 열렸습니다.'); // WebSocket 연결 성공 로그
     };
 
     ws.onmessage = function(event) {
-        appendMessage(event.data);
+        appendMessage(event.data); // 메시지 수신 시 메시지 추가 함수 호출
     };
 
     ws.onclose = function() {
-        console.log('WebSocket 연결이 닫혔습니다.');
+        console.log('WebSocket 연결이 닫혔습니다.'); // WebSocket 연결 종료 로그
     };
 
     ws.onerror = function(error) {
-        console.error('WebSocket 오류:', error);
+        console.error('WebSocket 오류:', error); // WebSocket 오류 로그
     };
 }
 
@@ -237,4 +236,15 @@ function appendMessage(message) {
 
     chatBox.appendChild(messageDiv);
     chatBox.scrollTop = chatBox.scrollHeight; // 스크롤을 가장 아래로 이동
+
+    // 채팅창이 최소화 상태일 때 헤더 깜빡이기
+    const chatContainer = document.getElementById('chat-container');
+    const chatHeader = document.getElementById('chat-header');
+    
+    if (chatContainer.classList.contains('minimized')) {
+        chatHeader.classList.add('blinking'); // 헤더에 깜빡임 클래스 추가
+        setTimeout(() => {
+            chatHeader.classList.remove('blinking'); // 일정 시간 후 깜빡임 클래스 제거
+        }, 3000); // 3초 후 제거
+    }
 }
