@@ -42,7 +42,19 @@
 						<label>카테고리</label>
 					</div>
 					<div class="form_section_content">
-						<input name="ccatCode">        
+						<div class="cate_wrap">
+							<span>대분류</span>
+							<select class="cate1">
+								<option selected value="none">선택</option>
+							</select>
+						</div>
+						<div class="cate_wrap">
+							<span>중분류</span>
+							<select class="cate2" name="ccatCode">
+								<option selected value="none">선택</option>
+							</select>
+						</div> 
+						<span class="ck_warn ccatCode_warn">카테고리를 선택해주세요.</span>        
 					</div>
 				</div>
 				<div class="form_section">
@@ -125,6 +137,59 @@
 		let popUrl = "/admin/teacher/popup"
 		let popOption = "width = 650px, height=550px, top=300px, left=300px, scrollbars=yes";
 		window.open(popUrl, "강사 찾기", popOption);
+	});
+	
+	// 카테고리 리스트 구현
+	let cateList = JSON.parse('${cateList}');
+	
+	let cate1Array = new Array();
+	let cate2Array = new Array();
+
+	let cate1Obj = new Object();
+	let cate2Obj = new Object();
+	
+	let cateSelect1 = $(".cate1");		
+	let cateSelect2 = $(".cate2");
+	
+	/* 카테고리 배열 초기화 메서드 */
+	function makeCateArray(obj,array,cateList, tier){
+		for(let i = 0; i < cateList.length; i++){
+			if(cateList[i].tier === tier){
+				obj = new Object();
+				
+				obj.ccatName = cateList[i].ccatName;
+				obj.ccatCode = cateList[i].ccatCode;
+				obj.parentCode = cateList[i].parentCode;
+				
+				array.push(obj);					
+			}
+		}
+	}		
+
+	/* 배열 초기화 */
+	makeCateArray(cate1Obj,cate1Array,cateList,1);
+	makeCateArray(cate2Obj,cate2Array,cateList,2);
+
+	$(document).ready(function(){
+		console.log(cate1Array);
+		console.log(cate2Array);
+	});
+	
+	// 대분류
+	for(let i = 0; i<cate1Array.length; i++){
+		cateSelect1.append("<option value='" +cate1Array[i].ccatCode +"'>" +cate1Array[i].ccatName +"</option>");
+	}
+	
+	/* 중분류 <option> 태그 */
+	$(cateSelect1).on("change",function(){
+		let selectVal1 = $(this).find("option:selected").val();	
+		cateSelect2.children().remove();
+		cateSelect2.append("<option value='none'>선택</option>")
+		for(let i = 0; i < cate2Array.length; i++){
+			if(selectVal1 === cate2Array[i].parentCode){
+				cateSelect2.append("<option value='"+cate2Array[i].ccatCode+"'>" + cate2Array[i].ccatName + "</option>");	
+			}
+		}
 	});
 	</script>
 </body>

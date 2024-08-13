@@ -78,22 +78,29 @@ public class CourseMapperTest {
 //		}
 //	}
 	
-	// 게시판 테스트
+	// 카테고리 테스트
 	@Test
-	public void courseEnroll() throws Exception{
-		CourseVO course = new CourseVO();
-		
-		course.setCourseName("mapperTest");
-		course.setCcatCode(109);
-		course.setCourseContent("mapperTest");
-		course.setCourseLimit(30);
-		course.setStartDate("2024-01-01");
-		course.setEndDate("2024-12-31");
-		course.setTeaCode(258);
-//		course.setStartTime("09:00:00");
-		course.setCourseDay("월, 수, 금");
-		
-		mapper.courseEnroll(course);
+	public void cateListTest() throws Exception {
+		System.out.println("카테고리 리스트 구현" +mapper.cateList());
 	}
+	
+	// 게시판 테스트
+//	@Test
+//	public void courseEnroll() throws Exception{
+//		CourseVO course = new CourseVO();
+//		
+//		course.setCourseName("mapperTest");
+//		course.setCcatCode(109);
+//		course.setCourseContent("mapperTest");
+//		course.setCourseLimit(30);
+//		course.setStartDate("2024-01-01");
+//		course.setEndDate("2024-12-31");
+//		course.setTeaCode(258);
+////		course.setStartTime("09:00:00");
+//		course.setCourseDay("월, 수, 금");
+//		
+//		mapper.courseEnroll(course);
+//	}
+	
 
 }

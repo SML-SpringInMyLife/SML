@@ -23,9 +23,10 @@
 	<select id="cateList" resultType="com.sml.model.CourseCategoryVO">
 		SELECT 
 			CCAT_TIER AS tier,
-			CCAT_NAME AS name,
-			CCAT_CODE AS code
-			FROM COURSE_CATEGORY ORDER BY CCAT_CODE
+			CCAT_NAME AS ccatName,
+			CCAT_CODE AS ccatCode,
+			CCAT_PARENT AS parentCode
+		 FROM COURSE_CATEGORY ORDER BY CCAT_CODE
 	</select>
 	
 	<select id="courseList" resultType="com.sml.model.CourseVO">

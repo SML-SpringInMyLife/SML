@@ -49,8 +49,6 @@ public class CourseController {
 		List list = service.cateList();
 		String cateList = objmapper.writeValueAsString(list);
 		model.addAttribute("cateList", cateList);
-//		logger.info("변경 전....." +list);
-//		logger.info("변경 후......" +cateList);
 	}
 	@PostMapping("/enroll")
 	public String enrollPOST(CourseVO course, RedirectAttributes rttr) throws Exception {
