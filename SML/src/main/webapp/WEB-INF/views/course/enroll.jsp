@@ -6,6 +6,16 @@
 <title>수업 등록 - 수강 신청</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 <link rel="stylesheet" href="../resources/css/course/course.css">
+<style>
+/* 입력란 공란 경고 태그 */
+.form_section_content span{    
+    display: none;
+    padding-top: 10px;
+    text-align: center;
+    color: #e05757;
+    font-weight: 300;    
+}
+</style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -43,18 +53,18 @@
 					</div>
 					<div class="form_section_content">
 						<div class="cate_wrap">
-							<span>대분류</span>
+							<label>대분류</label>
 							<select class="cate1">
 								<option selected value="none">선택</option>
 							</select>
 						</div>
 						<div class="cate_wrap">
-							<span>중분류</span>
+							<label>중분류</label>
 							<select class="cate2" name="ccatCode">
 								<option selected value="none">선택</option>
 							</select>
 						</div> 
-						<span class="ck_warn ccatCode_warn">카테고리를 선택해주세요.</span>        
+						<span class="warn_ccatCode">카테고리를 선택해주세요.</span>        
 					</div>
 				</div>
 				<div class="form_section">
@@ -87,7 +97,6 @@
 							<input type="time" id="startTime" name="startTime"> 
 						<label for="end_time">~</label>
 							<input type="time" id="endTime" name="endTime"> 
-						<span id="warn_courseTime">수강 시간을 선택해주세요.</span>
 					</div>
 				</div>
 				<div class="form_section">
@@ -128,6 +137,84 @@
 	/* 등록 버튼 */
 	$("#enrollBtn").on("click",function(e){
 		e.preventDefault();
+		
+		let nameCk = false;
+		let teacherCk = false;
+		/* let categoryCk = false; */
+		let limitCk = false;
+		let periodCk = false;
+		let dayCk = false;
+		
+		let courseName = $("input[name='courseName']").val();
+		let teaCode = $("input[name='teaCode']").val();
+		/* let ccatCode = $("select[name='ccatCode']").val(); */
+		let courseLimit = $("input[name='courseLimit']").val();
+		/* let startDate = $("input[name='startDate']").val();
+	    let endDate = $("input[name='endDate']").val(); */
+		let courseDay = $("input[name='courseDay']").val();
+		
+		if(courseName){
+			$(".warn_courseName").css('display','none');
+			nameCk = true;
+		} else {
+			$(".warn_courseName").css('display','block');
+			nameCk = false;
+		}
+		
+		if(teaCode){
+			$(".warn_courseTeacher").css('display','none');
+			teacherCk = true;
+		} else {
+			$(".warn_courseTeacher").css('display','block');
+			teacherCk = false;
+		}
+		
+		/* if(ccatCode){
+			$(".warn_ccatCode").css('display','none');
+			categoryCk = true;
+		} else {
+			$(".warn_ccatCode").css('display','block');
+			categoryCk = false;
+		}
+		 */
+		if(courseLimit){
+			$(".warn_courseLimit").css('display','none');
+			limitCk = true;
+		} else {
+			$(".warn_courseLimit").css('display','block');
+			limitCk = false;
+		}
+		
+		/* if(startDate && endDate) {
+		    let start = new Date(startDate);
+		    let end = new Date(endDate);
+
+		    if(start <= end) {
+		        $(".warn_coursePeriod").css('display','none');
+		        periodCk = true;
+		    } else {
+		        $(".warn_coursePeriod").css('display','block').text('종강일이 개강일보다 빠를 수 없습니다.');
+		        periodCk = false;
+		    }
+		} else {
+		    $(".warn_coursePeriod").css('display','block').text('수강 기간을 선택해주세요.');
+		    periodCk = false;
+		} */
+		
+		if(courseDay){
+			$(".warn_courseDay").css('display','none');
+			dayCk = true;
+		} else {
+			$(".warn_courseDay").css('display','block');
+			dayCk = false;
+		}
+		
+		/* if(nameCk && teacherCk && limitCk && dayCk){
+			
+		} else {
+			return false;
+		}  */
+		
 		enrollForm.submit();
 	});
 	
@@ -170,10 +257,10 @@
 	makeCateArray(cate1Obj,cate1Array,cateList,1);
 	makeCateArray(cate2Obj,cate2Array,cateList,2);
 
-	$(document).ready(function(){
+	/* $(document).ready(function(){
 		console.log(cate1Array);
 		console.log(cate2Array);
-	});
+	}); */
 	
 	// 대분류
 	for(let i = 0; i<cate1Array.length; i++){
