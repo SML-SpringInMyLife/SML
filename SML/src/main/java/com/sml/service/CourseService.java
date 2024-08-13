@@ -21,5 +21,7 @@ public interface CourseService {
 	public int courseModify(CourseVO vo);
 	
 	public int courseDelete(int courseCode);
+	
+	public CourseVO courseApplyDetail(int courseCode);
 
 }

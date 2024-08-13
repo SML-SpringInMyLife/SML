@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <html>
 <head>
@@ -85,19 +86,13 @@
             			</c:when>
             			<c:otherwise>
             				<button id="listBtn" class="btn">목록</button>
-                			<button id="applyBtn" class="btn">수강신청</button>
+                			<button id="applyBtn" class="apply_btn">수강신청</button>
             			</c:otherwise>
         			</c:choose>
 				</div>
 			</div>
 		</div>
-		
-		<form id="moveForm" action="course/boardList" method="get">
-        	 <input type="hidden" name="courseCode" value='<c:out value="${detail.courseCode}"/>'>
-             <input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum}'/>">
-             <input type="hidden" name="amount" value='<c:out value="${cri.amount}"/>' >
-             <input type="hidden" name="keyword" value='<c:out value="${cri.keyword}"/>'>
-        </form>
+
 	</main>
 
 	<!-- 푸터 영역 포함 -->

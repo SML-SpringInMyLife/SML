@@ -113,4 +113,21 @@
 				COURSE_CODE = #{courseCode}
 	</update>
 	
+	<select id="courseApplyDetail" resultType="com.sml.model.CourseVO">
+		SELECT 
+			c.COURSE_CODE AS courseCode,		
+			c.COURSE_NAME AS courseName,
+			t.TEA_NAME AS teaName,
+			c.COURSE_START_DATE AS startDate,
+			c.COURSE_END_DATE AS endDate,
+			c.COURSE_START_TIME AS startTime,
+			c.COURSE_END_TIME AS endTime,
+			c.COURSE_DAY AS courseDay,
+			c.COURSE_LIMIT AS courseLimit,
+			c.COURSE_POINT AS coursePoint
+		 FROM COURSE c
+		 JOIN COURSE_TEACHER t ON c.TEA_CODE = t.TEA_CODE	
+    	 WHERE COURSE_CODE = #{courseCode}
+	</select>
+	
 </mapper>

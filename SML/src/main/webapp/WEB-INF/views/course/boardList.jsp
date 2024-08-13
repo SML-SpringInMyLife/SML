@@ -63,7 +63,9 @@
 									명
 								</td>
 								<td>
-									<button id="applyBtn" class="btn">수강신청</button>
+									<a class="apply_btn" href="<c:out value='${item.courseCode}'/>">
+        								<button>수강신청</button>
+    								</a>
 								</td>
 							</tr>
 						</c:forEach>
@@ -163,6 +165,18 @@
 		moveForm.append("<input type='hidden' name='courseCode' value='"+$(this).attr("href") + "'>");
 		moveForm.attr("action", "/course/detail");
 		moveForm.submit();	
+	});
+	
+	$('.apply_btn').on("click",function(e){	
+		e.preventDefault();
+		
+		var courseCode = $(this).attr("href");
+
+	    // 팝업 옵션
+	    var popUrl = "/course/apply?courseCode=" + courseCode;
+	    var popOption = "width=650, height=550, top=300, left=300, scrollbars=yes";
+		
+		window.open(popUrl,"수강신청",popOption);
 	});
 	</script>
 </body>

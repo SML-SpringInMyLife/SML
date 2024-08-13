@@ -17,7 +17,7 @@
 	<main>
 		<h1>수업 관리 - 수정</h1>
 		<div class="course-container">
-			<form action="/course/modify" method="post" id="modifyForm">
+			<form action="/course/manage/modify" method="post" id="modifyForm">
 				<div class="form_section">
 					<div class="form_section_title">
 						<label>수업명</label>

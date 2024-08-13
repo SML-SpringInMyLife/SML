@@ -41,7 +41,7 @@ public class CourseController {
 		model.addAttribute("pageMaker", new PageDTO(cri, service.courseTotal(cri)));
 	}
 
-	@GetMapping("/enroll")
+	@GetMapping("/manage/enroll")
 	public void courseEnrollGET(Model model) throws Exception {
 		logger.info("수업 등록 페이지 진입");
 		ObjectMapper objmapper = new ObjectMapper();
@@ -49,29 +49,29 @@ public class CourseController {
 		String cateList = objmapper.writeValueAsString(list);
 		model.addAttribute("cateList", cateList);
 	}
-	@PostMapping("/enroll")
+	@PostMapping("/manage/enroll")
 	public String enrollPOST(CourseVO course, RedirectAttributes rttr) throws Exception {
 		logger.info("enrollPOST......" +course);
 		service.courseEnroll(course);
 		rttr.addFlashAttribute("enroll_result", course.getCourseName());
-		return "redirect:/course/boardList";
+		return "redirect:/course/manage";
 	}
 	
-	@GetMapping({"/detail", "/modify"})
+	@GetMapping({"/detail", "/manage/modify", "/apply"})
 	public void detailGET(int courseCode, Criteria cri, Model model) throws Exception {
 	
 		model.addAttribute("cri", cri);
 		model.addAttribute("detail", service.courseDetail(courseCode));
 	}
 
-	@PostMapping("/modify")
+	@PostMapping("/manage/modify")
 	public String modifyPOST(CourseVO vo, RedirectAttributes rttr) throws Exception {
 		int result = service.courseModify(vo);
 		rttr.addFlashAttribute("modify_result", result);
 		return "redirect:/course/manage";
 	}
 
-	@PostMapping("/delete")
+	@PostMapping("/manage/delete")
 	public String deletePOST(int courseCode, RedirectAttributes rttr) throws Exception {
 		int result = service.courseDelete(courseCode);
 		rttr.addFlashAttribute("delete_result", result);

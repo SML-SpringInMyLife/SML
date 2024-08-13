@@ -132,13 +132,21 @@ public class CourseMapperTest {
 //		course.setCourseDay("월, 수, 금");
 //	}
 	
+//	@Test
+//	public void courseDeleteTest() {
+//		int courseCode = 100;
+//		int result = mapper.courseDelete(courseCode);
+//		if(result == 1) {
+//			System.out.println("삭제 성공");
+//		}
+//	}
+	
 	@Test
-	public void courseDeleteTest() {
-		int courseCode = 100;
-		int result = mapper.courseDelete(courseCode);
-		if(result == 1) {
-			System.out.println("삭제 성공");
-		}
+	public void courseApplyDetailTest() {
+		int courseCode = 200;
+		CourseVO result = mapper.courseApplyDetail(courseCode);
+		System.out.println("수업 조회 데이터 : " +result);
+		
 	}
 	
 }

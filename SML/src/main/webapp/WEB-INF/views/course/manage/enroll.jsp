@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <html>
 <head>
 <title>수업 등록 - 수강 신청</title>
@@ -16,7 +17,7 @@
 	<main>
 		<h1>수업 등록</h1>
 		<div class="course-container">
-			<form action="/course/enroll" method="post" id="enrollForm">
+			<form action="/course/manage/enroll" method="post" id="enrollForm">
 				<div class="form_section">
 					<div class="form_section_title">
 						<label>수업명</label>

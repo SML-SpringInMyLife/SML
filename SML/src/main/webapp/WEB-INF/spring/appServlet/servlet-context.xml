@@ -28,20 +28,22 @@
 	<context:component-scan base-package="com.sml.controller" />
 	
 	<!-- 인터셉터 적용 -->
-    <!-- <interceptors>
+    <interceptors>
         <interceptor>
             <mapping path="/member/login.do"></mapping>
             <beans:bean id="loginIntreceptor" class="com.sml.interceptor.LoginInterceptor"></beans:bean>
         </interceptor>
+        
         <interceptor>
-            <mapping path="/admin/**"></mapping>
-
-            <mapping path="/course/enroll"></mapping>
-            <mapping path="/course/modify"></mapping>
+            <mapping path="/course/manage/**"></mapping>
             <beans:bean id="AdminInterceptor" class="com.sml.interceptor.AdminInterceptor"></beans:bean>
         </interceptor>
-
-    </interceptors> -->
+        
+        <interceptor>
+        	<mapping path="/course/modify"></mapping>
+        	<beans:bean id="OnlyLoginInterceptor" class="com.sml.interceptor.OnlyLoginInterceptor"></beans:bean>
+        </interceptor>
+    </interceptors>
 	
 	
 </beans:beans>

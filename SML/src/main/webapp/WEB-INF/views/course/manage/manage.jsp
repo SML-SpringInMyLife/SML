@@ -33,7 +33,6 @@
 								<td>강사명</td>
 								<td>요일 / 시간</td>
 								<td>수강 인원</td>
-								<td>수강 신청</td>
 							</tr>
 						</thead>
 						<c:forEach items="${list}" var="item">
@@ -62,9 +61,6 @@
 									<c:out value="${item.courseLimit}"/>
 									명
 								</td>
-								<td>
-									<button id="applyBtn" class="btn">수강신청</button>
-								</td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -78,7 +74,7 @@
 
 			<!-- 검색 영역 -->
 			<div class="search_wrap">
-				<form id="searchForm" action="/course/boardList" method="get">
+				<form id="searchForm" action="/course/manage" method="get">
 					<div class="search_input">
 						<input type="text" name="keyword"
 							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
@@ -113,7 +109,7 @@
 				</ul>
 			</div>
 			
-			<form id="moveForm" action="/course/boardList" method="get">
+			<form id="moveForm" action="/course/manage" method="get">
 				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
