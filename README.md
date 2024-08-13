@@ -13,9 +13,9 @@
 <p align=center>
   <a href="https://www.notion.so/ohgiraffers/SML-Spring-in-My-Life-ebe55b3bf01041f2b67151d1fbd0bce7">팀 노션</a>
   &nbsp; | &nbsp; 
-  <a href="https://github.com/orgs/SML-SpringInMyLife/projects/3/views/1?layout=table&groupedBy%5BcolumnId%5D=Milestone">백로그</a>
+    <a href="https://zinc-mistake-ddb.notion.site/d194358e314c4e3797d81a177a55d5a1">기획서</a>
   &nbsp; | &nbsp;
-  <a href="https://zinc-mistake-ddb.notion.site/d194358e314c4e3797d81a177a55d5a1">기획서</a>  <br />   
+<a href="https://github.com/orgs/SML-SpringInMyLife/projects/3/views/1?layout=table&groupedBy%5BcolumnId%5D=Milestone">백로그</a>  <br />   
   <a href="https://www.figma.com/design/bImVvvY8jcm9rkCwx3d3PI/SML?node-id=0-1&t=N23ODbW6Pr7160dP-1">figma</a> 
  &nbsp; | &nbsp;
   <a href="https://www.notion.so/ohgiraffers/TroubleShooting-b98fc6019508484f990ba1a5f1232fb1">트러블 슈팅</a>
