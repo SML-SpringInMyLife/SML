@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
+import com.sml.model.PageDTO;
 import com.sml.service.AdminService;
 
 import net.nurigo.java_sdk.api.Message;
@@ -69,7 +71,7 @@ public class AdminController {
 	}
 
 	@GetMapping(value = "members")
-	public void adminMembersGET(Model model) throws Exception {
+	public void adminMembersGET(Criteria cri, Model model) throws Exception {
 
 		logger.info("관리자 - 회원관리페이지 이동");
 		List<MemberVO> members = service.getMemberList();
@@ -81,6 +83,9 @@ public class AdminController {
 			model.addAttribute("listCheck", "empty");
 		}
 
+		int total = service.memberGetTotal(cri);
+		PageDTO pageMaker = new PageDTO(cri, total);
+		model.addAttribute("pageMaker", pageMaker);
 	}
 
 	// 멤버 검색
@@ -207,4 +212,5 @@ public class AdminController {
 		logger.info("로그인페이지 이동");
 
 	}
+
 }

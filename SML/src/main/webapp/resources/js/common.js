@@ -54,15 +54,15 @@ function scrollToTop() {
 
 // 채팅 상담창 활성화 함수
 function chatConsultation() {
+	startChat();
     let memId = document.getElementById('memId');
     
     // 'memId' 요소가 없거나 텍스트가 비어 있는 경우
-    if (!memId) {
+    if (!memId || memId.textContent.trim() === '') {
         alert("로그인 후 이용할 수 있습니다.");
         return;
     } else {
         // 로그인된 경우 채팅 창 활성화
-        startChat();
         const chatContainer = document.getElementById('chat-container');
         const chatBox = document.getElementById('chat-box');
         chatBox.innerHTML = ''; // 이전 채팅 내용 초기화
@@ -87,7 +87,6 @@ function minimizeChat() {
         chatHeader.querySelector('button').textContent = '⬜'; // 버튼 텍스트를 최대화 아이콘으로 변경
     }
 }
-
 
 // 채팅창 닫기 요청 함수
 function closeChat() {
@@ -153,11 +152,11 @@ document.addEventListener('DOMContentLoaded', (event) => {
 let ws;
 
 function startChat() {
-    // ws = new WebSocket('ws://192.168.1.114:8080/chat'); // WebSocket 서버 주소 설정
     ws = new WebSocket('ws://localhost:8080/chat');
 
     ws.onopen = function() {
         console.log('WebSocket 연결이 열렸습니다.');
+        openChatWindow();
     };
 
     ws.onmessage = function(event) {
@@ -184,7 +183,6 @@ function sendMessage() {
             content: message
         });
         ws.send(jsonMessage); // 서버로 JSON 메시지 전송
-        // appendMessage(message); // 내가 쓴 메시지 채팅창에 추가
         input.value = ''; // 입력란 초기화
     }
 }
@@ -193,7 +191,6 @@ function sendMessage() {
 function appendMessage(message) {
     const chatBox = document.getElementById('chat-box');
     const messageDiv = document.createElement('div');
-    
     
     // 기본 메시지 스타일 적용
     messageDiv.className = 'message-container';
