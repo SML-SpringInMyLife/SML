@@ -56,8 +56,7 @@
         		ROWNUM <= #{pageNum}*#{amount}
             	)
         	WHERE rn > (#{pageNum} - 1) * #{amount}       	
-        ]]> 
-    	 	
+        ]]>  	 	
 	</select>
 	
 	<select id="courseTotal" resultType="int">	
@@ -73,6 +72,7 @@
 			c.COURSE_CODE AS courseCode,
 			t.TEA_NAME AS teaName,
 			c.COURSE_NAME AS courseName,
+			c.CCAT_CODE AS ccatCode,
 			c.COURSE_START_DATE AS startDate,
 			c.COURSE_END_DATE AS endDate,
 			c.COURSE_START_TIME AS startTime,

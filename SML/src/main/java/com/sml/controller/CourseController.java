@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sml.model.CourseVO;
 import com.sml.model.Criteria;
@@ -58,8 +59,10 @@ public class CourseController {
 	}
 	
 	@GetMapping({"/detail", "/manage/modify", "/apply"})
-	public void detailGET(int courseCode, Criteria cri, Model model) throws Exception {
-	
+	public void detailGET(int courseCode, Criteria cri, Model model) throws JsonProcessingException {
+		ObjectMapper objmapper = new ObjectMapper();
+		model.addAttribute("cateList", objmapper.writeValueAsString(service.cateList()));
+		
 		model.addAttribute("cri", cri);
 		model.addAttribute("detail", service.courseDetail(courseCode));
 	}

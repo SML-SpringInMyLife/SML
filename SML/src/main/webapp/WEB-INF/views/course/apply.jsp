@@ -75,8 +75,29 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	
 	<script>
-	$("#applyBtn").on("click", function() {
-		alert("수강신청하시겠습니까?");
+	$(document).ready(function() {
+	    $("#applyBtn").on("click", function() {
+	        var form = $("#applyForm");
+	        var formData = form.serialize();
+
+	        $.ajax({
+	            url: form.attr('action'),
+	            type: 'POST',
+	            data: formData,
+	            success: function(response) {
+	                if (confirm("수강신청이 완료되었습니다. 확인을 클릭하면 회원 수강 목록으로 이동합니다.")) {
+	                    window.location.href = "/member/courses";
+	                }
+	            },
+	            error: function(xhr, status, error) {
+	                alert("신청 중 오류가 발생했습니다: " + error);
+	            }
+	        });
+	    });
+
+	    $("#cancelBtn").on("click", function() {
+	        window.close();
+	    });
 	});
 	</script>
 

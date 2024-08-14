@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sml.mapper.CourseApplyMapper">
+	
+	<insert id="applyApply">
+		INSERT INTO COURSE_APPLICANT (MEM_CODE, COURSE_CODE) VALUES (
+			#{memCode},
+			#{courseCode}
+		)
+	</insert>
+
+	<select id="applyList" resultType="com.sml.model.CourseApplyVO">
+		<![CDATA[
+			SELECT * FROM (
+				SELECT /*+INDEX_DESC (COURSE_APPLICANT SYS_C008703*/
+					ROWNUM AS rn,
+					a.APPLY_CODE AS applyCode,
+					a.APPLY_DATE AS applyDate,
+					m.MEM_NAME AS memName,
+					c.COURSE_NAME AS courseName,
+					c.COURSE_START_DATE AS courseStartDate
+				 FROM COURSE_APPLICANT a
+				 JOIN COURSE c ON a.COURSE_CODE = c.COURSE_CODE
+				 JOIN TB_MEMBER m ON a.MEM_CODE = m.MEM_CODE
+				 WHERE	
+		]]>
+			<if test="keyword != null">
+                COURSE_NAME like '%'||#{keyword}||'%' AND
+            </if>
+        <![CDATA[
+        		ROWNUM <= #{pageNum}*#{amount}
+            	)
+        	WHERE rn > (#{pageNum} - 1) * #{amount}       	
+        ]]> 	
+	</select>
+	
+	<select id="applyTotal" resultType="int">
+		SELECT COUNT(*) FROM COURSE_APPLICANT
+		<if test="keyword != null">
+			WHERE APPLY_CODE LIKE '%' || #{keyword} || '%'
+		</if>
+	</select>
+	
+</mapper>
