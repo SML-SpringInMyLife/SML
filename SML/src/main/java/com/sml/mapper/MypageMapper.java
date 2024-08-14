@@ -4,8 +4,10 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.sml.model.Criteria;
 import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
+import com.sml.model.PageDTO;
 import com.sml.model.PointVO;
 
 public interface MypageMapper {
@@ -26,9 +28,15 @@ public interface MypageMapper {
 	
     //포인트 조회
     public List<PointVO> selectPointList(@Param("memCode")int memCode
-		                               ,@Param("selectDate")String selectDate);
+		                               ,@Param("selectDate")String selectDate
+		                               , @Param("criteria") Criteria criteria);
+    public int getTotalCount(@Param("memCode") int memCode, 
+                             @Param("selectDate") String selectDate);
    
     //잔여포인트 조회
-    public int selectTotalPoint(int memCode);
+    public int selectTotalPoint(int memCode);    
+    
+    
+    
     
 }
