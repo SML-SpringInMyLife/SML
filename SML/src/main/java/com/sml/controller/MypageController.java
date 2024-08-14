@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sml.model.Criteria;
 import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
+import com.sml.model.PageDTO;
 import com.sml.model.PointVO;
 import com.sml.service.MypageService;
 
@@ -95,7 +97,9 @@ public class MypageController {
 	
 	/* 회원 포인트 페이지 이동 */
 	@GetMapping("point")	
-	public void memberPointGET(String selectDate) throws Exception {
+	public void memberPointGET(@RequestParam(required = false) String selectDate,
+            Criteria criteria,
+            HttpServletRequest request) throws Exception {
 
 		logger.info("회원 적립금 페이지 이동");
 		logger.info("selectDate before = " + selectDate);
@@ -117,12 +121,14 @@ public class MypageController {
 			  strDate = strDate.substring(0,4) + "-" + strDate.substring(4,strDate.length());
 			  logger.info("selectDate after = " + selectDate);
 			}			
+			int TotalPoint = service.selectTotalPoint(loginMember.getMemCode());
+			List<PointVO> list = service.selectPointList(loginMember.getMemCode(),strDate, criteria);
+			PageDTO pageInfo = service.getTotalCount(loginMember.getMemCode(),strDate, criteria);
 			
-			List<PointVO> list = service.selectPointList(loginMember.getMemCode(),strDate);
-			int totalPoint = service.selectTotalPoint(loginMember.getMemCode());
-
+			request.setAttribute("TotalPoint", TotalPoint);
 			request.setAttribute("list", list);
-			request.setAttribute("TotalPoint", totalPoint);
+			request.setAttribute("pageInfo", pageInfo);
+
 		}
 		
 	}

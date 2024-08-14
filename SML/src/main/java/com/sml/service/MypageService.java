@@ -2,8 +2,10 @@ package com.sml.service;
 
 import java.util.List;
 
+import com.sml.model.Criteria;
 import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
+import com.sml.model.PageDTO;
 import com.sml.model.PointVO;
 
 public interface MypageService {
@@ -22,7 +24,9 @@ public interface MypageService {
 	
 		
 	//포인트 조회
-	public List<PointVO> selectPointList(int memCode,String selectDate) throws Exception;
+	public List<PointVO> selectPointList(int memCode, String selectDate, Criteria criteria) throws Exception;
+	
+	public PageDTO getTotalCount(int memCode, String selectDate, Criteria criteria);
 	
 	//잔여포인트 조회
 	public int selectTotalPoint(int memCode)throws Exception;
