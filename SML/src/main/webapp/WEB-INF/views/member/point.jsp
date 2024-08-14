@@ -88,10 +88,7 @@
 			<!-- 페이지 이동 인터페이스 영역 -->
             <div class="pageMaker_wrap" >
                <ul class="pageMaker">
-                  <!-- 이전 버튼 -->
-                  <script>
-                  	alert(${pageInfo.prev});
-                  </script>
+                  <!-- 이전 버튼 -->                
                    <c:if test="${pageInfo.prev}">
                       <li class="pageMaker_btn prev">
                           <a href="${appServlet}/member/point?pageNum=${pageInfo.pageStart - 1}&selectDate=${param.selectDate}">이전</a>
