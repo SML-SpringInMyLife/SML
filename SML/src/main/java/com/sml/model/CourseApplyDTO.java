@@ -5,9 +5,9 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class CourseApplyVO {
+public class CourseApplyDTO {
 	
-	/* 이러면 관리자 단에서 볼 수 있는 그거잖아...........
+	/* 
 	 * applyDate 신청한 날짜
 	 * memCode 수강 신청한 사람 가져오기
 	 * memName 수강 신청한 사람의 이름(select 용, NOT IN DB)

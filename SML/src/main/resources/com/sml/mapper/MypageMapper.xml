@@ -14,24 +14,52 @@
     <result property="memCode" column="MEM_CODE"/>
   </resultMap>
   
+  <resultMap id="MemberCheckResultMap" type="com.sml.model.MemberCheckVO">
+ 	 <id property="checkCode" column="CHECK_CODE"/>
+    <result property="checkDate" column="CHECK_DATE"/>
+    <result property="status" column="STATUS"/>
+    <result property="memCode" column="MEM_CODE"/>
+ </resultMap>
+  
     <!-- 출석체크 등록 -->
-  	<insert id="insertMemberCheck">
-    	INSERT INTO MEMBER_CHECK (CHECK_DATE, STATUS, MEM_CODE)
+  	<insert id="insertMemberCheck">  	
+    	 INSERT INTO MEMBER_CHECK (CHECK_DATE, STATUS, MEM_CODE)
     	 VALUES (        	
         	#{checkDate},
         	#{status},
         	#{memCode}        	
     	)
+       	
 	</insert>	
 
     
     <!-- 출석체크 조회 -->
-    <!--  
-    <select id="selectMemberCheck">
-        SELECT CHECK_CODE, CHECK_DATE, STATUS, MEM_CODE
-        FROM MEMBER_CHECK
+    <select id="selectMemberCheckList" resultMap="MemberCheckResultMap">
+    SELECT * FROM MEMBER_CHECK
+    WHERE TO_CHAR(CHECK_DATE, 'YYYY-MM')=#{checkDate} AND MEM_CODE = #{memCode} 
     </select>
-    -->
+    
+    
+	<update id="updateMemberCheckList" >
+		<!--DATE와 MEM_CODE 매치시키고, 매치되면, 그렇지 않으면 -->
+    	
+    	MERGE INTO MEMBER_CHECK mc
+    USING (SELECT #{checkDate} AS CHECK_DATE, 1 AS STATUS, #{memCode} AS MEM_CODE FROM DUAL) src
+    ON (mc.CHECK_DATE = src.CHECK_DATE AND mc.MEM_CODE = src.MEM_CODE)
+    WHEN MATCHED THEN
+        UPDATE SET mc.STATUS = src.STATUS
+    WHEN NOT MATCHED THEN
+        INSERT (CHECK_DATE, STATUS, MEM_CODE)    				      
+        VALUES (src.CHECK_DATE, src.STATUS, src.MEM_CODE)
+	</update>
+    
+   <!-- 출석체크 중복검사  -->  
+  <select id="memberCheckTest" resultType="int">
+  	SELECT count(*)
+  	FROM MEMBER_CHECK 
+  	WHERE MEM_CODE= #{memCode} AND TO_CHAR(CHECK_DATE, 'YYYY-MM-DD')=#{todayDate}
+  </select> 
+    
     
    <!--  회원 정보 조회 -->
    <select id="selectMemberList">

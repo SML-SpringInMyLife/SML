@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sml.mapper.CourseApplyMapper;
-import com.sml.model.CourseApplyVO;
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
 
 import lombok.extern.log4j.Log4j;
@@ -19,18 +19,22 @@ public class CourseApplyServiceImpl implements CourseApplyService {
 	CourseApplyMapper mapper;
 
 	@Override
-	public List<CourseApplyVO> applyList(Criteria cri) {
-		return mapper.applyList(cri);
+	public int applyApply(CourseApplyDTO apply) {
+		
+		CourseApplyDTO applyCheck = mapper.applyCheck(apply);
+		
+		if(applyCheck != null) {
+			return 2;
+		}
+		
+		try {
+			return mapper.applyApply(apply);
+		} catch (Exception e) {
+			return 0;
+		}
+		
 	}
 
-	@Override
-	public int applyTotal(Criteria cri) {
-		return mapper.applyTotal(cri);
-	}
-
-	@Override
-	public void applyApply(CourseApplyVO apply) {
-		mapper.applyApply(apply);		
-	}
+	
 	
 }

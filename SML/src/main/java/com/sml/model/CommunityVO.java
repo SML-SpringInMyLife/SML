@@ -18,6 +18,6 @@ public class CommunityVO {
 	private String commSecretPwd;
 	private int commCount;
 	private String commStatus;
-	private int commMemCode;
+	private int memCode;
 
 }

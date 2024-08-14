@@ -2,7 +2,7 @@ package com.sml.mapper;
 
 import java.util.List;
 
-import com.sml.model.CourseApplyVO;
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
 
 public interface CourseApplyMapper {
@@ -22,14 +22,19 @@ public interface CourseApplyMapper {
 	 * 포인트 차감 (COURSE 테이블의 COURSE_POINT 만큼 마이너스)
 	 * 제한 (COURSE 테이블의 COURSE_LIMIT만큼 데이터가 차면 더 이상 버튼을 누를 수 없게)
 	 * */
-	public void applyApply(CourseApplyVO apply);
+	public int applyApply(CourseApplyDTO apply) throws Exception;
 	
-	/* 수강 신청 목록
-	 * 
-	 * */
-	public List<CourseApplyVO> applyList(Criteria cri);
+	public int cancelApply(int applyCode);
 	
-	public int applyTotal(Criteria cri);
+	public List<CourseApplyDTO> applyList(int memCode);
+	
+	public CourseApplyDTO applyCheck(CourseApplyDTO apply);
+	
+	
+	// 수강신청 목록
+//	public List<CourseApplyDTO> applyList(Criteria cri);
+//	
+//	public int applyTotal(Criteria cri);
 	
 
 }

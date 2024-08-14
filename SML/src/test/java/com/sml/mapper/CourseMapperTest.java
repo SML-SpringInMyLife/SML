@@ -1,12 +1,14 @@
 package com.sml.mapper;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.sml.model.CourseVO;
+import com.sml.model.CourseApplyDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -141,12 +143,61 @@ public class CourseMapperTest {
 //		}
 //	}
 	
-	@Test
-	public void courseApplyDetailTest() {
-		int courseCode = 200;
-		CourseVO result = mapper.courseApplyDetail(courseCode);
-		System.out.println("수업 조회 데이터 : " +result);
-		
-	}
+//	@Test
+//	public void courseApplyDetailTest() {
+//		int courseCode = 200;
+//		CourseVO result = mapper.courseApplyDetail(courseCode);
+//		System.out.println("수업 조회 데이터 : " +result);
+//		
+//	}
 	
+	@Autowired
+	private CourseApplyMapper applyMapper;
+	
+//	@Test 
+//	public void applyApply() {
+//		int memCode = 21;
+//		int courseCode = 1;
+//		
+//		CourseApplyDTO apply = new CourseApplyDTO();
+//		apply.setMemCode(memCode);
+//		apply.setCourseCode(courseCode);
+//		
+//		int result = 0;
+//		result = applyMapper.applyApply(apply);
+//		
+//		System.out.println("결과 : " +result);
+//	}
+	
+//	@Test
+//	public void cancelApplyTest() {
+//		int applyCode = 1;
+//		
+//		applyMapper.cancelApply(applyCode);
+//	}
+	
+//	@Test
+//	public void applyListTest() {
+//		int memCode = 21;
+//		
+//		List<CourseApplyDTO> list = applyMapper.applyList(memCode);
+//
+//		for(int i = 0; i < list.size(); i++) {
+//			System.out.println("result......." + i + " : " + list.get(i));
+//		}
+//
+//	}
+	
+	@Test
+	public void applyCheckTest() {
+		int memCode = 21;
+		int courseCode = 1;
+		
+		CourseApplyDTO apply = new CourseApplyDTO();
+		apply.setMemCode(memCode);
+		apply.setCourseCode(courseCode);
+		
+		CourseApplyDTO applyResult = applyMapper.applyCheck(apply);
+		System.out.println("결과 : " +applyResult);
+	}
 }
