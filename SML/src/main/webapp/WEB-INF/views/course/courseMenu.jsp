@@ -31,6 +31,8 @@ if (pagePath == null || pagePath.isEmpty()) {
 			<li><a href="/member/mycourses">신청한 강의 보러가기</a></li>
 		</ul>
 	</nav>
+	
+	<script src="${webappRoot}/resources/js/courseNcommunity/courseNcommunity.js"></script>
 
 </body>
 </html>

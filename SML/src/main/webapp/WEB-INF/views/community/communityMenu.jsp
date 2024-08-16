@@ -30,6 +30,6 @@ if (pagePath == null || pagePath.isEmpty()) {
 			<li><a href="/community/enroll">글쓰기</a></li>
 		</ul>
 	</nav>
-
+	<script src="${webappRoot}/resources/js/courseNcommunity/courseNcommunity.js"></script>
 </body>
 </html>
