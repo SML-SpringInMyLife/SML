@@ -199,18 +199,14 @@ public class AdminController {
 		return "admin/sms"; // SMS 전송 결과 페이지
 	}
 
-	@GetMapping(value = "chat")
+	@GetMapping("/chat")
 	public void adminChatGET() throws Exception {
-
 		logger.info("관리자 - 채팅상담관리페이지 이동");
-
 	}
 
 	@GetMapping(value = "login")
 	public void adminLoginGET() throws Exception {
-
 		logger.info("로그인페이지 이동");
-
 	}
 
 }
