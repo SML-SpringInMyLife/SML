@@ -97,8 +97,8 @@
 					</div>
                    </c:if>
                    
-                   <%-- 디버그를 위한 로그인 상태 및 관리자 상태 출력 --%>
-<p>Debug: isLoggedIn = ${isLoggedIn}, isAdmin = ${isAdmin}</p>
+<%--                    디버그를 위한 로그인 상태 및 관리자 상태 출력
+<p>Debug: isLoggedIn = ${isLoggedIn}, isAdmin = ${isAdmin}</p> --%>
                    
 <%-- 로그인한 사용자에게만 글쓰기 버튼 표시 --%>
 <c:if test="${isLoggedIn && isAdmin}">
