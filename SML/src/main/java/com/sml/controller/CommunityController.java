@@ -40,6 +40,7 @@ public class CommunityController {
 
 		if (!list.isEmpty()) {
 			model.addAttribute("list", list);
+			model.addAttribute("totalCount", list.size());
 		} else {
 			model.addAttribute("listCheck", "empty");
 		}

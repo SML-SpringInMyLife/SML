@@ -38,9 +38,9 @@
 								<td>수강 인원</td>
 							</tr>
 						</thead>
-						<c:forEach items="${list}" var="item">
+						<c:forEach items="${list}" var="item" varStatus="status">
 							<tr>
-								<td><c:out value="${item.courseCode}" /></td>
+								<td>${totalCount -status.index}</td>
 								<td>
 									<fmt:formatDate value="${item.startDate}" pattern="yy-MM-dd" />
 									~
