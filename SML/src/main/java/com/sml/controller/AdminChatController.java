@@ -28,6 +28,7 @@ public class AdminChatController {
 	// 사용자 ID와 WebSocket 세션을 매핑하기 위한 Map
 	private static final Map<String, Session> sessions = new ConcurrentHashMap<>();
 	private static final Map<Session, StringBuilder> chatBuffers = new ConcurrentHashMap<>(); // 채팅 메시지를 누적할 버퍼
+	private static final Map<String, Session> adminSessions = new ConcurrentHashMap<>();
 	@Autowired
 	private AdminService service; // AdminService 인스턴스
 
@@ -44,18 +45,25 @@ public class AdminChatController {
 				chatBuffers.put(session, new StringBuilder()); // 세션별 채팅 버퍼 초기화
 				logger.info("연결된 회원: " + userId + " / memAdminCheck : " + memAdminCheck);
 
-				if (memAdminCheck != 1) {
+				if (memAdminCheck == 1) {
+					adminSessions.put(userId, session); // 관리자의 세션을 저장
+					logger.info("관리자 로그인: " + userId);
+
+				} else {
 					try {
 						// 클라이언트에게 환영 메시지 전송
 						logger.info("환영메시지 발송 : " + userId);
 						session.getBasicRemote().sendText("안녕하세요, " + userId + " 님!");
 						session.getBasicRemote().sendText("무엇을 도와드릴까요?");
+
+						// 관리자에게 알림 전송
+						for (Session adminSession : adminSessions.values()) {
+							adminSession.getBasicRemote().sendText(userId + " 님이 접속하였습니다.");
+						}
 					} catch (IOException e) {
 						logger.severe("환영메시지 발송 실패 : " + e.getMessage());
 						e.printStackTrace();
 					}
-				} else {
-					logger.info("관리자는 환영메시지 없음");
 				}
 			} else {
 				logger.warning("회원 정보가 존재하지 않습니다.");
@@ -64,6 +72,8 @@ public class AdminChatController {
 			logger.warning("HTTP 세션이 null입니다.");
 		}
 	}
+
+	
 
 	@OnMessage
 	public void onMessage(String message, Session session) {
@@ -133,7 +143,6 @@ public class AdminChatController {
 			if (buffer != null) {
 				String chatContent = buffer.toString();
 				logger.info("chatContent : =============================> " + chatContent);
-				
 
 				// ChatVO 객체 생성 및 설정
 				ChatVO chatVo = new ChatVO();
@@ -173,6 +182,19 @@ public class AdminChatController {
 				}
 			} else {
 				logger.warning("채팅 버퍼가 null입니다. 세션 종료 시 채팅 내용이 없습니다.");
+			}
+
+			// 관리자에게 알림 전송
+			if (member != null && member.getMemAdminCheck() != 1) {
+				for (Session adminSession : adminSessions.values()) {
+					if (adminSession.isOpen()) { // 세션이 열린 상태에서만 메시지 전송
+						try {
+							adminSession.getBasicRemote().sendText(userId + " 님이 상담을 종료했습니다.");
+						} catch (IOException e) {
+							logger.severe("관리자에게 알림 전송 실패: " + e.getMessage());
+						}
+					}
+				}
 			}
 		} else {
 			logger.warning("연결 종료 시 사용자 ID를 찾을 수 없습니다.");

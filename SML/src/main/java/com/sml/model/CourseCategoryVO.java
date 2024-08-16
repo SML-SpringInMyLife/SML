@@ -5,8 +5,9 @@ import lombok.Data;
 @Data
 public class CourseCategoryVO {
 	
-	private String tier;
-	private String name;
-	private int code;
+	private int tier;
+	private String ccatName;
+	private String ccatCode;
+	private String parentCode;
 	
 }

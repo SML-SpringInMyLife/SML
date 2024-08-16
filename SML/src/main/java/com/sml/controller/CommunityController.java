@@ -2,6 +2,9 @@ package com.sml.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
+import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
 import com.sml.model.ReplyDTO;
 import com.sml.service.CommunityService;
@@ -36,6 +40,7 @@ public class CommunityController {
 
 		if (!list.isEmpty()) {
 			model.addAttribute("list", list);
+			model.addAttribute("totalCount", list.size());
 		} else {
 			model.addAttribute("listCheck", "empty");
 		}
@@ -52,8 +57,17 @@ public class CommunityController {
 	}
 
 	@PostMapping("/enroll.do")
-	public String enrollPOST(CommunityVO community, RedirectAttributes rttr) throws Exception {
-		logger.info("글 등록" + community);
+	public String enrollPOST(CommunityVO community, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
+		HttpSession session = request.getSession();
+		MemberVO loggedInUser = (MemberVO) session.getAttribute("loggedInUser");
+
+	    if (loggedInUser != null) {
+	        // 로그인한 사용자의 회원 코드 가져오기
+	        int memCode = loggedInUser.getMemCode();
+	        // CommunityVO 객체에 회원 코드 설정
+	        community.setMemCode(memCode);
+	    }
+		
 		service.communityEnroll(community);
 		rttr.addFlashAttribute("enroll_result", community.getCommTitle());
 		return "redirect:/community/boardList";
