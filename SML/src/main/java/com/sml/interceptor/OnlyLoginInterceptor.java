@@ -6,19 +6,24 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 
-public class LoginInterceptor implements HandlerInterceptor {
+import com.sml.model.MemberVO;
+
+public class OnlyLoginInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
-
-		System.out.println("LoginInterceptor preHandle 작동");
-
+		
 		HttpSession session = request.getSession();
-
-		session.invalidate();
-
-		return true;
+		MemberVO vo = (MemberVO)session.getAttribute("member");
+		
+		if(vo == null) {
+			response.sendRedirect("/");
+			return false;
+		} else {
+			return true;
+		}
+		
 	}
-
+		
 }

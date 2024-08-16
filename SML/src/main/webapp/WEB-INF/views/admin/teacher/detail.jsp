@@ -14,9 +14,10 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-		<h1>강사 상세 페이지</h1>
-		<div class="course_teacher_container">
-			<div class="course_teacher_detail">
+		<div class="admin-container">
+			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
+			<div class="admin-main-content">
+				<h2>강사 상세 페이지</h2>
 				<table>
 					<tr>
 						<td>강사 번호</td>
@@ -53,7 +54,7 @@
 					</tr>
 				</table>
 				<div class="btn_section">
-        			<button id="cancelBtn" class="btn">강사 목록</button>
+        			<button id="cancelBtn" class="btn">목록</button>
         			<button id="modifyBtn" class="btn modify_btn">수정</button>
     			</div>
 			</div>

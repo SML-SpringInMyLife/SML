@@ -6,7 +6,7 @@
 <head>
 <title>글 등록 - 커뮤니티</title>
 <link rel="stylesheet" 	href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/community/community.css">
+<link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script	src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
@@ -16,10 +16,10 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-	<h1>커뮤니티 글 작성</h1>
-	<div class="community_enroll">
+	<div class="community_container">
 		<jsp:include page="/WEB-INF/views/community/communityMenu.jsp" />
-		<div class="community_enroll_wrap">
+		<div class="community_main_content">
+		<h2>게시글 등록</h2>
 		<form action="/community/enroll.do" method="post" id="enrollForm">
 			<div class="form_section">
 				<div class="form_section_title">

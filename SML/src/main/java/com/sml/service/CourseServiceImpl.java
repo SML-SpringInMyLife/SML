@@ -43,5 +43,26 @@ public class CourseServiceImpl implements CourseService {
 		return mapper.courseTotal(cri);
 	}
 
+	@Override
+	public CourseVO courseDetail(int courseCode) {
+		log.info("상세 페이지 진입" +courseCode);
+		return mapper.courseDetail(courseCode);
+	}
+
+	@Override
+	public int courseModify(CourseVO vo) {
+		return mapper.courseModify(vo);
+	}
+
+	@Override
+	public int courseDelete(int courseCode) {
+		return mapper.courseDelete(courseCode);
+	}
+
+	@Override
+	public CourseVO courseApplyDetail(int courseCode) {
+		return mapper.courseApplyDetail(courseCode);
+	}
+
 	
 }
