@@ -97,7 +97,7 @@
 						</thead>
 						<c:forEach items="${list}" var="list" varStatus="status">
 						<tr>
-							<td><%-- <c:out value="${list.teaCode}" /> --%>${totalCount -status.index}</td>
+							<td>${totalCount -status.index}</td>
 							<td>
 								<a class="move" href='<c:out value="${list.teaCode}"/>'>
 									<c:out value="${list.teaName}"></c:out>

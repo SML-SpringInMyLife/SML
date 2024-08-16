@@ -116,9 +116,9 @@
 								<td class="th_column_5">조회수</td>
 							</tr>
 						</thead>
-						<c:forEach items="${list}" var="list">
+						<c:forEach items="${list}" var="list" varStatus="status">
 							<tr>
-								<td><c:out value="${list.commCode}" /></td>
+								<td>${totalCount -status.index}</td>
 								<td>
 									<a class="move" href='<c:out value="${list.commCode}"/>'>
 										<c:out value="${list.commTitle}"></c:out>

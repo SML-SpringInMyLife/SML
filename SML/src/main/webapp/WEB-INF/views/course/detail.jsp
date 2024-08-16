@@ -90,7 +90,7 @@
 				</table>
 				<div class="btn_section">
 					<c:choose>
-            			<c:when test="${sessionScope.member.memStatus == 1}">
+            			<c:when test="${sessionScope.member.memAdminCheck == 1}">
             				<button id="deleteBtn" class="btn">삭제</button>
                 			<button id="listBtn" class="btn">목록</button>
                 			<button id="modifyBtn" class="btn">수정</button>
@@ -185,6 +185,18 @@
 		$("#moveForm").append(addInput);
 		$("#moveForm").attr("action", "/course/modify");
 		$("#moveForm").submit();
+	});
+	
+	$('.apply_btn').on("click",function(e){	
+		e.preventDefault();
+		
+		var courseCode = $(this).attr("href");
+
+	    // 팝업 옵션
+	    var popUrl = "/course/apply?courseCode=" + courseCode;
+	    var popOption = "width=650, height=550, top=300, left=300, scrollbars=yes";
+		
+		window.open(popUrl,"수강신청",popOption);
 	});
 	</script>
 </body>
