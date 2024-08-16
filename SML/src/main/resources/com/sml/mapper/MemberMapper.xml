@@ -33,7 +33,7 @@
         ) VALUES (
             #{memId}, #{memPw}, #{memName}, #{memMail}, #{memPhone}, #{memEmerPhone},
             #{memAddr1}, #{memAddr2}, #{memAddr3}, #{memBirth}, #{memJoinDate},
-            #{memQuitDate}, #{memStatus}, #{memTotalPoint}, #{memAdminCheck}
+            #{memQuitDate}, 1, #{memTotalPoint}, #{memAdminCheck}
         )
       	
   </insert>
