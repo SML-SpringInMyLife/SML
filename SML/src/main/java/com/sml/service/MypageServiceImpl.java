@@ -1,13 +1,16 @@
 package com.sml.service;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sml.mapper.MypageMapper;
+import com.sml.model.Criteria;
 import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
+import com.sml.model.PageDTO;
 import com.sml.model.PointVO;
 
 @Service
@@ -21,25 +24,42 @@ public class MypageServiceImpl implements MypageService {
     public void updateMember(MemberVO member) throws Exception {
     	mypageMapper.updateMember(member);
     }
-
+    
+    //출석체크 등록
     @Override
     public void insertMemberCheck(MemberCheckVO memberCheck){
         mypageMapper.insertMemberCheck(memberCheck);
     }
 
+    //출석체크 조회
+    @Override
+    public List<MemberCheckVO> selectMemberCheckList(int memCode,String selectDate)throws Exception {
+        return mypageMapper.selectMemberCheckList(memCode,selectDate);
+   }
     
-    //@Override
-    //public List<MemberCheckVO> getMemberCheck() {
-      //  return mypageMapper.selectMemberCheck();
-    //}
+    //출석체크 중복검사
+   	@Override
+   	public int memberCheckTest(int memCode,String todayDate){   	
+   		return mypageMapper.memberCheckTest(memCode,todayDate);
+   	}
+    
+    
+    
     
     //포인트 조회
     @Override
-    public List<PointVO> selectPointList(int memCode,String selectDate)throws Exception{
-    	return mypageMapper.selectPointList(memCode,selectDate);
+    public List<PointVO> selectPointList(int memCode,String selectDate, Criteria criteria)throws Exception{
+    	return mypageMapper.selectPointList(memCode,selectDate,criteria);
     
     }
-    	
+    
+    @Override
+    public PageDTO getTotalCount(int memCode, String selectDate, Criteria criteria) {
+        int total = mypageMapper.getTotalCount(memCode, selectDate);
+        return new PageDTO(criteria, total);
+    }
+    
+    
     //잔여포인트 조회
     @Override
     public int selectTotalPoint(int memCode)throws Exception{
