@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sml.mapper.NoticeMapper;
+import com.sml.model.Criteria;
 import com.sml.model.FileupVO;
 import com.sml.model.NoticeVO;
 
@@ -22,9 +23,9 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override  //게시글 조회
-	public List<NoticeVO> noticeGetList() throws Exception {
+	public List<NoticeVO> noticeGetList(Criteria cri) throws Exception {
 		  
-		return noticeMapper.noticeGetList();
+		return noticeMapper.noticeGetList(cri);
 	}
 
 	@Override //게시글 상세조회
@@ -39,24 +40,32 @@ public class NoticeServiceImpl implements NoticeService {
 		return noticeMapper.noticeModify(noticevo);
 	}
     
-	
-	
-	/*
-	@Override
-	public void noticeRegisterfile(NoticeVO notice,List<FileupVO> fileup) throws Exception  {
-		 // 공지사항 등록
-        noticeMapper.noticeRegister(notice);
+	@Override //게시글 삭제 
+	public int noticeDelete(int noticeCode) {
+		
+		return noticeMapper.noticeDelete(noticeCode);
+	}
 
-        // 생성된 NOTICE_CODE를 사용하여 파일 업로드
-        for (FileupVO file : fileup) {
-        	file.setNoticeCode(notice.getNoticeCode());
-      
-			noticeMapper.fileUp(file);
-        }
+	@Override //페이징 처리
+	public int noticeGetTotal(Criteria cri) throws Exception {
+		
+		return noticeMapper.noticeGetTotal(cri);
+	}
+
+	@Override //게시글 조회수 증가 
+	public int noticeCount(int noticeCode) throws Exception {
+		
+		return noticeMapper.noticeCount(noticeCode);
 		
 	}
 
-	*/
+	@Override
+	 public boolean noticeLike(int noticeCode) throws Exception {
+        int affectedRows = noticeMapper.noticeLike(noticeCode);
+        return affectedRows > 0;
+    }
+    
+	
 	
 	
 	
