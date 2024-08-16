@@ -51,11 +51,7 @@
             </div>
         </form>
     </div>
-    <div class="pagination">
-        <button class="page-btn active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-    </div>
+ 
 </main>
 
 <!-- 푸터 영역 포함 -->
