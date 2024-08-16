@@ -8,7 +8,7 @@
 <meta charset="UTF-8">
 <title>수강 신청</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/course/course.css">
+<link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -17,9 +17,9 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-		<h1>수강신청</h1>
 		<div>
-			<table>
+		<h2>수강신청</h2>
+			<table class="course_content">
 				<tr>
 					<td>신청한 과목</td>
 					<td><input name="courseName" readonly="readonly"

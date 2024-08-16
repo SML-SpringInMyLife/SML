@@ -6,7 +6,7 @@
 <head>
 <title>수업 등록 - 수강 신청</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/course/course.css">
+<link rel="stylesheet" href="${webappRoot}/resources/css/courseNcommunity/courseNcommunity.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -15,70 +15,72 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-		<h1>수업 등록</h1>
-		<div class="course-container">
-			<form action="/course/manage/enroll" method="post" id="enrollForm">
-				<div class="form_section">
-					<div class="form_section_title">
-						<label>수업명</label>
-					</div>
-					<div class="form_section_content">
-						<input name="courseName"> 
-						<span id="warn_courseName">수업명을 입력해주세요.</span>
-					</div>
-				</div>
-				<div class="form_section">
-					<div class="form_section_title">
-						<label>강사</label>
-					</div>
-					<div class="form_section_content">
-						<input id="teaName_input" readonly="readonly">
-						<input id="teaCode_input" name="teaCode" type="hidden"> 
-						<button class="teaCode_btn">강사 선택</button>
-						<span id="warn_courseTeacher">강사를 선택해주세요.</span>
-					</div>
-				</div>
-				<div class="form_section">
-					<div class="form_section_title">
-						<label>카테고리</label>
-					</div>
-					<div class="form_section_content">
-						<div class="cate_wrap">
-							<label>대분류</label>
-							<select class="cate1">
-								<option selected value="none">선택</option>
-							</select>
+		<div class="course_container">
+			<jsp:include page="/WEB-INF/views/course/courseMenu.jsp" />
+			<div class="course_main_content">
+				<h2>수업 등록</h2>
+				<form action="/course/manage/enroll" method="post" id="enrollForm">
+					<div class="form_section">
+						<div class="form_section_title">
+							<label>수업명</label>
 						</div>
-						<div class="cate_wrap">
-							<label>중분류</label>
-							<select class="cate2" name="ccatCode">
-								<option selected value="none">선택</option>
-							</select>
-						</div> 
-						<span class="warn_ccatCode">카테고리를 선택해주세요.</span>        
+						<div class="form_section_content">
+							<input name="courseName"> 
+							<span id="warn_courseName">수업명을 입력해주세요.</span>
+						</div>
 					</div>
-				</div>
-				<div class="form_section">
-					<div class="form_section_title">
-						<label>수강 인원</label>
+					<div class="form_section">
+						<div class="form_section_title">
+							<label>강사</label>
+						</div>
+						<div class="form_section_content">
+							<input id="teaName_input" readonly="readonly">
+							<input id="teaCode_input" name="teaCode" type="hidden"> 
+							<button class="teaCode_btn">강사 선택</button>
+							<span id="warn_courseTeacher">강사를 선택해주세요.</span>
+						</div>
 					</div>
-					<div class="form_section_content">
-						<input name="courseLimit"> 
-						<span id="warn_courseLimit">수강 최대 인원을 선택해주세요.</span>
+					<div class="form_section">
+						<div class="form_section_title">
+							<label>카테고리</label>
+						</div>
+						<div class="form_section_content">
+							<div class="cate_wrap">
+								<label>대분류</label>
+								<select class="cate1">
+									<option selected value="none">선택</option>
+								</select>
+							</div>
+							<div class="cate_wrap">
+								<label>중분류</label>
+								<select class="cate2" name="ccatCode">
+									<option selected value="none">선택</option>
+								</select>
+							</div> 
+							<span class="warn_ccatCode">카테고리를 선택해주세요.</span>        
+						</div>
 					</div>
-				</div>
-				<div class="form_section">
-					<div class="form_section_title">
-						<label>수강 기간</label>
+					<div class="form_section">
+						<div class="form_section_title">
+							<label>수강 인원</label>
+						</div>
+						<div class="form_section_content">
+							<input name="courseLimit"> 
+							<span id="warn_courseLimit">수강 최대 인원을 선택해주세요.</span>
+						</div>
 					</div>
-					<div class="form_section_content">
-						<label>개강일</label>
-							<input type="date" id="startDate" name="startDate"> 
-						<label>종강일</label>
-							<input type="date" id="endDate" name="endDate"> 
-						<span id="warn_coursePeriod">수강 기간을 선택해주세요.</span>
+					<div class="form_section">
+						<div class="form_section_title">
+							<label>수강 기간</label>
+						</div>
+						<div class="form_section_content">
+							<label>개강일</label>
+								<input type="date" id="startDate" name="startDate"> 
+							<label>종강일</label>
+								<input type="date" id="endDate" name="endDate"> 
+							<span id="warn_coursePeriod">수강 기간을 선택해주세요.</span>
+						</div>
 					</div>
-				</div>
 				<div class="form_section">
 					<div class="form_section_title">
 						<label>수업 시간</label>
@@ -108,10 +110,13 @@
 					</div>
 				</div>
 			</form>
+
+		
 			<div class="btn_section">
 				<button id="cancelBtn" class="btn">취소</button>
 				<button id="enrollBtn" class="btn enroll_btn">등록</button>
 			</div>
+		</div>
 		</div>
 	</main>
 

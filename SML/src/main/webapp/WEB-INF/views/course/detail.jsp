@@ -7,7 +7,7 @@
 <head>
 <title>수업 상세 페이지 - 취미 교실</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/course/course.css">
+<link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -16,11 +16,11 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-		<h1>수업 상세 페이지</h1>
-		<div class="course-container">
+		<div class="course_container">
 			<jsp:include page="/WEB-INF/views/course/courseMenu.jsp"/>
-			<div class="course-board-detail">
-				<table class="course-board-detail">
+			<div class="course_main_content">
+			<h2>수업 상세 페이지</h2>
+				<table class="course_table">
 					<tr>
 						<td>분류</td>
 						<td>
@@ -69,9 +69,10 @@
 					<tr>
 						<td>수강 인원</td>
 						<td>
-							<span>수강 신청 인원</span>
+							<span>0</span>
 							/
 							<input name="courseLimit" readonly="readonly" value="<c:out value='${detail.courseLimit}'/>">
+							명
 						</td>
 					</tr>
 					<tr>
@@ -90,6 +91,7 @@
 				<div class="btn_section">
 					<c:choose>
             			<c:when test="${sessionScope.member.memStatus == 1}">
+            				<button id="deleteBtn" class="btn">삭제</button>
                 			<button id="listBtn" class="btn">목록</button>
                 			<button id="modifyBtn" class="btn">수정</button>
             			</c:when>

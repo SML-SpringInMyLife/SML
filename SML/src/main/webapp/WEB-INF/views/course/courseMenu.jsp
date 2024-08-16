@@ -27,7 +27,7 @@ if (pagePath == null || pagePath.isEmpty()) {
 		<hr>
 		<ul>
 			<li><a href="/course/boardList">수강 신청</a></li>
-			<li><a href="/course/manage">수업 관리 - admin only</a></li>
+			<li><a href="/course/manage">수업 관리</a></li>
 			<li><a href="/member/mycourses">신청한 강의 보러가기</a></li>
 		</ul>
 	</nav>

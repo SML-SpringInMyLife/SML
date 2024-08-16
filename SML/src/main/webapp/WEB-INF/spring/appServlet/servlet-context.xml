@@ -34,10 +34,10 @@
             <beans:bean id="loginIntreceptor" class="com.sml.interceptor.LoginInterceptor"></beans:bean>
         </interceptor>
         
-        <interceptor>
+<!--         <interceptor>
             <mapping path="/course/manage/**"></mapping>
             <beans:bean id="AdminInterceptor" class="com.sml.interceptor.AdminInterceptor"></beans:bean>
-        </interceptor>
+        </interceptor> -->
         
         <interceptor>
         	<mapping path="/course/modify"></mapping>

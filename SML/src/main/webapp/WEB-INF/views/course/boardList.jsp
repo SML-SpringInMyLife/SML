@@ -7,7 +7,7 @@
 <head>
 <title>수강신청</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/course/course.css">
+<link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -17,13 +17,13 @@
 
 	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
-	<h1>수강 신청</h1>
 		<div class="course_container">
 			<jsp:include page="/WEB-INF/views/course/courseMenu.jsp" />
-			<div class="course_boardList_wrap">
+			<div class="course_main_content">
+				<h2>수강 신청</h2>
 				<!-- 게시물 O -->
 				<c:if test="${listCheck != 'empty'}">
-					<table class="course_boardList">
+					<table class="course_table">
 						<thead>
 							<tr>
 								<td>#</td>
@@ -57,7 +57,7 @@
 									<c:out value="${item.startTime}"/>~<c:out value="${item.endTime}"/>
 								</td>
 								<td>
-									<span>수강 신청 인원</span>
+									<span>0</span>
 									/
 									<c:out value="${item.courseLimit}"/>
 									명
@@ -76,7 +76,7 @@
 				<c:if test="${listCheck == 'empty'}">
 					<div class="table_empty">개설된 수업이 없습니다.</div>
 				</c:if>
-			</div>
+
 
 			<!-- 검색 영역 -->
 			<div class="search_wrap">
@@ -120,6 +120,7 @@
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 			</form>
+		</div>
 		</div>
 	</main>
 

@@ -7,7 +7,7 @@
 <head>
 <title>커뮤니티 게시판</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/community/community.css">
+<link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
  <style>
         .community_container {
             padding: 20px;
@@ -101,12 +101,12 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-		<h1>커뮤니티 게시판</h1>
 		<div class="community_container">
 			<jsp:include page="/WEB-INF/views/community/communityMenu.jsp" />
-			<div class="community_boardList_wrap">	
+			<div class="community_main_content">
+				<h2>커뮤니티</h2>	
 				<c:if test="${listCheck != 'empty'}">
-					<table class="community_boardList">
+					<table class="community_table">
 						<thead>
 							<tr>
 								<td class="th_column_1">#</td>
@@ -131,12 +131,12 @@
 						</c:forEach>
 					</table>
 				</c:if>
+				
 				<c:if test="${listCheck == 'empty'}">
 					<div class="table_empty">
 						등록된 글이 없습니다.
 					</div>
 				</c:if>
-			</div>
 			
 			<!-- 검색 영역 -->
             <div class="search_wrap">
@@ -179,6 +179,7 @@
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 			</form>
+			</div>
 		</div>
 	</main>
 

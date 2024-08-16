@@ -6,39 +6,8 @@
 <head>
 <title>강사 목록 - 관리자 페이지</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<style>
-/* 페이지 버튼 인터페이스 */
-.pageMaker_wrap{
-	text-align: center;
-    margin-top: 30px;
-    margin-bottom: 40px;
-}
-.pageMaker_wrap a{
-	color : black;
-}
-.pageMaker{
-    list-style: none;
-    display: inline-block;
-}	
-.pageMaker_btn {
-    float: left;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    margin-left: 20px;
-}
-.next, .prev {
-    border: 1px solid #ccc;
-    padding: 0 10px;
-}
-.next a, .prev a {
-    color: #ccc;
-}
-.active{							/* 현재 페이지 버튼 */
-	border : 2px solid black;
-	font-weight:400;
-}
-</style>
+<link rel="stylesheet" href="../resources/css/admin/admin.css">
+<link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -46,23 +15,23 @@
 	<!-- 헤더 영역 포함 -->
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
-		<h1>강사 목록</h1>
-		<div class="course_teacher_container">
-			<div class="course_teacher_list">
+		<div class="admin-container">
+			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
+			<div class="admin-main-content">
+				<h2>강사 리스트</h2>
 				<c:if test="${listCheck != 'empty'}">
-					<table class="course_teacher_list">
+					<table class="course_table">
 						<thead>
 							<tr>
-								<td>#</td>
+								<td>No.</td>
 								<td>강사명</td>
 								<td>상태</td>
 							</tr>
 						</thead>
 						<c:forEach items="${list}" var="list">
 						<tr>
-							<td><c:out value="${list.teaCode}" /></td>
+							<td><%-- <c:out value="${list.teaCode}" /> --%>${totalCount - status.index}</td>
 							<td>
 								<a class="move" href='<c:out value="${list.teaCode}"/>'>
 									<c:out value="${list.teaName}"></c:out>
@@ -85,7 +54,7 @@
 				</c:if>
 			</div>
 			
-			<div class="search_wrap">
+			<div class="search-container">
 				<form id="searchForm" action="/admin/teacher/list" method="get">
                 	<div class="search_input">
                     	<input type="text" name="keyword" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>

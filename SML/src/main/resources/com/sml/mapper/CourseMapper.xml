@@ -32,7 +32,7 @@
 	<select id="courseList" resultType="com.sml.model.CourseVO">
     	<![CDATA[
     		SELECT * FROM (
-    			SELECT /*+INDEX_DESC (COURSE SYS_C008689)*/
+    			SELECT /*+INDEX_DESC (COURSE SYS_C008741)*/
     				ROWNUM AS rn,
     				c.COURSE_CODE AS courseCode,
     				c.COURSE_START_DATE AS startDate,
