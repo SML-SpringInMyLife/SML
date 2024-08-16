@@ -20,7 +20,10 @@
 		<div class="course_container">
 			<jsp:include page="/WEB-INF/views/course/courseMenu.jsp" />
 			<div class="course_main_content">
-				<h2>수강 신청</h2>
+				<h2>수업 관리</h2>
+				<div class="btn_section">
+					<button id="enrollBtn" class="btn enroll_btn">수업 등록</button>
+				</div>
 				<!-- 게시물 O -->
 				<c:if test="${listCheck != 'empty'}">
 					<table class="course_table">
@@ -33,7 +36,6 @@
 								<td>강사명</td>
 								<td>요일 / 시간</td>
 								<td>수강 인원</td>
-								<td>수강 신청</td>
 							</tr>
 						</thead>
 						<c:forEach items="${list}" var="item" varStatus="status">
@@ -62,11 +64,6 @@
 									<c:out value="${item.courseLimit}"/>
 									명
 								</td>
-								<td>
-									<a class="apply_btn" href="<c:out value='${item.courseCode}'/>">
-        								<button>수강신청</button>
-    								</a>
-								</td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -77,10 +74,9 @@
 					<div class="table_empty">개설된 수업이 없습니다.</div>
 				</c:if>
 
-
 			<!-- 검색 영역 -->
 			<div class="search_wrap">
-				<form id="searchForm" action="/course/boardList" method="get">
+				<form id="searchForm" action="/course/manage" method="get">
 					<div class="search_input">
 						<input type="text" name="keyword"
 							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
@@ -91,7 +87,7 @@
 					</div>
 				</form>
 			</div>
-
+			
 			<!-- 페이지 이동 인터페이스 영역 -->
 			<div class="pageMaker_wrap">
 				<ul class="pageMaker">
@@ -115,7 +111,7 @@
 				</ul>
 			</div>
 			
-			<form id="moveForm" action="/course/boardList" method="get">
+			<form id="moveForm" action="/course/manage" method="get">
 				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
@@ -138,6 +134,12 @@
 				return;
 			}
 			alert("수업'"+ eResult +"'을 등록하였습니다.");
+		}
+		
+		let modify_result = '${modify_result}';
+		
+		if(modify_result == 1){
+			alert("수정 완료");
 		}
 	});
 	
@@ -168,17 +170,9 @@
 		moveForm.submit();	
 	});
 	
-	$('.apply_btn').on("click",function(e){	
-		e.preventDefault();
-		
-		var courseCode = $(this).attr("href");
-
-	    // 팝업 옵션
-	    var popUrl = "/course/apply?courseCode=" + courseCode;
-	    var popOption = "width=650, height=550, top=300, left=300, scrollbars=yes";
-		
-		window.open(popUrl,"수강신청",popOption);
-	});
+	$('#enrollBtn').on('click', function() {
+        window.location.href = '/course/manage/enroll'; // 리다이렉트 URL 설정
+    });
 	</script>
 </body>
 </html>

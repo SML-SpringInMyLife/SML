@@ -6,9 +6,15 @@
 <head>
 <title>게시글 상세 페이지</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet" href="../resources/css/community/community.css">
-<link rel="stylesheet" href="../resources/css/community/detail.css">
-
+<link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
+<style>
+.login-required-message {
+    font-weight: bold; /* 볼드체로 설정 */
+    color: #FF0000; /* 필요에 따라 색상 설정 (여기서는 빨간색으로 설정) */
+    margin-top: 10px;
+    font-size: 16px; /* 필요에 따라 폰트 크기 조정 */
+}
+</style>
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
@@ -16,11 +22,11 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-		<h1>게시글 상세 페이지</h1>
-		<div class="community-container">
+		<div class="community_container">
 			<jsp:include page="/WEB-INF/views/community/communityMenu.jsp"/>
-			<div class="community-boardDetail-wrap">
-				<table class="community_boardDetail">
+			<div class="community_main_content">
+				<h2>게시글 상세 페이지</h2>
+				<table class="community_table">
 					<tr>
 						<td>글 제목</td>
 						<td>
@@ -43,11 +49,10 @@
                                 <fmt:formatDate value="${communityDetail.modifyDate}" pattern="yyyy-MM-dd" var="formattedModifyDate"/>
                                 <small class="small-text">마지막 수정일 : <c:out value="${formattedModifyDate}"/></small>
                             </c:if>
-						</td>
-						<td>조회수</td>
+						<%-- <td>조회수</td>
 						<td>
 							<input class="input_block" name="commCount" readonly="readonly" value="<c:out value='${communityDetail.commCount}'/>"/>
-						</td>
+						</td> --%>
 					</tr>
 					<tr>
 						<td>게시글 내용</td>
@@ -56,6 +61,7 @@
 						</td>
 					</tr>
 				</table>
+				
 				<div class="btn_section">
         			<c:choose>
             			<c:when test="${sessionScope.member.memCode == commWriter}">
@@ -68,7 +74,7 @@
             			</c:otherwise>
         			</c:choose>
     			</div>
-			</div>
+			
 			<div class="community-reply">
             	<h3>댓글</h3>
              	<div id="replyListSection">
@@ -130,7 +136,7 @@
                  </c:choose>
              </div>
          </div>
-		</div>
+         </div>
 			
 		<form id="moveForm" method="get">
         	<input type="hidden" name="commCode" value='<c:out value="${communityDetail.commCode }"/>'>
@@ -138,6 +144,7 @@
             <input type="hidden" name="amount" value='<c:out value="${cri.amount }"/>' >
             <input type="hidden" name="keyword" value='<c:out value="${cri.keyword }"/>'>
         </form>
+        </div>
 	</main>
 
 	<!-- 푸터 영역 포함 -->
@@ -221,8 +228,8 @@
                         `);
                     });
                 },
-                error: function(xhr, status, error) {
-                    alert("댓글 목록 로드 실패: " + error);
+                /* error: function(xhr, status, error) {
+                    alert("댓글 목록 로드 실패: " + error); */
                 }
             });
         }

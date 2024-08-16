@@ -132,6 +132,16 @@ a {
 	margin-bottom: 10px;
 }
 
+@media ( max-width : 1440px) {
+	header {
+		font-size: 0.9em;
+	}
+	.logo {
+		width: 150px;
+		height: auto;
+	}
+}
+
 /* 화면 너비가 1400px 이하일 때, 네비게이션 메뉴 비활성화, 햄버거 버튼 및 메뉴 팝업 활성화 */
 @media ( max-width : 1400px) {
 	.main-menu, .auth-menu {
@@ -252,7 +262,7 @@ main {
 	color: white; /* 헤더 텍스트 색상 */
 	padding: 10px; /* 패딩 */
 	display: flex; /* 플렉스 레이아웃 */
-	justify-content: flex-start; /* 시작 부분에 정렬 */
+	justify-content: space-between; /* 공간 배분 */
 	align-items: center; /* 세로 중앙 정렬 */
 }
 
@@ -288,7 +298,7 @@ main {
 	width: 100%; /* 전체 너비 */
 	display: flex; /* 플렉스 레이아웃 */
 	justify-content: space-between; /* 공간 배분 */
-	padding : 10px;
+	padding: 10px;
 	background-color: white; /* 배경색 */
 	border-top: 1px solid #ccc; /* 상단 테두리 */
 	box-sizing: border-box; /* 박스 사이징 */
@@ -393,14 +403,52 @@ main {
 	width: 300px; /* 원래 크기 너비 */
 	bottom: 0; /* 화면 하단 */
 	right: 0;
-	position: fixed;
+	position: fixed; /* 고정 위치 */
 }
 
 .timestamp {
-	font-size : 0.7em;
-	color : #808080;
+	font-size: 0.7em;
+	color: #808080;
 }
 
+/* CSS에 추가 */
+@
+keyframes blink { 0% {
+	background-color: transparent;
+	color: inherit;
+	font-weight: normal; /* 기본 굵기 */
+}
+
+50
+%
+{
+background-color
+:
+yellow;
+color
+:
+black;
+font-weight
+:
+bold; /* 굵게 변경 */
+}
+100
+%
+{
+background-color
+:
+transparent;
+color
+:
+inherit;
+font-weight
+:
+normal; /* 기본 굵기로 복원 */
+}
+}
+.blinking {
+	animation: blink 1s infinite;
+}
 
 /* 채팅창 종료 경고창 */
 .modal {
@@ -428,7 +476,7 @@ main {
 	z-index: 1000;
 	width: 300px;
 	color: white;
-	background-color: rgba(0, 0, 0, 0.7);;
+	background-color: rgba(0, 0, 0, 0.7);
 	border: 1px solid #ccc;
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
@@ -513,24 +561,33 @@ footer {
 	color: #6c757d; /* 폰트 색상: 연한 회색 */
 }
 
-/* Style when the screen width is less than 1000px */
-@media ( max-width : 1400px) {
-	.footer-container {
-		flex-direction: column; /* 세로 방향으로 배치 */
-		align-items: center; /* 중앙 정렬 */
-		width: 80%;
-	}
-	.footer-left {
-		width: 100%; /* 전체 너비 사용 */
-	}
-	.footer-address {
-		margin-bottom: 10px; /* 주소와 링크 사이의 간격 감소 */
-	}
-	.footer-links {
-		flex-direction: column; /* 세로 방향으로 배치 */
-		margin-bottom: 0; /* 링크와 주소 사이의 간격 제거 */
-	}
-	.footer-links li {
-		margin: 8px 0; /* 링크 항목 사이의 간격 감소 */
-	}
+/* 화면 너비가 1400px 이하일 때 스타일 조정 */
+@media
+(
+max-width
+:
+1400px)
+{
+.footer-container {
+	flex-direction: column; /* 세로 방향으로 배치 */
+	align-items: center; /* 중앙 정렬 */
+	width: 80%;
+}
+
+.footer-left {
+	width: 100%; /* 전체 너비 사용 */
+}
+
+.footer-address {
+	margin-bottom: 10px; /* 주소와 링크 사이의 간격 감소 */
+}
+
+.footer-links {
+	flex-direction: column; /* 세로 방향으로 배치 */
+	margin-bottom: 0; /* 링크와 주소 사이의 간격 제거 */
+}
+
+.footer-links li {
+	margin: 8px 0; /* 링크 항목 사이의 간격 감소 */
+}
 }

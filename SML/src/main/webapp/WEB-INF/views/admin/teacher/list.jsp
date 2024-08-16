@@ -6,37 +6,64 @@
 <head>
 <title>강사 목록 - 관리자 페이지</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
 <style>
-/* 페이지 버튼 인터페이스 */
-.pageMaker_wrap{
-	text-align: center;
-    margin-top: 30px;
-    margin-bottom: 40px;
+/* 페이지네이션 전체 래퍼 */
+.pageMaker_wrap {
+    text-align: center;
+    margin: 20px 0;
 }
-.pageMaker_wrap a{
-	color : black;
-}
-.pageMaker{
-    list-style: none;
+
+/* 페이지네이션 리스트 스타일 */
+.pageMaker {
+    list-style-type: none; /* 기본 점 스타일 제거 */
+    padding: 0;
     display: inline-block;
-}	
-.pageMaker_btn {
-    float: left;
-    width: 40px;
-    height: 40px;
-    line-height: 40px;
-    margin-left: 20px;
 }
-.next, .prev {
-    border: 1px solid #ccc;
-    padding: 0 10px;
+
+/* 페이지네이션 항목 스타일 */
+.pageMaker li {
+    display: inline-block;
+    margin: 0 5px;
 }
-.next a, .prev a {
-    color: #ccc;
+
+/* 페이지네이션 링크 스타일 */
+.pageMaker a {
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+    padding: 8px 12px; /* 링크 패딩 */
+    border-radius: 4px; /* 둥근 모서리 */
+    transition: background-color 0.3s, color 0.3s; /* 부드러운 색상 전환 효과 */
 }
-.active{							/* 현재 페이지 버튼 */
-	border : 2px solid black;
-	font-weight:400;
+
+/* 페이지네이션 링크 호버 스타일 */
+.pageMaker a:hover {
+    text-decoration: none;
+    background-color: #e9ecef; /* 호버 시 배경색 */
+    color: #0056b3; /* 호버 시 글자색 */
+}
+
+/* 현재 페이지 스타일 */
+.pageMaker .active a {
+    font-weight: bold;
+    color: #fff; /* 현재 페이지 글자색 */
+    background-color: #007bff; /* 현재 페이지 배경색 */
+    border: 2px solid #007bff; /* 현재 페이지 테두리 */
+}
+
+/* 비활성화된 페이지 링크 스타일 (선택 사항) */
+.pageMaker .disabled a {
+    color: #6c757d; /* 비활성화된 페이지 링크 글자색 */
+    cursor: not-allowed; /* 마우스 커서 */
+}
+
+/* 빈 테이블 메시지 */
+.table_empty {
+	text-align: center;
+	font-size: 1.2em;
+	color: #666;
+	margin-top: 20px;
 }
 </style>
 
@@ -46,23 +73,31 @@
 	<!-- 헤더 영역 포함 -->
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
-		<h1>작가 목록</h1>
-		<div class="course_teacher_container">
-			<div class="course_teacher_list">
+		<div class="admin-container">
+			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
+			<div class="admin-main-content">
+				<h2>강사 리스트</h2>
+				<form id="searchForm" action="/admin/teacher/list" method="get" class="search-container">
+                	<div class="search_input">
+                   		<input type="text" name="keyword" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+                   		<input type="hidden" name="pageNum" value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
+                   		<input type="hidden" name="amount" value='${pageMaker.cri.amount}'>
+                   		<button class='btn search_btn'>검색</button>
+                   	</div>
+                </form>
 				<c:if test="${listCheck != 'empty'}">
-					<table class="course_teacher_list">
+					<table class="course-table">
 						<thead>
 							<tr>
-								<td>#</td>
+								<td>No.</td>
 								<td>강사명</td>
 								<td>상태</td>
 							</tr>
 						</thead>
-						<c:forEach items="${list}" var="list">
+						<c:forEach items="${list}" var="list" varStatus="status">
 						<tr>
-							<td><c:out value="${list.teaCode}" /></td>
+							<td>${totalCount -status.index}</td>
 							<td>
 								<a class="move" href='<c:out value="${list.teaCode}"/>'>
 									<c:out value="${list.teaName}"></c:out>
@@ -83,18 +118,6 @@
 						등록된 강사가 없습니다.
 					</div>
 				</c:if>
-			</div>
-			
-			<div class="search_wrap">
-				<form id="searchForm" action="/admin/teacher/list" method="get">
-                	<div class="search_input">
-                    	<input type="text" name="keyword" value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
-                    	<input type="hidden" name="pageNum" value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
-                    	<input type="hidden" name="amount" value='${pageMaker.cri.amount}'>
-                    	<button class='btn search_btn'>검색</button>
-                    </div>
-                </form>
-			</div>
 			
 			<!-- 페이지 이동 인터페이스 영역 -->
             <div class="pageMaker_wrap" >
@@ -125,6 +148,7 @@
 				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
 				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 			</form>
+			</div>
 		</div>
 	</main>
 

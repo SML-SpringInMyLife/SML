@@ -159,9 +159,11 @@ public class MemberController {
     		 encodePw = lvo.getMemPw();
     		 
     		 if(true == pwEncoder.matches(rawPw, encodePw)) {
-    			 
+    			
     			 lvo.setMemPw("");
     			 session.setAttribute("member", lvo);
+    			 session.setAttribute("memCode", lvo.getMemCode());
+    			 session.setAttribute("isAdmin", lvo.getMemAdminCheck() == 1);
     			 return "redirect:/";
     		 }else {
     			 rttr.addFlashAttribute("result", 0);

@@ -14,11 +14,12 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-		<h1>강사 상세 페이지</h1>
-		<div class="course_teacher_container">
-			<div class="course_teacher_detail">
+		<div class="admin-container">
+			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
+			<div class="admin-main-content">
+				<h2>강사 수정</h2>
 				<form id="modifyForm" action="/admin/teacher/modify" method="post">
-				<table>
+				<table class="course-table">
 					<tr>
 						<td>강사 번호</td>
 						<td>
