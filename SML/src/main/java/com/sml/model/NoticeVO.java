@@ -17,5 +17,6 @@ public class NoticeVO {
 	private int noticeLike;
 	private String noticeStatus;
 	private int noticeCount;
+	private String memName;
 	
 }

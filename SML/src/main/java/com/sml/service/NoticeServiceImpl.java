@@ -51,25 +51,21 @@ public class NoticeServiceImpl implements NoticeService {
 		
 		return noticeMapper.noticeGetTotal(cri);
 	}
-    
-	
-	
-	/*
-	@Override
-	public void noticeRegisterfile(NoticeVO notice,List<FileupVO> fileup) throws Exception  {
-		 // 공지사항 등록
-        noticeMapper.noticeRegister(notice);
 
-        // 생성된 NOTICE_CODE를 사용하여 파일 업로드
-        for (FileupVO file : fileup) {
-        	file.setNoticeCode(notice.getNoticeCode());
-      
-			noticeMapper.fileUp(file);
-        }
+	@Override //게시글 조회수 증가 
+	public int noticeCount(int noticeCode) throws Exception {
+		
+		return noticeMapper.noticeCount(noticeCode);
 		
 	}
 
-	*/
+	@Override
+	 public boolean noticeLike(int noticeCode) throws Exception {
+        int affectedRows = noticeMapper.noticeLike(noticeCode);
+        return affectedRows > 0;
+    }
+    
+	
 	
 	
 	

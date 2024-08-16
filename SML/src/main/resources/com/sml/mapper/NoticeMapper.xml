@@ -15,6 +15,7 @@
 		<result property="noticeLike" column="NOTICE_LIKE" />
 		<result property="noticeStatus" column="NOTICE_STATUS" />
 		<result property="noticeCount" column="NOTICE_COUNT" />
+		 <result property="memName" column="MEM_NAME"/>
 	</resultMap>
 
 
@@ -39,55 +40,70 @@
 		(#{noticeCode},#{FileName},#{FilePath},#{FileType})
 	</insert>
 
-
-<!-- 	 공지사항 목록(조회)
-	<select id="noticeGetList" resultMap="noticeResultMap"
-		resultType="com.sml.model.NoticeVO">
-		SELECT
-		NOTICE_CODE,
-		NOTICE_TITLE,
-		NOTICE_ENROLL_DATE,
-		NOTICE_COUNT,
-		NOTICE_LIKE
-		FROM
-		NOTICE
-		WHERE NOTICE_STATUS = 'N'
-	</select> -->
-
-<select id="noticeGetList" resultType="com.sml.model.NoticeVO" resultMap="noticeResultMap">
-<![CDATA[
-    SELECT * FROM (
-        SELECT /*+INDEX_DESC(NOTICE SYS_C008413) */
-            ROWNUM AS rn, NOTICE_CODE, NOTICE_TITLE, NOTICE_ENROLL_DATE, NOTICE_COUNT, NOTICE_LIKE
-        FROM NOTICE
-        WHERE NOTICE_STATUS = 'N'
-]]>
-        <if test="keyword != null">
-            AND NOTICE_TITLE like '%'||#{keyword}||'%'
+   <!-- 검색기능 -->
+    <sql id="search">
+        <if test="type != null and type != ''">
+            <if test="type == 'T'.toString()">
+                AND NOTICE_TITLE LIKE '%'||#{keyword}||'%'
+            </if>
+            <if test="type == 'C'.toString()">
+                AND NOTICE_BODY LIKE '%'||#{keyword}||'%'
+            </if>
+            <if test="type == 'TC'.toString()">
+                AND (NOTICE_TITLE LIKE '%'||#{keyword}||'%' OR NOTICE_BODY LIKE '%'||#{keyword}||'%')
+            </if>
         </if>
-<![CDATA[
-        AND ROWNUM <= #{pageNum} * #{amount}
-    )
-    WHERE rn > (#{pageNum} - 1) * #{amount}
-]]>
-</select>
+    </sql>
 
+      <!-- 공지사항 조회 -->
+    <select id="noticeGetList" resultType="com.sml.model.NoticeVO" resultMap="noticeResultMap">
+    <![CDATA[
+        SELECT * FROM (
+            SELECT /*+INDEX_DESC(NOTICE SYS_C008413) */
+                ROWNUM AS rn, NOTICE_CODE, NOTICE_TITLE, NOTICE_ENROLL_DATE, NOTICE_COUNT, NOTICE_LIKE
+            FROM NOTICE
+            WHERE NOTICE_STATUS = 'N'
+    ]]>
+            <include refid="search"></include>
+    <![CDATA[
+            AND ROWNUM <= #{pageNum} * #{amount}
+        )
+        WHERE rn > (#{pageNum} - 1) * #{amount}
+    ]]>
+    </select>
 
-	<!-- 공지사항 상세조회 -->
-	<select id="noticeGetDetail" resultType="com.sml.model.NoticeVO"
-		resultMap="noticeResultMap">
-		select *
-		from NOTICE
-		where NOTICE_CODE = #{noticeCode}
-	</select>
-
-   <!-- 공지사항 페이징 -->
+       <!-- 공지사항 페이징 -->
      	<select id="noticeGetTotal" resultType="int">
   		SELECT COUNT(*) FROM NOTICE
   		<if test="keyword != null">
   			WHERE NOTICE_TITLE LIKE '%' || #{keyword} || '%'
   		</if>
+  		 <include refid="search"></include>
   	</select>
+
+	
+	<!-- 공지사항 상세조회 -->
+<select id="noticeGetDetail" resultType="com.sml.model.NoticeVO" resultMap="noticeResultMap">
+    SELECT n.*, m.MEM_NAME
+    FROM NOTICE n
+    LEFT JOIN TB_MEMBER m ON n.MEM_CODE = m.MEM_CODE
+    WHERE n.NOTICE_CODE = #{noticeCode}
+</select>
+
+ <!-- 조회수 증가 -->
+    <update id="noticeCount" parameterType="int">
+        UPDATE NOTICE
+        SET NOTICE_COUNT = COALESCE(NOTICE_COUNT, 0) + 1
+        WHERE notice_code = #{noticeCode}
+    </update>
+
+<!-- 좋아요 증가 -->
+<update id="noticeLike" parameterType="int">
+    UPDATE NOTICE
+    SET NOTICE_LIKE = COALESCE(NOTICE_COUNT, 0) + 1
+    WHERE NOTICE_CODE = #{noticeCode}
+</update>
+
 
 	<!-- 공지사항 수정 -->
 	<update id="noticeModify">

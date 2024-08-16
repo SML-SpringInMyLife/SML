@@ -21,9 +21,17 @@ public interface NoticeMapper {
 	/* 공지사항 상세조회 */
 	public NoticeVO noticeGetDetail(int noticeCode);
 	
+	/* 공지사항 조회수 증가 기능 */
+	public int noticeCount(int noticeCode); 
+	
+	/* 공지사항 좋아요 */
+	public int noticeLike(int noticeCode);
+	
 	/* 공지사항 수정 */
 	public int noticeModify(NoticeVO noticevo);
 	
 	/* 공지사항 삭제 */
 	public int noticeDelete(int noticeCode);
+	
+	
 }

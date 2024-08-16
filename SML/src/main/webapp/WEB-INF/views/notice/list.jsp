@@ -29,15 +29,23 @@
 			<div class="notice-search">
 				<h1>SML 소식!</h1>
 				<p>다양한 소식을 전달해 드립니다</p>
-				<div class="search-box">
-					<select>
-						<option value="전체">전체</option>
-						<option value="제목">제목</option>
-						<option value="내용">내용</option>
-						<option value="제목+내용">제목+내용</option>
-					</select> <input type="text" placeholder="검색어를 입력하세요">
-					<button>검색하기</button>
-				</div>
+				
+					
+				<form id="searchForm" action="/notice/list" method="get">
+    <div class="search-box">
+        <select name="type">
+            <option value="">전체</option>
+            <option value="T">제목</option>
+            <option value="C">내용</option>
+            <option value="TC">제목+내용</option>
+        </select>
+        <input type="text" placeholder="검색어를 입력하세요" name="keyword" value='<c:out value="${pageMaker.cri.keyword}"/>'/>
+        <input type="hidden" name="pageNum" value='<c:out value="${pageMaker.cri.pageNum}"/>'/>
+        <input type="hidden" name="amount" value='${pageMaker.cri.amount}'/>
+        <button type='button' class='btn search_btn'>검색하기</button>
+    </div>
+</form>
+			
 			</div>
 
 			<!-- 게시물 O -->
@@ -81,18 +89,26 @@
 						</tbody>
 					</c:forEach>
 				</table>
-
 			</c:if>
-
-			<div class="button-container">
-				<button id="write">글쓰기</button>
-			</div>
+              <!-- 게시물 x -->
+              	<c:if test="${listCheck == 'empty'}">
+					<div class="table_empty">
+						등록된 글이 없습니다.
+					</div>
+                   </c:if>
+                   
+                   <%-- 디버그를 위한 로그인 상태 및 관리자 상태 출력 --%>
+<p>Debug: isLoggedIn = ${isLoggedIn}, isAdmin = ${isAdmin}</p>
+                   
+<%-- 로그인한 사용자에게만 글쓰기 버튼 표시 --%>
+<c:if test="${isLoggedIn && isAdmin}">
+    <div class="button-container">
+        <button id="write">글쓰기</button>
+    </div>
+</c:if>
+			  
 		</div>
 		
-
-	
-
-     
      <!-- 페이지 이동 인터페이스 영역 -->
             <div class="pageMaker_wrap" >
             	<ul class="pageMaker">
@@ -134,14 +150,38 @@
 		});
 		
 		
+		let searchForm = $('#searchForm');
+		/* 검색버튼 */
+		$(".search_btn").on("click", function(e) {
+		    e.preventDefault();
+
+		    let type = $("select[name='type']").val();
+		    let keyword = $("input[name='keyword']").val();
+
+		    /* 검색 타입 및 검색어 유효성 검사 */
+		    if(!type){
+		        alert("검색 종류를 선택하세요");
+		        return false;
+		    }
+
+		    if(!keyword){
+		        alert("키워드를 입력하세요");
+		        return false;
+		    }
+
+		    searchForm.find("input[name='pageNum']").val("1");
+		    searchForm.submit();
+		}); 
+		
+		
+		
+		
 		let moveForm = $('#moveForm');
 		/* 페이지 이동 버튼 */
 		$(".pageMaker_btn a").on("click", function(e){
 			
 			e.preventDefault();
-			
 			moveForm.find("input[name='pageNum']").val($(this).attr("href"));
-			 
 			moveForm.submit();
 		});
 		
@@ -169,8 +209,6 @@
 			alert("글 수정을 실패 하였습니다");
 		}
 		
-
-			
 	
 		/* 상세조회 페이지로 가기  */
 		$(".move").on("click", function(e) {
