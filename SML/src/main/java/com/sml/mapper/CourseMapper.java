@@ -15,5 +15,13 @@ public interface CourseMapper {
 	public List<CourseVO> courseList(Criteria cri);
 	
 	public int courseTotal(Criteria cri);
+	
+	public CourseVO courseDetail(int courseCode);
+	
+	public int courseModify(CourseVO vo);
+	
+	public int courseDelete(int courseCode);
+	
+	public CourseVO courseApplyDetail (int courseCode);
 
 }

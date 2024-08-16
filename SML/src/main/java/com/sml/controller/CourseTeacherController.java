@@ -37,6 +37,22 @@ public class CourseTeacherController {
 		rttr.addFlashAttribute("enroll_result", teacher.getTeaName());
 		return "redirect:/admin/teacher/list";
 	}
+	@GetMapping("/teacher/popup")
+	public void teacherPopGET(Criteria cri, Model model) throws Exception {
+		logger.info("강사 팝업");
+		
+		cri.setAmount(5);
+		
+		List list = service.teacherList(cri);
+		
+		if(!list.isEmpty()) {
+			model.addAttribute("list",list);	
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
+		
+		model.addAttribute("pageMaker", new PageDTO(cri, service.teacherListTotal(cri)));
+	}
 	
 	@GetMapping("/teacher/list")
 	public void teacherListGET(Criteria cri, Model model) throws Exception {
@@ -87,6 +103,5 @@ public class CourseTeacherController {
 		
 		return "redirect:/admin/teacher/list";
 	}
-	
 
 }

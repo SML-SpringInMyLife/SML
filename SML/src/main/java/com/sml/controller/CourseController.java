@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sml.model.CourseVO;
 import com.sml.model.Criteria;
@@ -27,9 +28,8 @@ public class CourseController {
 	@Autowired
 	private CourseService service;
 
-	@GetMapping("/boardList")
-	public void booardListGET(Criteria cri, Model model) throws Exception {
-		logger.info("수강신청 페이지 진입");
+	@GetMapping({"/boardList", "/manage"})
+	public void booardListGET(Criteria cri, Model model) throws Exception {		
 		List list = service.courseList(cri);
 		
 		if(!list.isEmpty()) {
@@ -42,38 +42,43 @@ public class CourseController {
 		model.addAttribute("pageMaker", new PageDTO(cri, service.courseTotal(cri)));
 	}
 
-	@GetMapping("/enroll")
+	@GetMapping("/manage/enroll")
 	public void courseEnrollGET(Model model) throws Exception {
 		logger.info("수업 등록 페이지 진입");
 		ObjectMapper objmapper = new ObjectMapper();
 		List list = service.cateList();
 		String cateList = objmapper.writeValueAsString(list);
 		model.addAttribute("cateList", cateList);
-//		logger.info("변경 전....." +list);
-//		logger.info("변경 후......" +cateList);
 	}
-	@PostMapping("/enroll")
+	@PostMapping("/manage/enroll")
 	public String enrollPOST(CourseVO course, RedirectAttributes rttr) throws Exception {
 		logger.info("enrollPOST......" +course);
 		service.courseEnroll(course);
 		rttr.addFlashAttribute("enroll_result", course.getCourseName());
-		return "redirect:/course/boardList";
+		return "redirect:/course/manage";
+	}
+	
+	@GetMapping({"/detail", "/manage/modify", "/apply"})
+	public void detailGET(int courseCode, Criteria cri, Model model) throws JsonProcessingException {
+		ObjectMapper objmapper = new ObjectMapper();
+		model.addAttribute("cateList", objmapper.writeValueAsString(service.cateList()));
+		
+		model.addAttribute("cri", cri);
+		model.addAttribute("detail", service.courseDetail(courseCode));
 	}
 
-	@GetMapping("/modify")
-	public void modifyGET() throws Exception {
-		logger.info("수업 수정 페이지 진입");
+	@PostMapping("/manage/modify")
+	public String modifyPOST(CourseVO vo, RedirectAttributes rttr) throws Exception {
+		int result = service.courseModify(vo);
+		rttr.addFlashAttribute("modify_result", result);
+		return "redirect:/course/manage";
 	}
 
-	@PostMapping("/modify")
-	public String modifyPOST() throws Exception {
-		// 해당 상세 페이지로 리턴할 수 있나..?
-		return "redirect:/course/boardList";
-	}
-
-	@PostMapping("/delete")
-	public String deletePOST() throws Exception {
-		return "redirect:/course/boardList";
+	@PostMapping("/manage/delete")
+	public String deletePOST(int courseCode, RedirectAttributes rttr) throws Exception {
+		int result = service.courseDelete(courseCode);
+		rttr.addFlashAttribute("delete_result", result);
+		return "redirect:/course/manage";
 	}
 
 }

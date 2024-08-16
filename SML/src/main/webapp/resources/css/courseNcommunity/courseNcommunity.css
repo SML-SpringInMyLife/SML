@@ -1,0 +1,343 @@
+@charset "UTF-8";
+
+/* 기본 컨테이너 스타일 */
+.course_container, .community_container {
+	display: flex;
+	margin-bottom: 100px;
+}
+
+/* 메뉴 스타일 */
+.course-menu, .community-menu {
+	width: 200px;
+	min-width: 200px;
+	background-color: #fff;
+	border-left: 3px solid #ddd;
+	border-right: 3px solid #ddd;
+	padding: 0 20px;
+	box-shadow: 0 0 0 rgba(0, 0, 0, 0.1);
+	background-color: #fff;
+}
+
+.course-menu>a>h3, .community-menu>a>h3 {
+	margin-bottom: 1em;
+	color: #467043;
+	text-align: center;
+}
+
+.course-menu hr, .community-menu hr {
+	color: #01530c;
+	font-weight: 900;
+}
+
+.course-menu ul, .community-menu ul {
+	list-style: none;
+	padding: 0;
+}
+
+.course-menu ul li, .community-menu ul li {
+	margin: 10px 0;
+}
+
+.course-menu ul li a, .community-menu ul li a {
+	display: block;
+	padding: 10px;
+	text-decoration: none;
+	color: #333;
+}
+
+.course-menu ul li a:hover, .community-menu ul li a:hover {
+	background-color: #f0f0f0;
+	border-radius: 10px;
+	color: #467043;
+	font-weight: 700;
+}
+
+.course-menu ul li a.active, .community-menu ul li a.active {
+	background-color: #467043; /* 활성화된 상태의 배경 색상 */
+	color: #fff;
+	font-weight: 700;
+	border-radius: 10px;
+}
+
+/* 전체 페이지 스타일 */
+main {
+	padding: 20px;
+	max-width: 800px;
+	margin: 0 auto;
+}
+
+.course_main_content, .community_main_content {
+	overflow-x: auto; /* 수평 스크롤바 허용 */
+	max-width: 100%; /* 부모 컨테이너의 최대 너비를 100%로 설정 */
+	box-sizing: border-box; /* 패딩과 테두리를 포함한 너비 계산 */
+	padding: 20px 0 0 40px;
+	margin-left: 20px;
+	flex: 1;
+	clear: both;
+}
+
+.course_main_content, .community_main_content h2 {
+	font-size: 1.3em;
+	margin-top: 10px;
+	color: #333;
+}
+
+/* 폼 섹션 */
+.form_section {
+	margin-bottom: 20px;
+}
+
+/* 폼 섹션 제목 */
+.form_section_title {
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+
+/* 폼 섹션 내용 */
+.form_section_content {
+	margin-bottom: 10px;
+}
+
+/* 입력 필드 스타일 */
+input[name="commTitle"] {
+	width: 100%;
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+textarea[name="commContent"] {
+	width: 100%;
+	height: 400px; /* 세로 길이를 조정 */
+	padding: 10px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	box-sizing: border-box;
+}
+
+.ck-editor__editable {
+	min-height: 400px; /* 원하는 높이로 조정 */
+}
+
+/* 비밀글 설정 섹션 스타일 */
+.secretPostLabel {
+	display: flex;
+	align-items: center;
+	font-size: 14px;
+	color: #333;
+}
+
+.secretPostLabel input[type="checkbox"] {
+	margin-left: 8px;
+}
+
+/* 비밀번호 입력란 섹션 스타일 */
+#passwordSection {
+	margin-top: 10px; /* 비밀번호 입력란과 다른 요소 사이의 간격 */
+	display: flex;
+	align-items: center; /* 레이블과 입력란을 수평으로 정렬 */
+	gap: 10px; /* 레이블과 입력란 사이의 간격 */
+}
+
+#passwordSection label {
+	font-size: 14px; /* 레이블 폰트 크기 */
+	color: #333; /* 레이블 색상 */
+}
+
+#secretPassword {
+	width: 200px; /* 입력란의 너비 설정 */
+	padding: 8px; /* 입력란 내부 여백 */
+	font-size: 14px; /* 입력란 폰트 크기 */
+	border: 1px solid #ccc; /* 입력란 테두리 색상 */
+	border-radius: 4px; /* 입력란 모서리 둥글게 */
+	box-sizing: border-box; /* 패딩과 테두리를 포함하여 전체 너비를 설정 */
+}
+
+/* 입력란 공란 경고 태그 */
+.form_section_content span {
+	display: none;
+	padding-top: 10px;
+	text-align: center;
+	color: #e05757;
+	font-weight: 300;
+}
+
+/* 경고 메시지 */
+#warn_commTitle, #warn_commContent {
+	color: red;
+	font-size: 12px;
+	display: none; /* 기본적으로 숨김 */
+}
+
+/* 버튼 섹션 스타일 */
+.btn_section {
+	text-align: right; /* 오른쪽 정렬 */
+	margin-top: 20px; /* 상단 여백 추가 */
+}
+
+/* 버튼 스타일 */
+.btn_section .btn {
+	display: inline-block;
+	padding: 10px 20px; /* 버튼의 상하, 좌우 여백 */
+	font-size: 16px; /* 버튼 텍스트 크기 */
+	border-radius: 5px; /* 버튼의 모서리 둥글게 */
+	border: none; /* 기본 테두리 제거 */
+	cursor: pointer; /* 마우스 커서 변경 */
+	margin-left: 10px; /* 버튼 간격 조절 */
+	transition: background-color 0.3s, color 0.3s;
+	/* 배경색과 텍스트 색상에 애니메이션 추가 */
+}
+
+/* 취소 버튼 스타일 */
+.btn_section #cancelBtn, #applyBtn, #listBtn {
+	background-color: #f0f0f0; /* 취소 버튼 배경색 */
+	color: #333; /* 텍스트 색상 */
+	border: 1px solid #ccc; /* 테두리 색상 */
+}
+
+/* 등록 버튼 스타일 */
+.btn_section #enrollBtn {
+	background-color: #007bff; /* 등록 버튼 배경색 */
+	color: #fff; /* 텍스트 색상 */
+	border: 1px solid #007bff; /* 테두리 색상 */
+}
+
+/* 버튼 hover 효과 */
+.btn_section .btn:hover {
+	opacity: 0.9; /* 버튼 hover 시 투명도 조절 */
+}
+
+/* 버튼 focus 효과 */
+.btn_section .btn:focus {
+	outline: none; /* 포커스 시 기본 테두리 제거 */
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.2); /* 포커스 시 그림자 추가 */
+}
+
+/* 검색바 공통 */
+.search_wrap {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 1rem;
+	clear: both;
+}
+
+.search_wrap select, .search_wrap input, .search_wrap button {
+	margin-left: 0.5rem;
+	padding: 0.5rem;
+	border-radius: 5px;
+}
+
+.search_wrap button {
+	background-color: #467043;
+	color: #fff;
+	border: none;
+	cursor: pointer;
+	text-align: center;
+}
+
+.search_wrap button:hover {
+	background-color: #314f2f;
+}
+
+/* 페이지네이션 전체 래퍼 */
+.pageMaker_wrap {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* 페이지네이션 리스트 스타일 */
+.pageMaker {
+    list-style-type: none; /* 기본 점 스타일 제거 */
+    padding: 0;
+    display: inline-block;
+}
+
+/* 페이지네이션 항목 스타일 */
+.pageMaker li {
+    display: inline-block;
+    margin: 0 5px;
+}
+
+/* 페이지네이션 링크 스타일 */
+.pageMaker a {
+    display: inline-block;
+    text-decoration: none;
+    color: black;
+    padding: 8px 12px; /* 링크 패딩 */
+    border-radius: 4px; /* 둥근 모서리 */
+    transition: background-color 0.3s, color 0.3s; /* 부드러운 색상 전환 효과 */
+}
+
+/* 페이지네이션 링크 호버 스타일 */
+.pageMaker a:hover {
+    text-decoration: none;
+    background-color: #e9ecef; /* 호버 시 배경색 */
+    color: #0056b3; /* 호버 시 글자색 */
+}
+
+/* 현재 페이지 스타일 */
+.pageMaker .active a {
+    font-weight: bold;
+    color: #fff; /* 현재 페이지 글자색 */
+    background-color: #007bff; /* 현재 페이지 배경색 */
+    border: 2px solid #007bff; /* 현재 페이지 테두리 */
+}
+
+/* 비활성화된 페이지 링크 스타일 (선택 사항) */
+.pageMaker .disabled a {
+    color: #6c757d; /* 비활성화된 페이지 링크 글자색 */
+    cursor: not-allowed; /* 마우스 커서 */
+}
+
+
+/* 수업 테이블 스타일 */
+.course_table, .community_table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 20px;
+}
+
+.course_table, .community_table thead {
+	background-color: #f0f0f0;
+}
+
+.course_table th, .community_table th {
+	padding: 10px;
+	border: 1px solid #ddd;
+	text-align: center; /* 가운데 정렬 */
+}
+
+.course_table td, .community_table td {
+	padding: 10px;
+	border: 1px solid #ddd;
+	text-align: center; /* 가운데 정렬 */
+	background-color: #ffffff; /* 기본 데이터 셀 배경 색상 */
+}
+
+.course_table, .community_table tr:hover {
+	background-color: #f1f1f1;
+}
+
+/* 텍스트 영역 스타일 */
+.input_block {
+    width: 100%;
+    border: 1px solid #ddd; /* 테두리 색상 */
+    background-color: #f9f9f9; /* 배경 색상 */
+    padding: 8px; /* 패딩 */
+    box-sizing: border-box; /* 패딩과 테두리를 포함하여 너비 계산 */
+    resize: none; /* 텍스트 영역 크기 조절 비활성화 */
+}
+
+textarea.input_block {
+    height: 200px; /* 텍스트 영역 높이 */
+    overflow-y: auto; /* 내용이 넘칠 때 스크롤 */
+}
+
+/* 빈 테이블 메시지 */
+.table_empty {
+	text-align: center;
+	font-size: 1.2em;
+	color: #666;
+	margin-top: 20px;
+}

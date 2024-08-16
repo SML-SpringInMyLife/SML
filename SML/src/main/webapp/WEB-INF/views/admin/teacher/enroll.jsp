@@ -23,7 +23,10 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-	<div class="teacher_content_main">
+	<div class="admin-container">
+		<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
+		<div class="admin-main-content">
+		<h2>회원 목록</h2>
 		<form action="/admin/teacher/enroll.do" method="post" id="enrollForm">
 			<div class="form_section">
 				<div class="form_section_title">
@@ -46,6 +49,7 @@
 		<div class="btn_section">
 			<button id="cancelBtn" class="btn">취소</button>
 			<button id="enrollBtn" class="btn enroll_btn">등록</button>
+		</div>
 		</div>
 	</div>
 	</main>
