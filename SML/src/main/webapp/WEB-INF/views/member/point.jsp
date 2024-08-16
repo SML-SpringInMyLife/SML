@@ -9,7 +9,7 @@
 <head>
 <meta charset="UTF-8">
 <title>point(포인트)</title>
-
+<link rel="stylesheet" href="${webappRoot}/resources/css/member/mypage.css">
 </head>
 <body>
 <!-- 헤더 영역 포함 -->
@@ -64,9 +64,10 @@
 						<tr class="course-group">
 							<td colspan="8" data-label="포인트">현재 포인트 : <c:out value="${ TotalPoint }"/> 점 입니다.</td>
 						</tr>
-					    <c:forEach items="${list}" var="list">
+					    <c:forEach items="${list}" var="list" varStatus="status">
 					    <tr>
-						  <td><c:out value="${ list.pointCode }"/></td>
+					      <td>${(pageInfo.cri.pageNum - 1) * pageInfo.cri.amount + status.index + 1}</td>					      
+						  <td class="hidden"><c:out value="${ list.pointCode }"/></td>
 						  <td><fmt:formatDate value="${list.pointDate}" pattern="yyyy-MM-dd HH:mm"/></td>
 						  <td><c:out value="${ list.pointComment }"/></td>
 						  <td><fmt:formatNumber value="${ list.pointPrice}" pattern="#,###" />P</td>	
@@ -81,8 +82,55 @@
 					    </c:forEach>		
 					</tbody>
 				</table>
+				
+				
+				
+			<!-- 페이지 이동 인터페이스 영역 -->
+            <div class="pageMaker_wrap" >
+               <ul class="pageMaker">
+                  <!-- 이전 버튼 -->                
+                   <c:if test="${pageInfo.prev}">
+                      <li class="pageMaker_btn prev">
+                          <a href="${appServlet}/member/point?pageNum=${pageInfo.pageStart - 1}&selectDate=${param.selectDate}">이전</a>
+                       </li>
+                   </c:if>
+                   <!-- 페이지 번호 -->
+                   <c:forEach begin="${pageInfo.pageStart}" end="${pageInfo.pageEnd}" var="num">
+                      <li class="pageMaker_btn ${pageInfo.cri.pageNum == num ? 'active' : ''}">
+                         
+                          <a href="${appServlet}/member/point?pageNum=${num}&selectDate=${param.selectDate}">${num}</a>
+  						                    
+                       </li>
+                   </c:forEach>
+                 <!-- 다음 버튼 -->
+                   <c:if test="${pageInfo.next}">
+                       <li class="pageMaker_btn next">
+                          <a href="${appServlet}/member/point?pageNum=${pageInfo.pageEnd + 1}&selectDate=${param.selectDate}">다음</a>
+                       </li>
+                   </c:if>
+            </ul>         
+         </div>
+				
+				<!-- Pagination -->
+				<!--  
+            	<div class="pagination">
+               	 <c:if test="${pageInfo.prev}">
+                    <a href="${appServlet}/member/point?pageNum=${pageInfo.pageStart - 1}&selectDate=${param.selectDate}">&laquo; 이전</a>
+                 </c:if>
+                
+                 <c:forEach var="num" begin="${pageInfo.pageStart}" end="${pageInfo.pageEnd}">
+                    <a href="${appServlet}/member/point?pageNum=${param.memCode}&selectDate=${param.selectDate}" 
+                       class="${pageInfo.cri.pageNum == num ? 'active' : ''}">${param.memCode}</a>
+                 </c:forEach>
+                
+                 <c:if test="${pageInfo.next}">
+                    <a href="${appServlet}/member/point?pageNum=${pageInfo.pageEnd + 1}&selectDate=${param.selectDate}">다음 &raquo;</a>
+                 </c:if>
+               </div>
+               -->
 			</div>
 		</div>
+		
 	</main>
 
 	<!-- 푸터 영역 포함 -->

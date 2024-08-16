@@ -10,16 +10,21 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sml.model.Criteria;
 import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
+import com.sml.model.PageDTO;
 import com.sml.model.PointVO;
 import com.sml.service.MypageService;
 
@@ -92,7 +97,9 @@ public class MypageController {
 	
 	/* 회원 포인트 페이지 이동 */
 	@GetMapping("point")	
-	public void memberPointGET(String selectDate) throws Exception {
+	public void memberPointGET(@RequestParam(required = false) String selectDate,
+            Criteria criteria,
+            HttpServletRequest request) throws Exception {
 
 		logger.info("회원 적립금 페이지 이동");
 		logger.info("selectDate before = " + selectDate);
@@ -114,20 +121,67 @@ public class MypageController {
 			  strDate = strDate.substring(0,4) + "-" + strDate.substring(4,strDate.length());
 			  logger.info("selectDate after = " + selectDate);
 			}			
+			int TotalPoint = service.selectTotalPoint(loginMember.getMemCode());
+			List<PointVO> list = service.selectPointList(loginMember.getMemCode(),strDate, criteria);
+			PageDTO pageInfo = service.getTotalCount(loginMember.getMemCode(),strDate, criteria);
 			
-			List<PointVO> list = service.selectPointList(loginMember.getMemCode(),strDate);
-			int totalPoint = service.selectTotalPoint(loginMember.getMemCode());
-
+			request.setAttribute("TotalPoint", TotalPoint);
 			request.setAttribute("list", list);
-			request.setAttribute("TotalPoint", totalPoint);
+			request.setAttribute("pageInfo", pageInfo);
+
 		}
 		
 	}
 	
 	// 회원 출석체크 페이지 이동
     @GetMapping("memberCheck")
-    public void memberDailyCheckGET() {
+    public void memberDailyCheckGET(String selectDate)throws Exception {
         logger.info("회원 출석체크 페이지 이동");
+        
+		logger.info("selectDate before = " + selectDate);
+		
+		
+		HttpSession session = request.getSession(false);
+		if (session != null && session.getAttribute("member") != null) {
+			MemberVO loginMember = (MemberVO)session.getAttribute("member");		
+			
+			int memCode = loginMember.getMemCode();	
+			
+			String result = memberCheckTest(memCode);
+			
+			if (result == "success") {
+				MemberCheckVO vo = new MemberCheckVO();
+				vo.setCheckDate(new Date());		
+				vo.setStatus(1);
+				vo.setMemCode(memCode);
+				
+				service.insertMemberCheck(vo);					
+			}
+			
+			// 현재 년월을 가져옵니다 (yyyy-MM 형식)
+	        String currentYearMonth = new SimpleDateFormat("yyyy-MM").format(new Date());
+	        
+	        // selectDate가 null이면 현재 년월을 사용합니다
+	        String yearMonth = (selectDate != null) ? selectDate : currentYearMonth;
+	        
+	        List<MemberCheckVO> checkList = service.selectMemberCheckList(memCode, yearMonth);
+	        logger.info("checkList = " + checkList);
+	        request.setAttribute("checkList", checkList);
+	/*	
+	     // 오늘 날짜에 대해 자동으로 출석 처리
+	        String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+	        if (checkList.stream().noneMatch(check -> check.getCheckDate().equals(today))) {
+	            // 출석이 처리되지 않은 경우
+	            MemberCheckVO todayCheck = new MemberCheckVO();
+	            todayCheck.setMemCode(memCode);
+	            
+	            service.insertMemberCheck(todayCheck);
+	        }
+	*/	
+		
+		
+		
+		}
         
     }
 
@@ -142,18 +196,48 @@ public class MypageController {
 			
 			int MemCode = loginMember.getMemCode();
 			
-			MemberCheckVO vo = new MemberCheckVO();
-			vo.setCheckDate(new Date());		
-			vo.setStatus(1);
-			vo.setMemCode(MemCode);
+			String result = memberCheckTest(MemCode);
 			
-			service.insertMemberCheck(vo);
-
+			if (result == "success") {
+				MemberCheckVO vo = new MemberCheckVO();
+				vo.setCheckDate(new Date());		
+				vo.setStatus(1);
+				vo.setMemCode(MemCode);
+				
+				service.insertMemberCheck(vo);					
+			}
+					
 		}
     }
     
+    //출석체크 조회
+    @GetMapping("/memberCheckList")	
+	public void memberCheckGET(String selectDate) throws Exception {
+    }	
 
-    
+    //출석체크 중복 검사
+  	//@PostMapping("/memberCheckTest")
+  	//@ResponseBody
+  	public String memberCheckTest(int memberCode){
+  		
+  	    logger.info("중복체크검사 진입");
+			
+		String strDate;
+
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		strDate = format.format(date);			
+
+  		int result = service.memberCheckTest(memberCode, strDate);
+  	  		
+  		logger.info("중복 검사 결과 = " + result );
+
+		if(result > 0) {
+  			return "fail"; //중복된 출석이 존재
+  		} else {
+  			return "success"; //중복 없음
+		}
+  	}
 }
 	
 	 
