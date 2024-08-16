@@ -15,7 +15,7 @@
 	<select id="teacherList" resultType="com.sml.model.CourseTeacherVO">
 		<![CDATA[
   			SELECT * FROM (
-  				SELECT /*+INDEX_DESC(COURSE_TEACHER SYS_C008733) */
+  				SELECT 
   					ROWNUM AS rn, TEA_CODE AS teaCode, TEA_NAME AS teaName, TEA_STATUS AS teaStatus, TEA_ENROLL_DATE AS teaEnrollDate
   				FROM COURSE_TEACHER 
   				WHERE TEA_STATUS = 'N' AND
