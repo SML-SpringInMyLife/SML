@@ -13,33 +13,30 @@ import org.springframework.stereotype.Service;
 
 import com.sml.mapper.AdminMapper;
 import com.sml.model.ChatVO;
+import com.sml.model.CourseVO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
+import com.sml.model.SmsVO;
 
 import lombok.extern.log4j.Log4j;
 
 @Service
 @Log4j
 public class AdminServiceImpl implements AdminService {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
-	
+
 	@Autowired
 	AdminMapper adminMapper;
 
 	@Override
 	public int memberGetTotal(Criteria cri) {
-		return adminMapper.memberGetTotal();
+		return adminMapper.memberGetTotal(cri);
 	}
 
 	@Override
-	public List<MemberVO> getMemberList() throws Exception {
-		return adminMapper.getMemberList();
-	}
-
-	@Override
-	public List<MemberVO> getMemberList(String category, String keyword) {
-		return adminMapper.getMemberList(category, keyword);
+	public List<MemberVO> getMemberList(Criteria cri) throws Exception {
+		return adminMapper.getMemberList(cri);
 	}
 
 	@Override
@@ -50,6 +47,39 @@ public class AdminServiceImpl implements AdminService {
 	@Override
 	public void updateStatus(@Param("memCode") int memCode, @Param("memStatus") int memStatus) throws Exception {
 		adminMapper.updateStatus(memCode, memStatus);
+	}
+
+	@Override
+	public List<CourseVO> getCourseList(Criteria cri) {
+		return adminMapper.getCourseList(cri);
+
+	}
+
+	@Override
+	public int getCourseTotal(Criteria cri) {
+		return adminMapper.getCourseTotal(cri);
+	}
+
+	@Override
+	public List<SmsVO> getSmsList(Criteria cri) {
+		return adminMapper.getSmsList(cri);
+
+	}
+
+	@Override
+	public int getSmsTotal(Criteria cri) {
+		return adminMapper.getSmsTotal(cri);
+	}
+
+	@Override
+	public List<ChatVO> getChatList(Criteria cri) {
+		return adminMapper.getChatList(cri);
+
+	}
+
+	@Override
+	public int getChatTotal(Criteria cri) {
+		return adminMapper.getChatTotal(cri);
 	}
 
 	@Override
