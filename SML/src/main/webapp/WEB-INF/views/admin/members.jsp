@@ -18,16 +18,19 @@
 			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
 			<div class="admin-main-content">
 				<h2>회원 목록</h2>
-				<form action="/admin/members/search" method="post"
-					class="search-container">
-					<select id="category" name="category">
+				<form action="/admin/members" method="get" class="search-container">
+					<select id="type" name="type">
 						<option value="all">전체</option>
 						<option value="id">ID</option>
 						<option value="name">성명</option>
 						<option value="phone">전화번호</option>
-					</select> <input type="text" id="search" class="search-bar"
-						placeholder="검색어를 입력하세요." name="keyword">
-					<button onclick="search()">검색</button>
+					</select>
+					<div class="search-bar">
+						<input type="text" id="search" class="search-bar"
+							placeholder="검색어를 입력하세요." name="keyword"
+							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+						<button onclick="search()">검색</button>
+					</div>
 				</form>
 				<table class="member-table">
 					<thead>
@@ -38,7 +41,6 @@
 							<th data-label="생년월일">생년월일</th>
 							<th data-label="전화번호">전화번호</th>
 							<th data-label="잔여포인트">잔여포인트</th>
-							<th data-label="회원구분">회원구분</th>
 							<th data-label="권한부여">권한부여</th>
 							<th data-label="회원상태">회원상태</th>
 						</tr>
@@ -55,25 +57,26 @@
 								<td data-label="전화번호"><c:out value="${member.memPhone}" /></td>
 								<td data-label="잔여포인트"><c:out
 										value="${member.memTotalPoint}" /></td>
-								<td data-label="회원구분"><c:choose>
-										<c:when test="${member.memAdminCheck == 1}">관리자</c:when>
-										<c:otherwise>-</c:otherwise>
-									</c:choose></td>
 								<td data-label="권한부여">
-									<form action="/admin/updateAdm" method="post"
-										class="makeAdm-form">
-										<input type="hidden" name="memCode" value="${member.memCode}" />
+									<div class="admChange-container">
 										<c:choose>
-											<c:when test="${member.memAdminCheck == 1}">
-												<input type="hidden" name="memAdminCheck" value="0" />
-												<button type="submit" class="changeAdm">권한회수</button>
-											</c:when>
-											<c:otherwise>
-												<input type="hidden" name="memAdminCheck" value="1" />
-												<button type="submit" class="changeAdm">권한부여</button>
-											</c:otherwise>
+											<c:when test="${member.memAdminCheck == 1}">관리자 / </c:when>
 										</c:choose>
-									</form>
+										<form action="/admin/updateAdm" method="post"
+											class="makeAdm-form">
+											<input type="hidden" name="memCode" value="${member.memCode}" />
+											<c:choose>
+												<c:when test="${member.memAdminCheck == 1}">
+													<input type="hidden" name="memAdminCheck" value="0" />
+													<button type="submit" class="changeAdm">회수</button>
+												</c:when>
+												<c:otherwise>
+													<input type="hidden" name="memAdminCheck" value="1" />
+													<button type="submit" class="changeAdm">권한부여</button>
+												</c:otherwise>
+											</c:choose>
+										</form>
+									</div>
 								</td>
 								<td data-label="회원상태">
 									<div class="status-container">
@@ -102,6 +105,29 @@
 						</c:forEach>
 					</tbody>
 				</table>
+				<!-- 페이지 이동 인터페이스 영역 -->
+				<div class="pageMaker_wrap">
+					<ul class="pageMaker">
+						<!-- Previous Button -->
+						<c:if test="${pageMaker.prev}">
+							<li class="pageMaker_btn prev"><a
+								href="${pageMaker.pageStart - 1}">이전</a></li>
+						</c:if>
+						<!-- Page Numbers -->
+						<c:forEach begin="${pageMaker.pageStart}"
+							end="${pageMaker.pageEnd}" var="num">
+							<li
+								class="pageMaker_btn ${pageMaker.cri.pageNum == num ? 'active' : ''}">
+								<a href="${num}">${num}</a>
+							</li>
+						</c:forEach>
+						<!-- Next Button -->
+						<c:if test="${pageMaker.next}">
+							<li class="pageMaker_btn next"><a
+								href="${pageMaker.pageEnd + 1}">다음</a></li>
+						</c:if>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</main>
@@ -123,6 +149,8 @@
 	        });
 	    });
 	});
+	
+	
 </script>
 </body>
 </html>

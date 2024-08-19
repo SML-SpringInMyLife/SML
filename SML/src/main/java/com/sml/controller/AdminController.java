@@ -1,5 +1,6 @@
 package com.sml.controller;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,7 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +21,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sml.model.ChatVO;
+import com.sml.model.CourseVO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
+import com.sml.model.SmsVO;
 import com.sml.service.AdminService;
 
 import net.nurigo.java_sdk.api.Message;
@@ -55,7 +58,7 @@ public class AdminController {
 		model.addAttribute("ageGroupCnt", ageGroupCnt);
 
 		// 기본 연도에 대한 차트 데이터 추가
-		String year = "2024"; // 기본 연도
+		String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR)); // 기본 연도
 		Map<String, int[]> chartData = service.getAgeGroupCountsByMonth(year);
 
 		// 차트 데이터를 모델에 추가
@@ -72,10 +75,10 @@ public class AdminController {
 
 	@GetMapping(value = "members")
 	public void adminMembersGET(Criteria cri, Model model) throws Exception {
-
 		logger.info("관리자 - 회원관리페이지 이동");
-		List<MemberVO> members = service.getMemberList();
 
+		// Criteria 객체를 이용하여 회원 목록 가져오기
+		List<MemberVO> members = service.getMemberList(cri);
 		if (!members.isEmpty()) {
 			model.addAttribute("members", members);
 			model.addAttribute("totalCount", members.size());
@@ -83,23 +86,10 @@ public class AdminController {
 			model.addAttribute("listCheck", "empty");
 		}
 
+		// 전체 회원 수와 페이지 DTO 계산
 		int total = service.memberGetTotal(cri);
 		PageDTO pageMaker = new PageDTO(cri, total);
 		model.addAttribute("pageMaker", pageMaker);
-	}
-
-	// 멤버 검색
-	@PostMapping(value = "members/search")
-	public String getMemberList(@RequestParam String category, @RequestParam String keyword, Model model) {
-		logger.info("검색 카테고리: " + category + ", 검색어: " + keyword);
-
-		List<MemberVO> members = service.getMemberList(category, keyword);
-		model.addAttribute("members", members);
-		model.addAttribute("totalCount", members.size());
-		model.addAttribute("category", category);
-		model.addAttribute("keyword", keyword);
-
-		return "admin/members"; // 검색 결과를 포함한 뷰를 반환합니다.
 	}
 
 	@PostMapping(value = "updateAdm")
@@ -133,10 +123,22 @@ public class AdminController {
 	}
 
 	@GetMapping(value = "courses")
-	public void adminCoursesGET() throws Exception {
+	public void adminCoursesGET(Criteria cri, Model model) throws Exception {
 
 		logger.info("관리자 - 수강신청관리 페이지 이동");
+		List<CourseVO> courses = service.getCourseList(cri);
 
+		if (!courses.isEmpty()) {
+			model.addAttribute("totalCount", courses.size());
+			model.addAttribute("courses", courses);
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
+
+		// 전체 강좌 수와 페이지 DTO 계산
+		int total = service.getCourseTotal(cri);
+		PageDTO pageMaker = new PageDTO(cri, total);
+		model.addAttribute("pageMaker", pageMaker);
 	}
 
 	@GetMapping(value = "adminInfo")
@@ -147,28 +149,23 @@ public class AdminController {
 	}
 
 	@GetMapping(value = "sms")
-	public void adminSmsGET(Model model) throws Exception {
+	public void adminSmsGET(Criteria cri, Model model) throws Exception {
 
 		logger.info("관리자 - 문자관리페이지 이동");
-		List<MemberVO> members = service.getMemberList();
+		List<SmsVO> sms = service.getSmsList(cri);
 
-		if (!members.isEmpty()) {
-			model.addAttribute("members", members);
+		if (!sms.isEmpty()) {
+			model.addAttribute("totalCount", sms.size());
+			model.addAttribute("sms", sms);
 		} else {
 			model.addAttribute("listCheck", "empty");
 		}
 
-	}
+		// 전체 회원 수와 페이지 DTO 계산
+		int total = service.getSmsTotal(cri);
+		PageDTO pageMaker = new PageDTO(cri, total);
+		model.addAttribute("pageMaker", pageMaker);
 
-	@PostMapping("sms/sendSearch")
-	public ResponseEntity<List<MemberVO>> searchMembers(@RequestParam String category, @RequestParam String keyword) {
-		logger.info("검색 카테고리: " + category + ", 검색어: " + keyword);
-
-		// 회원 목록을 검색하는 서비스 호출
-		List<MemberVO> members = service.getMemberList(category, keyword);
-
-		// 클라이언트에 MemberVO 객체 리스트를 직접 반환
-		return ResponseEntity.ok(members); // 검색 결과를 JSON으로 반환
 	}
 
 	@PostMapping(value = "sendSms.do")
@@ -200,8 +197,21 @@ public class AdminController {
 	}
 
 	@GetMapping("/chat")
-	public void adminChatGET() throws Exception {
+	public void adminChatGET(Criteria cri, Model model) throws Exception {
 		logger.info("관리자 - 채팅상담관리페이지 이동");
+		List<ChatVO> chat = service.getChatList(cri);
+
+		if (!chat.isEmpty()) {
+			model.addAttribute("totalCount", chat.size());
+			model.addAttribute("chat", chat);
+		} else {
+			model.addAttribute("listCheck", "empty");
+		}
+
+		// 전체 회원 수와 페이지 DTO 계산
+		int total = service.getChatTotal(cri);
+		PageDTO pageMaker = new PageDTO(cri, total);
+		model.addAttribute("pageMaker", pageMaker);
 	}
 
 	@GetMapping(value = "login")

@@ -2,6 +2,8 @@ package com.sml.model;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import lombok.Data;
 
 @Data
@@ -13,8 +15,12 @@ public class CourseVO {
 	private String courseName;
 	private String courseContent;
 	private int courseLimit;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date startDate;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date endDate;
+	
 	private int teaCode;
 	private String teaName;
 	private Date enrollDate;

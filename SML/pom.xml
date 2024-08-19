@@ -237,8 +237,33 @@
 			<artifactId>json</artifactId>
 			<version>20231013</version>
 		</dependency>
+<<<<<<< HEAD
 	</dependencies>
 	
+=======
+
+		<!-- 결제 API -->
+		<dependency>
+			<groupId>com.github.iamport</groupId>
+			<artifactId>iamport-rest-client-java</artifactId>
+			<version>0.2.14</version>
+		</dependency>
+
+		<!-- 이미지 파일 업로드  -->
+		<!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.dataformat/jackson-dataformat-xml -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.dataformat</groupId>
+			<artifactId>jackson-dataformat-xml</artifactId>
+			<version>2.12.1</version>
+		</dependency>
+	</dependencies>
+	<repositories>
+		<repository>
+			<id>jitpack.io</id>
+			<url>https://jitpack.io</url>
+		</repository>
+	</repositories>
+>>>>>>> develop
 	<build>
 		<plugins>
 			<plugin>

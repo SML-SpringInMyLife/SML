@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 
 <html>
 <head>
@@ -22,8 +23,13 @@
 						<option value="date">발송일시</option>
 						<option value="receiver">수신인</option>
 						<option value="content">내용</option>
-					</select> <input type="text" id="searchQuery" placeholder="검색어를 입력하세요.">
-					<button onclick="searchSMS()">검색</button>
+					</select>
+					<div class="search-bar">
+						<input type="text" id="search" class="search-bar"
+							placeholder="검색어를 입력하세요." name="keyword"
+							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+						<button onclick="search()">검색</button>
+					</div>
 				</div>
 
 				<table class="sms-table">
@@ -33,34 +39,52 @@
 							<th>발송일시</th>
 							<th>수신인</th>
 							<th>내용</th>
-							<th>발신누적횟수</th>
+							<!-- <th>발신누적횟수</th> -->
 						</tr>
 					</thead>
 					<tbody id="smsList">
-						<!-- 샘플 데이터 -->
-						<tr>
-							<td data-label="No.">1</td>
-							<td data-label="발송일시">2024-07-31 10:00</td>
-							<td data-label="수신인">홍길동</td>
-							<td data-label="내용"><span class="sms-content"
-								onclick="showSmsDetails('안녕하세요, 홍길동님!')">안녕하세요, 홍길동님!</span></td>
-							<td data-label="발신누적횟수">5</td>
-						</tr>
-						<tr>
-							<td data-label="No.">2</td>
-							<td data-label="발송일시">2024-07-31 11:00</td>
-							<td data-label="수신인">임꺽정</td>
-							<td data-label="내용"><span class="sms-content"
-								onclick="showSmsDetails('[안부문자] 안녕하세요, 임꺽정님! 1주일간 출석이 없으셔서 문자 보냅니다.')">[안부문자]
-									안녕하세요, 임꺽정님!</span></td>
-							<td data-label="발신누적횟수">3</td>
-						</tr>
+						<c:forEach items="${sms}" var="sms" varStatus="status">
+							<tr>
+								<td data-label="No.">${totalCount - status.index}</td>
+								<td data-label="발송일시"><fmt:formatDate
+										value="${sms.sendDate}" pattern="yyyy-MM-dd" /></td>
+								<td data-label="수신인"><c:out value="${sms.memCode}" /></td>
+								<td data-label="내용"><span class="sms-content"
+									onclick="showSmsDetails(${sms.smsContent})"><c:out value="${sms.smsContent}" /></span></td>
+								<!-- <td data-label="발신누적횟수">5</td> -->
+							</tr>
+						</c:forEach>
 					</tbody>
 				</table>
+				<!-- 페이지 이동 인터페이스 영역 -->
+				<div class="pageMaker_wrap">
+					<ul class="pageMaker">
+						<!-- Previous Button -->
+						<c:if test="${pageMaker.prev}">
+							<li class="pageMaker_btn prev"><a
+								href="${pageMaker.pageStart - 1}">이전</a></li>
+						</c:if>
+						<!-- Page Numbers -->
+						<c:forEach begin="${pageMaker.pageStart}"
+							end="${pageMaker.pageEnd}" var="num">
+							<li
+								class="pageMaker_btn ${pageMaker.cri.pageNum == num ? 'active' : ''}">
+								<a href="${num}">${num}</a>
+							</li>
+						</c:forEach>
+						<!-- Next Button -->
+						<c:if test="${pageMaker.next}">
+							<li class="pageMaker_btn next"><a
+								href="${pageMaker.pageEnd + 1}">다음</a></li>
+						</c:if>
+					</ul>
+				</div>
+
 
 				<div class="sms-button-container">
 					<button class="send-sms" onclick="showSmsPopup()">SMS 발송</button>
 				</div>
+
 			</div>
 		</div>
 	</main>
