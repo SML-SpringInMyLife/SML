@@ -31,7 +31,8 @@
 		resultMap="userResultMap">
 		SELECT * FROM TB_MEMBER
 		<where>
-			<if test="category != null and category == 'all'">
+			<!-- 'type'이 'all'인 경우, 여러 필드를 검색 -->
+			<if test="type != null and type == 'all'">
 				(
 				MEM_ID LIKE '%' || #{keyword} || '%'
 				OR MEM_NAME LIKE '%'
@@ -39,15 +40,16 @@
 				OR MEM_PHONE LIKE '%' || #{keyword} || '%'
 				)
 			</if>
-			<if test="category != null and category != 'all'">
+			<!-- 특정 'type'에 대해 필터링 -->
+			<if test="type != null and type != 'all'">
 				<choose>
-					<when test="category == 'id'">
+					<when test="type == 'id'">
 						MEM_ID LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="category == 'name'">
+					<when test="type == 'name'">
 						MEM_NAME LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="category == 'phone'">
+					<when test="type == 'phone'">
 						MEM_PHONE LIKE '%' || #{keyword} || '%'
 					</when>
 				</choose>
@@ -56,10 +58,12 @@
 		ORDER BY MEM_ADMIN_CHECK DESC, MEM_NAME
 	</select>
 
+
 	<select id="memberGetTotal" resultType="int">
 		SELECT COUNT(*) FROM TB_MEMBER
 		<where>
-			<if test="category != null and category == 'all'">
+			<!-- 'type'이 'all'인 경우, 여러 필드를 검색 -->
+			<if test="type != null and type == 'all'">
 				(
 				MEM_ID LIKE '%' || #{keyword} || '%'
 				OR MEM_NAME LIKE '%'
@@ -67,21 +71,23 @@
 				OR MEM_PHONE LIKE '%' || #{keyword} || '%'
 				)
 			</if>
-			<if test="category != null and category != 'all'">
+			<!-- 특정 'type'에 대해 필터링 -->
+			<if test="type != null and type != 'all'">
 				<choose>
-					<when test="category == 'id'">
+					<when test="type == 'id'">
 						MEM_ID LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="category == 'name'">
+					<when test="type == 'name'">
 						MEM_NAME LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="category == 'phone'">
+					<when test="type == 'phone'">
 						MEM_PHONE LIKE '%' || #{keyword} || '%'
 					</when>
 				</choose>
 			</if>
 		</where>
 	</select>
+
 
 	<!-- 전체 활성화 회원 카운트 : 관리자페이지 메인① (관리자 제외) -->
 	<select id="getMemberCnt" resultType="int">
@@ -159,6 +165,72 @@
 	</update>
 
 
+
+	<!-- SMS 테이블 컬럼명 매핑 -->
+	<resultMap id="smsResultMap" type="com.sml.model.SmsVO">
+		<result property="smsCode" column="SMS_CODE" />
+		<result property="smsContent" column="SMS_CONTENT" />
+		<result property="sendDate" column="SEND_DATE" />
+		<result property="status" column="STATUS" />
+		<result property="memCode" column="MEM_CODE" />
+	</resultMap>
+
+	<!-- SMS 목록 가져오기 -->
+	<select id="getSmsList" resultType="com.sml.model.SmsVO"
+		resultMap="smsResultMap">
+		SELECT * FROM SMS
+		<where>
+			<!-- 'type'이 'all'인 경우, 모든 필드 검색 -->
+			<if test="type != null and type == 'all'">
+				(
+				SMS_CONTENT LIKE '%' || #{keyword} || '%'
+				OR MEM_CODE
+				LIKE '%' || #{keyword} || '%'
+				)
+			</if>
+			<!-- 특정 'type'에 대해 필터링 -->
+			<if test="type != null and type != 'all'">
+				<choose>
+					<when test="type == 'content'">
+						SMS_CONTENT LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'code'">
+						MEM_CODE LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
+		ORDER BY SEND_DATE DESC
+	</select>
+
+	<!-- SMS 총 개수 가져오기 -->
+	<select id="getSmsTotal" resultType="int">
+		SELECT COUNT(*) FROM SMS
+		<where>
+			<!-- 'type'이 'all'인 경우, 모든 필드 검색 -->
+			<if test="type != null and type == 'all'">
+				(
+				SMS_CONTENT LIKE '%' || #{keyword} || '%'
+				OR MEM_CODE
+				LIKE '%' || #{keyword} || '%'
+				)
+			</if>
+			<!-- 특정 'type'에 대해 필터링 -->
+			<if test="type != null and type != 'all'">
+				<choose>
+					<when test="type == 'content'">
+						SMS_CONTENT LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'code'">
+						MEM_CODE LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
+	</select>
+
+
+
 	<!-- 채팅 테이블 컬럼명맵핑 -->
 	<resultMap id="chatMap" type="com.sml.model.ChatVO">
 		<result property="chatCode" column="CHAT_CODE" />
@@ -171,11 +243,69 @@
 
 	<insert id="saveChatContent"
 		parameterType="com.sml.model.ChatVO">
-		INSERT INTO CHAT (CHAT_CODE, CATEGORY_CODE, MEM_CODE, CHAT_CONTENT,
+		INSERT INTO CHAT (CHAT_CODE, CATEGORY_CODE, MEM_CODE,
+		CHAT_CONTENT,
 		CHAT_DATE, STATUS)
-		VALUES (CHAT_SEQ.NEXTVAL, #{categoryCode}, #{memCode}, #{chatContent},
+		VALUES (CHAT_SEQ.NEXTVAL,
+		#{categoryCode}, #{memCode}, #{chatContent},
 		SYSDATE, #{status});
 	</insert>
+
+
+	<!-- 채팅 목록 가져오기 -->
+	<select id="getChatList" resultType="com.sml.model.ChatVO"
+		resultMap="chatMap">
+		SELECT * FROM CHAT
+		<where>
+			<!-- 'type'이 'all'인 경우, 모든 필드 검색 -->
+			<if test="type != null and type == 'all'">
+				(
+				CHAT_CONTENT LIKE '%' || #{keyword} || '%'
+				OR MEM_CODE
+				LIKE '%' || #{keyword} || '%'
+				)
+			</if>
+			<!-- 특정 'type'에 대해 필터링 -->
+			<if test="type != null and type != 'all'">
+				<choose>
+					<when test="type == 'content'">
+						CHAT_CONTENT LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'code'">
+						MEM_CODE LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
+		ORDER BY CHAT_DATE DESC
+	</select>
+
+	<!-- 채팅 총 개수 가져오기 -->
+	<select id="getChatTotal" resultType="int">
+		SELECT COUNT(*) FROM CHAT
+		<where>
+			<!-- 'type'이 'all'인 경우, 모든 필드 검색 -->
+			<if test="type != null and type == 'all'">
+				(
+				CHAT_CONTENT LIKE '%' || #{keyword} || '%'
+				OR MEM_CODE
+				LIKE '%' || #{keyword} || '%'
+				)
+			</if>
+			<!-- 특정 'type'에 대해 필터링 -->
+			<if test="type != null and type != 'all'">
+				<choose>
+					<when test="type == 'content'">
+						CHAT_CONTENT LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'code'">
+						MEM_CODE LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
+	</select>
+
 
 
 
