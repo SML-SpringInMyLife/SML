@@ -1,8 +1,10 @@
 package com.sml.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
+
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -57,16 +59,9 @@ public class CommunityController {
 	}
 
 	@PostMapping("/enroll.do")
-	public String enrollPOST(CommunityVO community, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession();
-		MemberVO loggedInUser = (MemberVO) session.getAttribute("loggedInUser");
-
-	    if (loggedInUser != null) {
-	        // 로그인한 사용자의 회원 코드 가져오기
-	        int memCode = loggedInUser.getMemCode();
-	        // CommunityVO 객체에 회원 코드 설정
-	        community.setMemCode(memCode);
-	    }
+	public String enrollPOST(CommunityVO community, RedirectAttributes rttr, HttpSession session) throws Exception {
+		int memCode = (Integer) session.getAttribute("memCode");
+		community.setMemCode(memCode);
 		
 		service.communityEnroll(community);
 		rttr.addFlashAttribute("enroll_result", community.getCommTitle());
@@ -125,36 +120,14 @@ public class CommunityController {
 	
 	
 	// 댓글
-	@PostMapping("/reply/enroll")
-	public void enrollReplyPOST(ReplyDTO dto) throws Exception {
-		service.enrollReply(dto);
-	}
-	
-//	@GetMapping("/reply/modify")
-//	public void replyModifyGET(int repCode, Criteria cri, Model model) {
-//		model.addAttribute("replyDetail", service.replyModify(repCode));
-//	}
-//	@PostMapping("/reply/modify")
-//	public String replyModifyGET(ReplyDTO reply, RedirectAttributes rttr) throws Exception{
-//		int result = service.replyModify(reply);
-//		rttr.addFlashAttribute("reply_modify_result", result);
-//		return "redirect:/detail";
-//	}
-//	
-//	@PostMapping("/delete")
-//	public String replyDeletePOST(int repCode, RedirectAttributes rttr) throws Exception {
-//		logger.info("deletePOST......");
-//		int result = 0;
-//		try {
-//			result = service.replyDelete(repCode);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			result = 2;
-//			rttr.addFlashAttribute("reply_delete_result", result);
-//			return "redirect:/community/detail";
-//		}
-//		rttr.addFlashAttribute("reply_delete_result", result);
-//		return "redirect:/community/detail";
+//	@PostMapping("/reply/enroll.do")
+//	public void enrollReplyPOST(ReplyDTO dto, RedirectAttributes rttr, HttpSession session) throws Exception {
+//		int memCode = (Integer) session.getAttribute("memCode");
+//		int commCode = (Integer) session.getAttribute("commCode");
+//		
+//		dto.setMemCode(memCode);
+//		dto.setCommCode(commCode);
+//		service.enrollReply(dto);
 //	}
 	
 }

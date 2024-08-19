@@ -51,15 +51,17 @@
 					<tr>
 						<td>수강 기간</td>
 						<td>
-							<input type="date" readonly="readonly" value="<c:out value='${detail.startDate}'/>">
-							~
-							<input type="date" readonly="readonly" value="<c:out value='${detail.endDate}'/>">
+    						<input class="input_block" name="startDate" readonly="readonly" 
+           						value="<c:out value='${detail.startDate}'/>"/>
+    						~
+    						<input class="input_block" name="endDate" readonly="readonly" 
+           						value="<c:out value='${detail.endDate}'/>"/>
 						</td>
 					</tr>
 					<tr>
 						<td>수업 시간/요일</td>
 						<td>
-							<input type="time" readonly="readonly" value="<c:out value='${detail.startTime}'/>">
+							<%-- <fmt:formatDate value="<c:out value='${detail.startTime}'/>" pattern="yyyy-MM-dd"/> --%>
 							~
 							<input type="time" readonly="readonly" value="<c:out value='${detail.endTime}'/>">
 							<br>
