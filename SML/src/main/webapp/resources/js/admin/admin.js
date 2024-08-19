@@ -31,6 +31,15 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+let moveForm = $('#moveForm');
+		/* 페이지 이동 버튼 */
+		$(".pageMaker_btn a").on("click", function(e){
+			e.preventDefault();
+			 moveForm.find("input[name='pageNum']").val($(this).attr("href"));
+			 moveForm.submit();
+		});
+		
+
 // Chart.js를 사용하여 차트를 설정하고 업데이트하는 부분
 var registrationChart;
 
@@ -138,11 +147,11 @@ function updateChart() {
 
 // 검색 함수
 function search() {
-    var category = document.getElementById("category").value; // 검색 카테고리 가져오기
+    var type = document.getElementById("type").value; // 검색 카테고리 가져오기
     var keyword = document.getElementById("keyword").value; // 검색 쿼리 가져오기
 
     // 검색 로직의 예: 콘솔에 검색어와 카테고리 출력
-    console.log("Searching for " + keyword + " in category " + category);
+    console.log("Searching for " + keyword + " in type " + type);
 }
 
 // SMS 발송 팝업을 보여주는 함수
@@ -220,11 +229,11 @@ function popupSearchMember() {
 
 // 채팅 검색 함수
 function searchChats() {
-    var category = document.getElementById("chatSearchCategory").value; // 검색 카테고리 가져오기
+    var type = document.getElementById("chatSearchtype").value; // 검색 카테고리 가져오기
     var query = document.getElementById("chatSearchQuery").value; // 검색 쿼리 가져오기
 
     // 검색 로직의 예: 콘솔에 검색어와 카테고리 출력
-    console.log("Searching for " + query + " in category " + category);
+    console.log("Searching for " + query + " in type " + type);
 }
 
 // 채팅 발송 팝업을 보여주는 함수

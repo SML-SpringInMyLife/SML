@@ -119,7 +119,7 @@
 }
 
 .stats-table th, .member-table th, .course-table th, .sms-table th,
-	.chat-table th {
+	.chat-table th, course-table th {
 	background-color: #eaf2ec;
 	color: #555;
 }
@@ -159,9 +159,10 @@
 	width: 150px; /* 원하는 너비로 설정 */
 }
 
-.status-container {
+.status-container, .admChange-container {
 	display: flex;
 	align-items: center; /* 세로 정렬 */
+	justify-content: center; /* 수평 중앙 정렬 */
 	gap: 10px; /* 요소 간 간격 */
 }
 
@@ -485,7 +486,69 @@
 	background-color: white;
 }
 
-/* 관리자페이지 - 테이블/차트 반응형 */
+/* 페이지네이션 전체 래퍼 */
+.pageMaker_wrap {
+	
+	text-align: center;
+	margin: 20px 0;
+}
+
+/* 페이지네이션 리스트 스타일 */
+.pageMaker {
+	clear: both;
+	list-style-type: none; /* 기본 점 스타일 제거 */
+	padding: 0;
+	display: inline-block;
+}
+
+/* 페이지네이션 항목 스타일 */
+.pageMaker li {
+	display: inline-block;
+	margin: 0 5px;
+}
+
+/* 페이지네이션 링크 스타일 */
+.pageMaker a {
+	display: inline-block;
+	text-decoration: none;
+	color: black;
+	padding: 8px 12px; /* 링크 패딩 */
+	border-radius: 4px; /* 둥근 모서리 */
+	transition: background-color 0.3s, color 0.3s; /* 부드러운 색상 전환 효과 */
+}
+
+/* 페이지네이션 링크 호버 스타일 */
+.pageMaker a:hover {
+	text-decoration: none;
+	background-color: #e9ecef; /* 호버 시 배경색 */
+	color: #0056b3; /* 호버 시 글자색 */
+}
+
+/* 현재 페이지 스타일 */
+.pageMaker .active a {
+	font-weight: bold;
+	color: #fff; /* 현재 페이지 글자색 */
+	background-color: #007bff; /* 현재 페이지 배경색 */
+	border: 2px solid #007bff; /* 현재 페이지 테두리 */
+}
+
+/* 비활성화된 페이지 링크 스타일 (선택 사항) */
+.pageMaker .disabled a {
+	color: #6c757d; /* 비활성화된 페이지 링크 글자색 */
+	cursor: not-allowed; /* 마우스 커서 */
+}
+
+/* 빈 테이블 메시지 */
+.table_empty {
+	text-align: center;
+	font-size: 1.2em;
+	color: #666;
+	margin-top: 20px;
+}
+
+
+
+ /* 관리자페이지 - 테이블/차트 반응형 */
 @media all and (max-width: 1200px) {
 	/* 테이블 테두리 및 기타 기본 스타일 설정 */
 	.chat-table, .stats-table, .member-table, .course-table, .sms-table {
