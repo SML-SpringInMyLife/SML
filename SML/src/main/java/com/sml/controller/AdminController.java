@@ -1,5 +1,6 @@
 package com.sml.controller;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,7 +56,7 @@ public class AdminController {
 		model.addAttribute("ageGroupCnt", ageGroupCnt);
 
 		// 기본 연도에 대한 차트 데이터 추가
-		String year = "2024"; // 기본 연도
+		String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR)); // 기본 연도
 		Map<String, int[]> chartData = service.getAgeGroupCountsByMonth(year);
 
 		// 차트 데이터를 모델에 추가
