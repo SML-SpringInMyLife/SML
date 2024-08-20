@@ -128,6 +128,13 @@
 						</c:if>
 					</ul>
 				</div>
+				<form id="moveForm" action="/admin/members" method="get">
+					<input type="hidden" name="pageNum"
+						value="${pageMaker.cri.pageNum}"> <input type="hidden"
+						name="amount" value="${pageMaker.cri.amount}"> <input
+						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+				</form>
+
 			</div>
 		</div>
 	</main>

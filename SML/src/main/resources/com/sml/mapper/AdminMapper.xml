@@ -166,42 +166,62 @@
 
 
 
-	<!-- SMS 테이블 컬럼명 매핑 -->
+	<!-- SMS와 멤버 정보를 포함하는 ResultMap -->
 	<resultMap id="smsResultMap" type="com.sml.model.SmsVO">
 		<result property="smsCode" column="SMS_CODE" />
 		<result property="smsContent" column="SMS_CONTENT" />
 		<result property="sendDate" column="SEND_DATE" />
 		<result property="status" column="STATUS" />
 		<result property="memCode" column="MEM_CODE" />
+		<result property="memName" column="MEM_NAME" /> <!-- 추가된 멤버 이름 -->
+		<result property="memId" column="MEM_ID" />   <!-- 추가된 멤버 아이디 -->
 	</resultMap>
 
 	<!-- SMS 목록 가져오기 -->
-	<select id="getSmsList" resultType="com.sml.model.SmsVO"
-		resultMap="smsResultMap">
-		SELECT * FROM SMS
+	<select id="getSmsList" resultMap="smsResultMap">
+		SELECT
+		s.SMS_CODE,
+		s.SMS_CONTENT,
+		s.SEND_DATE,
+		s.STATUS,
+		s.MEM_CODE,
+		m.MEM_NAME,  <!-- 추가된 멤버 이름 -->
+		m.MEM_ID     <!-- 추가된 멤버 아이디 -->
+		FROM SMS s
+		LEFT JOIN TB_MEMBER m ON s.MEM_CODE = m.MEM_CODE
 		<where>
 			<!-- 'type'이 'all'인 경우, 모든 필드 검색 -->
 			<if test="type != null and type == 'all'">
 				(
-				SMS_CONTENT LIKE '%' || #{keyword} || '%'
-				OR MEM_CODE
+				s.SMS_CONTENT LIKE '%' || #{keyword} || '%'
+				OR s.SEND_DATE
 				LIKE '%' || #{keyword} || '%'
+				OR m.MEM_NAME LIKE '%' || #{keyword} ||
+				'%'
+				OR m.MEM_ID LIKE '%' || #{keyword} || '%'
 				)
 			</if>
 			<!-- 특정 'type'에 대해 필터링 -->
 			<if test="type != null and type != 'all'">
 				<choose>
 					<when test="type == 'content'">
-						SMS_CONTENT LIKE '%' || #{keyword} || '%'
+						s.SMS_CONTENT LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="type == 'code'">
-						MEM_CODE LIKE '%' || #{keyword} || '%'
+					<when test="type == 'date'">
+						s.SEND_DATE LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'receiver'">
+						m.MEM_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'receiver'">
+						m.MEM_ID LIKE '%' || #{keyword} || '%'
 					</when>
 				</choose>
 			</if>
 		</where>
-		ORDER BY SEND_DATE DESC
+		ORDER BY s.SEND_DATE DESC
 	</select>
+
 
 	<!-- SMS 총 개수 가져오기 -->
 	<select id="getSmsTotal" resultType="int">
@@ -228,6 +248,13 @@
 			</if>
 		</where>
 	</select>
+
+	<insert id="insertSms" parameterType="com.sml.model.SmsVO">
+		INSERT INTO SMS
+		(SMS_CONTENT, SEND_DATE, STATUS, MEM_CODE)
+		VALUES (#{smsContent},
+		#{sendDate}, #{status}, #{memCode})
+	</insert>
 
 
 

@@ -41,4 +41,6 @@ public interface AdminService {
 
 	public int getChatTotal(Criteria cri);
 
+	public void insertSms(SmsVO sms);
+
 }

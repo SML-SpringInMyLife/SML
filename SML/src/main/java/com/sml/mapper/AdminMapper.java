@@ -41,4 +41,6 @@ public interface AdminMapper {
 
 	public void saveChatContent(ChatVO chatVO);
 
+	public void insertSms(SmsVO sms);
+
 }

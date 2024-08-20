@@ -148,4 +148,10 @@ public class AdminServiceImpl implements AdminService {
 
 		return chartData;
 	}
+
+	@Override
+	public void insertSms(SmsVO sms) {
+		adminMapper.insertSms(sms);
+	}
+
 }

@@ -2,10 +2,13 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 
 <html>
 <head>
 <title>SML_Admin(SMS관리)</title>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 	<!-- 헤더 영역 포함 -->
@@ -18,7 +21,7 @@
 			<div class="admin-main-content">
 				<h2>SMS 관리</h2>
 				<div class="search-container">
-					<select id="searchCategory">
+					<select id="searchType">
 						<option value="all">전체</option>
 						<option value="date">발송일시</option>
 						<option value="receiver">수신인</option>
@@ -39,7 +42,6 @@
 							<th>발송일시</th>
 							<th>수신인</th>
 							<th>내용</th>
-							<!-- <th>발신누적횟수</th> -->
 						</tr>
 					</thead>
 					<tbody id="smsList">
@@ -47,11 +49,19 @@
 							<tr>
 								<td data-label="No.">${totalCount - status.index}</td>
 								<td data-label="발송일시"><fmt:formatDate
-										value="${sms.sendDate}" pattern="yyyy-MM-dd" /></td>
-								<td data-label="수신인"><c:out value="${sms.memCode}" /></td>
+										value="${sms.sendDate}" pattern="yyyy-MM-dd HH:mm" /></td>
+								<td data-label="수신인"><c:out value="${sms.memName}(${sms.memId})" /></td>
 								<td data-label="내용"><span class="sms-content"
-									onclick="showSmsDetails(${sms.smsContent})"><c:out value="${sms.smsContent}" /></span></td>
-								<!-- <td data-label="발신누적횟수">5</td> -->
+									onclick="showSmsDetails('<c:out value="${sms.smsContent}"/>')">
+										<c:choose>
+											<c:when test="${fn:length(sms.smsContent) > 25}">
+												<c:out value="${fn:substring(sms.smsContent, 0, 25)}" />...
+          										</c:when>
+											<c:otherwise>
+												<c:out value="${sms.smsContent}" />
+											</c:otherwise>
+										</c:choose>
+								</span></td>
 							</tr>
 						</c:forEach>
 					</tbody>
@@ -79,7 +89,12 @@
 						</c:if>
 					</ul>
 				</div>
-
+				<form id="moveForm" action="/admin/sms" method="get">
+					<input type="hidden" name="pageNum"
+						value="${pageMaker.cri.pageNum}"> <input type="hidden"
+						name="amount" value="${pageMaker.cri.amount}"> <input
+						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+				</form>
 
 				<div class="sms-button-container">
 					<button class="send-sms" onclick="showSmsPopup()">SMS 발송</button>
@@ -95,8 +110,8 @@
 			<span class="close" onclick="closeSmsPopup()">&times;</span>
 			<h2>SMS 발송</h2>
 			<form id="searchForm" onsubmit="return false;"
-				class="search-container">
-				<select id="popupSearchCategory" name="category">
+				class="search-container" action="searchMember.do">
+				<select id="popupSearchType" name="type">
 					<option value="name">성명</option>
 					<option value="id">ID</option>
 					<option value="phone">전화번호</option>
@@ -108,6 +123,8 @@
 				<ul id="searchResults"></ul>
 			</div>
 			<form id="sendSms" method="post" action="sendSms.do">
+				<input type="hidden" id="memCode" name="memCode">
+				<!-- Hidden input for memCode -->
 				<label for="recipientNumber" class="sms-label">수신인 번호:</label> <input
 					type="text" id="recipientNumber" name="recipientNumber" readonly>
 				<div>
@@ -123,7 +140,6 @@
 			</form>
 		</div>
 	</div>
-
 
 	<!-- SMS 상세보기 팝업 -->
 	<div id="smsDetailsPopup" class="smsDetail-popup">

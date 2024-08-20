@@ -1,7 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html>
 <head>
 <title>SML_Admin(채팅상담관리)</title>
@@ -33,38 +34,46 @@
 						<button onclick="search()">검색</button>
 					</div>
 				</div>
+				<c:if test="${listCheck != 'empty'}">
+					<table class="chat-table">
+						<thead>
+							<tr>
+								<th data-label="No.">No.</th>
+								<th data-label="분류">분류</th>
+								<th data-label="상담일시">상담일시</th>
+								<th data-label="아이디">아이디</th>
+								<th data-label="성명">성명</th>
+								<th data-label="내용">내용</th>
+							</tr>
+						</thead>
+						<tbody id="chatList">
+							<c:forEach items="${chat}" var="chat" varStatus="status">
+								<tr>
+									<td data-label="No.">${totalCount - status.index}</td>
+									<td data-label="분류">${chat.categoryCode}</td>
+									<td data-label="상담일시"><fmt:formatDate
+											value="${chat.chatDate}" pattern="yyyy-MM-dd HH:mm" /></td>
+									<td data-label="아이디">${chat.memCode}</td>
+									<td data-label="성명">${chat.memCode}</td>
+									<td data-label="내용"><span class="chat-content"
+										onclick="showChatDetails('<c:out value="${chat.chatContent}"/>')">
+											<c:choose>
+												<c:when test="${fn:length(chat.chatContent) > 25}">
+													<c:out value="${fn:substring(chat.chatContent, 0, 25)}" />...
+          										</c:when>
+												<c:otherwise>
+													<c:out value="${chat.chatContent}" />
+												</c:otherwise>
+											</c:choose>
+									</span></td>
+							</c:forEach>
+						</tbody>
+					</table>
+				</c:if>
 
-				<table class="chat-table">
-					<thead>
-						<tr>
-							<th data-label="No.">No.</th>
-							<th data-label="상담일시">상담일시</th>
-							<th data-label="아이디">아이디</th>
-							<th data-label="성명">성명</th>
-							<th data-label="내용">내용</th>
-						</tr>
-					</thead>
-					<tbody id="chatList">
-						<!-- 샘플 -->
-						<tr>
-							<td data-label="No.">1</td>
-							<td data-label="상담일시">2024-07-31 10:00</td>
-							<td data-label="아이디">Hong</td>
-							<td data-label="성명">홍길동</td>
-							<td data-label="내용"><span class="chat-content"
-								onclick="showChatDetails('안녕하세요, 홍길동님!')">안녕하세요, 홍길동님!</span></td>
-						</tr>
-						<tr>
-							<td data-label="No.">2</td>
-							<td data-label="상담일시">2024-07-31 11:00</td>
-							<td data-label="아이디">Lim</td>
-							<td data-label="성명">임꺽정</td>
-							<td data-label="내용"><span class="chat-content"
-								onclick="showChatDetails('안녕하세요, 임꺽정님! 상담이 완료되었습니다.')">안녕하세요,
-									임꺽정님! 상담이 완료되었습니다.</span></td>
-						</tr>
-					</tbody>
-				</table>
+				<c:if test="${listCheck == 'empty'}">
+					<div class="table_empty">등록된 정보가 없습니다.</div>
+				</c:if>
 
 				<!-- 페이지 이동 인터페이스 영역 -->
 				<div class="pageMaker_wrap">
@@ -89,6 +98,13 @@
 						</c:if>
 					</ul>
 				</div>
+				<form id="moveForm" action="/admin/chat" method="get">
+					<input type="hidden" name="pageNum"
+						value="${pageMaker.cri.pageNum}"> <input type="hidden"
+						name="amount" value="${pageMaker.cri.amount}"> <input
+						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+				</form>
+
 
 				<!-- 채팅 상세보기 팝업 -->
 				<div id="chatDetailsPopup" class="chatDetail-Popup">
