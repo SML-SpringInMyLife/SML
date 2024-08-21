@@ -18,16 +18,19 @@
 			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
 			<div class="admin-main-content">
 				<h2>회원 목록</h2>
-				<form action="/admin/members/search" method="post"
-					class="search-container">
+				<form action="/admin/members" method="get" class="search-container">
 					<select id="type" name="type">
 						<option value="all">전체</option>
 						<option value="id">ID</option>
 						<option value="name">성명</option>
 						<option value="phone">전화번호</option>
-					</select> <input type="text" id="search" class="search-bar"
-						placeholder="검색어를 입력하세요." name="keyword">
-					<button onclick="search()">검색</button>
+					</select>
+					<div class="search-bar">
+						<input type="text" id="search" class="search-bar"
+							placeholder="검색어를 입력하세요." name="keyword"
+							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+						<button onclick="search()">검색</button>
+					</div>
 				</form>
 				<table class="member-table">
 					<thead>
@@ -102,35 +105,30 @@
 						</c:forEach>
 					</tbody>
 				</table>
+				<!-- 페이지 이동 인터페이스 영역 -->
+				<div class="pageMaker_wrap">
+					<ul class="pageMaker">
+						<!-- Previous Button -->
+						<c:if test="${pageMaker.prev}">
+							<li class="pageMaker_btn prev"><a
+								href="${pageMaker.pageStart - 1}">이전</a></li>
+						</c:if>
+						<!-- Page Numbers -->
+						<c:forEach begin="${pageMaker.pageStart}"
+							end="${pageMaker.pageEnd}" var="num">
+							<li
+								class="pageMaker_btn ${pageMaker.cri.pageNum == num ? 'active' : ''}">
+								<a href="${num}">${num}</a>
+							</li>
+						</c:forEach>
+						<!-- Next Button -->
+						<c:if test="${pageMaker.next}">
+							<li class="pageMaker_btn next"><a
+								href="${pageMaker.pageEnd + 1}">다음</a></li>
+						</c:if>
+					</ul>
+				</div>
 			</div>
-			<!-- 페이지 이동 인터페이스 영역 -->
-			<div class="pageMaker_wrap">
-				<ul class="pageMaker">
-					<!-- 이전 버튼 -->
-					<c:if test="${pageMaker.prev}">
-						<li class="pageMaker_btn prev"><a
-							href="${pageMaker.pageStart - 1}">이전</a></li>
-					</c:if>
-					<!-- 페이지 번호 -->
-					<c:forEach begin="${pageMaker.pageStart}"
-						end="${pageMaker.pageEnd}" var="num">
-						<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":""}">
-							<a href="${num}">${num}</a>
-						</li>
-					</c:forEach>
-					<!-- 다음 버튼 -->
-					<c:if test="${pageMaker.next}">
-						<li class="pageMaker_btn next"><a
-							href="${pageMaker.pageEnd + 1 }">다음</a></li>
-					</c:if>
-				</ul>
-			</div>
-
-			<form id="moveForm" action="/admin/members" method="get">
-				<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
-				<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
-				<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
-			</form>
 		</div>
 	</main>
 

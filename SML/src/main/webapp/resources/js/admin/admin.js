@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     var smsContents = document.querySelectorAll('.sms-content');
     smsContents.forEach(function(content) {
         var text = content.innerText;
+        console.log(text);
         if (text.length > 15) {
             content.innerText = text.slice(0, 15) + '...'; // 15자를 초과하면 '...'으로 자르기
         }
