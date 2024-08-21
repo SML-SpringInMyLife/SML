@@ -85,7 +85,7 @@
             pay_method: "card", // 결제 수단
             merchant_uid: "ORD20240819-0000011", // 주문번호
             name: "SML 후원", // 상품명
-            amount: 10000, // 결제 금액
+            amount: 100, // 결제 금액
             buyer_email: "sml@gmail.com",
             buyer_name: "sml1",
             buyer_tel: "010-1234-2345",
