@@ -1,7 +1,10 @@
 package com.sml.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -12,6 +15,8 @@ import com.sml.model.MemberVO;
 import com.sml.model.SmsVO;
 
 public interface AdminService {
+	
+	// MEMBER 관련	
 
 	public List<MemberVO> getMemberList(Criteria cri) throws Exception;
 
@@ -23,24 +28,36 @@ public interface AdminService {
 
 	public Map<String, Integer> getAgeGroupCnt() throws Exception;
 
-	public Map<String, int[]> getAgeGroupCountsByMonth(String year) throws Exception ;
+	public Map<String, int[]> getAgeGroupCountsByMonth(String year) throws Exception;
 
 	public int getMemberTotal(Criteria cri);
 
-	public void saveChatContent(ChatVO chatVO);
-
+	// COURSES 관련	
+	
 	public List<CourseVO> getCourseList(Criteria cri);
 
 	public int getCourseTotal(Criteria cri);
 
+	// SMS 관련
+	
 	public List<SmsVO> getSmsList(Criteria cri);
-
+	
 	public int getSmsTotal(Criteria cri);
 
-	public List<ChatVO> getChatList(Criteria cri);
-
-	public int getChatTotal(Criteria cri);
+	public void sendSms(HashMap<String, String> set) throws Exception;
 
 	public void insertSms(SmsVO sms);
+
+	public List<MemberVO> getAbsentMembers();
+
+	public void sendReminderSms(List<MemberVO> absentMembers) throws Exception;
+
+	// CHAT 관련	
+	
+	public List<ChatVO> getChatList(Criteria cri);
+	
+	public int getChatTotal(Criteria cri);
+
+	public void saveChatContent(ChatVO chatVO);
 
 }

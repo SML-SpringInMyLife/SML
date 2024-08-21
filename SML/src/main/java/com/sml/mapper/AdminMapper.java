@@ -43,4 +43,6 @@ public interface AdminMapper {
 
 	public void insertSms(SmsVO sms);
 
+	public List<MemberVO> selectAbsentMembers();
+
 }
