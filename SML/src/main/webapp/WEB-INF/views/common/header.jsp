@@ -125,9 +125,6 @@
 			<button onclick="cancelCloseChat()">취소</button>
 		</div>
 	</div>
-
 	<script src="${webappRoot}/resources/js/common.js"></script>
-
-
 </body>
 </html>
