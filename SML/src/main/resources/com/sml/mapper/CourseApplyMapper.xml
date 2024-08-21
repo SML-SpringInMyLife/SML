@@ -5,12 +5,19 @@
 
 <mapper namespace="com.sml.mapper.CourseApplyMapper">
 	
-	<insert id="applyApply">
+	<insert id="courseApply">
 		INSERT INTO COURSE_APPLICANT (MEM_CODE, COURSE_CODE) VALUES (
 			#{memCode},
 			#{courseCode}
 		)
 	</insert>
+	
+	<select id="courseTotal" resultType="int">
+  		SELECT COUNT(*) FROM COURSE_APPLICANT
+  		<if test="keyword != null">
+  			WHERE APPLY_CODE LIKE '%' || #{keyword} || '%'
+  		</if>
+  	</select>
 	
 	<delete id="cancelApply">
 		DELETE FROM COURSE_APPLICANT WHERE APPLY_CODE = #{applyCode}
@@ -21,48 +28,19 @@
 			a.APPLY_CODE AS applyCode,
 			a.APPLY_DATE AS applyDate,
 			a.MEM_CODE AS memCode,
+			m.MEM_NAME AS memName,
 			a.COURSE_CODE AS courseCode,
 			c.COURSE_NAME AS courseName,
 			c.COURSE_START_DATE AS courseStartDate
 		 FROM COURSE_APPLICANT a
 		 JOIN COURSE c ON a.COURSE_CODE = c.COURSE_CODE
-		 WHERE MEM_CODE = #{memCode}
+		 JOIN TB_MEMBER m ON a.MEM_CODE = m.MEM_CODE
+		 WHERE a.MEM_CODE = #{memCode}
 	</select>
 	
 	<select id="applyCheck" resultType="com.sml.model.CourseApplyDTO">
 		SELECT * FROM COURSE_APPLICANT WHERE MEM_CODE = #{memCode} AND COURSE_CODE = #{courseCode}
 	</select>
 
-	<!-- <select id="applyList" resultType="com.sml.model.CourseApplyDTO">
-		<![CDATA[
-			SELECT * FROM (
-				SELECT /*+INDEX_DESC (COURSE_APPLICANT SYS_C008703*/
-					ROWNUM AS rn,
-					a.APPLY_CODE AS applyCode,
-					a.APPLY_DATE AS applyDate,
-					m.MEM_NAME AS memName,
-					c.COURSE_NAME AS courseName,
-					c.COURSE_START_DATE AS courseStartDate
-				 FROM COURSE_APPLICANT a
-				 JOIN COURSE c ON a.COURSE_CODE = c.COURSE_CODE
-				 JOIN TB_MEMBER m ON a.MEM_CODE = m.MEM_CODE
-				 WHERE	
-		]]>
-			<if test="keyword != null">
-                COURSE_NAME like '%'||#{keyword}||'%' AND
-            </if>
-        <![CDATA[
-        		ROWNUM <= #{pageNum}*#{amount}
-            	)
-        	WHERE rn > (#{pageNum} - 1) * #{amount}       	
-        ]]> 	
-	</select> -->
-	
-	<!-- <select id="applyTotal" resultType="int">
-		SELECT COUNT(*) FROM COURSE_APPLICANT
-		<if test="keyword != null">
-			WHERE APPLY_CODE LIKE '%' || #{keyword} || '%'
-		</if>
-	</select> -->
 	
 </mapper>

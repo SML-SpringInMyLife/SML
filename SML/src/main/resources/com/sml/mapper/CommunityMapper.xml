@@ -58,7 +58,7 @@
   			SET
   				COMM_TITLE = #{commTitle, jdbcType=VARCHAR},
   				COMM_CONTENT = #{commContent, jdbcType=CLOB},
-  				COMM_MODIFY_DATE AS modifyDate = SYSDATE
+  				COMM_MODIFY_DATE = SYSDATE
   			WHERE 
   				COMM_CODE = #{commCode, jdbcType=INTEGER}
   	</update>
@@ -71,5 +71,13 @@
   			WHERE 
   				COMM_CODE = #{commCode}
   	</update>
+  	
+  	<select id="getCommunityCode" resultType="com.sml.model.CommunityVO">
+  		SELECT 
+  			COMM_CODE AS commCode,
+  			COMM_TITLE AS commTitle
+  		 FROM COMMUNITY
+  		 WHERE COMM_CODE = #{commCode}
+  	</select>
   	
   </mapper>

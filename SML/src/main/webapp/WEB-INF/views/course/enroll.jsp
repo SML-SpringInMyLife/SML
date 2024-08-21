@@ -19,7 +19,7 @@
 			<jsp:include page="/WEB-INF/views/course/courseMenu.jsp" />
 			<div class="course_main_content">
 				<h2>수업 등록</h2>
-				<form action="/course/manage/enroll" method="post" id="enrollForm">
+				<form action="/course/enroll" method="post" id="enrollForm">
 					<div class="form_section">
 						<div class="form_section_title">
 							<label>수업명</label>

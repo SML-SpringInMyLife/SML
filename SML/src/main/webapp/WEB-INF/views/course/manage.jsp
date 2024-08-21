@@ -126,8 +126,10 @@
 	<script>
 	$(document).ready(function(){	
 		let eResult = '<c:out value="${enroll_result}"/>';
+		let mResult = '<c:out value="${modify_result}"/>';
 		
 		checkResult(eResult);
+		checkmResult(mresult);
 		
 		function checkResult(result){
 			if(result === ''){
@@ -136,10 +138,12 @@
 			alert("수업'"+ eResult +"'을 등록하였습니다.");
 		}
 		
-		let modify_result = '${modify_result}';
-		
-		if(modify_result == 1){
-			alert("수정 완료");
+		function checkmResult(mresult){		
+			if(mresult === '1'){
+				alert("수업이 정상적으로 수정되었습니다.");
+			} else if(mresult === '0') {
+				alert("수업을 수정할 수 없습니다.")	
+			}	
 		}
 	});
 	
@@ -171,7 +175,7 @@
 	});
 	
 	$('#enrollBtn').on('click', function() {
-        window.location.href = '/course/manage/enroll'; // 리다이렉트 URL 설정
+        window.location.href = '/course/enroll'; // 리다이렉트 URL 설정
     });
 	</script>
 </body>

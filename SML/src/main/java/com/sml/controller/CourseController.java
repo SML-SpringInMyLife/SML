@@ -43,7 +43,7 @@ public class CourseController {
 		model.addAttribute("pageMaker", new PageDTO(cri, service.courseTotal(cri)));
 	}
 
-	@GetMapping("/manage/enroll")
+	@GetMapping("/enroll")
 	public void courseEnrollGET(Model model) throws Exception {
 		logger.info("수업 등록 페이지 진입");
 		ObjectMapper objmapper = new ObjectMapper();
@@ -51,7 +51,7 @@ public class CourseController {
 		String cateList = objmapper.writeValueAsString(list);
 		model.addAttribute("cateList", cateList);
 	}
-	@PostMapping("/manage/enroll")
+	@PostMapping("/enroll")
 	public String enrollPOST(CourseVO course, RedirectAttributes rttr) throws Exception {
 		logger.info("enrollPOST......" +course);
 		service.courseEnroll(course);
@@ -59,7 +59,7 @@ public class CourseController {
 		return "redirect:/course/manage";
 	}
 	
-	@GetMapping({"/detail", "/manage/modify", "/apply"})
+	@GetMapping({"/detail", "/modify", "/apply"})
 	public void detailGET(int courseCode, Criteria cri, Model model) throws JsonProcessingException {
 		ObjectMapper objmapper = new ObjectMapper();
 		model.addAttribute("cateList", objmapper.writeValueAsString(service.cateList()));
@@ -68,14 +68,14 @@ public class CourseController {
 		model.addAttribute("detail", service.courseDetail(courseCode));
 	}
 
-	@PostMapping("/manage/modify")
-	public String modifyPOST(CourseVO vo, RedirectAttributes rttr) throws Exception {
-		int result = service.courseModify(vo);
+	@PostMapping("/modify")
+	public String modifyPOST(CourseVO course, RedirectAttributes rttr) throws Exception {
+		int result = service.courseModify(course);
 		rttr.addFlashAttribute("modify_result", result);
-		return "redirect:/course/manage";
+		return "redirect:/course/modify";
 	}
 
-	@PostMapping("/manage/delete")
+	@PostMapping("/delete")
 	public String deletePOST(int courseCode, RedirectAttributes rttr) throws Exception {
 		int result = service.courseDelete(courseCode);
 		rttr.addFlashAttribute("delete_result", result);

@@ -2,7 +2,6 @@ package com.sml.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -11,15 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sml.model.CommunityReplyDTO;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
-import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
-import com.sml.model.ReplyDTO;
 import com.sml.service.CommunityService;
 
 @Controller
@@ -57,46 +56,26 @@ public class CommunityController {
 	}
 
 	@PostMapping("/enroll.do")
-	public String enrollPOST(CommunityVO community, RedirectAttributes rttr, HttpServletRequest request) throws Exception {
-		HttpSession session = request.getSession();
-		MemberVO loggedInUser = (MemberVO) session.getAttribute("loggedInUser");
-
-	    if (loggedInUser != null) {
-	        // 로그인한 사용자의 회원 코드 가져오기
-	        int memCode = loggedInUser.getMemCode();
-	        // CommunityVO 객체에 회원 코드 설정
-	        community.setMemCode(memCode);
-	    }
+	public String enrollPOST(CommunityVO community, RedirectAttributes rttr, HttpSession session) throws Exception {
+		int memCode = (Integer) session.getAttribute("memCode");
+		community.setMemCode(memCode);
 		
 		service.communityEnroll(community);
 		rttr.addFlashAttribute("enroll_result", community.getCommTitle());
 		return "redirect:/community/boardList";
 	}
 
-	@GetMapping("/detail")
+	@GetMapping({"/detail", "/modify"})
 	public void communityDetailGET(int commCode, Criteria cri, Model model) throws Exception {
-		logger.info(commCode + "번 게시글 상세 페이지 이동");
+
 		model.addAttribute("cri", cri);
 		model.addAttribute("communityDetail", service.communityDetail(commCode));
-		
-		// 댓글 영역
-		List list = service.listReply();
-		if (!list.isEmpty()) {
-			model.addAttribute("list", list);
-		} else {
-			model.addAttribute("listCheck", "empty");
-		}
 		
 		int total = service.communityGetTotal(cri);
 		PageDTO pageMaker = new PageDTO(cri, total);
 		model.addAttribute("pageMaker", pageMaker);
 	}
-	@GetMapping("/modify")
-	public void communityModifyGET(int commCode, Criteria cri, Model model) throws Exception {
-		logger.info(commCode + "번 게시글 상세 페이지 이동");
-		model.addAttribute("cri", cri);
-		model.addAttribute("communityDetail", service.communityDetail(commCode));
-	}
+
 	@PostMapping("/modify")
 	public String modifyPOST(CommunityVO community, RedirectAttributes rttr) throws Exception {
 		logger.info("modifyPOST......" + community);
@@ -123,38 +102,12 @@ public class CommunityController {
 		return "redirect:/community/boardList";
 	}
 	
-	
-	// 댓글
-	@PostMapping("/reply/enroll")
-	public void enrollReplyPOST(ReplyDTO dto) throws Exception {
-		service.enrollReply(dto);
+	@GetMapping("/reply/{memCode}")
+	public String replyGET(@PathVariable("memCode")int memCode, int commCode, Model model) throws Exception {
+		CommunityVO community = service.getCommunityCode(commCode);
+		model.addAttribute("communityDetail", community);
+		model.addAttribute("member", memCode);
+		return "/reply";
 	}
-	
-//	@GetMapping("/reply/modify")
-//	public void replyModifyGET(int repCode, Criteria cri, Model model) {
-//		model.addAttribute("replyDetail", service.replyModify(repCode));
-//	}
-//	@PostMapping("/reply/modify")
-//	public String replyModifyGET(ReplyDTO reply, RedirectAttributes rttr) throws Exception{
-//		int result = service.replyModify(reply);
-//		rttr.addFlashAttribute("reply_modify_result", result);
-//		return "redirect:/detail";
-//	}
-//	
-//	@PostMapping("/delete")
-//	public String replyDeletePOST(int repCode, RedirectAttributes rttr) throws Exception {
-//		logger.info("deletePOST......");
-//		int result = 0;
-//		try {
-//			result = service.replyDelete(repCode);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			result = 2;
-//			rttr.addFlashAttribute("reply_delete_result", result);
-//			return "redirect:/community/detail";
-//		}
-//		rttr.addFlashAttribute("reply_delete_result", result);
-//		return "redirect:/community/detail";
-//	}
-	
+
 }

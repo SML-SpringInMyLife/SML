@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class ReplyDTO {
+public class CommunityReplyDTO {
 	
 	private int repCode;
 	private int commCode;
@@ -15,5 +15,7 @@ public class ReplyDTO {
 	private Date rmodifyDate;
 	private String repStatus;
 	private int memCode;
+	
+	// private int parentCode;
 
 }
