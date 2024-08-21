@@ -30,8 +30,8 @@ public class AdminServiceImpl implements AdminService {
 	AdminMapper adminMapper;
 
 	@Override
-	public int memberGetTotal(Criteria cri) {
-		return adminMapper.memberGetTotal(cri);
+	public int getMemberTotal(Criteria cri) {
+		return adminMapper.getMemberTotal(cri);
 	}
 
 	@Override
@@ -148,4 +148,10 @@ public class AdminServiceImpl implements AdminService {
 
 		return chartData;
 	}
+
+	@Override
+	public void insertSms(SmsVO sms) {
+		adminMapper.insertSms(sms);
+	}
+
 }

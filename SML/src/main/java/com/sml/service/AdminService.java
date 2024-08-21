@@ -25,7 +25,7 @@ public interface AdminService {
 
 	public Map<String, int[]> getAgeGroupCountsByMonth(String year) throws Exception ;
 
-	public int memberGetTotal(Criteria cri);
+	public int getMemberTotal(Criteria cri);
 
 	public void saveChatContent(ChatVO chatVO);
 
@@ -40,5 +40,7 @@ public interface AdminService {
 	public List<ChatVO> getChatList(Criteria cri);
 
 	public int getChatTotal(Criteria cri);
+
+	public void insertSms(SmsVO sms);
 
 }

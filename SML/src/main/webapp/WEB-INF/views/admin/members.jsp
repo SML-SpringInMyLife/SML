@@ -1,9 +1,7 @@
-
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
 <html>
 <head>
 <title>SML_Admin(회원관리)</title>
@@ -18,7 +16,8 @@
 			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
 			<div class="admin-main-content">
 				<h2>회원 목록</h2>
-				<form action="/admin/members" method="get" class="search-container">
+				<form id="searchForm" action="/admin/members" method="get"
+					class="search-container">
 					<select id="type" name="type">
 						<option value="all">전체</option>
 						<option value="id">ID</option>
@@ -29,7 +28,10 @@
 						<input type="text" id="search" class="search-bar"
 							placeholder="검색어를 입력하세요." name="keyword"
 							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
-						<button onclick="search()">검색</button>
+						<input type="hidden" name="pageNum"
+							value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
+						<input type="hidden" name="amount" value='${pageMaker.cri.amount}'>
+						<button class='btn search_btn'>검색</button>
 					</div>
 				</form>
 				<table class="member-table">
@@ -49,7 +51,7 @@
 						<!-- 반복출력 -->
 						<c:forEach var="member" items="${members}" varStatus="status">
 							<tr>
-								<td data-label="No.">${totalCount - status.index}</td>
+								<td data-label="No.">${totalCount - (pageNum - 1) * amount - status.index}</td>
 								<td data-label="ID"><c:out value="${member.memId}" /></td>
 								<td data-label="성명"><c:out value="${member.memName}" /></td>
 								<td data-label="생년월일"><fmt:formatDate
@@ -116,41 +118,28 @@
 						<!-- Page Numbers -->
 						<c:forEach begin="${pageMaker.pageStart}"
 							end="${pageMaker.pageEnd}" var="num">
-							<li
-								class="pageMaker_btn ${pageMaker.cri.pageNum == num ? 'active' : ''}">
+							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":"" }">
 								<a href="${num}">${num}</a>
 							</li>
 						</c:forEach>
 						<!-- Next Button -->
 						<c:if test="${pageMaker.next}">
 							<li class="pageMaker_btn next"><a
-								href="${pageMaker.pageEnd + 1}">다음</a></li>
+								href="${pageMaker.pageEnd + 1 }">다음</a></li>
 						</c:if>
 					</ul>
 				</div>
+				<form id="moveForm" action="/admin/members" method="get">
+					<input type="hidden" name="pageNum"
+						value="${pageMaker.cri.pageNum}"> <input type="hidden"
+						name="amount" value="${pageMaker.cri.amount}"> <input
+						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+				</form>
 			</div>
 		</div>
 	</main>
 
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
-
-	<script>
-	document.querySelectorAll('form').forEach(form => {
-	    form.addEventListener('submit', (event) => {
-	        const memCode = form.querySelector('input[name="memCode"]').value;
-	        const memStatus = form.querySelector('input[name="memStatus"]') ? form.querySelector('input[name="memStatus"]').value : 'N/A';
-	        const memAdminCheck = form.querySelector('input[name="memAdminCheck"]') ? form.querySelector('input[name="memAdminCheck"]').value : 'N/A';
-
-	        console.log('폼 제출 시 값:', {
-	            memCode,
-	            memStatus,
-	            memAdminCheck
-	        });
-	    });
-	});
-	
-	
-</script>
 </body>
 </html>

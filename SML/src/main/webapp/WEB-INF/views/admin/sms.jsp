@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html>
 <head>
 <title>SML_Admin(SMS관리)</title>
@@ -14,13 +14,16 @@
 	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
 	<main>
 		<div class="admin-container">
+			<!-- 관리자 메뉴 포함 -->
 			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
 			<div class="admin-main-content">
 				<h2>SMS 관리</h2>
-				<div class="search-container">
-					<select id="searchCategory">
+				<!-- 검색 폼 -->
+				<form id="searchForm" action="/admin/sms" method="get"
+					class="search-container">
+					<select id="type" name="type">
 						<option value="all">전체</option>
-						<option value="date">발송일시</option>
+						<option value="date">발송일</option>
 						<option value="receiver">수신인</option>
 						<option value="content">내용</option>
 					</select>
@@ -28,63 +31,84 @@
 						<input type="text" id="search" class="search-bar"
 							placeholder="검색어를 입력하세요." name="keyword"
 							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+						<input type="hidden" name="pageNum"
+							value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
+						<input type="hidden" name="amount" value='${pageMaker.cri.amount}'>
+
+						<!-- 검색 버튼 -->
 						<button onclick="search()">검색</button>
 					</div>
-				</div>
-
+				</form>
+				<!-- SMS 리스트 테이블 -->
 				<table class="sms-table">
 					<thead>
 						<tr>
 							<th>No.</th>
-							<th>발송일시</th>
+							<th>발송일</th>
 							<th>수신인</th>
 							<th>내용</th>
-							<!-- <th>발신누적횟수</th> -->
 						</tr>
 					</thead>
 					<tbody id="smsList">
+						<!-- SMS 항목 출력 -->
 						<c:forEach items="${sms}" var="sms" varStatus="status">
 							<tr>
-								<td data-label="No.">${totalCount - status.index}</td>
-								<td data-label="발송일시"><fmt:formatDate
-										value="${sms.sendDate}" pattern="yyyy-MM-dd" /></td>
-								<td data-label="수신인"><c:out value="${sms.memCode}" /></td>
-								<td data-label="내용"><span class="sms-content"
-									onclick="showSmsDetails(${sms.smsContent})"><c:out value="${sms.smsContent}" /></span></td>
-								<!-- <td data-label="발신누적횟수">5</td> -->
+								<!-- 번호 -->
+								<td data-label="No.">${totalCount - (pageNum - 1) * amount - status.index}</td>
+								<!-- 발송일 -->
+								<td data-label="발송일시">
+									<fmt:formatDate value="${sms.sendDate}" pattern="yyyy-MM-dd HH:mm" />
+								</td>
+								<!-- 수신인 -->
+								<td data-label="수신인">
+									<c:out value="${sms.memName}(${sms.memId})" />
+								</td>
+								<!-- 내용, 길면 축약 표시 -->
+								<td data-label="내용">
+									<span class="sms-content" onclick="showSmsDetails('<c:out value="${sms.smsContent}"/>')">
+										<c:choose>
+											<c:when test="${fn:length(sms.smsContent) > 25}">
+												<c:out value="${fn:substring(sms.smsContent, 0, 25)}" />...
+											</c:when>
+											<c:otherwise>
+												<c:out value="${sms.smsContent}" />
+											</c:otherwise>
+										</c:choose>
+									</span>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
 				</table>
-				<!-- 페이지 이동 인터페이스 영역 -->
+				<!-- 페이지 이동 UI -->
 				<div class="pageMaker_wrap">
 					<ul class="pageMaker">
-						<!-- Previous Button -->
+						<!-- 이전 버튼 -->
 						<c:if test="${pageMaker.prev}">
-							<li class="pageMaker_btn prev"><a
-								href="${pageMaker.pageStart - 1}">이전</a></li>
+							<li class="pageMaker_btn prev"><a href="${pageMaker.pageStart - 1}">이전</a></li>
 						</c:if>
-						<!-- Page Numbers -->
-						<c:forEach begin="${pageMaker.pageStart}"
-							end="${pageMaker.pageEnd}" var="num">
-							<li
-								class="pageMaker_btn ${pageMaker.cri.pageNum == num ? 'active' : ''}">
+						<!-- 페이지 번호 표시 -->
+						<c:forEach begin="${pageMaker.pageStart}" end="${pageMaker.pageEnd}" var="num">
+							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":""}">
 								<a href="${num}">${num}</a>
 							</li>
 						</c:forEach>
-						<!-- Next Button -->
+						<!-- 다음 버튼 -->
 						<c:if test="${pageMaker.next}">
-							<li class="pageMaker_btn next"><a
-								href="${pageMaker.pageEnd + 1}">다음</a></li>
+							<li class="pageMaker_btn next"><a href="${pageMaker.pageEnd + 1 }">다음</a></li>
 						</c:if>
 					</ul>
 				</div>
-
-
+				<!-- 페이지 이동을 위한 폼 -->
+				<form id="moveForm" action="/admin/sms" method="get">
+					<input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+					<input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+					<input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+				</form>
+				<!-- SMS 발송 버튼 -->
 				<div class="sms-button-container">
 					<button class="send-sms" onclick="showSmsPopup()">SMS 발송</button>
 				</div>
-
 			</div>
 		</div>
 	</main>
@@ -94,36 +118,39 @@
 		<div class="sms-popup-content">
 			<span class="close" onclick="closeSmsPopup()">&times;</span>
 			<h2>SMS 발송</h2>
-			<form id="searchForm" onsubmit="return false;"
-				class="search-container">
-				<select id="popupSearchCategory" name="category">
+			<!-- 회원 검색 폼 -->
+			<form id="memberSearchForm" onsubmit="return false;" class="search-container" action="searchMember.do">
+				<select id="popupSearchType" name="type">
 					<option value="name">성명</option>
 					<option value="id">ID</option>
 					<option value="phone">전화번호</option>
-				</select> <input type="text" class="search-bar" id="popupSearchQuery"
-					placeholder="검색어를 입력하세요." name="keyword">
+				</select>
+				<input type="text" class="search-bar" id="popupSearchQuery" placeholder="검색어를 입력하세요." name="keyword">
+				<!-- 검색 버튼 -->
 				<button type="button" onclick="popupSearchMember()">검색</button>
 			</form>
 			<div>
 				<ul id="searchResults"></ul>
 			</div>
+			<!-- SMS 발송 폼 -->
 			<form id="sendSms" method="post" action="sendSms.do">
-				<label for="recipientNumber" class="sms-label">수신인 번호:</label> <input
-					type="text" id="recipientNumber" name="recipientNumber" readonly>
+				<!-- 숨겨진 회원 코드 -->
+				<input type="hidden" id="memCode" name="memCode">
+				<label for="recipientNumber" class="sms-label">수신인 번호:</label>
+				<input type="text" id="recipientNumber" name="recipientNumber" readonly>
 				<div>
-					<label for="senderNumber" class="sms-label">발신인 번호:</label> <input
-						type="text" id="senderNumber" name="senderNumber"
-						value="01091933200">
+					<label for="senderNumber" class="sms-label">발신인 번호:</label>
+					<input type="text" id="senderNumber" name="senderNumber" value="01091933200">
 				</div>
 				<div>
 					<label for="smsContent" class="sms-label">내용:</label>
 					<textarea id="smsContent" name="smsContent" rows="4" cols="50"></textarea>
 				</div>
+				<!-- 보내기 버튼 -->
 				<button type="submit" class="send-button">보내기</button>
 			</form>
 		</div>
 	</div>
-
 
 	<!-- SMS 상세보기 팝업 -->
 	<div id="smsDetailsPopup" class="smsDetail-popup">

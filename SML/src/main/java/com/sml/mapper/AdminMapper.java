@@ -25,7 +25,7 @@ public interface AdminMapper {
 
 	public List<Map<String, Object>> getAgeGroupCountsByMonth(String year);
 
-	public int memberGetTotal(Criteria cri);
+	public int getMemberTotal(Criteria cri);
 
 	public List<CourseVO> getCourseList(Criteria cri);
 
@@ -40,5 +40,7 @@ public interface AdminMapper {
 	public int getChatTotal(Criteria cri);
 
 	public void saveChatContent(ChatVO chatVO);
+
+	public void insertSms(SmsVO sms);
 
 }
