@@ -13,6 +13,8 @@ import com.sml.model.SmsVO;
 
 public interface AdminMapper {
 
+	// MEMBER 관련
+
 	public List<MemberVO> getMemberList(Criteria cri);
 
 	public void updateAdm(@Param("memCode") int memCode, @Param("memAdminCheck") int memAdminCheck);
@@ -27,22 +29,28 @@ public interface AdminMapper {
 
 	public int getMemberTotal(Criteria cri);
 
+	// COURSES 관련
+
 	public List<CourseVO> getCourseList(Criteria cri);
 
 	public int getCourseTotal(Criteria cri);
 
+	// SMS 관련
+
 	public List<SmsVO> getSmsList(Criteria cri);
 
 	public int getSmsTotal(Criteria cri);
+
+	public void insertSms(SmsVO sms);
+
+	public List<MemberVO> selectAbsentMembers();
+
+	// CHAT 관련
 
 	public List<ChatVO> getChatList(Criteria cri);
 
 	public int getChatTotal(Criteria cri);
 
 	public void saveChatContent(ChatVO chatVO);
-
-	public void insertSms(SmsVO sms);
-
-	public List<MemberVO> selectAbsentMembers();
 
 }

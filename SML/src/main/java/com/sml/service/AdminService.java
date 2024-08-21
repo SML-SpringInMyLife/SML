@@ -15,8 +15,8 @@ import com.sml.model.MemberVO;
 import com.sml.model.SmsVO;
 
 public interface AdminService {
-	
-	// MEMBER 관련	
+
+	// MEMBER 관련
 
 	public List<MemberVO> getMemberList(Criteria cri) throws Exception;
 
@@ -32,16 +32,16 @@ public interface AdminService {
 
 	public int getMemberTotal(Criteria cri);
 
-	// COURSES 관련	
-	
+	// COURSES 관련
+
 	public List<CourseVO> getCourseList(Criteria cri);
 
 	public int getCourseTotal(Criteria cri);
 
 	// SMS 관련
-	
+
 	public List<SmsVO> getSmsList(Criteria cri);
-	
+
 	public int getSmsTotal(Criteria cri);
 
 	public void sendSms(HashMap<String, String> set) throws Exception;
@@ -52,10 +52,10 @@ public interface AdminService {
 
 	public void sendReminderSms(List<MemberVO> absentMembers) throws Exception;
 
-	// CHAT 관련	
-	
+	// CHAT 관련
+
 	public List<ChatVO> getChatList(Criteria cri);
-	
+
 	public int getChatTotal(Criteria cri);
 
 	public void saveChatContent(ChatVO chatVO);
