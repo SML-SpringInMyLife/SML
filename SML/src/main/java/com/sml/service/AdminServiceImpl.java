@@ -207,7 +207,8 @@ public class AdminServiceImpl implements AdminService {
 	// 미출석 회원에게 안부 문자 발송
 	@Override
 	@Transactional
-	public void sendReminderSms(List<MemberVO> members) throws Exception {
+	public void sendReminderSms(List<MemberVO> members){
+		logger.info(null, members.size());
 		if (members == null || members.isEmpty()) {
 			logger.warn("조회된 미출석 회원 없음");
 			return;
@@ -217,11 +218,6 @@ public class AdminServiceImpl implements AdminService {
 		boolean isTestMode = true;
 
 		for (MemberVO member : members) {
-			if (member == null) {
-				logger.warn("회원이 null값이면 건너뜀");
-				continue;
-			}
-
 			String phone = member.getMemPhone();
 			if (phone == null || phone.trim().isEmpty()) {
 				logger.warn("전화번호 없는 회원 스킵 : {}", member);
