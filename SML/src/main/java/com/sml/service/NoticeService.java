@@ -11,8 +11,7 @@ import com.sml.model.NoticeVO;
 public interface NoticeService {
     
 	/* 공지사항 등록 */
-	public void noticeRegister(NoticeVO notice) throws Exception;                             //파일을 여러게 등록할 수 있으므로 list사용
-	// public void noticeRegisterfile(NoticeVO notice, List<FileupVO> fileup) throws Exception;
+	public void noticeRegister(NoticeVO notice) throws Exception;                  
 
 	/* 공지사항 조회 */
 	public List<NoticeVO> noticeGetList(Criteria cri) throws Exception;

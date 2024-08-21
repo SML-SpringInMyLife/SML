@@ -20,6 +20,18 @@ public class NoticeServiceImpl implements NoticeService {
 	public void noticeRegister(NoticeVO notice) throws Exception {
 		
 	    noticeMapper.noticeRegister(notice);
+	    
+	    //이미지가 없는 경우, 메서드 실행 종료 
+	    if(notice.getImageList() == null || notice.getImageList().size() <= 0) {
+			return;
+		}
+	    
+	  //이미지 등록, 람다식 활용한 for문
+	    notice.getImageList().forEach(attach ->{
+	    	
+	    	attach.setNoticeCode(notice.getNoticeCode());
+	    	noticeMapper.imageEnroll(attach);
+	  		});
 	}
 
 	@Override  //게시글 조회

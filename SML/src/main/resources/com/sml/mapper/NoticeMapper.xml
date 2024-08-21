@@ -20,25 +20,28 @@
 
 
 	<!-- 공지사항 글 등록 -->
-	<insert id="noticeRegister">
-		insert into NOTICE (NOTICE_TITLE, NOTICE_BODY,
-		MEM_CODE)
-		values (#{noticeTitle},#{noticeBody},#{memCode})
+<insert id="noticeRegister" useGeneratedKeys="true" keyProperty="noticeCode" keyColumn="NOTICE_CODE">
+    INSERT INTO NOTICE (NOTICE_TITLE, NOTICE_BODY, MEM_CODE)
+    VALUES (#{noticeTitle}, #{noticeBody}, #{memCode})
+</insert>
 
-	</insert>
-
-	<!-- 공지사항 글 등록 파일업로드에서 notice_code를 가져오기 위해 사용 <insert id="noticeRegister" 
-		useGeneratedKeys="true" keyProperty="noticeCode"> insert into NOTICE (MEM_CODE,CATEGORY_CODE, 
-		NOTICE_TITLE, NOTICE_BODY) values (#{memCode},#{categoryCode},#{noticeTitle},#{noticeBody}) 
-		</insert> -->
-
-	<!--파일 업로드 -->
-	<insert id="fileUp">
-		INSERT INTO FILE_UP (NOTICE_CODE, FILE_NAME,
-		FILE_PATH, FILE_TYPE)
-		values
-		(#{noticeCode},#{FileName},#{FilePath},#{FileType})
-	</insert>
+	
+<!-- 이미지파일 업로드 -->
+<insert id="imageEnroll">
+    INSERT INTO FILE_UP (
+        NOTICE_CODE, 
+        FILE_NAME,
+        FILE_PATH,
+        FILE_UUID,
+        FILE_TYPE
+    ) VALUES (
+        #{noticeCode},
+        #{fileName},
+        #{filePath},
+        #{fileUuid},
+        'NOTICE'
+    )
+</insert>
 
    <!-- 검색기능 -->
     <sql id="search">
@@ -59,7 +62,7 @@
     <select id="noticeGetList" resultType="com.sml.model.NoticeVO" resultMap="noticeResultMap">
     <![CDATA[
         SELECT * FROM (
-            SELECT /*+INDEX_DESC(NOTICE SYS_C008413) */
+            SELECT
                 ROWNUM AS rn, NOTICE_CODE, NOTICE_TITLE, NOTICE_ENROLL_DATE, NOTICE_COUNT, NOTICE_LIKE
             FROM NOTICE
             WHERE NOTICE_STATUS = 'N'
