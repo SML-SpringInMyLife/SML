@@ -1,6 +1,7 @@
 package com.sml.model;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -18,5 +19,7 @@ public class NoticeVO {
 	private String noticeStatus;
 	private int noticeCount;
 	private String memName;
+	private List<FileupVO> imageList;
+
 	
 }

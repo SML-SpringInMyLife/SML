@@ -8,9 +8,10 @@ import com.sml.model.NoticeVO;
 
 public interface NoticeMapper {
 	/* 공지사항 등록 */
-	public void noticeRegister(NoticeVO notice);
+	public int noticeRegister(NoticeVO notice);
 	
-	/* public void fileUp(FileupVO file); //파일 업로드 */
+	/* 이미지 등록 */
+	public void imageEnroll(FileupVO vo);
 	
 	/* 공지사항 조회(목록) */
 	public List<NoticeVO> noticeGetList(Criteria cri);
