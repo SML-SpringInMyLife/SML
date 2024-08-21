@@ -18,7 +18,7 @@ public interface CourseMapper {
 	
 	public CourseVO courseDetail(int courseCode);
 	
-	public int courseModify(CourseVO vo);
+	public int courseModify(CourseVO course);
 	
 	public int courseDelete(int courseCode);
 	

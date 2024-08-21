@@ -1,10 +1,7 @@
 package com.sml.controller;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.request;
-
 import java.util.List;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -13,15 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sml.model.CommunityReplyDTO;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
-import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
-import com.sml.model.ReplyDTO;
 import com.sml.service.CommunityService;
 
 @Controller
@@ -68,30 +65,17 @@ public class CommunityController {
 		return "redirect:/community/boardList";
 	}
 
-	@GetMapping("/detail")
+	@GetMapping({"/detail", "/modify"})
 	public void communityDetailGET(int commCode, Criteria cri, Model model) throws Exception {
-		logger.info(commCode + "번 게시글 상세 페이지 이동");
+
 		model.addAttribute("cri", cri);
 		model.addAttribute("communityDetail", service.communityDetail(commCode));
-		
-		// 댓글 영역
-		List list = service.listReply();
-		if (!list.isEmpty()) {
-			model.addAttribute("list", list);
-		} else {
-			model.addAttribute("listCheck", "empty");
-		}
 		
 		int total = service.communityGetTotal(cri);
 		PageDTO pageMaker = new PageDTO(cri, total);
 		model.addAttribute("pageMaker", pageMaker);
 	}
-	@GetMapping("/modify")
-	public void communityModifyGET(int commCode, Criteria cri, Model model) throws Exception {
-		logger.info(commCode + "번 게시글 상세 페이지 이동");
-		model.addAttribute("cri", cri);
-		model.addAttribute("communityDetail", service.communityDetail(commCode));
-	}
+
 	@PostMapping("/modify")
 	public String modifyPOST(CommunityVO community, RedirectAttributes rttr) throws Exception {
 		logger.info("modifyPOST......" + community);
@@ -118,16 +102,12 @@ public class CommunityController {
 		return "redirect:/community/boardList";
 	}
 	
-	
-	// 댓글
-//	@PostMapping("/reply/enroll.do")
-//	public void enrollReplyPOST(ReplyDTO dto, RedirectAttributes rttr, HttpSession session) throws Exception {
-//		int memCode = (Integer) session.getAttribute("memCode");
-//		int commCode = (Integer) session.getAttribute("commCode");
-//		
-//		dto.setMemCode(memCode);
-//		dto.setCommCode(commCode);
-//		service.enrollReply(dto);
-//	}
-	
+	@GetMapping("/reply/{memCode}")
+	public String replyGET(@PathVariable("memCode")int memCode, int commCode, Model model) throws Exception {
+		CommunityVO community = service.getCommunityCode(commCode);
+		model.addAttribute("communityDetail", community);
+		model.addAttribute("member", memCode);
+		return "/reply";
+	}
+
 }

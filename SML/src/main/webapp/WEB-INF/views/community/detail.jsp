@@ -7,14 +7,7 @@
 <title>게시글 상세 페이지</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 <link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
-<style>
-.login-required-message {
-    font-weight: bold; /* 볼드체로 설정 */
-    color: #FF0000; /* 필요에 따라 색상 설정 (여기서는 빨간색으로 설정) */
-    margin-top: 10px;
-    font-size: 16px; /* 필요에 따라 폰트 크기 조정 */
-}
-</style>
+
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
@@ -25,14 +18,14 @@
 		<div class="community_container">
 			<jsp:include page="/WEB-INF/views/community/communityMenu.jsp"/>
 			<div class="community_main_content">
-				<h2>게시글 상세 페이지</h2>
+				<h2><c:out value='${communityDetail.commTitle}'/></h2>
+				<c:if test="${member != null}">
+					<div class="replyAndlike" style="text-align: right;">
+						<button id="replyBtn"><img src="resources/images/community/reply.png"></button>
+						<button id="likeBtn">좋아요</button>
+					</div>
+				</c:if>
 				<table class="community_table">
-					<tr>
-						<td>글 제목</td>
-						<td>
-							<input class="input_block" name="commTitle" readonly="readonly" value="<c:out value='${communityDetail.commTitle}'/>"/>
-						</td>
-					</tr>
 					<tr>
 						<td>작성자</td>
 						<td>
@@ -64,78 +57,16 @@
 				
 				<div class="btn_section">
         			<c:choose>
-            			<c:when test="${sessionScope.member.memCode == commWriter}">
+            			<c:when test="${sessionScope.member.memCode == memCode}">
                 			<button id="deleteBtn" class="btn">삭제</button>
-                			<button id="BoardListBtn" class="btn">목록</button>
+                			<button id="cancelBtn" class="btn">목록</button>
                 			<button id="modifyBtn" class="btn">수정</button>
             			</c:when>
             			<c:otherwise>
-                			<button id="BoardListBtn" class="btn">목록</button>
+                			<button id="cancelBtn" class="btn">목록</button>
             			</c:otherwise>
         			</c:choose>
     			</div>
-			
-			<div class="community-reply">
-            	<h3>댓글</h3>
-             	<div id="replyListSection">
-                	<c:if test="${listCheck != 'empty'}">
-                    	<c:forEach items="${list}" var="list">
-                     		<table class="community_reply">
-                        		<tr>
-                           			<td>
-                              			<c:out value="${list.repWriter}" />
-                              			<br>
-                              			<c:out value="${list.repContent}" />
-                              			<br>
-                              			<small>
-                                  			<c:choose>
-                                      			<c:when test="${not empty list.rmodifyDate}">
-                                          			<fmt:formatDate value="${list.rmodifyDate}" pattern="yyyy-MM-dd"/>
-                                          			<small><c:out value="${list.rmodifyDate}"/>(수정됨)</small>
-                                      			</c:when>
-                                      			<c:otherwise>
-                                             		<fmt:formatDate value="${list.renrollDate}" pattern="yyyy-MM-dd"/>
-                                      			</c:otherwise>
-                                  			</c:choose>
-                              			</small>
-                              			<c:if test="${sessionScope.member != null && sessionScope.member.memName eq list.repWriter}">
-                                			<div class="reply_detail_btn_section">
-                                    			<button id="detailDeleteBtn" class="btn">삭제</button>
-                                    			<button id="detailModifyBtn" class="btn">수정</button>
-                                			</div>
-                            			</c:if>
-                        			</td>
-                        		</tr>
-                     	</table>
-                  	</c:forEach>
-               	</c:if>
-            	<c:if test="${listCheck == 'empty'}">
-               		<div class="table_empty">
-                  		등록된 글이 없습니다.
-               		</div>
-            	</c:if>
-             </div>
-             <div id="replyEnrollSection">
-                  <c:choose>
-                     <c:when test="${not empty sessionScope.member}">
-                         <div>
-                             현재 작성자 : ${sessionScope.member.memName} 님
-                         </div>
-                         <form id="replyEnrollForm" method="post" action="/community/reply/enroll">
-                             <textarea id="replyContentTextarea" name="replyContent" rows="4" cols="50" placeholder="댓글을 입력하세요..."></textarea>
-                             <div class="reply_btn_section">
-                                 <button id="replyEnrollBtn" type="submit" class="btn">댓글 등록</button>
-                             </div>
-                         </form>
-                     </c:when>
-                     <c:otherwise>
-                         <div class="login-required-message">
-                             로그인 후 댓글을 작성해 주세요.
-                         </div>
-                     </c:otherwise>
-                 </c:choose>
-             </div>
-         </div>
          </div>
 			
 		<form id="moveForm" method="get">
@@ -151,92 +82,39 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
 	<script>
-		let moveForm = $("#moveForm");
-		
-		// delete 버튼
-		$("#deleteBtn").on("click", function(e){
-			alert("삭제 버튼");
-			e.preventDefault();
-			moveForm.find("input").remove();
-			moveForm.append('<input type="hidden" name="commCode" value="${communityDetail.commCode}">');
-			moveForm.attr("action", "/community/delete");
-			moveForm.attr("method", "post");
-			moveForm.submit();
-		});
-
-		// 목록으로 이동 버튼
-		$("#BoardListBtn").on("click", function(e){
-			e.preventDefault();
-		
-			$("input[name=commCode]").remove();
-			moveForm.attr("action", "/community/boardList")
-			moveForm.submit();
-		});
+	let moveForm = $("#moveForm");
 	
-		// 수정 페이지 이동 버튼 
-		$("#modifyBtn").on("click", function(e){
-			e.preventDefault();
-			moveForm.attr("action", "/community/modify");
-			moveForm.submit();
-		});
+	$("#deleteBtn").on("click", function(e){
+		alert("삭제 버튼 작동");
+	});
+	
+	$("#cancelBtn").on("click", function(e){
+		e.preventDefault();
 		
+		$("input[name=commCode]").remove();
+		moveForm.attr("action", "/community/boardList");
+		moveForm.submit();
+	});
+	
+	$("#modifyBtn").on("click", function(e){
+		e.preventDefault();
 		
-		$(document).ready(function() {
-			
-			// 댓글 alert
-			
-        
-			// 댓글 등록
-			$(".replyEnrollBtn").on("click", function(e){
-				const commCode = '${commCode}';
-				const memCode = '${memCode}';
-				const repContent = '${replyEnroll.repContent}';
-				
-				const data = {
-						commCode : commCode,
-						memCode : memCode,
-						repContent : repContent
-				}
-				
-				$.ajax({
-					data : data,
-					type : 'POST',
-					url : '/community/reply/enroll',
-					success : function(result){
-						window.close();
-					}
-				});
-			});
-
-        	// 댓글 목록을 로드하는 함수
-        	function loadReplies() {
-            	$.ajax({
-                	url: '/reply/list',
-                	type: 'GET',
-                	data: { commCode: $('input[name="commCode"]').val() },
-                	success: function(response) {
-                    	let replyList = $("#replyList");
-                    	replyList.empty();
-                    
-                    // 댓글 목록을 동적으로 생성
-                    $.each(response.replies, function(index, reply) {
-                        replyList.append(`
-                            <div class="reply-item">
-                                <p>${reply.content}</p>
-                                <small>작성일: ${reply.date}</small>
-                            </div>
-                        `);
-                    });
-                },
-                /* error: function(xhr, status, error) {
-                    alert("댓글 목록 로드 실패: " + error); */
-                }
-            });
-        }
-
-        // 페이지 로드 시 댓글 목록을 로드
-        loadReplies();
-    });
+		moveForm.attr("action", "/community/modify");
+		moveForm.submit();
+	});
+	
+	$("#replyBtn").on("click", function(e){
+		e.preventDefault();
+		
+		const memCode = '${member.memCode}';
+		const commCode = '${communityDetail.commCode}';
+		
+		moveForm.attr("action", "/community/reply")
+		moveForm.submit();
+	});
+		
 	</script>
+	
+	
 </body>
 </html>

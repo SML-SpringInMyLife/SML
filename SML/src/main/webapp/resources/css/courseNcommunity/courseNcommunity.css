@@ -341,3 +341,7 @@ textarea.input_block {
 	color: #666;
 	margin-top: 20px;
 }
+
+.reply_button_section {
+    text-align: right;
+}

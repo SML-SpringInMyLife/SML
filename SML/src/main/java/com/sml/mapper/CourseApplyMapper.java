@@ -22,7 +22,9 @@ public interface CourseApplyMapper {
 	 * 포인트 차감 (COURSE 테이블의 COURSE_POINT 만큼 마이너스)
 	 * 제한 (COURSE 테이블의 COURSE_LIMIT만큼 데이터가 차면 더 이상 버튼을 누를 수 없게)
 	 * */
-	public int applyApply(CourseApplyDTO apply) throws Exception;
+	public int courseApply(CourseApplyDTO apply) throws Exception;
+	
+	public int applyTotal(Criteria cri);
 	
 	public int cancelApply(int applyCode);
 	

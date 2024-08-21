@@ -19,21 +19,18 @@
 		<div class="course_container">
 			<jsp:include page="/WEB-INF/views/course/courseMenu.jsp"/>
 			<div class="course_main_content">
-			<h2>수업 상세 페이지</h2>
+			<h2>수강 신청</h2>
 				<table class="course_table">
 					<tr>
 						<td>분류</td>
 						<td>
-							<input name="ccatName" readonly="readonly" value="<c:out value='${detail.ccatName}'/>">
-							<!-- <span>대분류</span>
-                			<select class="cate1" disabled>
-                				<option value="none">선택</option>
-                			</select>
-                			<br>
-                			<span>소분류</span>
-                			<select class="cate2" name="ccatCode" disabled>
-                				<option value="none">선택</option>
-                			</select> -->
+							<select class="cate1" disabled>
+								<option value="none">선택</option>
+							</select>
+							<span> > </span>
+							<select class="cate2" disabled>
+								<option value="none">선택</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
@@ -51,17 +48,16 @@
 					<tr>
 						<td>수강 기간</td>
 						<td>
-    						<input class="input_block" name="startDate" readonly="readonly" 
-           						value="<c:out value='${detail.startDate}'/>"/>
+    						<input type="text" value="<fmt:formatDate value='${detail.startDate}' pattern='yyyy-MM-dd'/>" readonly="readonly"/>
+
     						~
-    						<input class="input_block" name="endDate" readonly="readonly" 
-           						value="<c:out value='${detail.endDate}'/>"/>
+    						<input type="text" value="<fmt:formatDate value='${detail.endDate}' pattern='yyyy-MM-dd'/>" readonly="readonly"/>
 						</td>
 					</tr>
 					<tr>
 						<td>수업 시간/요일</td>
 						<td>
-							<%-- <fmt:formatDate value="<c:out value='${detail.startTime}'/>" pattern="yyyy-MM-dd"/> --%>
+							<input type="time" readonly="readonly" value="<c:out value='${detail.startTime}'/>">
 							~
 							<input type="time" readonly="readonly" value="<c:out value='${detail.endTime}'/>">
 							<br>
@@ -95,7 +91,7 @@
             			<c:when test="${sessionScope.member.memAdminCheck == 1}">
             				<button id="deleteBtn" class="btn">삭제</button>
                 			<button id="listBtn" class="btn">목록</button>
-                			<button id="modifyBtn" class="btn">수정</button>
+                			<button id="modifyBtn" class="btn modify_btn">수정</button>
             			</c:when>
             			<c:otherwise>
             				<button id="listBtn" class="btn">목록</button>
@@ -105,13 +101,50 @@
 				</div>
 			</div>
 		</div>
-
+		<form id="moveForm" method="get">
+               	<input type="hidden" name="courseCode" value='<c:out value="${detail.courseCode}"/>'>
+               	<input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum }"/>'>
+               	<input type="hidden" name="amount" value='<c:out value="${cri.amount }"/>' >
+               	<input type="hidden" name="keyword" value='<c:out value="${cri.keyword }"/>'>
+		</form>
 	</main>
 
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	
 	<script>
+	
+	/* 목록 이동 버튼 */
+	var moveForm = $("#moveForm");
+	$("#listBtn").on("click", function(e){
+		alert("목록 페이지 이동");
+		e.preventDefault();
+		$("input[name=courseCode]").remove();
+		moveForm.attr("action", "/course/boardList");
+		moveForm.submit();
+	});	
+	
+	/* 수정 페이지 이동 */
+	$("#modifyBtn").on("click", function(e){
+		alert("수정 페이지 이동");
+		e.preventDefault();
+		
+		moveForm.attr("action", "/course/modify");
+		moveForm.submit();
+	});
+	
+	$('.apply_btn').on("click",function(e){	
+		e.preventDefault();
+		
+		var courseCode = $(this).attr("href");
+
+	    // 팝업 옵션
+	    var popUrl = "/course/apply?courseCode=" + courseCode;
+	    var popOption = "width=650, height=550, top=300, left=300, scrollbars=yes";
+		
+		window.open(popUrl,"수강신청",popOption);
+	});
+	
 	$(document).ready(function(){
 		/* 카테고리 */
 		let cateList = JSON.parse('${cateList}');
@@ -143,9 +176,22 @@
 		makeCateArray(cate1Obj,cate1Array,cateList,1);
 		makeCateArray(cate2Obj,cate2Array,cateList,2);	
 		
+		// 대분류
+		for (let i = 0; i < cate1Array.length; i++) {
+    		cateSelect1.append("<option value='" + cate1Array[i].cateCode + "'>" + cate1Array[i].cateName + "</option>");
+		}
+
+		$(".cate1 option").each(function (i, obj) {
+    		if (targetCate2.cateParent === obj.value) {
+        	$(obj).attr("selected", "selected");
+    		}
+		});
+		
+		let targetCate2 = '${detail.ccatCode}';
+		
 		// 중분류
 		for(let i = 0; i < cate2Array.length; i++){
-			if(targetCate3.parentCode === cate2Array[i].ccatCode){
+			if(targetCate2.parentCode === cate2Array[i].ccatCode){
 				targetCate2 = cate2Array[i];	
 			}
 		}
@@ -160,45 +206,7 @@
 				$(obj).attr("selected", "selected");
 			}
 		});	
-		// 대분류
-		for(let i = 0; i < cate1Array.length; i++){
-			cateSelect1.append("<option value='"+cate1Array[i].ccatCode+"'>" + cate1Array[i].ccatName + "</option>");
-		}
-		$(".cate1 option").each(function(i,obj){
-			if(targetCate2.parentCode === obj.value){
-				$(obj).attr("selected", "selected");
-			}
-		});
-	});
-	
-	/* 목록 이동 버튼 */
-	var moveForm = $("#moveForm");
-	$("#listBtn").on("click", function(e){
-		e.preventDefault();
-		$("input[name=courseCode]").remove();
-		moveForm.attr("action", "/course/boardList");
-		moveForm.submit();
-	});	
-	
-	/* 수정 페이지 이동 */
-	$("#modifyBtn").on("click", function(e){
-		e.preventDefault();
-		let addInput = '<input type="hidden" name="courseCode" value="${detail.courseCode}">';
-		$("#moveForm").append(addInput);
-		$("#moveForm").attr("action", "/course/modify");
-		$("#moveForm").submit();
-	});
-	
-	$('.apply_btn').on("click",function(e){	
-		e.preventDefault();
 		
-		var courseCode = $(this).attr("href");
-
-	    // 팝업 옵션
-	    var popUrl = "/course/apply?courseCode=" + courseCode;
-	    var popOption = "width=650, height=550, top=300, left=300, scrollbars=yes";
-		
-		window.open(popUrl,"수강신청",popOption);
 	});
 	</script>
 </body>

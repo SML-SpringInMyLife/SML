@@ -91,18 +91,18 @@
 	<update id="courseModify">
 		UPDATE COURSE
 			SET
-				COURSE_NAME = #{courseName},
+				COURSE_NAME = #{courseName, jdbcType=VARCHAR},
 				TEA_CODE = #{teaCode},
 				CCAT_CODE = #{ccatCode},
 				COURSE_LIMIT = #{courseLimit},
-<!-- 				COURSE_START_DATE = #{startDate, jdbcType=DATE},
-				COURSE_END_DATE = #{endDate, jdbcType=DATE}, -->
-				COURSE_START_TIME = #{startTime},
-				COURSE_END_TIME = #{endTime},
-				COURSE_DAY = #{courseDay},
-				COURSE_CONTENT = #{courseContent},
+				COURSE_START_DATE = #{startDate, jdbcType=DATE},
+        		COURSE_END_DATE = #{endDate, jdbcType=DATE},
+				COURSE_START_TIME = #{startTime, jdbcType=VARCHAR},
+				COURSE_END_TIME = #{endTime, jdbcType=VARCHAR},
+				COURSE_DAY = #{courseDay, jdbcType=VARCHAR},
+				COURSE_CONTENT = #{courseContent, jdbcType=VARCHAR},
 				COURSE_MODIFY_DATE = SYSDATE
-			WHERE COURSE_CODE = #{courseCode}
+			WHERE COURSE_CODE = #{courseCode, jdbcType=VARCHAR}
 	</update>
 	
 	<update id="courseDelete">
