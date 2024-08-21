@@ -25,7 +25,7 @@ public interface AdminMapper {
 
 	public List<Map<String, Object>> getAgeGroupCountsByMonth(String year);
 
-	public int memberGetTotal(Criteria cri);
+	public int getMemberTotal(Criteria cri);
 
 	public List<CourseVO> getCourseList(Criteria cri);
 

@@ -35,7 +35,7 @@ import net.nurigo.java_sdk.api.Message;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
 
 @Controller
-@RequestMapping(value = "/admin")
+@RequestMapping("/admin")
 public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
@@ -49,7 +49,7 @@ public class AdminController {
 	private String SMSapiSecret;
 
 	/* 관리자 메인 페이지 이동 */
-	@GetMapping(value = "main")
+	@GetMapping("/main")
 	public void adminMainGET(Model model) throws Exception {
 		logger.info("관리자 페이지 이동");
 
@@ -67,7 +67,7 @@ public class AdminController {
 	}
 
 	/* 특정 연도에 대한 월별 연령대별 회원 수 데이터를 비동기적으로 조회 */
-	@GetMapping(value = "getDataForYear")
+	@GetMapping("/getDataForYear")
 	@ResponseBody
 	public Map<String, int[]> getDataForYear(@RequestParam("year") String year) throws Exception {
 		logger.info("선택 년도 : " + year);
@@ -75,19 +75,19 @@ public class AdminController {
 	}
 
 	/* 관리자 - 회원 관리 페이지 이동 */
-	@GetMapping(value = "members")
+	@GetMapping("/members")
 	public void adminMembersGET(Criteria cri, Model model) throws Exception {
 		logger.info("관리자 - 회원 관리 페이지 이동");
 
 		// 페이징 처리된 회원 목록 가져오기
 		List<MemberVO> members = service.getMemberList(cri);
 		model.addAttribute("members", members.isEmpty() ? "empty" : members);
-		model.addAttribute("totalCount", service.memberGetTotal(cri));
-		model.addAttribute("pageMaker", new PageDTO(cri, service.memberGetTotal(cri)));
+		model.addAttribute("totalCount", service.getMemberTotal(cri));
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getMemberTotal(cri)));
 	}
 
 	/* 관리자 권한 업데이트 */
-	@PostMapping(value = "updateAdm")
+	@PostMapping("/updateAdm")
 	public String updateAdm(@RequestParam int memCode, @RequestParam int memAdminCheck, RedirectAttributes rttr) {
 		logger.info("관리권한 업데이트 멤버Code: " + memCode + ", 관리자 여부: " + memAdminCheck);
 
@@ -103,7 +103,7 @@ public class AdminController {
 	}
 
 	/* 회원 상태 업데이트 */
-	@PostMapping(value = "updateStatus")
+	@PostMapping("/updateStatus")
 	public String updateStatus(@RequestParam int memCode, @RequestParam int memStatus, RedirectAttributes rttr) {
 		logger.info("상태 업데이트 멤버Code: " + memCode + ", 상태: " + memStatus);
 
@@ -119,7 +119,7 @@ public class AdminController {
 	}
 
 	/* 관리자 - 수강 신청 관리 페이지 이동 */
-	@GetMapping(value = "courses")
+	@GetMapping("/courses")
 	public void adminCoursesGET(Criteria cri, Model model) throws Exception {
 		logger.info("관리자 - 수강 신청 관리 페이지 이동");
 
@@ -130,13 +130,13 @@ public class AdminController {
 	}
 
 	/* 관리자 정보 수정 페이지 이동 */
-	@GetMapping(value = "adminInfo")
+	@GetMapping("/adminInfo")
 	public void adminInfoGET() throws Exception {
 		logger.info("관리자 - 정보 수정 페이지 이동");
 	}
 
 	/* 관리자 - 문자 관리 페이지 이동 */
-	@GetMapping(value = "sms")
+	@GetMapping("/sms")
 	public void adminSmsGET(Criteria cri, Model model) throws Exception {
 		logger.info("관리자 - 문자 관리 페이지 이동");
 
@@ -146,7 +146,7 @@ public class AdminController {
 		model.addAttribute("pageMaker", new PageDTO(cri, service.getSmsTotal(cri)));
 	}
 
-	@GetMapping(value = "searchMember.do")
+	@GetMapping("/searchMember.do")
 	@ResponseBody
 	public List<MemberVO> searchMember(Criteria cri) throws Exception {
 		logger.info("회원 검색 - 타입: " + cri.getType() + ", 키워드: " + cri.getKeyword());
@@ -156,7 +156,7 @@ public class AdminController {
 	}
 
 	/* SMS 발송 및 DB 저장 + 테스트발송 모드 추가 */
-	@PostMapping(value = "sendSms.do")
+	@PostMapping("/sendSms.do")
 	@Transactional
 	public String sendSmsPost(HttpServletRequest request) throws Exception {
 
@@ -216,7 +216,7 @@ public class AdminController {
 	}
 
 	/* 로그인 페이지 이동 */
-	@GetMapping(value = "login")
+	@GetMapping("/login")
 	public void adminLoginGET() throws Exception {
 		logger.info("로그인 페이지 이동");
 	}
