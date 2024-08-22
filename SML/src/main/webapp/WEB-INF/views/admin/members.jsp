@@ -47,65 +47,72 @@
 							<th data-label="회원상태">회원상태</th>
 						</tr>
 					</thead>
-					<tbody id="memberList">
-						<!-- 반복출력 -->
-						<c:forEach var="member" items="${members}" varStatus="status">
-							<tr>
-								<td data-label="No.">${totalCount - (pageNum - 1) * amount - status.index}</td>
-								<td data-label="ID"><c:out value="${member.memId}" /></td>
-								<td data-label="성명"><c:out value="${member.memName}" /></td>
-								<td data-label="생년월일"><fmt:formatDate
-										value="${member.memBirth}" pattern="yyyy-MM-dd" /></td>
-								<td data-label="전화번호"><c:out value="${member.memPhone}" /></td>
-								<td data-label="잔여포인트"><c:out
-										value="${member.memTotalPoint}" /></td>
-								<td data-label="권한부여">
-									<div class="admChange-container">
-										<c:choose>
-											<c:when test="${member.memAdminCheck == 1}">관리자 / </c:when>
-										</c:choose>
-										<form action="/admin/updateAdm" method="post"
-											class="makeAdm-form">
-											<input type="hidden" name="memCode" value="${member.memCode}" />
+					<c:if test="${members == 'empty' || members.size() == 0}">
+						<div class="table_empty">등록된 회원가 없습니다.</div>
+					</c:if>
+					<c:if test="${members != 'empty'}">
+						<tbody id="memberList">
+							<!-- 반복출력 -->
+							<c:forEach var="member" items="${members}" varStatus="status">
+								<tr>
+									<td data-label="No.">${totalCount - (pageNum - 1) * amount - status.index}</td>
+									<td data-label="ID"><c:out value="${member.memId}" /></td>
+									<td data-label="성명"><c:out value="${member.memName}" /></td>
+									<td data-label="생년월일"><fmt:formatDate
+											value="${member.memBirth}" pattern="yyyy-MM-dd" /></td>
+									<td data-label="전화번호"><c:out value="${member.memPhone}" /></td>
+									<td data-label="잔여포인트"><c:out
+											value="${member.memTotalPoint}" /></td>
+									<td data-label="권한부여">
+										<div class="admChange-container">
 											<c:choose>
-												<c:when test="${member.memAdminCheck == 1}">
-													<input type="hidden" name="memAdminCheck" value="0" />
-													<button type="submit" class="changeAdm">회수</button>
-												</c:when>
-												<c:otherwise>
-													<input type="hidden" name="memAdminCheck" value="1" />
-													<button type="submit" class="changeAdm">권한부여</button>
-												</c:otherwise>
+												<c:when test="${member.memAdminCheck == 1}">관리자 / </c:when>
 											</c:choose>
-										</form>
-									</div>
-								</td>
-								<td data-label="회원상태">
-									<div class="status-container">
-										<c:choose>
-											<c:when test="${member.memStatus == 1}">Y</c:when>
-											<c:otherwise>N</c:otherwise>
-										</c:choose>
-										/
-										<form action="/admin/updateStatus" method="post"
-											class="status-form">
-											<input type="hidden" name="memCode" value="${member.memCode}" />
+											<form action="/admin/updateAdm" method="post"
+												class="makeAdm-form">
+												<input type="hidden" name="memCode"
+													value="${member.memCode}" />
+												<c:choose>
+													<c:when test="${member.memAdminCheck == 1}">
+														<input type="hidden" name="memAdminCheck" value="0" />
+														<button type="submit" class="changeAdm">회수</button>
+													</c:when>
+													<c:otherwise>
+														<input type="hidden" name="memAdminCheck" value="1" />
+														<button type="submit" class="changeAdm">권한부여</button>
+													</c:otherwise>
+												</c:choose>
+											</form>
+										</div>
+									</td>
+									<td data-label="회원상태">
+										<div class="status-container">
 											<c:choose>
-												<c:when test="${member.memStatus == 1}">
-													<input type="hidden" name="memStatus" value="0" />
-													<button type="submit" class="changeStatus">휴면처리</button>
-												</c:when>
-												<c:otherwise>
-													<input type="hidden" name="memStatus" value="1" />
-													<button type="submit" class="changeStatus">복구처리</button>
-												</c:otherwise>
+												<c:when test="${member.memStatus == 1}">Y</c:when>
+												<c:otherwise>N</c:otherwise>
 											</c:choose>
-										</form>
-									</div>
-								</td>
-							</tr>
-						</c:forEach>
-					</tbody>
+											/
+											<form action="/admin/updateStatus" method="post"
+												class="status-form">
+												<input type="hidden" name="memCode"
+													value="${member.memCode}" />
+												<c:choose>
+													<c:when test="${member.memStatus == 1}">
+														<input type="hidden" name="memStatus" value="0" />
+														<button type="submit" class="changeStatus">휴면처리</button>
+													</c:when>
+													<c:otherwise>
+														<input type="hidden" name="memStatus" value="1" />
+														<button type="submit" class="changeStatus">복구처리</button>
+													</c:otherwise>
+												</c:choose>
+											</form>
+										</div>
+									</td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</c:if>
 				</table>
 				<!-- 페이지 이동 인터페이스 영역 -->
 				<div class="pageMaker_wrap">
