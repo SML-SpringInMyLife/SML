@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.sml.mapper.DonationMapper">
+
+	<resultMap id="donationResultMap" type="com.sml.model.DonationVO">
+	    <result property="id" column="ID" />
+	    <result property="merchantUid" column="MERCHANT_UID" />
+	    <result property="impUid" column="IMP_UID" />
+	    <result property="amount" column="AMOUNT" />
+	    <result property="buyerName" column="BUYER_NAME" />
+	    <result property="buyerEmail" column="BUYER_EMAIL" />
+	    <result property="buyerTel" column="BUYER_TEL" />
+	    <result property="regDate" column="REG_DATE" />
+	</resultMap>
+
+
+    <!-- 특정 ID로 Donation 정보 가져오기 -->
+    <select id="getDonationById" resultType="com.sml.model.DonationVO">
+        SELECT *
+        FROM DONATION
+        WHERE ID = #{id}
+    </select>
+
+    <!-- Donation 정보 삽입 -->
+    <insert id="insertDonation" parameterType="com.sml.model.DonationVO">
+        INSERT INTO DONATION (MERCHANT_UID, IMP_UID, AMOUNT, BUYER_NAME, BUYER_EMAIL, BUYER_TEL, REG_DATE)
+        VALUES (#{merchantUid}, #{impUid}, #{amount}, #{buyerName}, #{buyerEmail}, #{buyerTel}, #{regDate})
+    </insert>
+
+    <!-- 모든 Donation 정보 가져오기 -->
+	<select id="getAllDonations" resultMap="donationResultMap">
+	    SELECT *
+	    FROM DONATION
+	</select>
+
+
+</mapper>

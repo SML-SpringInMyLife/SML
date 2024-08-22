@@ -68,9 +68,21 @@
     <div id="donationButtonContainer">
         <button onclick="requestPay()">후원하기</button>
         <button onclick="location.href='/donation/list'">후원문의</button>
+        
+        <!-- 관리자인 경우에만 보이는 버튼 -->
+        <c:if test="${sessionScope.member.memAdminCheck == 1}">
+            <button onclick="location.href='/donation/all'">후원 리스트</button>
+        </c:if>
     </div>
 </main>
-
+<!-- 로그인한 사용자 정보를 자바스크립트에서 사용하기 위해 전달 -->
+<script type="text/javascript">
+    var loggedInUser = {
+        email: "${member.memMail}",
+        name: "${member.memName}",
+        tel: "${member.memPhone}"
+    };
+</script>
 <!-- jQuery -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <!-- iamport.payment.js -->
@@ -81,14 +93,14 @@
 
     function requestPay() {
         IMP.request_pay({
-            pg: "kakaopay", // 카카오페이 사용
-            pay_method: "card", // 결제 수단
-            merchant_uid: "ORD20240819-0000011", // 주문번호
-            name: "SML 후원", // 상품명
-            amount: 100, // 결제 금액
-            buyer_email: "sml@gmail.com",
-            buyer_name: "sml1",
-            buyer_tel: "010-1234-2345",
+            pg: "kakaopay",
+            pay_method: "card",
+            merchant_uid: "ORD" + Math.random().toString(36).substring(2, 15), // UUID처럼 고유한 문자열 생성
+            name: "SML 후원",
+            amount: 100,
+            buyer_email: loggedInUser.email,  // 로그인한 사용자 정보 반영
+            buyer_name: loggedInUser.name,    // 로그인한 사용자 정보 반영
+            buyer_tel: loggedInUser.tel,      // 로그인한 사용자 정보 반영
             buyer_addr: "서울특별시 강남구 신사동",
             buyer_postcode: "01181"
         }, function (rsp) { // 콜백 함수
