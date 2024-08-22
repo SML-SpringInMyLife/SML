@@ -276,6 +276,19 @@
 	</insert>
 
 
+	<!-- 안부문자 자동발송을 위한 3일연속 미출석자 조회 -->
+	<select id="selectAbsentMembers"
+		resultType="com.sml.model.MemberVO" resultMap="userResultMap">
+		SELECT m.MEM_CODE, m.MEM_NAME, m.MEM_PHONE
+		FROM TB_MEMBER m
+		LEFT JOIN MEMBER_CHECK mc ON m.MEM_CODE = mc.MEM_CODE
+		AND mc.CHECK_DATE >= SYSDATE - 3
+		WHERE m.MEM_ADMIN_CHECK = 0 AND m.MEM_STATUS = 1
+		GROUP BY m.MEM_CODE, m.MEM_NAME, m.MEM_PHONE
+		HAVING COUNT(mc.CHECK_CODE) = 0
+	</select>
+
+
 
 	<!-- 채팅을 포함하는 ResultMap -->
 	<resultMap id="chatMap" type="com.sml.model.ChatVO">

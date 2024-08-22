@@ -1,18 +1,17 @@
-// Enter 키 이벤트 처리 함수
-$(window).on('keypress', function(event) {
-    if (event.key === 'Enter') { // Enter 키가 눌렸을 때
-        event.preventDefault(); // 기본 동작 방지
-        sendMessage(); // 메시지 전송 함수 호출
+// Enter 키를 처리하는 함수
+function handleEnterKey(event) {
+    if (event.key === 'Enter') {
+        event.preventDefault(); // 기본 동작(예: 폼 제출) 방지
+        sendMessage();
     }
+}
+
+// 문서 로드 후 이벤트 리스너 추가
+$(document).ready(function() {
+    $('#message-input').on('keydown', handleEnterKey); // 메시지 입력 필드
+    $('#search-input').on('keydown', handleEnterKey);  // 검색 입력 필드
 });
 
-// 메시지 입력창에 Enter 키 이벤트 리스너 추가
-$('#message-input').on('keydown', function(event) {
-    if (event.key === 'Enter') {
-        event.preventDefault(); // 기본 동작 방지
-        sendMessage(); // 메시지 전송 함수 호출
-    }
-});
 
 // 햄버거 메뉴 버튼과 모바일 메뉴 요소를 가져옴
 const $hamburger = $('#hamburger');
