@@ -115,10 +115,18 @@ public class AdminController {
 		logger.info("관리자 - 수강 신청 관리 페이지 이동");
 
 		// 페이징 처리된 수강 신청 목록 조회 후 모델에 추가
+		/*
 		List<CourseVO> courses = service.getCourseList(cri);
 		model.addAttribute("courses", courses.isEmpty() ? "empty" : courses);
 		model.addAttribute("totalCount", service.getCourseTotal(cri));
 		model.addAttribute("pageMaker", new PageDTO(cri, service.getCourseTotal(cri)));
+		*/
+	}
+
+	@GetMapping("/talk")
+	public void talk() throws Exception {
+		logger.info("관리자 - 수강 신청 관리 페이지 이동");
+
 	}
 
 	// 관리자 정보 수정 페이지 이동
