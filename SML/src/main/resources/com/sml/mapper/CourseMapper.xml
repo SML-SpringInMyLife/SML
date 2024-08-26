@@ -6,7 +6,7 @@
 <mapper namespace="com.sml.mapper.CourseMapper">
 
 	<insert id="courseEnroll">
-    	INSERT INTO COURSE (COURSE_NAME, CCAT_CODE, COURSE_CONTENT, COURSE_LIMIT, COURSE_START_DATE, COURSE_END_DATE, TEA_CODE, COURSE_START_TIME, COURSE_END_TIME, COURSE_DAY) VALUES (
+    	INSERT INTO COURSE (COURSE_NAME, CCAT_CODE, COURSE_CONTENT, COURSE_LIMIT, COURSE_START_DATE, COURSE_END_DATE, TEA_CODE, COURSE_START_TIME, COURSE_END_TIME, COURSE_DAY, COURSE_POINT) VALUES (
         	#{courseName},
         	#{ccatCode},
         	#{courseContent},
@@ -16,7 +16,8 @@
         	#{teaCode},
         	#{startTime, jdbcType=TIME},
         	#{endTime, jdbcType=TIME}, 
-        	#{courseDay}
+        	#{courseDay},
+        	#{coursePoint}
     	)
 	</insert>
 	

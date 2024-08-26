@@ -17,7 +17,7 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-		<div>
+		<div class="course_container">
 		<h2>수강신청</h2>
 		<form action="course/apply" method="post" id="applyForm">
 			<table class="course_content">
@@ -80,7 +80,7 @@
 	$("#applyBtn").on("click", function() {
 		alert("수강 등록");
 		e.preventDefault();
-		applyForm.submit();
+		$("#applyForm").submit();
 	});
 
 	$("#cancelBtn").on("click", function() {

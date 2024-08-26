@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.sml.mapper.CourseApplyMapper;
 import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
+import com.sml.model.MemberVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -19,22 +20,14 @@ public class CourseApplyServiceImpl implements CourseApplyService {
 	CourseApplyMapper mapper;
 
 	@Override
-	public int applyApply(CourseApplyDTO apply) {
-		
-		CourseApplyDTO applyCheck = mapper.applyCheck(apply);
-		
-		if(applyCheck != null) {
-			return 2;
-		}
-		
-		try {
-			return mapper.courseApply(apply);
-		} catch (Exception e) {
-			return 0;
-		}
-		
+	public void courseApply(CourseApplyDTO dto) throws Exception {
+		mapper.courseApply(dto);		
 	}
 
-	
+	@Override
+	public int coursePoint(MemberVO member) throws Exception {
+		return mapper.coursePoint(member);
+	}
+
 	
 }

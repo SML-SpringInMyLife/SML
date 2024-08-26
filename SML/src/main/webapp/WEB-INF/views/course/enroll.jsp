@@ -103,6 +103,14 @@
 				</div>
 				<div class="form_section">
 					<div class="form_section_title">
+						<label>포인트</label>
+					</div>
+					<div class="form_section_content">
+						<input name="coursePoint"> 
+					</div>
+				</div>
+				<div class="form_section">
+					<div class="form_section_title">
 						<label>수업 소개</label>
 					</div>
 					<div class="form_section_content">
