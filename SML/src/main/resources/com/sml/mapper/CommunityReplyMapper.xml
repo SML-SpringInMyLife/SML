@@ -5,13 +5,20 @@
   
   <mapper namespace="com.sml.mapper.CommunityReplyMapper">
   
-  	<insert id="enrollReply">
-  		INSERT INTO COMMUNITY_REPLY(COMM_CODE, MEM_CODE, REP_CONTENT) VALUES (
+  	<insert id="enrollReply" parameterType="CommunityReplyDTO">
+  		INSERT INTO COMMUNITY_REPLY(COMM_CODE, MEM_CODE, REP_CONTENT, MEM_TARGET_CODE, COMM_GROUP, COMM_CODE) VALUES (
   			#{commCode},
   			#{memCode},
-  			#{repContent, jdbcType=VARCHAR}
+  			#{repContent, jdbcType=VARCHAR},
+  			#{targetCode},
+  			#{commGroup},
+  			#{commCode}
   		)
   	</insert>
+  	
+  	<select id="getSequence" resultType="int">
+  		SELECT COMMUNITY_REPLY
+  	</select>
 
   
   </mapper>

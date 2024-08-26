@@ -62,12 +62,6 @@ public class CommunityServiceImpl implements CommunityService{
 	public CommunityVO getCommunityCode(int commCode) {
 		return mapper.getCommunityCode(commCode);
 	}
-
-	@Override
-	public int enrollReply(CommunityReplyDTO dto) {
-		int result = replyMapper.enrollReply(dto);
-		return replyMapper.enrollReply(dto);
-	}
 	
 	@Override
 	public int communityPoint(MemberVO member) throws Exception {

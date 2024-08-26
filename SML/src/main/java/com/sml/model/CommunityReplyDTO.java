@@ -8,14 +8,15 @@ import lombok.Data;
 public class CommunityReplyDTO {
 	
 	private int repCode;
-	private int commCode;
+	private int memCode;
 	private String repContent;
-	private String repWriter;
+	private int targetCode;
+	private int commCode;
+	private int commGroup;
+	private String repStatus;
 	private Date renrollDate;
 	private Date rmodifyDate;
-	private String repStatus;
-	private int memCode;
 	
-	// private int parentCode;
+	private String memName;
 
 }
