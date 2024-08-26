@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sml.model.ChatVO;
-import com.sml.model.CourseVO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
@@ -121,7 +120,9 @@ public class AdminController {
 		model.addAttribute("totalCount", service.getCourseTotal(cri));
 		model.addAttribute("pageMaker", new PageDTO(cri, service.getCourseTotal(cri)));
 		*/
+
 	}
+
 
 	// 관리자 정보 수정 페이지 이동
 	@GetMapping("/adminInfo")

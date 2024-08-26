@@ -1,0 +1,164 @@
+/*
+*
+* ==========================================
+* FOR DEMO PURPOSES
+* ==========================================
+*
+*/
+body {
+  background-color: #74EBD5;
+  background-image: linear-gradient(90deg, #74EBD5 0%, #9FACE6 100%);
+  min-height: 100vh;
+}
+
+#loginContainer {
+  text-align: center;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f5f5f5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #ddd;
+  border-radius: 1rem;
+}
+
+.text-small {
+  font-size: 0.9rem;
+}
+
+.messages-box,
+.chat-box {
+  height: 510px;
+  overflow-y: scroll;
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+
+input::placeholder {
+  font-size: 0.9rem;
+  color: #999;
+}
+
+.aop:hover {
+  cursor: pointer;
+}
+
+.temp {
+  color: red !important;
+}
+
+.divTest {
+  border: 1px solid black;
+}
+
+/* Chat icon blinking effect */
+.iconBlink {
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0% { opacity: 1; }
+  50% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* Additional styles */
+.chatIcon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  cursor: pointer;
+}
+
+.iconImg {
+  width: 50px;
+  height: 50px;
+}
+
+/* Display none class */
+.display-none {
+  display: none;
+}
+
+.chatContainer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 500px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chatTop, .chatBottom {
+  padding: 10px;
+  background-color: #f1f1f1;
+}
+
+.chatMiddle {
+  height: calc(100% - 80px);
+  overflow-y: auto;
+}
+
+.chatListContainer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 500px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.chatList {
+  padding: 10px;
+}
+
+/* Chat List Box Styles */
+.chatList_box, .chatList_box2 {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.chatList_box2 {
+  background-color: #f9f9f9;
+}
+
+.profile_img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.userNameId {
+  flex: 1;
+}
+
+.notRead {
+  background-color: red;
+  color: white;
+  padding: 2px 5px;
+  border-radius: 50%;
+  font-size: 0.8rem;
+  margin-left: 10px;
+}
+
+.floatLeft, .floatRight {
+  float: left;
+}
