@@ -16,13 +16,7 @@
 </head>
 <body>
 	<div id="quick-menu">
-		<button onclick="enlargeFont()">
-			<i class="fi fi-br-zoom-in"></i>
-		</button>
-		<button onclick="reduceFont()">
-			<i class="fi fi-br-zoom-out"></i>
-		</button>
-		<button onclick="chatConsultation()">
+		<button onclick="openChat()">
 			<i class="fi fi-br-comments-question-check"></i>
 		</button>
 		<button onclick="scrollToTop()">
@@ -107,18 +101,19 @@
 	<div id="chat-container" class="hidden">
 		<c:choose>
 			<c:when test="${sessionScope.member.memAdminCheck == 1}">
-				<div id="chat-header">
-					<h3>Chat Rooms</h3>
-					<div id="roomList"></div>
-					<span><< 채팅 상담 >></span>
-					<button onclick="minimizeChat()">➖</button>
-					<!-- 최소화 버튼 -->
-					<button onclick="closeChat()">❌</button>
-				</div>
-				<div id="chat-box"></div>
-				<div id="chat-input">
-					<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
-					<button onclick="sendMessage()">전송</button>
+				<div id="chatContainer">
+					<div id="chatList">
+						<h3>Chat Rooms</h3>
+						<input type="text" id="newChatRoom" placeholder="New Chat Room">
+						<button onclick="createChatRoom()">Create Room</button>
+						<div id="roomList"></div>
+					</div>
+					<div id="chatRoom">
+						<h3>Chat Room</h3>
+						<div id="messageArea"></div>
+						<input type="text" id="messageInput" placeholder="Type a message">
+						<button onclick="sendMessage()">Send</button>
+					</div>
 				</div>
 			</c:when>
 			<c:otherwise>
@@ -145,6 +140,28 @@
 		</div>
 	</div>
 	<script src="${webappRoot}/resources/js/common.js"></script>
+	<script>
+		function openChat() {
+			document.getElementById('chat-container').classList.toggle('hidden');
+		}
 
+		function minimizeChat() {
+			document.getElementById('chat-container').classList.add('hidden');
+			// Optional: Add functionality to minimize chat
+		}
+
+		function closeChat() {
+			document.getElementById('close-chat-modal').classList.remove('hidden');
+		}
+
+		function confirmCloseChat() {
+			document.getElementById('chat-container').classList.add('hidden');
+			document.getElementById('close-chat-modal').classList.add('hidden');
+		}
+
+		function cancelCloseChat() {
+			document.getElementById('close-chat-modal').classList.add('hidden');
+		}
+	</script>
 </body>
 </html>

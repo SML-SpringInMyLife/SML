@@ -253,7 +253,7 @@ function selectMember(name, phoneNumber, memCode) {
     $('#recipientNumber').val(selectedMember.phone);
 
     // 메시지 내용 필드에 회원 이름을 포함한 메시지 자동 입력
-    $('#smsContent').val(`[SML] 안녕하세요, ${selectedMember.name}님! 3일 이상 결석을 확인하는 문자입니다.`);
+    $('#smsContent').val(`[SML] 안녕하세요, ${selectedMember.name}님! `);
 
     // 숨겨진 필드에 회원 코드 설정
     $('#memCode').val(selectedMember.memCode);
