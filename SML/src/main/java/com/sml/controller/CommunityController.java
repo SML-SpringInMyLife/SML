@@ -15,9 +15,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.sml.model.CommunityReplyDTO;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
+import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
 import com.sml.service.CommunityService;
 
@@ -57,10 +57,18 @@ public class CommunityController {
 
 	@PostMapping("/enroll.do")
 	public String enrollPOST(CommunityVO community, RedirectAttributes rttr, HttpSession session) throws Exception {
+		MemberVO member = (MemberVO) session.getAttribute("member");
+		if (member == null) {
+	        rttr.addFlashAttribute("error_message", "Member session is not available.");
+	        return "redirect:/error";
+	    }
+		
 		int memCode = (Integer) session.getAttribute("memCode");
 		community.setMemCode(memCode);
 		
 		service.communityEnroll(community);
+		System.out.println("Calling communityPoint with member: " + member);
+		service.communityPoint(member);
 		rttr.addFlashAttribute("enroll_result", community.getCommTitle());
 		return "redirect:/community/boardList";
 	}

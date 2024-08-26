@@ -2,9 +2,9 @@ package com.sml.mapper;
 
 import java.util.List;
 
-import com.sml.model.CommunityLikeVO;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
+import com.sml.model.MemberVO;
 
 public interface CommunityMapper {
 	
@@ -22,5 +22,7 @@ public interface CommunityMapper {
 	
 
 	public CommunityVO getCommunityCode(int commCode);
+	
+	public int communityPoint(MemberVO member);
 	
 }

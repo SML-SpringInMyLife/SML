@@ -10,6 +10,7 @@ import com.sml.mapper.CommunityReplyMapper;
 import com.sml.model.CommunityReplyDTO;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
+import com.sml.model.MemberVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -66,6 +67,11 @@ public class CommunityServiceImpl implements CommunityService{
 	public int enrollReply(CommunityReplyDTO dto) {
 		int result = replyMapper.enrollReply(dto);
 		return replyMapper.enrollReply(dto);
+	}
+	
+	@Override
+	public int communityPoint(MemberVO member) throws Exception {
+		return mapper.communityPoint(member);
 	}
 
 

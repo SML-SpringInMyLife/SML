@@ -80,4 +80,12 @@
   		 WHERE COMM_CODE = #{commCode}
   	</select>
   	
+  	<update id="communityPoint">
+  		UPDATE TB_MEMBER
+  			SET
+  				MEM_TOTAL_POINT = MEM_TOTAL_POINT +500
+  			WHERE 
+  				MEM_CODE = #{memCode}
+  	</update>
+  	
   </mapper>
