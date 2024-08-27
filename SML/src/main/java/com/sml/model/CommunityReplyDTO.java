@@ -10,13 +10,13 @@ public class CommunityReplyDTO {
 	private int repCode;
 	private int memCode;
 	private String repContent;
-	private int targetCode;
+	private String targetCode;
 	private int commCode;
-	private int commGroup;
+	private int repGroup;
 	private String repStatus;
 	private Date renrollDate;
 	private Date rmodifyDate;
 	
-	private String memName;
+	private String repWriter;
 
 }

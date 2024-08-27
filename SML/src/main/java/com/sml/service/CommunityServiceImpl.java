@@ -2,6 +2,9 @@ package com.sml.service;
 
 import java.util.List;
 
+import javax.mail.Session;
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -68,5 +71,17 @@ public class CommunityServiceImpl implements CommunityService{
 		return mapper.communityPoint(member);
 	}
 
+	
+	// 댓글 
+	
+	@Override
+	public List<CommunityReplyDTO> getReplyList(Criteria cri) throws Exception {
+		return replyMapper.getReplyList(cri);
+	}
+
+	@Override
+	public int replyGetTotal(Criteria cri) throws Exception {
+		return replyMapper.replyGetTotal(cri);
+	}
 
 }
