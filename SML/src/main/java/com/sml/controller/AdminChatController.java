@@ -20,6 +20,7 @@ import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.sml.model.ChatVO;
 import com.sml.model.MemberVO;
+import com.sml.model.UserSessionInfo;
 import com.sml.service.AdminService;
 
 @ServerEndpoint(value = "/chat", configurator = HttpSessionConfigurator.class)
@@ -54,9 +55,11 @@ public class AdminChatController {
 				int memCode = member.getMemCode();
 				String memName = member.getMemName();
 				int memAdminCheck = member.getMemAdminCheck();
+				String chatSessionId = session.getId(); // 세션 ID 사용
+				logger.info("세션 아이디 =================: " + chatSessionId);
 
 				// UserSessionInfo 객체를 만들어 sessions 맵에 저장 (ID, 세션, 회원 이름, 회원 코드)
-				sessions.put(userId, new UserSessionInfo(userId, session, memName, memCode));
+				sessions.put(userId, new UserSessionInfo(userId, session, memName, memCode, chatSessionId));
 
 				// 세션별로 채팅 버퍼를 초기화
 				chatBuffers.put(session, new StringBuilder());
@@ -105,13 +108,13 @@ public class AdminChatController {
 				logger.info("수신된 JSON 메시지: " + jsonMessage.toString());
 
 				String userId = member.getMemId(); // 발신자 ID
-				String memName = member.getMemName(); // 발신자 이
+				String memName = member.getMemName(); // 발신자 이름
 				String content = jsonMessage.getString("content");
 
 				// 세션의 채팅 버퍼에 메시지 추가
 				StringBuilder buffer = chatBuffers.get(session);
 				if (buffer != null) {
-					buffer.append(content).append("\n"); // 메시지와 새 줄 추가
+					buffer.append(memName + " : " + content + "\n" + "\n"); // 메시지와 새 줄 추가
 				}
 
 				// 모든 연결된 세션에 메시지 전송
@@ -211,36 +214,5 @@ public class AdminChatController {
 		// 사용자가 존재할 경우 sessions에서 제거
 		sessions.remove(userId);
 		logger.info("연결 종료: " + userId);
-	}
-
-	// 사용자 세션 정보 클래스
-	public class UserSessionInfo {
-		private String userId;
-		private Session session;
-		private String memName;
-		private int memCode;
-
-		public UserSessionInfo(String userId, Session session, String memName, int memCode) {
-			this.userId = userId;
-			this.session = session;
-			this.memName = memName;
-			this.memCode = memCode;
-		}
-
-		public String getUserId() {
-			return userId;
-		}
-
-		public Session getSession() {
-			return session;
-		}
-
-		public int getMemCode() {
-			return memCode;
-		}
-
-		public String getMemName() {
-			return memName;
-		}
 	}
 }

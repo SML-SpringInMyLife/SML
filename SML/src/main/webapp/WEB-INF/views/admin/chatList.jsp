@@ -58,7 +58,7 @@
 									<td data-label="성명">${chat.memCode}</td>
 									<!-- 내용, 길면 축약 표시 -->
 									<td data-label="내용"><span class="chat-content"
-										data-chat-content="<c:out value='${fn:escapeXml(chat.chatContent)}' />">
+										data-chat-content="<c:out value='${chat.chatContent}' />">
 											<c:choose>
 												<c:when test="${fn:length(chat.chatContent) > 25}">
 													<c:out value="${fn:substring(chat.chatContent, 0, 25)}" />...
