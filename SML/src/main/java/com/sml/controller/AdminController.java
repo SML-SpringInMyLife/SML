@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -198,15 +199,16 @@ public class AdminController {
 
 	// 채팅 내용 저장
 	@PostMapping("/saveChatContent")
-	public void saveChatContent(ChatVO chatVO, RedirectAttributes rttr) {
-		logger.info("채팅 내용 저장 : " + chatVO);
+    public void saveChatContent(@RequestBody ChatVO chatVO, RedirectAttributes rttr) {
+        logger.info("채팅 내용 저장 : " + chatVO);
 
-		try {
-			service.saveChatContent(chatVO);
-			rttr.addFlashAttribute("result", "success");
-		} catch (Exception e) {
-			logger.error("채팅 저장 실패 : ", e);
-			rttr.addFlashAttribute("result", "fail");
-		}
-	}
+        try {
+            service.saveChatContent(chatVO);
+            rttr.addFlashAttribute("result", "success");
+        } catch (Exception e) {
+            logger.error("채팅 저장 실패 : ", e);
+            rttr.addFlashAttribute("result", "fail");
+        }
+    }
+
 }

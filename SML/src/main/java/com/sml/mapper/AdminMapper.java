@@ -51,6 +51,6 @@ public interface AdminMapper {
 
 	public int getChatTotal(Criteria cri);
 
-	public void saveChatContent(ChatVO chatVO);
+	public void saveChatContent(ChatVO chat);
 
 }
