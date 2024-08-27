@@ -34,7 +34,7 @@
 		<div class="container">
 			<div class="left-menu">
 				<a href="/" class="main-link"> <img
-					src="${webappRoot}/resources/images/logo.jpg" alt="Logo"
+					src="${webappRoot}/resources/images/logo.png" alt="Logo"
 					class="logo">
 				</a>
 				<nav class="main-menu" id="main-menu">
