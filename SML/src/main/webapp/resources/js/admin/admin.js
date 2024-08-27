@@ -270,19 +270,25 @@ function clearSearchResults() {
     $('#searchResults').empty(); // 검색 결과 목록 초기화
 }
 
-// 채팅 검색 함수
-function searchChats() {
-    const type = $('#chatSearchType').val(); // 검색 카테고리 가져오기
-    const query = $('#chatSearchQuery').val(); // 검색 쿼리 가져오기
-
-    // 검색어 및 카테고리를 콘솔에 출력
-    console.log(`Searching for ${query} in type ${type}`);
-}
-
 // 채팅 상세 보기 팝업 표시 함수
 function showChatDetails(content) {
-    $('#chatDetailsContent').text(content); // 채팅 세부 내용 설정
+    console.log('채팅 내용:', content); // 콘솔 출력 (디버깅)
+    $('#chatDetailsContent').text(content); // 채팅 내용을 팝업에 설정
     $('#chatDetailsPopup').show(); // 채팅 상세 보기 팝업 표시
+}
+
+// 문서 전체에서 클릭 이벤트를 감지하고, '.chat-content' 요소가 클릭된 경우 처리
+document.addEventListener('click', function(event) {
+    if (event.target.matches('.chat-content')) { // '.chat-content' 요소가 클릭되었는지 확인
+        const content = event.target.getAttribute('data-chat-content'); // data 속성에서 값 가져오기
+        console.log('채팅 내용 클릭됨. 데이터:', content); // 디버깅용
+        showChatDetails(content); // 채팅 내용을 팝업에 표시
+    }
+});
+
+// 채팅 상세 보기 팝업 닫기 함수
+function closeChatDetailsPopup() {
+    $('#chatDetailsPopup').hide(); // 채팅 상세 보기 팝업 숨기기
 }
 
 // 채팅 상세 보기 팝업 닫기 함수

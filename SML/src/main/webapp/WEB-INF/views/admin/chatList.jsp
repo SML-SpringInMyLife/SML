@@ -6,8 +6,6 @@
 <html>
 <head>
 <title>SML_Admin(채팅상담관리)</title>
-<link rel="stylesheet"
-	href="${webappRoot}/resources/css/common/common.css">
 </head>
 <body>
 	<!-- 헤더 영역 포함 -->
@@ -28,25 +26,27 @@
 						<option value="content">내용</option>
 					</select>
 					<div class="search-bar">
-						<input
-							type="text" id="search" class="search-bar"
+						<input type="text" id="search" class="search-bar"
 							placeholder="검색어를 입력하세요." name="keyword"
 							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
 						<button onclick="search()">검색</button>
 					</div>
 				</div>
-				<c:if test="${chat != 'empty'}">
-					<table class="chat-table">
-						<thead>
-							<tr>
-								<th data-label="No.">No.</th>
-								<th data-label="분류">분류</th>
-								<th data-label="상담일시">상담일시</th>
-								<th data-label="아이디">아이디</th>
-								<th data-label="성명">성명</th>
-								<th data-label="내용">내용</th>
-							</tr>
-						</thead>
+				<table class="chat-table">
+					<thead>
+						<tr>
+							<th data-label="No.">No.</th>
+							<th data-label="분류">분류</th>
+							<th data-label="상담일시">상담일시</th>
+							<th data-label="아이디">아이디</th>
+							<th data-label="성명">성명</th>
+							<th data-label="내용">내용</th>
+						</tr>
+					</thead>
+					<c:if test="${chat == 'empty' || chat.size() == 0}">
+						<div class="table_empty">등록된 상담이 없습니다.</div>
+					</c:if>
+					<c:if test="${chat != 'empty'}">
 						<tbody id="chatList">
 							<c:forEach items="${chat}" var="chat" varStatus="status">
 								<tr>
@@ -56,25 +56,23 @@
 											value="${chat.chatDate}" pattern="yyyy-MM-dd HH:mm" /></td>
 									<td data-label="아이디">${chat.memCode}</td>
 									<td data-label="성명">${chat.memCode}</td>
+									<!-- 내용, 길면 축약 표시 -->
 									<td data-label="내용"><span class="chat-content"
-										onclick="showChatDetails('<c:out value="${chat.chatContent}"/>')">
+										data-chat-content="<c:out value='${fn:escapeXml(chat.chatContent)}' />">
 											<c:choose>
 												<c:when test="${fn:length(chat.chatContent) > 25}">
 													<c:out value="${fn:substring(chat.chatContent, 0, 25)}" />...
-          										</c:when>
+											</c:when>
 												<c:otherwise>
 													<c:out value="${chat.chatContent}" />
 												</c:otherwise>
 											</c:choose>
 									</span></td>
+								</tr>
 							</c:forEach>
 						</tbody>
-					</table>
-				</c:if>
-
-				<c:if test="${chat == 'empty'}">
-					<div class="table_empty">등록된 정보가 없습니다.</div>
-				</c:if>
+					</c:if>
+				</table>
 
 				<!-- 페이지 이동 인터페이스 영역 -->
 				<div class="pageMaker_wrap">
@@ -104,20 +102,19 @@
 						name="amount" value="${pageMaker.cri.amount}"> <input
 						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 				</form>
-
-
-				<!-- 채팅 상세보기 팝업 -->
-				<div id="chatDetailsPopup" class="chatDetail-Popup">
-					<div class="chat-popup-content">
-						<span class="close" onclick="closeChatDetailsPopup()">X</span>
-						<h2>채팅상담 상세보기</h2>
-						<div id="chatDetailsContent"></div>
-					</div>
-				</div>
 			</div>
 		</div>
-
 	</main>
+
+	<!-- 채팅 상세보기 팝업 -->
+	<div id="chatDetailsPopup" class="chatDetail-Popup">
+		<div class="chat-popup-content">
+			<span class="close" onclick="closeChatDetailsPopup()">X</span>
+			<h2>채팅상담 상세보기</h2>
+			<div id="chatDetailsContent"></div>
+		</div>
+	</div>
+
 
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
