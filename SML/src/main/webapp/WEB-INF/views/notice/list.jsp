@@ -52,13 +52,12 @@
 			<c:if test="${listCheck != 'empty'}">
 
 				<div class="category">
-					<select>
-						<option>카테고리</option>
-						<!-- 카테고리를 클릭 했을 때, 원래 목록페이지로 돌아오기 -->
-						<option>수강안내</option>
-						<option>전체공지</option>
-						<option>이벤트</option>
-					</select>
+        <select id="categoryFilter">
+            <option value="">전체</option>
+            <c:forEach var="category" items="${categories}">
+                <option value="${category.categoryCode}">${category.categoryName}</option>
+            </c:forEach>
+        </select>
 				</div>
 
 				<table>

@@ -13,6 +13,9 @@ public interface NoticeMapper {
 	/* 이미지 등록 */
 	public void imageEnroll(FileupVO vo);
 	
+	/* 지정 이미지 전체 삭제 */
+	public void deleteImageAll(int noticeCode);
+	
 	/* 공지사항 조회(목록) */
 	public List<NoticeVO> noticeGetList(Criteria cri);
 	
