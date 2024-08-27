@@ -1,5 +1,7 @@
 package com.sml.model;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -16,4 +18,5 @@ public class FileupVO {
 	private String fileUuid;
 	/* 파일 타입선택 */
 	private String fileType;
+	
 }

@@ -29,15 +29,21 @@
 			<form action="/notice/enroll.do" method="post" id="enrollForm">
 				<input type="hidden" name="memCode"
 					value="${sessionScope.member.memCode}">
-				<div class="category">
-					<select>
-						<option>☰ 게시글카테고리</option>
-						<option>수강안내</option>
-						<option>전체공지</option>
-						<option>이벤트</option>
-					</select>
-				</div>
-
+				
+			 <div class="category">
+                    <label for="categoryCode">☰ 카테고리:</label>
+                    <select id="categoryCode" name="categoryCode">
+                        <option value="">카테고리 선택 (선택사항)</option>
+                        <c:forEach var="category" items="${categories}">
+                            <option value="${category.categoryCode}">${category.categoryName}</option>
+                        </c:forEach>
+                    </select>
+                </div>
+                <div class="new-category">
+                    <label for="newCategory">새 카테고리:</label>
+                    <input type="text" id="newCategory" name="newCategory" placeholder="새 카테고리 입력 (선택사항)">
+                </div>
+              
 				<div class="title">
 					<!-- 제목 -->
 					<span id="alram_title" style="display: none;">제목을 입력해 주세요</span> <input
@@ -120,7 +126,9 @@
 					return;
 				}
 			});
-
+   
+			
+			 
 			/* 취소 버튼 */
 			$("#cancelbtn").click(function() {
 				location.href = "/notice/list";

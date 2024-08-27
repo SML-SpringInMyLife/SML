@@ -3,7 +3,6 @@ package com.sml.controller;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -35,11 +34,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sml.mapper.AttachMapper;
+import com.sml.model.CategoryType;
+import com.sml.model.CategoryVO;
 import com.sml.model.Criteria;
 import com.sml.model.FileupVO;
 import com.sml.model.MemberVO;
 import com.sml.model.NoticeVO;
 import com.sml.model.PageDTO;
+import com.sml.service.CategoryService;
 import com.sml.service.NoticeService;
 
 
@@ -51,42 +54,44 @@ public class NoticeController {
 	@Autowired
 	private NoticeService noticeservice;
 	
+	@Autowired
+    private CategoryService categoryService;
+	
+	
 	/* 공지사항 조회페이지 이동 */
 	@GetMapping("/list")
-	public void noticeListGET(Criteria cri, Model model, HttpSession session) throws Exception {
+    public void noticeListGET(Criteria cri, Model model, HttpSession session) throws Exception {
+        logger.info("공지사항 조회페이지 이동" + cri);
 
-		logger.info("공지사항 조회페이지 이동" + cri);
-      
-		List<NoticeVO> list = noticeservice.noticeGetList(cri);
-		
-		if(!list.isEmpty()) {
-	          model.addAttribute("list", list);
-	       } else {
-	    	   model.addAttribute("listCheck", "empty");
-	       }
-		
-			/* 페이징처리 */
-		int total = noticeservice.noticeGetTotal(cri);
-		
-		PageDTO pageMaker = new PageDTO(cri, total);
-		
-		model.addAttribute("pageMaker", pageMaker);
-		
-		
-		 // 로그인 상태 확인
-		// MemberVO 객체를 가져옵니다.
-	    MemberVO member = (MemberVO) session.getAttribute("member");
-	    
-	    // member 객체가 null이 아니라면 로그인 상태입니다.
-	    boolean isLoggedIn = (member != null);
-	    boolean isAdmin = false;
-	    
-	    if(isLoggedIn) {
-	        isAdmin = member.getMemAdminCheck() == 1;
-	    }
-	    model.addAttribute("isLoggedIn", isLoggedIn);
-	    model.addAttribute("isAdmin", isAdmin);
-	}
+        List<NoticeVO> list = noticeservice.noticeGetList(cri);
+
+        if(!list.isEmpty()) {
+              model.addAttribute("list", list);
+           } else {
+               model.addAttribute("listCheck", "empty");
+           }
+
+            /* 페이징처리 */
+        int total = noticeservice.noticeGetTotal(cri);
+
+        PageDTO pageMaker = new PageDTO(cri, total);
+
+        model.addAttribute("pageMaker", pageMaker);
+
+         // 로그인 상태 확인
+        // MemberVO 객체를 가져옵니다.
+        MemberVO member = (MemberVO) session.getAttribute("member");
+
+        // member 객체가 null이 아니라면 로그인 상태입니다.
+        boolean isLoggedIn = (member != null);
+        boolean isAdmin = false;
+
+        if(isLoggedIn) {
+            isAdmin = member.getMemAdminCheck() == 1;
+        }
+        model.addAttribute("isLoggedIn", isLoggedIn);
+        model.addAttribute("isAdmin", isAdmin);
+    }
 	
 	/* 공지사항 조회기능 */
 	@PostMapping("/Count")
@@ -144,23 +149,23 @@ public class NoticeController {
 	    model.addAttribute("isAdmin", isAdmin);
 	}
 	
-	/* 공지사항 등록페이지 이동 */
-	@GetMapping("/enroll")
-	public void noticeEnrollGET(HttpSession session) throws Exception {
-
-		logger.info("공지사항 등록페이지 이동");
-     
-	}
 	
-	@PostMapping("/enroll.do")
-	public String noticeEnrollPOST(NoticeVO notice ,RedirectAttributes rttr) throws Exception {
-		 logger.info("공지사항 글 등록: " + notice);
-		 
-		 noticeservice.noticeRegister(notice);
-		 rttr.addFlashAttribute("enroll_result", notice.getNoticeTitle());
-		return "redirect:/notice/list";
-	}
-  
+	/* 공지사항 등록페이지 이동 */
+    @GetMapping("/enroll")
+    public void noticeEnrollGET(HttpSession session) throws Exception {
+        logger.info("공지사항 등록페이지 이동");
+
+    }
+
+    @PostMapping("/enroll.do")
+    public String noticeEnrollPOST(NoticeVO notice ,RedirectAttributes rttr) throws Exception {
+         logger.info("공지사항 글 등록: " + notice);
+
+         noticeservice.noticeRegister(notice);
+         rttr.addFlashAttribute("enroll_result", notice.getNoticeTitle());
+        return "redirect:/notice/list";
+    }
+    
 	/* 공지사항 수정 */
 	   @PostMapping("/modify")
 	   public String noticeModifyPOST(NoticeVO notice ,RedirectAttributes rttr) throws Exception{
@@ -200,6 +205,21 @@ public class NoticeController {
 			
 			return "redirect:/notice/list";
 		}
+	   
+	   @Autowired
+		private AttachMapper attachMapper;
+	   
+		/* 이미지 정보 반환 */
+		@GetMapping(value="/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+		public ResponseEntity<List<FileupVO>> getAttachList(int noticeCode){
+			
+			logger.info("getAttachList.........." + noticeCode);
+			
+			return new ResponseEntity<List<FileupVO>>(attachMapper.getAttachList(noticeCode), HttpStatus.OK);
+			
+		}
+	   
+	   
 		
 		/* 이미지 미리보기 */
 	   @GetMapping("/display")
@@ -360,5 +380,9 @@ public class NoticeController {
 			} //catch
 			return new ResponseEntity<String>("success", HttpStatus.OK);
 		}
-
+   
 }
+	
+
+		
+		
