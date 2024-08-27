@@ -114,15 +114,14 @@ public class AdminController {
 		logger.info("관리자 - 수강 신청 관리 페이지 이동");
 
 		/*
-		// 페이징 처리된 수강 신청 목록 조회 후 모델에 추가
-		List<CourseVO> courses = service.getCourseList(cri);
-		model.addAttribute("courses", courses.isEmpty() ? "empty" : courses);
-		model.addAttribute("totalCount", service.getCourseTotal(cri));
-		model.addAttribute("pageMaker", new PageDTO(cri, service.getCourseTotal(cri)));
-		*/
+		 * // 페이징 처리된 수강 신청 목록 조회 후 모델에 추가 List<CourseVO> courses =
+		 * service.getCourseList(cri); model.addAttribute("courses", courses.isEmpty() ?
+		 * "empty" : courses); model.addAttribute("totalCount",
+		 * service.getCourseTotal(cri)); model.addAttribute("pageMaker", new
+		 * PageDTO(cri, service.getCourseTotal(cri)));
+		 */
 
 	}
-
 
 	// 관리자 정보 수정 페이지 이동
 	@GetMapping("/adminInfo")
@@ -186,7 +185,7 @@ public class AdminController {
 	}
 
 	// 관리자 - 채팅 상담 관리 페이지 이동
-	@GetMapping("/chat")
+	@GetMapping("/chatList")
 	public void adminChatGET(Criteria cri, Model model) throws Exception {
 		logger.info("관리자 - 채팅 상담 관리 페이지 이동");
 
@@ -199,7 +198,7 @@ public class AdminController {
 
 	// 채팅 내용 저장
 	@PostMapping("/saveChatContent")
-	public String saveChatContent(ChatVO chatVO, RedirectAttributes rttr) {
+	public void saveChatContent(ChatVO chatVO, RedirectAttributes rttr) {
 		logger.info("채팅 내용 저장 : " + chatVO);
 
 		try {
@@ -209,7 +208,5 @@ public class AdminController {
 			logger.error("채팅 저장 실패 : ", e);
 			rttr.addFlashAttribute("result", "fail");
 		}
-
-		return "redirect:/admin/chat";
 	}
 }

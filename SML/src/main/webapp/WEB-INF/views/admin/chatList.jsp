@@ -1,167 +1,125 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>Header</title>
+<title>SML_Admin(채팅상담관리)</title>
 <link rel="stylesheet"
 	href="${webappRoot}/resources/css/common/common.css">
-<link rel='stylesheet'
-	href='https://cdn-uicons.flaticon.com/2.5.1/uicons-bold-rounded/css/uicons-bold-rounded.css'>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-	<div id="quick-menu">
-		<button onclick="openChat()">
-			<i class="fi fi-br-comments-question-check"></i>
-		</button>
-		<button onclick="scrollToTop()">
-			<i class="fi fi-br-chevron-double-up"></i>
-		</button>
-	</div>
+	<!-- 헤더 영역 포함 -->
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<header>
-		<div class="container">
-			<div class="left-menu">
-				<a href="/" class="main-link"> <img
-					src="${webappRoot}/resources/images/logo.jpg" alt="Logo"
-					class="logo">
-				</a>
-				<nav class="main-menu" id="main-menu">
-					<ul>
-						<li><a href="/notice/list">공지사항</a></li>
-						<li><a href="/life/list">생활정보</a></li>
-						<li><a href="/location/map">위치찾기</a></li>
-						<li><a href="/course/boardList">취미교실</a></li>
-						<li><a href="/community/boardList">커뮤니티</a></li>
-						<li><a href="/donation/main">후원하기</a></li>
+	<!-- 해당 페이지의 메인내용을 여기에 작성하세요. -->
+	<main>
+		<div class="admin-container">
+			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
+			<div class="admin-main-content">
+				<h2>채팅상담 관리</h2>
+				<div class="search-container">
+					<select id="type" name="type">
+						<option value="all">전체</option>
+						<option value="date">상담일시</option>
+						<option value="id">ID</option>
+						<option value="name">성명</option>
+						<option value="content">내용</option>
+					</select>
+					<div class="search-bar">
+						<input
+							type="text" id="search" class="search-bar"
+							placeholder="검색어를 입력하세요." name="keyword"
+							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+						<button onclick="search()">검색</button>
+					</div>
+				</div>
+				<c:if test="${chat != 'empty'}">
+					<table class="chat-table">
+						<thead>
+							<tr>
+								<th data-label="No.">No.</th>
+								<th data-label="분류">분류</th>
+								<th data-label="상담일시">상담일시</th>
+								<th data-label="아이디">아이디</th>
+								<th data-label="성명">성명</th>
+								<th data-label="내용">내용</th>
+							</tr>
+						</thead>
+						<tbody id="chatList">
+							<c:forEach items="${chat}" var="chat" varStatus="status">
+								<tr>
+									<td data-label="No.">${totalCount - status.index}</td>
+									<td data-label="분류">${chat.categoryCode}</td>
+									<td data-label="상담일시"><fmt:formatDate
+											value="${chat.chatDate}" pattern="yyyy-MM-dd HH:mm" /></td>
+									<td data-label="아이디">${chat.memCode}</td>
+									<td data-label="성명">${chat.memCode}</td>
+									<td data-label="내용"><span class="chat-content"
+										onclick="showChatDetails('<c:out value="${chat.chatContent}"/>')">
+											<c:choose>
+												<c:when test="${fn:length(chat.chatContent) > 25}">
+													<c:out value="${fn:substring(chat.chatContent, 0, 25)}" />...
+          										</c:when>
+												<c:otherwise>
+													<c:out value="${chat.chatContent}" />
+												</c:otherwise>
+											</c:choose>
+									</span></td>
+							</c:forEach>
+						</tbody>
+					</table>
+				</c:if>
+
+				<c:if test="${chat == 'empty'}">
+					<div class="table_empty">등록된 정보가 없습니다.</div>
+				</c:if>
+
+				<!-- 페이지 이동 인터페이스 영역 -->
+				<div class="pageMaker_wrap">
+					<ul class="pageMaker">
+						<!-- Previous Button -->
+						<c:if test="${pageMaker.prev}">
+							<li class="pageMaker_btn prev"><a
+								href="${pageMaker.pageStart - 1}">이전</a></li>
+						</c:if>
+						<!-- Page Numbers -->
+						<c:forEach begin="${pageMaker.pageStart}"
+							end="${pageMaker.pageEnd}" var="num">
+							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":"" }">
+								<a href="${num}">${num}</a>
+							</li>
+						</c:forEach>
+						<!-- Next Button -->
+						<c:if test="${pageMaker.next}">
+							<li class="pageMaker_btn next"><a
+								href="${pageMaker.pageEnd + 1 }">다음</a></li>
+						</c:if>
 					</ul>
-				</nav>
-			</div>
-			<nav class="auth-menu" id="auth-menu">
-				<ul>
-					<c:choose>
-						<c:when test="${not empty sessionScope.member}">
-							<li><span class="welcome" id="memName">${sessionScope.member.memName}
-									님</span><span class="memId" id="memId" style="display: none;">${sessionScope.member.memId}</span></li>
-							<c:choose>
-								<c:when test="${sessionScope.member.memAdminCheck == 1}">
-									<li><a href="/admin/main">관리자페이지</a></li>
-								</c:when>
-								<c:otherwise>
-									<li><a href="/member/memberCheck">마이페이지</a></li>
-								</c:otherwise>
-							</c:choose>
-							<li><a href="/member/logout">로그아웃</a></li>
-						</c:when>
-						<c:otherwise>
-							<li><a href="/member/login">로그인</a></li>
-							<li><a href="/member/join">회원가입</a></li>
-						</c:otherwise>
-					</c:choose>
-				</ul>
-			</nav>
-			<button class="hamburger" id="hamburger">&#9776;</button>
-			<div class="mobile-menu" id="mobile-menu">
-				<ul>
-					<li><a href="/notice/list">공지사항</a></li>
-					<li><a href="/life/list">생활정보</a></li>
-					<li><a href="/location/map">위치찾기</a></li>
-					<li><a href="/course/boardList">취미교실</a></li>
-					<li><a href="/community/boardList">커뮤니티</a></li>
-					<li><a href="/donation/main">후원하기</a></li>
-					<hr>
-					<c:choose>
-						<c:when test="${not empty sessionScope.member}">
-							<c:choose>
-								<c:when test="${sessionScope.member.memAdminCheck == 1}">
-									<li><a href="/admin/main">관리자페이지</a></li>
-								</c:when>
-								<c:otherwise>
-									<li><a href="/member/memberCheck">마이페이지</a></li>
-								</c:otherwise>
-							</c:choose>
-							<li><a href="/member/logout">로그아웃</a></li>
-						</c:when>
-						<c:otherwise>
-							<li><a href="/member/login">로그인</a></li>
-							<li><a href="/member/join">회원가입</a></li>
-						</c:otherwise>
-					</c:choose>
-				</ul>
-			</div>
-		</div>
-	</header>
+				</div>
+				<form id="moveForm" action="/admin/chat" method="get">
+					<input type="hidden" name="pageNum"
+						value="${pageMaker.cri.pageNum}"> <input type="hidden"
+						name="amount" value="${pageMaker.cri.amount}"> <input
+						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+				</form>
 
-	<!-- 채팅 팝업 설정 -->
-	<div id="chat-container" class="hidden">
-		<c:choose>
-			<c:when test="${sessionScope.member.memAdminCheck == 1}">
-				<div id="chatContainer">
-					<div id="chatList">
-						<h3>Chat Rooms</h3>
-						<input type="text" id="newChatRoom" placeholder="New Chat Room">
-						<button onclick="createChatRoom()">Create Room</button>
-						<div id="roomList"></div>
-					</div>
-					<div id="chatRoom">
-						<h3>Chat Room</h3>
-						<div id="messageArea"></div>
-						<input type="text" id="messageInput" placeholder="Type a message">
-						<button onclick="sendMessage()">Send</button>
+
+				<!-- 채팅 상세보기 팝업 -->
+				<div id="chatDetailsPopup" class="chatDetail-Popup">
+					<div class="chat-popup-content">
+						<span class="close" onclick="closeChatDetailsPopup()">X</span>
+						<h2>채팅상담 상세보기</h2>
+						<div id="chatDetailsContent"></div>
 					</div>
 				</div>
-			</c:when>
-			<c:otherwise>
-				<div id="chat-header">
-					<span><< 채팅 상담 >></span>
-					<button onclick="minimizeChat()">➖</button>
-					<!-- 최소화 버튼 -->
-					<button onclick="closeChat()">❌</button>
-				</div>
-				<div id="chat-box"></div>
-				<div id="chat-input">
-					<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
-					<button onclick="sendMessage()">전송</button>
-				</div>
-			</c:otherwise>
-		</c:choose>
-	</div>
-
-	<div id="close-chat-modal" class="modal hidden">
-		<div class="modal-content">
-			<p>채팅(상담)을 종료하시겠습니까?</p>
-			<button onclick="confirmCloseChat()">종료</button>
-			<button onclick="cancelCloseChat()">취소</button>
+			</div>
 		</div>
-	</div>
-	<script src="${webappRoot}/resources/js/common.js"></script>
-	<script>
-		function openChat() {
-			document.getElementById('chat-container').classList.toggle('hidden');
-		}
 
-		function minimizeChat() {
-			document.getElementById('chat-container').classList.add('hidden');
-			// Optional: Add functionality to minimize chat
-		}
+	</main>
 
-		function closeChat() {
-			document.getElementById('close-chat-modal').classList.remove('hidden');
-		}
-
-		function confirmCloseChat() {
-			document.getElementById('chat-container').classList.add('hidden');
-			document.getElementById('close-chat-modal').classList.add('hidden');
-		}
-
-		function cancelCloseChat() {
-			document.getElementById('close-chat-modal').classList.add('hidden');
-		}
-	</script>
+	<!-- 푸터 영역 포함 -->
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 </body>
 </html>
