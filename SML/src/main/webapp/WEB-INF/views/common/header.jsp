@@ -10,6 +10,9 @@
 	href="${webappRoot}/resources/css/common/common.css">
 <link rel='stylesheet'
 	href='https://cdn-uicons.flaticon.com/2.5.1/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 	<div id="quick-menu">
@@ -122,9 +125,6 @@
 			<button onclick="cancelCloseChat()">취소</button>
 		</div>
 	</div>
-
 	<script src="${webappRoot}/resources/js/common.js"></script>
-
-
 </body>
 </html>

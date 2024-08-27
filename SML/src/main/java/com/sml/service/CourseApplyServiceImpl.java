@@ -28,7 +28,7 @@ public class CourseApplyServiceImpl implements CourseApplyService {
 		}
 		
 		try {
-			return mapper.applyApply(apply);
+			return mapper.courseApply(apply);
 		} catch (Exception e) {
 			return 0;
 		}

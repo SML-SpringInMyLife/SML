@@ -45,17 +45,16 @@
 						<c:forEach items="${list}" var="list" varStatus="status">
 							<tr>
 								<td>${totalCount -status.index}</td>
+								<td><a class="move" href='<c:out value="${list.teaCode}"/>'>
+										<c:out value="${list.teaName}"></c:out>
+								</a></td>
 								<td>
-									<a class="move" href='<c:out value="${list.teaCode}"/>'>
-										<c:out value="${list.teaName}"></c:out></a>
+									<%-- <c:out value="${list.teaSubject}" /> --%> 과목을 추가해야할듯?
 								</td>
-								<td><%-- <c:out value="${list.teaSubject}" /> --%> 과목을 추가해야할듯?</td>
-								<td>
-									<c:choose>
+								<td><c:choose>
 										<c:when test="${list.teaStatus eq 'N'}">정상</c:when>
 										<c:otherwise>(삭제됨)</c:otherwise>
-									</c:choose>
-								</td>
+									</c:choose></td>
 							</tr>
 						</c:forEach>
 					</table>
@@ -67,32 +66,32 @@
 				<!-- 페이지 이동 인터페이스 영역 -->
 				<div class="pageMaker_wrap">
 					<ul class="pageMaker">
-						<!-- 이전 버튼 -->
+						<!-- Previous Button -->
 						<c:if test="${pageMaker.prev}">
 							<li class="pageMaker_btn prev"><a
 								href="${pageMaker.pageStart - 1}">이전</a></li>
 						</c:if>
-						<!-- 페이지 번호 -->
+						<!-- Page Numbers -->
 						<c:forEach begin="${pageMaker.pageStart}"
 							end="${pageMaker.pageEnd}" var="num">
-							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":""}">
+							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":"" }">
 								<a href="${num}">${num}</a>
 							</li>
 						</c:forEach>
-						<!-- 다음 버튼 -->
+						<!-- Next Button -->
 						<c:if test="${pageMaker.next}">
 							<li class="pageMaker_btn next"><a
 								href="${pageMaker.pageEnd + 1 }">다음</a></li>
 						</c:if>
 					</ul>
 				</div>
-
 				<form id="moveForm" action="/admin/teacher/list" method="get">
 					<input type="hidden" name="pageNum"
 						value="${pageMaker.cri.pageNum}"> <input type="hidden"
 						name="amount" value="${pageMaker.cri.amount}"> <input
 						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 				</form>
+
 			</div>
 		</div>
 	</main>

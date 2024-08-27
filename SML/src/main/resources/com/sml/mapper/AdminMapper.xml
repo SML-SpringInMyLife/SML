@@ -6,7 +6,7 @@
 
 <mapper namespace="com.sml.mapper.AdminMapper">
 
-	<!-- 멤버 테이블 컬럼명맵핑 -->
+	<!-- 멤버 테이블 컬럼명 맵핑 -->
 	<resultMap id="userResultMap" type="com.sml.model.MemberVO">
 		<result property="memCode" column="MEM_CODE" />
 		<result property="memId" column="MEM_ID" />
@@ -27,9 +27,14 @@
 	</resultMap>
 
 	<!-- 전체 회원 정보 가져오기 : 관리자페이지 회원관리 -->
-	<select id="getMemberList" resultType="com.sml.model.MemberVO"
-		resultMap="userResultMap">
-		SELECT * FROM TB_MEMBER
+	<select id="getMemberList" parameterType="map"
+		resultType="com.sml.model.MemberVO" resultMap="userResultMap">
+    <![CDATA[
+    SELECT * FROM (
+      SELECT
+        ROWNUM AS rn, m.*
+      FROM (
+        SELECT * FROM TB_MEMBER ]]>
 		<where>
 			<!-- 'type'이 'all'인 경우, 여러 필드를 검색 -->
 			<if test="type != null and type == 'all'">
@@ -40,6 +45,7 @@
 				OR MEM_PHONE LIKE '%' || #{keyword} || '%'
 				)
 			</if>
+
 			<!-- 특정 'type'에 대해 필터링 -->
 			<if test="type != null and type != 'all'">
 				<choose>
@@ -54,12 +60,16 @@
 					</when>
 				</choose>
 			</if>
-		</where>
-		ORDER BY MEM_ADMIN_CHECK DESC, MEM_NAME
+		</where><![CDATA[
+        ORDER BY MEM_ADMIN_CHECK DESC, MEM_NAME
+      ) m
+    )
+    WHERE rn > (#{pageNum} - 1) * #{amount} AND rn <= #{pageNum} * #{amount}
+    ]]>
 	</select>
 
-
-	<select id="memberGetTotal" resultType="int">
+	<!-- 전체 회원 수 가져오기 : 검색 조건에 맞는 -->
+	<select id="getMemberTotal" parameterType="map" resultType="int">
 		SELECT COUNT(*) FROM TB_MEMBER
 		<where>
 			<!-- 'type'이 'all'인 경우, 여러 필드를 검색 -->
@@ -88,36 +98,25 @@
 		</where>
 	</select>
 
-
 	<!-- 전체 활성화 회원 카운트 : 관리자페이지 메인① (관리자 제외) -->
 	<select id="getMemberCnt" resultType="int">
 		SELECT COUNT(*) FROM
-		TB_MEMBER WHERE MEM_STATUS = 1 AND MEM_ADMIN_CHECK = 0
+		TB_MEMBER
+		WHERE MEM_STATUS = 1 AND MEM_ADMIN_CHECK = 0
 	</select>
 
 	<!-- 전체 활성화 회원 연령구간대별 카운트 : 관리자페이지 메인① (관리자 제외) -->
 	<select id="getAgeGroupCnt" resultType="java.util.Map">
     <![CDATA[
     SELECT
-        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) < 50
-        THEN 1
-        END) AS under50,
-        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 50 AND 59
-        THEN 1
-        END) AS age50s,
-        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 60 AND 69
-        THEN 1
-        END) AS age60s,
-        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 70 AND 79
-        THEN 1
-        END) AS age70s,
-        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 80 AND 89
-        THEN 1
-        END) AS age80s,
-        COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) >= 90
-        THEN 1
-        END) AS age90plus
-    FROM TB_MEMBER WHERE MEM_STATUS = 1 AND MEM_ADMIN_CHECK = 0
+      COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) < 50 THEN 1 END) AS under50,
+      COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 50 AND 59 THEN 1 END) AS age50s,
+      COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 60 AND 69 THEN 1 END) AS age60s,
+      COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 70 AND 79 THEN 1 END) AS age70s,
+      COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 80 AND 89 THEN 1 END) AS age80s,
+      COUNT(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) >= 90 THEN 1 END) AS age90plus
+    FROM TB_MEMBER
+    WHERE MEM_STATUS = 1 AND MEM_ADMIN_CHECK = 0
     ]]>
 	</select>
 
@@ -126,34 +125,32 @@
 		resultType="java.util.Map">
     <![CDATA[
     WITH Months AS (
-        SELECT LEVEL AS month FROM DUAL CONNECT BY LEVEL <= 12
+      SELECT LEVEL AS month FROM DUAL CONNECT BY LEVEL <= 12
     )
     SELECT
-        m.month,
-        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) < 50 THEN 1 ELSE 0 END), 0) AS under50,
-        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 50 AND 59 THEN 1 ELSE 0 END), 0) AS age50s,
-        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 60 AND 69 THEN 1 ELSE 0 END), 0) AS age60s,
-        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 70 AND 79 THEN 1 ELSE 0 END), 0) AS age70s,
-        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 80 AND 89 THEN 1 ELSE 0 END), 0) AS age80s,
-        COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) >= 90 THEN 1 ELSE 0 END), 0) AS age90plus
+      m.month,
+      COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) < 50 THEN 1 ELSE 0 END), 0) AS under50,
+      COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 50 AND 59 THEN 1 ELSE 0 END), 0) AS age50s,
+      COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 60 AND 69 THEN 1 ELSE 0 END), 0) AS age60s,
+      COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 70 AND 79 THEN 1 ELSE 0 END), 0) AS age70s,
+      COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) BETWEEN 80 AND 89 THEN 1 ELSE 0 END), 0) AS age80s,
+      COALESCE(SUM(CASE WHEN EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM MEM_BIRTH) >= 90 THEN 1 ELSE 0 END), 0) AS age90plus
     FROM Months m
     LEFT JOIN TB_MEMBER t
-        ON TO_CHAR(t.MEM_JOIN_DATE, 'MM') = LPAD(m.month, 2, '0')
-        AND EXTRACT(YEAR FROM t.MEM_JOIN_DATE) = #{year}
-        AND t.MEM_STATUS = 1 AND t.MEM_ADMIN_CHECK = 0
+      ON TO_CHAR(t.MEM_JOIN_DATE, 'MM') = LPAD(m.month, 2, '0')
+      AND EXTRACT(YEAR FROM t.MEM_JOIN_DATE) = #{year}
+      AND t.MEM_STATUS = 1 AND t.MEM_ADMIN_CHECK = 0
     GROUP BY m.month
     ORDER BY m.month
     ]]>
 	</select>
-
 
 	<!-- 관리자페이지 회원관리 → 관리권한 변경 -->
 	<update id="updateAdm">
 		UPDATE TB_MEMBER
 		SET MEM_ADMIN_CHECK =
 		#{memAdminCheck}
-		WHERE
-		MEM_CODE = #{memCode}
+		WHERE MEM_CODE = #{memCode}
 	</update>
 
 	<!-- 관리자페이지 회원관리 → 회원상태 변경 -->
@@ -164,100 +161,153 @@
 		MEM_CODE = #{memCode}
 	</update>
 
-
-
-	<!-- SMS 테이블 컬럼명 매핑 -->
+	<!-- SMS와 멤버 정보를 포함하는 ResultMap -->
 	<resultMap id="smsResultMap" type="com.sml.model.SmsVO">
 		<result property="smsCode" column="SMS_CODE" />
 		<result property="smsContent" column="SMS_CONTENT" />
 		<result property="sendDate" column="SEND_DATE" />
 		<result property="status" column="STATUS" />
 		<result property="memCode" column="MEM_CODE" />
+		<result property="memName" column="MEM_NAME" />
+		<result property="memId" column="MEM_ID" />
 	</resultMap>
 
 	<!-- SMS 목록 가져오기 -->
-	<select id="getSmsList" resultType="com.sml.model.SmsVO"
-		resultMap="smsResultMap">
-		SELECT * FROM SMS
+	<!-- SMS 목록 가져오기 (페이징 포함) -->
+	<!-- SMS 목록 가져오기 -->
+	<select id="getSmsList" resultMap="smsResultMap">
+		SELECT
+		s.SMS_CODE,
+		s.SMS_CONTENT,
+		s.SEND_DATE,
+		s.STATUS,
+		s.MEM_CODE,
+		m.MEM_NAME,  <!-- 추가된 멤버 이름 -->
+		m.MEM_ID     <!-- 추가된 멤버 아이디 -->
+		FROM SMS s
+		LEFT JOIN TB_MEMBER m ON s.MEM_CODE = m.MEM_CODE
 		<where>
 			<!-- 'type'이 'all'인 경우, 모든 필드 검색 -->
 			<if test="type != null and type == 'all'">
 				(
-				SMS_CONTENT LIKE '%' || #{keyword} || '%'
-				OR MEM_CODE
+				s.SMS_CONTENT LIKE '%' || #{keyword} || '%'
+				OR
+				s.SEND_DATE
 				LIKE '%' || #{keyword} || '%'
+				OR m.MEM_NAME LIKE '%' ||
+				#{keyword} ||
+				'%'
+				OR m.MEM_ID LIKE '%' || #{keyword} || '%'
 				)
 			</if>
 			<!-- 특정 'type'에 대해 필터링 -->
 			<if test="type != null and type != 'all'">
 				<choose>
 					<when test="type == 'content'">
-						SMS_CONTENT LIKE '%' || #{keyword} || '%'
+						s.SMS_CONTENT LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="type == 'code'">
-						MEM_CODE LIKE '%' || #{keyword} || '%'
+					<when test="type == 'date'">
+						s.SEND_DATE LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'receiver'">
+						m.MEM_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'receiver'">
+						m.MEM_ID LIKE '%' || #{keyword} || '%'
 					</when>
 				</choose>
 			</if>
 		</where>
-		ORDER BY SEND_DATE DESC
+		ORDER BY s.SEND_DATE DESC
 	</select>
 
-	<!-- SMS 총 개수 가져오기 -->
-	<select id="getSmsTotal" resultType="int">
-		SELECT COUNT(*) FROM SMS
+
+	<!-- SMS 리스트 수 가져오기 : 검색 조건에 맞는 -->
+	<select id="getSmsTotal" parameterType="map" resultType="int">
+    <![CDATA[
+    SELECT COUNT(*) FROM SMS s
+    LEFT JOIN TB_MEMBER m ON s.MEM_CODE = m.MEM_CODE ]]>
 		<where>
-			<!-- 'type'이 'all'인 경우, 모든 필드 검색 -->
+			<!-- 'type'이 'all'인 경우, 여러 필드를 검색 -->
 			<if test="type != null and type == 'all'">
 				(
-				SMS_CONTENT LIKE '%' || #{keyword} || '%'
-				OR MEM_CODE
-				LIKE '%' || #{keyword} || '%'
+				s.SMS_CONTENT LIKE '%' || #{keyword} || '%'
+				OR
+				s.SEND_DATE LIKE '%' || #{keyword} || '%'
+				OR (m.MEM_NAME IS NOT NULL
+				AND m.MEM_NAME LIKE '%' || #{keyword} ||
+				'%')
+				OR (m.MEM_ID IS NOT NULL
+				AND m.MEM_ID LIKE '%' || #{keyword} || '%')
 				)
 			</if>
 			<!-- 특정 'type'에 대해 필터링 -->
 			<if test="type != null and type != 'all'">
 				<choose>
 					<when test="type == 'content'">
-						SMS_CONTENT LIKE '%' || #{keyword} || '%'
+						s.SMS_CONTENT LIKE '%' || #{keyword} || '%'
 					</when>
-					<when test="type == 'code'">
-						MEM_CODE LIKE '%' || #{keyword} || '%'
+					<when test="type == 'date'">
+						s.SEND_DATE LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'receiver'">
+						(m.MEM_NAME IS NOT NULL AND m.MEM_NAME LIKE '%' ||
+						#{keyword} || '%')
+						OR (m.MEM_ID IS NOT NULL AND m.MEM_ID LIKE '%'
+						|| #{keyword} || '%')
 					</when>
 				</choose>
 			</if>
 		</where>
 	</select>
 
+	<!-- SMS 삭제하기 -->
+	<delete id="deleteSms" parameterType="int">
+		DELETE FROM SMS WHERE
+		SMS_CODE = #{smsCode}
+	</delete>
 
-
-	<!-- 채팅 테이블 컬럼명맵핑 -->
-	<resultMap id="chatMap" type="com.sml.model.ChatVO">
-		<result property="chatCode" column="CHAT_CODE" />
-		<result property="categoryCode" column="CATEGORY_CODE" />
-		<result property="memCode" column="MEM_CODE" />
-		<result property="chatContent" column="CHAT_CONTENT" />
-		<result property="chatDate" column="CHAT_DATE" />
-		<result property="status" column="STATUS" />
-	</resultMap>
-
-	<insert id="saveChatContent"
-		parameterType="com.sml.model.ChatVO">
-		INSERT INTO CHAT (CHAT_CODE, CATEGORY_CODE, MEM_CODE,
-		CHAT_CONTENT,
-		CHAT_DATE, STATUS)
-		VALUES (CHAT_SEQ.NEXTVAL,
-		#{categoryCode}, #{memCode}, #{chatContent},
-		SYSDATE, #{status});
+	<!-- SMS 발송하기 -->
+	<insert id="insertSms" parameterType="com.sml.model.SmsVO">
+		INSERT INTO SMS
+		(SMS_CONTENT, SEND_DATE, STATUS, MEM_CODE)
+		VALUES (#{smsContent},
+		#{sendDate}, #{status}, #{memCode})
 	</insert>
 
 
-	<!-- 채팅 목록 가져오기 -->
-	<select id="getChatList" resultType="com.sml.model.ChatVO"
-		resultMap="chatMap">
-		SELECT * FROM CHAT
+	<!-- 안부문자 자동발송을 위한 3일연속 미출석자 조회 -->
+	<select id="selectAbsentMembers"
+		resultType="com.sml.model.MemberVO" resultMap="userResultMap">
+		SELECT m.MEM_CODE, m.MEM_NAME, m.MEM_PHONE
+		FROM TB_MEMBER m
+		LEFT JOIN MEMBER_CHECK mc ON m.MEM_CODE = mc.MEM_CODE
+		AND mc.CHECK_DATE >= SYSDATE - 3
+		WHERE m.MEM_ADMIN_CHECK = 0 AND m.MEM_STATUS = 1
+		GROUP BY m.MEM_CODE, m.MEM_NAME, m.MEM_PHONE
+		HAVING COUNT(mc.CHECK_CODE) = 0
+	</select>
+
+
+
+	<!-- 채팅을 포함하는 ResultMap -->
+	<resultMap id="chatMap" type="com.sml.model.ChatVO">
+		<result property="chatCode" column="CHAT_CODE" />
+		<result property="chatContent" column="CHAT_CONTENT" />
+		<result property="chatDate" column="CHAT_DATE" />
+		<result property="memCode" column="MEM_CODE" />
+	</resultMap>
+
+	<!-- 채팅 리스트 가져오기 : 관리자페이지 채팅 관리 -->
+	<select id="getChatList" parameterType="map"
+		resultType="com.sml.model.ChatVO" resultMap="chatMap">
+    <![CDATA[
+    SELECT * FROM (
+      SELECT
+        ROWNUM AS rn, c.*
+      FROM CHAT c ]]>
 		<where>
-			<!-- 'type'이 'all'인 경우, 모든 필드 검색 -->
+			<!-- 'type'이 'all'인 경우, 여러 필드를 검색 -->
 			<if test="type != null and type == 'all'">
 				(
 				CHAT_CONTENT LIKE '%' || #{keyword} || '%'
@@ -276,15 +326,19 @@
 					</when>
 				</choose>
 			</if>
-		</where>
+		</where><![CDATA[
 		ORDER BY CHAT_DATE DESC
+		)
+		WHERE rn > (#{pageNum} - 1) * #{amount} AND rn
+		<= #{pageNum} * #{amount}]]>
 	</select>
 
-	<!-- 채팅 총 개수 가져오기 -->
-	<select id="getChatTotal" resultType="int">
-		SELECT COUNT(*) FROM CHAT
+	<!-- 채팅 리스트 수 가져오기 : 검색 조건에 맞는 -->
+	<select id="getChatTotal" parameterType="map" resultType="int">
+    <![CDATA[
+    SELECT COUNT(*) FROM CHAT c ]]>
 		<where>
-			<!-- 'type'이 'all'인 경우, 모든 필드 검색 -->
+			<!-- 'type'이 'all'인 경우, 여러 필드를 검색 -->
 			<if test="type != null and type == 'all'">
 				(
 				CHAT_CONTENT LIKE '%' || #{keyword} || '%'
@@ -306,7 +360,11 @@
 		</where>
 	</select>
 
-
+	<!-- 채팅 삭제하기 -->
+	<delete id="deleteChat" parameterType="int">
+		DELETE FROM CHAT WHERE
+		CHAT_CODE = #{chatCode}
+	</delete>
 
 
 </mapper>

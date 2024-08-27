@@ -69,34 +69,34 @@ public class CommunityMapperTest {
 	@Test
 	public void communityDetail() {
 		
-		int commCode = 7;
+		int commCode = 23;
 		CommunityVO community = mapper.communityDetail(commCode);
 		logger.info("Detail........." +community);
 		
 	}
 	
-//	@Test
-//	public void communityModifyTest() {
-//		
-//		CommunityVO community = new CommunityVO();
-//		
-//		community.setCommCode(7);
-//		logger.info("수정 전....." +mapper.communityModify(community));
-//		
-//		community.setCommTitle("modifyMapperTest");
-//		community.setCommContent("modifyMapperTest");
-//		
-//		mapper.communityModify(community);
-//		logger.info("수정 후......" +mapper.communityModify(community));
-//	}
-	
 	@Test
-	public void communityDeleteTest() {
-		int commCode = 7;
-		int result = mapper.communityDelete(commCode);
-		if (result == 1) {
-			System.out.println("삭제 성공");
-		}
+	public void communityModifyTest() {
+		
+		CommunityVO community = new CommunityVO();
+		
+		community.setCommCode(23);
+		logger.info("수정 전....." +mapper.communityModify(community));
+		
+		community.setCommTitle("modifyMapperTest");
+		community.setCommContent("modifyMapperTest");
+		
+		mapper.communityModify(community);
+		logger.info("수정 후......" +mapper.communityModify(community));
 	}
+	
+//	@Test
+//	public void communityDeleteTest() {
+//		int commCode = 7;
+//		int result = mapper.communityDelete(commCode);
+//		if (result == 1) {
+//			System.out.println("삭제 성공");
+//		}
+//	}
 
 }

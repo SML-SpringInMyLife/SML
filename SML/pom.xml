@@ -237,7 +237,7 @@
 			<artifactId>json</artifactId>
 			<version>20231013</version>
 		</dependency>
-
+	
 		<!-- 결제 API -->
 		<dependency>
 			<groupId>com.github.iamport</groupId>
@@ -259,6 +259,7 @@
 			<url>https://jitpack.io</url>
 		</repository>
 	</repositories>
+
 	<build>
 		<plugins>
 			<plugin>

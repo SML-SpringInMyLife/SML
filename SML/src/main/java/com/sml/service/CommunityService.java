@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
-import com.sml.model.ReplyDTO;
+import com.sml.model.CommunityReplyDTO;
 
 public interface CommunityService {
 	
@@ -19,17 +19,8 @@ public interface CommunityService {
 	public int communityModify(CommunityVO community) throws Exception;
 	
 	public int communityDelete(int commCode);
+
+	public CommunityVO getCommunityCode(int commCode);
 	
-	
-	//댓글
-	public int enrollReply(ReplyDTO dto);	
-	
-	public List<ReplyDTO> listReply() throws Exception;
-	
-//	public int replyGetTotal(Criteria cri) throws Exception;
-//	
-//	public int replyModify(ReplyDTO dto) throws Exception;
-//	
-//	public int replyDelete(int repCode) throws Exception;
-	
+	public int enrollReply(CommunityReplyDTO dto);
 }

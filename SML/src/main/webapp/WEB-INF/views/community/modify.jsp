@@ -87,16 +87,17 @@
 			});
 		
 		let moveForm = $("#moveForm");
+		
 		// 취소 버튼
 		$("#cancelBtn").on("click", function(e){
-			alert("취소 버튼");
 			e.preventDefault();
 
-			moveForm.attr("action", "/community/detail")
+			moveForm.attr("action", "/community/detail");
 			moveForm.submit();
 		});
 	
 		let modifyForm = $("#modifyForm");
+		
 		// 수정 페이지 이동 버튼 
 		$("#modifyBtn").on("click", function(e){
 			alert("수정 버튼");
