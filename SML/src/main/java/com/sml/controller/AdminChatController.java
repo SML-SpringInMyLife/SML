@@ -114,7 +114,7 @@ public class AdminChatController {
 				// 세션의 채팅 버퍼에 메시지 추가
 				StringBuilder buffer = chatBuffers.get(session);
 				if (buffer != null) {
-					buffer.append(memName + " : " + content + "\n" + "\n"); // 메시지와 새 줄 추가
+					buffer.append(memName + " : " + content + " // "); // 메시지마다 개행하고 싶은데, \n이 안먹음....일단 // 추
 				}
 
 				// 모든 연결된 세션에 메시지 전송

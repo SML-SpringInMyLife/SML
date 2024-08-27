@@ -197,18 +197,4 @@ public class AdminController {
 		model.addAttribute("pageMaker", new PageDTO(cri, service.getChatTotal(cri)));
 	}
 
-	// 채팅 내용 저장
-	@PostMapping("/saveChatContent")
-    public void saveChatContent(@RequestBody ChatVO chatVO, RedirectAttributes rttr) {
-        logger.info("채팅 내용 저장 : " + chatVO);
-
-        try {
-            service.saveChatContent(chatVO);
-            rttr.addFlashAttribute("result", "success");
-        } catch (Exception e) {
-            logger.error("채팅 저장 실패 : ", e);
-            rttr.addFlashAttribute("result", "fail");
-        }
-    }
-
 }
