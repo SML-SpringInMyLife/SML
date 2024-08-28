@@ -110,7 +110,7 @@ public class AdminChatController {
 				if (buffer != null) {
 					Date currentTime = new Date();
 					String formattedTime = new SimpleDateFormat("HH:mm:ss").format(currentTime);
-					buffer.append(memName + " : " + content + " (" + formattedTime + ") // \n  ");
+					buffer.append(memName + "(" + userId + ") : " + content + " (" + formattedTime + ") // \n  ");
 				} else {
 					logger.warning("해당 대화 ID의 채팅 버퍼를 찾을 수 없습니다.");
 				}
