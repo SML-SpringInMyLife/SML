@@ -111,9 +111,9 @@
 					<h3>Chat Rooms</h3>
 					<div id="roomList"></div>
 					<span><< 채팅 상담 >></span>
-					<button onclick="minimizeChat()">➖</button>
+					<button class="sizeBtn" onclick="minimizeChat()">➖</button>
 					<!-- 최소화 버튼 -->
-					<button onclick="closeChat()">❌</button>
+					<button class="closeBtn" onclick="closeChat()">❌</button>
 				</div>
 				<div id="chat-box"></div>
 				<div id="chat-input">
@@ -124,9 +124,9 @@
 			<c:otherwise>
 				<div id="chat-header">
 					<span><< 채팅 상담 >></span>
-					<button onclick="minimizeChat()">➖</button>
+					<button class="sizeBtn" onclick="minimizeChat()">➖</button>
 					<!-- 최소화 버튼 -->
-					<button onclick="closeChat()">❌</button>
+					<button class="closeBtn" onclick="closeChat()">❌</button>
 				</div>
 				<div id="chat-box"></div>
 				<div id="chat-input">
