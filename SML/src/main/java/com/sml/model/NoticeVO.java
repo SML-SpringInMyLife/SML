@@ -10,7 +10,8 @@ public class NoticeVO {
      
 	private int noticeCode;
 	private int memCode;
-	private int categoryCode;
+	private Integer categoryCode;
+	private String categoryName;
 	private String noticeTitle;
 	private String noticeBody;
 	private Date noticeEnroll;

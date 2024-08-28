@@ -39,16 +39,16 @@
 	justify-content: right;
 }
 
-.enroll-container .category select {
+ .enroll-container .category select{
 	border: 1px solid #ccc;
 	border-radius: 5px;
-	padding: 10px 30px;
+	padding: 10px 20px;
 	margin-bottom: 15px;
 	background-color: #6BAE7390;
 	color: white;
 	font-size: medium;
 }
-
+ 
 .enroll-container .content {
 	background-color: #e0f2e9;
 	padding: 20px;

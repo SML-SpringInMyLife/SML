@@ -43,6 +43,12 @@
     )
 </insert>
 
+<!-- 지정 이미지 전체 삭제 --> 
+	<delete id="deleteImageAll">
+		delete FROM FILE_UP where NOTICE_CODE = #{noticeCode}
+	</delete>
+
+
    <!-- 검색기능 -->
     <sql id="search">
         <if test="type != null and type != ''">
