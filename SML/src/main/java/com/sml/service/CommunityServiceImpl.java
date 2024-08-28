@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.sml.mapper.CommunityMapper;
 import com.sml.mapper.CommunityReplyMapper;
-import com.sml.model.CommunityReplyDTO;
+import com.sml.model.CommunityReplyVO;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
@@ -71,17 +71,21 @@ public class CommunityServiceImpl implements CommunityService{
 		return mapper.communityPoint(member);
 	}
 
-	
 	// 댓글 
+	@Override
+	public List<CommunityReplyVO> getReplyList(Criteria cri) throws Exception {
+		return replyMapper.getReplyList(cri);
+	}
 	
 	@Override
-	public List<CommunityReplyDTO> getReplyList(Criteria cri) throws Exception {
-		return replyMapper.getReplyList(cri);
+	public int replyGetTotal(Criteria cri) throws Exception {
+		// TODO Auto-generated method stub
+		return replyMapper.replyGetTotal(cri);
 	}
 
 	@Override
-	public int replyGetTotal(Criteria cri) throws Exception {
-		return replyMapper.replyGetTotal(cri);
+	public void enrollReply(CommunityReplyVO reply) throws Exception {
+		replyMapper.enrollReply(reply);
 	}
 
 }

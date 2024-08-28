@@ -32,7 +32,7 @@ if (pagePath == null || pagePath.isEmpty()) {
 			<li><a href="/admin/teacher/list">강사 관리</a></li>
 			<li><a href="/admin/courses">수강신청 관리</a></li>
 			<li><a href="/admin/sms">SMS 관리</a></li>
-			<li><a href="/admin/chat">채팅상담 관리</a></li>
+			<li><a href="/admin/chatList">채팅상담 관리</a></li>
 			<li><a href="/admin/adminInfo">내 정보수정</a></li>
 		</ul>
 	</nav>

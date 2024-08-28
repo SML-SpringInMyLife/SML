@@ -2,6 +2,7 @@ package com.sml.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -13,9 +14,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.sml.model.CommunityReplyDTO;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
@@ -97,9 +98,6 @@ public class CommunityController {
 		int rtotal = service.replyGetTotal(cri);
 		PageDTO rpageMaker = new PageDTO(cri, rtotal);
 		model.addAttribute("pageMaker", rpageMaker);
-//      model.addAttribute("pageMaker", new PageDTO(cri, service.communityGetTotal(cri)));
-		
-
 	}
 
 	@PostMapping("/modify")
@@ -128,30 +126,9 @@ public class CommunityController {
 		return "redirect:/community/boardList";
 	}
 	
-	@GetMapping("/reply/{memCode}")
-	public String replyGET(@PathVariable("memCode")int memCode, int commCode, Model model) throws Exception {
-		CommunityVO community = service.getCommunityCode(commCode);
-		model.addAttribute("communityDetail", community);
-		model.addAttribute("member", memCode);
-		return "/reply";
-	}
-	
+	// 댓글
 //	@PostMapping("/reply/enroll.do")
-//	public String enrollReply(CommunityReplyDTO reply, RedirectAttributes rttr, HttpSession session) throws Exception {
-//		MemberVO member = (MemberVO) session.getAttribute("member");
-//		if (member == null) {
-//	        rttr.addFlashAttribute("error_message", "Member session is not available.");
-//	        return "redirect:/error";
-//	    }
-//		
-//		int memCode = (Integer) session.getAttribute("memCode");
-//		reply.setMemCode(memCode);
-//		
-//		service.communityEnroll(community);
-//		System.out.println("Calling communityPoint with member: " + member);
-//		service.communityPoint(member);
-//		rttr.addFlashAttribute("enroll_result", community.getCommTitle());
-//		return "redirect:/community/boardList";
-//	}
+//	@ResponseBody
+
 
 }

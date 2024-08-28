@@ -5,7 +5,7 @@
   
   <mapper namespace="com.sml.mapper.CommunityReplyMapper">
   
-  	<select id="getReplyList" resultType="com.sml.model.CommunityReplyDTO">
+  	<select id="getReplyList" resultType="com.sml.model.CommunityReplyVO">
   		<![CDATA[
   			SELECT * FROM (
   				SELECT
@@ -14,13 +14,13 @@
   					r.MEM_CODE AS memCode,
   					r.COMM_CODE AS commCode,
   					r.REP_CONTENT AS repContent,
-  					r.MEM_TARGET_CODE AS targetCode,
   					r.REP_ENROLL_DATE AS renrollDate,
   					r.REP_MODIFY_DATE AS rmodifyDate,
   					m.MEM_NAME AS repWriter
   				FROM COMMUNITY_REPLY r
   				JOIN TB_MEMBER m ON r.MEM_CODE = m.MEM_CODE
-  				WHERE r.REP_STATUS = 'N' AND   					
+  				WHERE r.REP_STATUS = 'N' AND
+  					  r.COMM_CODE = #{commCode} AND   					
   		]]>
   			<if test="keyword != null">
                 REP_CONTENT like '%'||#{keyword}||'%' AND
@@ -38,5 +38,14 @@
   			WHERE REP_CODE LIKE '%' || #{keyword} || '%'
   		</if>
   	</select>
+  	
+  	<insert id="enrollReply">
+  		INSERT INTO COMMUNITY_REPLY(COMM_CODE, REP_PARENT_CODE, REP_WRITER, REP_CONTENT) VALUES (
+  		#{commCode},
+  		#{repParentCode, jdbcType=NULL},
+  		#{repWriter},
+  		#{repContent}
+  		)
+  	</insert>
   	
   </mapper>

@@ -58,6 +58,6 @@ public interface AdminService {
 
 	public int getChatTotal(Criteria cri);
 
-	public void saveChatContent(ChatVO chatVO);
+	public void saveChatContent(ChatVO chat);
 
 }

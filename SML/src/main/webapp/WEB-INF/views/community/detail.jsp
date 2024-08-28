@@ -109,9 +109,8 @@
     						</c:when>
     					</c:choose>
     					<form action="/community/reply/enroll.do" method="post" id="replyEnrollForm">
-    						<input type="hidden" name="commCode" value="${reply.repCode}">
-    						<input type="hidden" name="targetCode" value="${reply.memCode}">
-    						<input type="hidden" name="commCode" value="${reply.commCode}"/>
+    						<input type="hidden" name="refGroup" value="${reply.repCode}">
+    						<input type="hidden" name="targetCode" value="${reply.repWriter}">
     						<textarea rows="repContent">
     							<c:if test="${empty memCode}">로그인이 필요합니다.</c:if>
     						</textarea>
@@ -119,8 +118,7 @@
     					</form>
     				</div>
     			</div>
-         </div>
-         		
+         </div>      		
 		<form id="moveForm" method="get">
         	<input type="hidden" name="commCode" value='<c:out value="${communityDetail.commCode }"/>'>
             <input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum }"/>'>
