@@ -17,13 +17,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sml.model.ChatVO;
-import com.sml.model.CourseVO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
@@ -114,11 +114,14 @@ public class AdminController {
 	public void adminCoursesGET(Criteria cri, Model model) throws Exception {
 		logger.info("관리자 - 수강 신청 관리 페이지 이동");
 
-		// 페이징 처리된 수강 신청 목록 조회 후 모델에 추가
-		List<CourseVO> courses = service.getCourseList(cri);
-		model.addAttribute("courses", courses.isEmpty() ? "empty" : courses);
-		model.addAttribute("totalCount", service.getCourseTotal(cri));
-		model.addAttribute("pageMaker", new PageDTO(cri, service.getCourseTotal(cri)));
+		/*
+		 * // 페이징 처리된 수강 신청 목록 조회 후 모델에 추가 List<CourseVO> courses =
+		 * service.getCourseList(cri); model.addAttribute("courses", courses.isEmpty() ?
+		 * "empty" : courses); model.addAttribute("totalCount",
+		 * service.getCourseTotal(cri)); model.addAttribute("pageMaker", new
+		 * PageDTO(cri, service.getCourseTotal(cri)));
+		 */
+
 	}
 
 	// 관리자 정보 수정 페이지 이동
@@ -168,7 +171,7 @@ public class AdminController {
 	}
 
 	// 3일 연속 미출석 회원에게 안부 문자 발송 (매일 10:00 AM)
-	@Scheduled(cron = "0 2 21 * * ?")
+	@Scheduled(cron = "0 0 11 * * ?")
 	public void sendReminderSmsToAbsentMembers() {
 		logger.info("3일 연속 미출석 안부문자 발송일시 : {}", new Date());
 		try {
@@ -183,7 +186,7 @@ public class AdminController {
 	}
 
 	// 관리자 - 채팅 상담 관리 페이지 이동
-	@GetMapping("/chat")
+	@GetMapping("/chatList")
 	public void adminChatGET(Criteria cri, Model model) throws Exception {
 		logger.info("관리자 - 채팅 상담 관리 페이지 이동");
 
@@ -194,19 +197,4 @@ public class AdminController {
 		model.addAttribute("pageMaker", new PageDTO(cri, service.getChatTotal(cri)));
 	}
 
-	// 채팅 내용 저장
-	@PostMapping("/saveChatContent")
-	public String saveChatContent(ChatVO chatVO, RedirectAttributes rttr) {
-		logger.info("채팅 내용 저장 : " + chatVO);
-
-		try {
-			service.saveChatContent(chatVO);
-			rttr.addFlashAttribute("result", "success");
-		} catch (Exception e) {
-			logger.error("채팅 저장 실패 : ", e);
-			rttr.addFlashAttribute("result", "fail");
-		}
-
-		return "redirect:/admin/chat";
-	}
 }

@@ -277,7 +277,7 @@ public class AdminServiceImpl implements AdminService {
 
 	// 채팅 내용 저장
 	@Override
-	public void saveChatContent(ChatVO chatVO) {
-		adminMapper.saveChatContent(chatVO);
+	public void saveChatContent(ChatVO chat) {
+		adminMapper.saveChatContent(chat);
 	}
 }
