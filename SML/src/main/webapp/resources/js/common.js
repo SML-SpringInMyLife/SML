@@ -95,10 +95,16 @@ function closeChat() {
 
 // 채팅 종료 확인 함수
 function confirmCloseChat() {
-    $('#chat-container').addClass('hidden'); // 채팅창 숨기기
-    $('#close-chat-modal').addClass('hidden'); // 닫기 모달 숨기기
+    $('#chat-container').addClass('hidden'); 
+    $('#close-chat-modal').addClass('hidden'); 
+    
     if (ws) {
-        ws.close(); // WebSocket 연결 종료
+        // 클로징 메시지를 서버에 전송
+        const closeMessage = JSON.stringify({ action: 'closeChat' });
+        ws.send(closeMessage);
+        
+        // WebSocket 연결 종료
+        ws.close();
     }
 }
 

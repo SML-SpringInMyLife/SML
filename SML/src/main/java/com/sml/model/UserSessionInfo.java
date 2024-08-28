@@ -12,13 +12,14 @@ public class UserSessionInfo {
     private Session session;
     private String memName;
     private int memCode;
-    private String chatSessionId; // 대화 세션 ID 추가
+    private String conversationId;
 
-    public UserSessionInfo(String userId, Session session, String memName, int memCode, String chatSessionId) {
+    public UserSessionInfo(String userId, Session session, String memName, int memCode, String conversationId) {
         this.userId = userId;
         this.session = session;
         this.memName = memName;
         this.memCode = memCode;
-        this.chatSessionId = chatSessionId;
+        this.conversationId = conversationId;
     }
+
 }
