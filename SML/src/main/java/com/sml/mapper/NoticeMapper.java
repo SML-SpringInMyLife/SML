@@ -2,8 +2,11 @@ package com.sml.mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.sml.model.Criteria;
 import com.sml.model.FileupVO;
+import com.sml.model.NoticeLikeVO;
 import com.sml.model.NoticeVO;
 
 public interface NoticeMapper {
@@ -28,14 +31,24 @@ public interface NoticeMapper {
 	/* 공지사항 조회수 증가 기능 */
 	public int noticeCount(int noticeCode); 
 	
-	/* 공지사항 좋아요 */
-	public int noticeLike(int noticeCode);
+	 /* 공지사항 좋아요 관련 메서드 */
+    NoticeLikeVO getMemberNoticeLike(int noticeCode, int memCode);
+    NoticeLikeVO getGuestNoticeLike(int noticeCode, String guestIdentifier);
+    void insertMemberNoticeLike(int noticeCode, int memCode);
+    void insertGuestNoticeLike(int noticeCode, String guestIdentifier);
+    void deleteMemberNoticeLike(int noticeCode, int memCode);
+    void deleteGuestNoticeLike(int noticeCode, String guestIdentifier);
+    int getTotalLikes(int noticeCode);
 	
 	/* 공지사항 수정 */
 	public int noticeModify(NoticeVO noticevo);
 	
 	/* 공지사항 삭제 */
 	public int noticeDelete(int noticeCode);
+	
+	/* 공지사항 카테고리 */
+	List<NoticeVO> getNoticeList(@Param("cri") Criteria cri);
+    int getNoticeTotal(@Param("cri") Criteria cri);
 	
 	
 }

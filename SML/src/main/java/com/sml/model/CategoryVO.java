@@ -4,8 +4,8 @@ import lombok.Data;
 
 @Data
 public class CategoryVO { 
-	 private Integer categoryCode;
+	 private int categoryCode;
 	    private String categoryName;
-	    private Integer status;
+	    private int status;
 	 
 }

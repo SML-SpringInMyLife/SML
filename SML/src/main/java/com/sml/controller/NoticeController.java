@@ -8,12 +8,17 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.net.URLDecoder;
 
 
 import javax.imageio.ImageIO;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -24,6 +29,11 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,6 +43,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import com.sml.mapper.AttachMapper;
 import com.sml.model.CategoryType;
@@ -44,6 +55,7 @@ import com.sml.model.NoticeVO;
 import com.sml.model.PageDTO;
 import com.sml.service.CategoryService;
 import com.sml.service.NoticeService;
+import com.sml.service.MemberService;
 
 
 @Controller
@@ -57,35 +69,39 @@ public class NoticeController {
 	@Autowired
     private CategoryService categoryService;
 	
+	@Autowired
+	private MemberService MemberService;
 	
-	/* 공지사항 조회페이지 이동 */
-	@GetMapping("/list")
+	 /* 공지사항 조회페이지 이동 */
+    @GetMapping("/list")
     public void noticeListGET(Criteria cri, Model model, HttpSession session) throws Exception {
         logger.info("공지사항 조회페이지 이동" + cri);
 
+        // 카테고리 목록 가져오기
+        List<CategoryVO> categories = categoryService.getCategoriesByRange(1, 10);
+        model.addAttribute("categories", categories);
+
+        // 카테고리 필터링 적용
+        if (cri.getCategoryCode() != null && cri.getCategoryCode() != 0) {
+            logger.info("카테고리 필터링 적용: " + cri.getCategoryCode());
+        }
+
         List<NoticeVO> list = noticeservice.noticeGetList(cri);
-
         if(!list.isEmpty()) {
-              model.addAttribute("list", list);
-           } else {
-               model.addAttribute("listCheck", "empty");
-           }
+            model.addAttribute("list", list);
+        } else {
+            model.addAttribute("listCheck", "empty");
+        }
 
-            /* 페이징처리 */
+        /* 페이징처리 */
         int total = noticeservice.noticeGetTotal(cri);
-
         PageDTO pageMaker = new PageDTO(cri, total);
-
         model.addAttribute("pageMaker", pageMaker);
 
-         // 로그인 상태 확인
-        // MemberVO 객체를 가져옵니다.
+        // 로그인 상태 확인
         MemberVO member = (MemberVO) session.getAttribute("member");
-
-        // member 객체가 null이 아니라면 로그인 상태입니다.
         boolean isLoggedIn = (member != null);
         boolean isAdmin = false;
-
         if(isLoggedIn) {
             isAdmin = member.getMemAdminCheck() == 1;
         }
@@ -93,35 +109,38 @@ public class NoticeController {
         model.addAttribute("isAdmin", isAdmin);
     }
 	
-	/* 공지사항 조회기능 */
-	@PostMapping("/Count")
-	@ResponseBody
-	public ResponseEntity<String> noticeCount(@RequestParam("noticeCode") int noticeCode) {
-	    try {
-	        int affectedRows = noticeservice.noticeCount(noticeCode);
-	        logger.info("조회수 증가: 영향을 받은 행의 수 = " + affectedRows);
-	        return ResponseEntity.ok("조회수 증가 성공");
-	    } catch (Exception e) {
-	        logger.error("조회수 증가 중 오류 발생", e);
-	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("조회수 증가 실패");
-	    }
-	}
-
-	@PostMapping("/Like")
+	/* 공지사항 조회수기능 */
+    @PostMapping("/Count")
     @ResponseBody
-    public ResponseEntity<String> noticeLikePOST(@RequestParam("noticeCode") int noticeCode) {
+    public ResponseEntity<String> noticeCount(@RequestParam("noticeCode") int noticeCode, HttpSession session) {
         try {
-            boolean success = noticeservice.noticeLike(noticeCode);
-            if (success) {
-                return ResponseEntity.ok("좋아요 증가 성공");
+            // 세션에서 이미 조회한 게시글 목록을 가져옴
+            Set<Integer> viewedNotices = (Set<Integer>) session.getAttribute("viewedNotices");
+            if (viewedNotices == null) {
+                viewedNotices = new HashSet<>();
+            }
+
+            // 이미 조회한 게시글인지 확인
+            if (!viewedNotices.contains(noticeCode)) {
+                int affectedRows = noticeservice.noticeCount(noticeCode);
+                logger.info("조회수 증가: 영향을 받은 행의 수 = " + affectedRows);
+
+                // 조회한 게시글 목록에 추가
+                viewedNotices.add(noticeCode);
+                session.setAttribute("viewedNotices", viewedNotices);
+
+                return ResponseEntity.ok("조회수 증가 성공");
             } else {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("좋아요 증가 실패");
+                return ResponseEntity.ok("이미 조회한 게시글");
             }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("좋아요 증가 실패");
+            logger.error("조회수 증가 중 오류 발생", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("조회수 증가 실패");
         }
     }
-	
+    
+   
+
 	/* 공지사항 상세조회페이지 이동 */
 	@GetMapping({"/detail" , "/modify"})
 	public void noticeDetailGET(int noticeCode,Criteria cri, Model model, HttpSession session) throws Exception {
@@ -150,20 +169,49 @@ public class NoticeController {
 	}
 	
 	
-	/* 공지사항 등록페이지 이동 */
+	  /* 공지사항 등록페이지 이동 */
     @GetMapping("/enroll")
-    public void noticeEnrollGET(HttpSession session) throws Exception {
+    public void noticeEnrollGET(Model model) throws Exception {
         logger.info("공지사항 등록페이지 이동");
-
+        List<CategoryVO> categories = categoryService.getCategoriesByRange(1, 10);
+        model.addAttribute("categories", categories);
     }
 
+    /* 공지사항 등록 */
     @PostMapping("/enroll.do")
-    public String noticeEnrollPOST(NoticeVO notice ,RedirectAttributes rttr) throws Exception {
-         logger.info("공지사항 글 등록: " + notice);
-
-         noticeservice.noticeRegister(notice);
-         rttr.addFlashAttribute("enroll_result", notice.getNoticeTitle());
+    public String noticeEnrollPOST(NoticeVO notice, RedirectAttributes rttr) throws Exception {
+        logger.info("공지사항 글 등록: " + notice);
+        logger.info("Received category code: " + notice.getCategoryCode());
+        noticeservice.noticeRegister(notice);
+        rttr.addFlashAttribute("enroll_result", notice.getNoticeTitle());
         return "redirect:/notice/list";
+    }
+
+    /* 새 카테고리 등록 */
+    @PostMapping("/category/add")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> addCategory(@RequestParam("categoryName") String categoryName) {
+        logger.info("새 카테고리 등록: " + categoryName);
+        Map<String, Object> response = new HashMap<>();
+        
+        try {
+            CategoryVO category = new CategoryVO();
+            category.setCategoryName(categoryName);
+            category.setStatus(1); // 활성 상태로 설정
+            categoryService.addCategory(category);
+            
+            response.put("success", true);
+            response.put("message", "카테고리가 성공적으로 추가되었습니다.");
+            response.put("categoryCode", category.getCategoryCode());
+            response.put("categoryName", category.getCategoryName());
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("카테고리 추가 중 오류 발생", e);
+            response.put("success", false);
+            response.put("message", "카테고리 추가 중 오류가 발생했습니다.");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
     }
     
 	/* 공지사항 수정 */

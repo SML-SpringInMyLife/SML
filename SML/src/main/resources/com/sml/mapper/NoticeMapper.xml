@@ -16,14 +16,23 @@
 		<result property="noticeStatus" column="NOTICE_STATUS" />
 		<result property="noticeCount" column="NOTICE_COUNT" />
 		 <result property="memName" column="MEM_NAME"/>
-	</resultMap>
+	</resultMap> 
+	
+	<resultMap id="noticeLikeResultMap" type="com.sml.model.NoticeLikeVO">
+    <id property="likeId" column="LIKE_ID" />
+    <result property="noticeCode" column="NOTICE_CODE" />
+    <result property="memCode" column="MEM_CODE" />
+    <result property="guestIdentifier" column="GUEST_IDENTIFIER" />
+    <result property="likeStatus" column="LIKE_STATUS" typeHandler="org.apache.ibatis.type.BooleanTypeHandler" />
+    <result property="createdAt" column="CREATED_AT" />
+</resultMap>
 
 
 	<!-- 공지사항 글 등록 -->
 <insert id="noticeRegister" useGeneratedKeys="true" keyProperty="noticeCode" keyColumn="NOTICE_CODE">
-    INSERT INTO NOTICE (NOTICE_TITLE, NOTICE_BODY, MEM_CODE)
-    VALUES (#{noticeTitle}, #{noticeBody}, #{memCode})
-</insert>
+        INSERT INTO NOTICE (NOTICE_TITLE, NOTICE_BODY, MEM_CODE, CATEGORY_CODE)
+        VALUES (#{noticeTitle}, #{noticeBody}, #{memCode}, #{categoryCode})
+    </insert>
 
 	
 <!-- 이미지파일 업로드 -->
@@ -69,11 +78,14 @@
     <![CDATA[
         SELECT * FROM (
             SELECT
-                ROWNUM AS rn, NOTICE_CODE, NOTICE_TITLE, NOTICE_ENROLL_DATE, NOTICE_COUNT, NOTICE_LIKE
+                ROWNUM AS rn, NOTICE_CODE, NOTICE_TITLE, NOTICE_ENROLL_DATE, NOTICE_COUNT, NOTICE_LIKE, CATEGORY_CODE
             FROM NOTICE
             WHERE NOTICE_STATUS = 'N'
     ]]>
             <include refid="search"></include>
+            <if test="categoryCode != null and categoryCode != 0">
+                AND CATEGORY_CODE = #{categoryCode}
+            </if>
     <![CDATA[
             AND ROWNUM <= #{pageNum} * #{amount}
         )
@@ -84,10 +96,14 @@
        <!-- 공지사항 페이징 -->
      	<select id="noticeGetTotal" resultType="int">
   		SELECT COUNT(*) FROM NOTICE
-  		<if test="keyword != null">
-  			WHERE NOTICE_TITLE LIKE '%' || #{keyword} || '%'
-  		</if>
-  		 <include refid="search"></include>
+        WHERE NOTICE_STATUS = 'N'
+        <if test="keyword != null and keyword != ''">
+            AND NOTICE_TITLE LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="categoryCode != null and categoryCode != 0">
+            AND CATEGORY_CODE = #{categoryCode}
+        </if>
+        <include refid="search"></include>
   	</select>
 
 	
@@ -106,12 +122,6 @@
         WHERE notice_code = #{noticeCode}
     </update>
 
-<!-- 좋아요 증가 -->
-<update id="noticeLike" parameterType="int">
-    UPDATE NOTICE
-    SET NOTICE_LIKE = COALESCE(NOTICE_COUNT, 0) + 1
-    WHERE NOTICE_CODE = #{noticeCode}
-</update>
 
 
 	<!-- 공지사항 수정 -->

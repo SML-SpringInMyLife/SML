@@ -8,8 +8,29 @@
         <result property="status" column="STATUS"/>
     </resultMap>
 
+<select id="getCategoriesByRange" resultType="com.sml.model.CategoryVO" resultMap ="CategoryResultMap">
+        SELECT * FROM BOARD_CATEGORY 
+        WHERE CATEGORY_CODE BETWEEN #{start} AND #{end}
+        AND STATUS = 1
+        ORDER BY CATEGORY_CODE
+    </select>
 
+    <insert id="insertCategory">
+        INSERT INTO BOARD_CATEGORY (CATEGORY_NAME, STATUS)
+        VALUES (#{categoryName}, #{status})
+    </insert>
 
+ <update id="updateCategory">
+        UPDATE BOARD_CATEGORY
+        SET CATEGORY_NAME = #{categoryName}, STATUS = #{status}
+        WHERE CATEGORY_CODE = #{categoryCode}
+    </update>
+
+    <update id="deleteCategory">
+        UPDATE BOARD_CATEGORY
+        SET STATUS = 0
+        WHERE CATEGORY_CODE = #{categoryCode}
+    </update>
  
 
 </mapper>

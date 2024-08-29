@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.sml.mapper.NoticeMapper;
 import com.sml.model.Criteria;
 import com.sml.model.FileupVO;
+import com.sml.model.NoticeLikeVO;
 import com.sml.model.NoticeVO;
 
 @Service
@@ -46,25 +47,26 @@ public class NoticeServiceImpl implements NoticeService {
 
 		return noticeMapper.noticeGetDetail(noticeCode);
 	}
-    
+
 	@Transactional
 	@Override
 	public int noticeModify(NoticeVO noticevo) throws Exception {
-	    int result = noticeMapper.noticeModify(noticevo);
-	    
-	    // 기존 이미지 삭제
-	    noticeMapper.deleteImageAll(noticevo.getNoticeCode());
-	    
-	    // 새 이미지가 있으면 추가
-	    if (noticevo.getImageList() != null && !noticevo.getImageList().isEmpty()) {
-	        noticevo.getImageList().forEach(attach -> {
-	            attach.setNoticeCode(noticevo.getNoticeCode());
-	            noticeMapper.imageEnroll(attach);
-	        });
-	    }
-	    
-	    return result;
+		int result = noticeMapper.noticeModify(noticevo);
+
+		// 기존 이미지 삭제
+		noticeMapper.deleteImageAll(noticevo.getNoticeCode());
+
+		// 새 이미지가 있으면 추가
+		if (noticevo.getImageList() != null && !noticevo.getImageList().isEmpty()) {
+			noticevo.getImageList().forEach(attach -> {
+				attach.setNoticeCode(noticevo.getNoticeCode());
+				noticeMapper.imageEnroll(attach);
+			});
+		}
+
+		return result;
 	}
+
 	@Override // 게시글 삭제
 	public int noticeDelete(int noticeCode) {
 
@@ -84,10 +86,56 @@ public class NoticeServiceImpl implements NoticeService {
 
 	}
 
-	@Override
-	public boolean noticeLike(int noticeCode) throws Exception {
-		int affectedRows = noticeMapper.noticeLike(noticeCode);
-		return affectedRows > 0;
+	@Override //좋아요 
+	public boolean toggleMemberNoticeLike(int noticeCode, int memCode) throws Exception {
+		NoticeLikeVO like = noticeMapper.getMemberNoticeLike(noticeCode, memCode);
+		if (like == null) {
+			// 좋아요가 없으면 추가
+			noticeMapper.insertMemberNoticeLike(noticeCode, memCode);
+			return true;
+		} else {
+			// 좋아요가 있으면 삭제
+			noticeMapper.deleteMemberNoticeLike(noticeCode, memCode);
+			return false;
+		}
 	}
 
+	@Override
+	public boolean toggleGuestNoticeLike(int noticeCode, String guestIdentifier) throws Exception {
+		NoticeLikeVO like = noticeMapper.getGuestNoticeLike(noticeCode, guestIdentifier);
+		if (like == null) {
+			// 좋아요가 없으면 추가
+			noticeMapper.insertGuestNoticeLike(noticeCode, guestIdentifier);
+			return true;
+		} else {
+			// 좋아요가 있으면 삭제
+			noticeMapper.deleteGuestNoticeLike(noticeCode, guestIdentifier);
+			return false;
+		}
+	}
+
+	@Override
+	public int getTotalLikes(int noticeCode) throws Exception {
+		return noticeMapper.getTotalLikes(noticeCode);
+	}
+
+	@Override
+	public boolean isLikedByMember(int noticeCode, int memCode) throws Exception {
+		return noticeMapper.getMemberNoticeLike(noticeCode, memCode) != null;
+	}
+
+	@Override
+	public boolean isLikedByGuest(int noticeCode, String guestIdentifier) throws Exception {
+		return noticeMapper.getGuestNoticeLike(noticeCode, guestIdentifier) != null;
+	}
+  
+	@Override
+	public boolean toggleNoticeLike(int noticeCode, String identifier) throws Exception {
+	    // identifier가 숫자면 회원, 아니면 비회원으로 처리
+	    if (identifier.matches("\\d+")) {
+	        return toggleMemberNoticeLike(noticeCode, Integer.parseInt(identifier));
+	    } else {
+	        return toggleGuestNoticeLike(noticeCode, identifier);
+	    }
+	}
 }
