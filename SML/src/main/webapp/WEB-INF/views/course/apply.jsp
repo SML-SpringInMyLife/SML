@@ -19,7 +19,7 @@
 	<main>
 		<div class="course_container">
 		<h2>수강신청</h2>
-		<form action="course/apply" method="post" id="applyForm">
+		<form action="${pageContext.request.contextPath}/course/apply" method="post" id="applyForm">
 			<table class="course_content">
 				<tr>
 					<td>신청한 과목</td>
@@ -79,7 +79,7 @@
 	<script>
 	$("#applyBtn").on("click", function() {
 		alert("수강 등록");
-		e.preventDefault();
+		event.preventDefault();
 		$("#applyForm").submit();
 	});
 

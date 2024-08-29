@@ -38,7 +38,7 @@
 							<tr>
 								<th data-label="No.">No.</th>
 								<th data-label="강사명">강사명</th>
-								<th data-label="담당과목">담당과목</th>
+								<!-- <th data-label="담당과목">담당과목</th> -->
 								<th data-label="상태">상태</th>
 							</tr>
 						</thead>
@@ -48,9 +48,9 @@
 								<td><a class="move" href='<c:out value="${list.teaCode}"/>'>
 										<c:out value="${list.teaName}"></c:out>
 								</a></td>
-								<td>
-									<%-- <c:out value="${list.teaSubject}" /> --%> 과목을 추가해야할듯?
-								</td>
+								<%-- <td>
+									<c:out value="${list.teaSubject}" />
+								</td> --%>
 								<td><c:choose>
 										<c:when test="${list.teaStatus eq 'N'}">정상</c:when>
 										<c:otherwise>(삭제됨)</c:otherwise>

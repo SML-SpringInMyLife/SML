@@ -141,6 +141,15 @@
 			}
 			alert("수업'"+ eResult +"'을 등록하였습니다.");
 		}
+		
+		let aResult = '<c:out value="${apply_result}"/>';
+		checkResult(aResult);
+		function checkResult(aresult){
+			if(aresult === ''){
+				return;
+			}
+			alert("수업이 정상적으로 신청되었습니다.")
+		}
 	});
 	
 	let searchForm = $('#searchForm');

@@ -261,11 +261,6 @@
 	makeCateArray(cate1Obj,cate1Array,cateList,1);
 	makeCateArray(cate2Obj,cate2Array,cateList,2);
 
-	/* $(document).ready(function(){
-		console.log(cate1Array);
-		console.log(cate2Array);
-	}); */
-	
 	// 대분류
 	for(let i = 0; i<cate1Array.length; i++){
 		cateSelect1.append("<option value='" +cate1Array[i].ccatCode +"'>" +cate1Array[i].ccatName +"</option>");

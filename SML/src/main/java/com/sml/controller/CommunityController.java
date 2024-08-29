@@ -61,15 +61,15 @@ public class CommunityController {
 	public String enrollPOST(CommunityVO community, RedirectAttributes rttr, HttpSession session) throws Exception {
 		MemberVO member = (MemberVO) session.getAttribute("member");
 		if (member == null) {
-	        rttr.addFlashAttribute("error_message", "Member session is not available.");
-	        return "redirect:/error";
+	        rttr.addFlashAttribute("error_message", "로그인해 주세요.");
+	        return "redirect:/community/boardList";
 	    }
 		
 		int memCode = (Integer) session.getAttribute("memCode");
 		community.setMemCode(memCode);
 		
 		service.communityEnroll(community);
-		System.out.println("Calling communityPoint with member: " + member);
+
 		service.communityPoint(member);
 		rttr.addFlashAttribute("enroll_result", community.getCommTitle());
 		return "redirect:/community/boardList";

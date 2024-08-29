@@ -18,7 +18,7 @@
 				MEM_TOTAL_POINT = MEM_TOTAL_POINT - (
 					SELECT COURSE_POINT
 					FROM COURSE
-					WHERE COURSE_CODE = :courseCode
+					WHERE COURSE_CODE = #{courseCode}
 				)
 			WHERE 
 				MEM_CODE = #{memCode}
