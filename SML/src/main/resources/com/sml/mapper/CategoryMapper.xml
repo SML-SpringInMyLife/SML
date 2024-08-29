@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sml.mapper.CategoryMapper">
+
+<resultMap id="CategoryResultMap" type="com.sml.model.CategoryVO">
+        <id property="categoryCode" column="CATEGORY_CODE"/>
+        <result property="categoryName" column="CATEGORY_NAME"/>
+        <result property="status" column="STATUS"/>
+    </resultMap>
+
+<select id="getCategoriesByRange" resultType="com.sml.model.CategoryVO" resultMap ="CategoryResultMap">
+        SELECT * FROM BOARD_CATEGORY 
+        WHERE CATEGORY_CODE BETWEEN #{start} AND #{end}
+        AND STATUS = 1
+        ORDER BY CATEGORY_CODE
+    </select>
+
+    <insert id="insertCategory">
+        INSERT INTO BOARD_CATEGORY (CATEGORY_NAME, STATUS)
+        VALUES (#{categoryName}, #{status})
+    </insert>
+
+ <update id="updateCategory">
+        UPDATE BOARD_CATEGORY
+        SET CATEGORY_NAME = #{categoryName}, STATUS = #{status}
+        WHERE CATEGORY_CODE = #{categoryCode}
+    </update>
+
+    <update id="deleteCategory">
+        UPDATE BOARD_CATEGORY
+        SET STATUS = 0
+        WHERE CATEGORY_CODE = #{categoryCode}
+    </update>
+ 
+
+</mapper>

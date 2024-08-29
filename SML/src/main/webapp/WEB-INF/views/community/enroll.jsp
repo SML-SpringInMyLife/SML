@@ -32,14 +32,14 @@
 			</div>
 			<div class="form_section">
 				<div class="form_section_title">
-					<label>글 내용</label>
+					<label>글 내용</label>  
 				</div>
 				<div class="form_section_content">
 					<textarea name="commContent" id="commContent_textarea"></textarea>
 				</div>
 			</div>
 			<div class="form_section">
-				<div class="form_section_title secretPostLabel">
+				<div class="form_section_title">
 					<label>비밀 글 설정</label>
 					<input type="checkbox" name="secretPost" id="secretPost">
 				</div>

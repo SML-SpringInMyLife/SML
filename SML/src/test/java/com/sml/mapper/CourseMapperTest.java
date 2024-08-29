@@ -1,14 +1,12 @@
 package com.sml.mapper;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.sml.model.CourseApplyDTO;
+import com.sml.model.Criteria;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -127,11 +125,17 @@ public class CourseMapperTest {
 //	@Test
 //	public void courseModifyTest() {
 //		CourseVO course = new CourseVO();
+//		course.setCourseCode(2581);
+//		System.out.println("수정 전........" +mapper.courseDetail(course.getCourseCode()));
+//		
 //		course.setCourseName("modifyTest");
-//		course.setTeaCode(256);
-//		course.setCcatCode(201);
-//		course.setCourseLimit(30);
-//		course.setCourseDay("월, 수, 금");
+//		course.setTeaCode(1);
+//		course.setCcatCode(107);
+//		course.setCourseLimit(11);
+//		course.setCourseDay("월~금");
+//		
+//		mapper.courseModify(course);
+//		System.out.println("수정 후........" +mapper.courseDetail(course.getCourseCode()));
 //	}
 	
 //	@Test
@@ -155,23 +159,31 @@ public class CourseMapperTest {
 	private CourseApplyMapper applyMapper;
 	
 //	@Test 
-//	public void applyApply() {
-//		int memCode = 21;
-//		int courseCode = 1;
+//	public void applyApply() throws Exception {
+//		int memCode = 3;
+//		int courseCode = 2581;
 //		
 //		CourseApplyDTO apply = new CourseApplyDTO();
 //		apply.setMemCode(memCode);
 //		apply.setCourseCode(courseCode);
 //		
 //		int result = 0;
-//		result = applyMapper.applyApply(apply);
+//		result = applyMapper.courseApply(apply);
 //		
 //		System.out.println("결과 : " +result);
 //	}
 	
+	@Test
+	public void applyTotal() throws Exception {
+		Criteria cri = new Criteria();
+
+		int total = applyMapper.applyTotal(cri);
+		System.out.println("total......." +total);
+	}
+	
 //	@Test
 //	public void cancelApplyTest() {
-//		int applyCode = 1;
+//		int applyCode = 2;
 //		
 //		applyMapper.cancelApply(applyCode);
 //	}
@@ -188,16 +200,16 @@ public class CourseMapperTest {
 //
 //	}
 	
-	@Test
-	public void applyCheckTest() {
-		int memCode = 21;
-		int courseCode = 1;
-		
-		CourseApplyDTO apply = new CourseApplyDTO();
-		apply.setMemCode(memCode);
-		apply.setCourseCode(courseCode);
-		
-		CourseApplyDTO applyResult = applyMapper.applyCheck(apply);
-		System.out.println("결과 : " +applyResult);
-	}
+//	@Test
+//	public void applyCheckTest() {
+//		int memCode = 21;
+//		int courseCode = 1;
+//		
+//		CourseApplyDTO apply = new CourseApplyDTO();
+//		apply.setMemCode(memCode);
+//		apply.setCourseCode(courseCode);
+//		
+//		CourseApplyDTO applyResult = applyMapper.applyCheck(apply);
+//		System.out.println("결과 : " +applyResult);
+//	}
 }

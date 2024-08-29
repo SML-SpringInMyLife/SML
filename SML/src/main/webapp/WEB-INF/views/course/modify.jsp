@@ -17,7 +17,7 @@
 	<main>
 		<h1>수업 관리 - 수정</h1>
 		<div class="course-container">
-			<form action="/course/manage/modify" method="post" id="modifyForm">
+			<form action="/course/modify" method="post" id="modifyForm">
 				<div class="form_section">
 					<div class="form_section_title">
 						<label>수업명</label>
@@ -32,9 +32,7 @@
 						<label>강사</label>
 					</div>
 					<div class="form_section_content">
-						<input id="teaName_input" readonly="readonly" value="<c:out value='${detail.teaName}'/>">
-						<input id="teaCode_input" name="teaCode" type="hidden" value="<c:out value='${detail.teaCode}'/>"> 
-						<button class="teaCode_btn">강사 선택</button>
+						<textarea name="teaName"><c:out value='${detail.teaName}'/></textarea>
 						<span id="warn_courseTeacher">강사를 선택해주세요.</span>
 					</div>
 				</div>
@@ -73,9 +71,9 @@
 					</div>
 					<div class="form_section_content">
 						<label>개강일</label>
-							<input type="date" id="startDate" name="startDate" autocomplete="off"> 
+							<input type="text" value="<fmt:formatDate value='${detail.startDate}' pattern='yyyy-MM-dd'/>"/> 
 						<label>종강일</label>
-							<input type="date" id="endDate" name="endDate" autocomplete="off"> 
+							<input type="text" value="<fmt:formatDate value='${detail.startDate}' pattern='yyyy-MM-dd'/>"/>
 						<span id="warn_coursePeriod">수강 기간을 선택해주세요.</span>
 					</div>
 				</div>
@@ -108,15 +106,13 @@
 					</div>
 				</div>
 				<input type="hidden" name="courseCode" value="${detail.courseCode}">
+				<div class="btn_section">
+					<button id="cancelBtn" class="btn">취소</button>
+					<button id="modifyBtn" class="btn modify_btn">수정</button>
+				</div>
 			</form>
-			<div class="btn_section">
-				<button id="deleteBtn" class="btn delete_btn">삭제</button>
-				<button id="cancelBtn" class="btn">취소</button>
-				<button id="modifyBtn" class="btn modify_btn">수정</button>
-			</div>
 		</div>
-		
-		<form id="moveForm" action="course/boardList" method="get">
+		<form id="moveForm" method="get">
         	 <input type="hidden" name="courseCode" value='<c:out value="${detail.courseCode}"/>'>
              <input type="hidden" name="pageNum" value="<c:out value='${cri.pageNum}'/>">
              <input type="hidden" name="amount" value='<c:out value="${cri.amount}"/>' >
@@ -128,98 +124,98 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	
 	<script>
-	let modifyForm = $("#modifyForm")
-
-	/* 등록 버튼 */
-	$("#modifyBtn").on("click",function(e){
+	let moveForm = $("#moveForm");
+	let modifyForm = $("#modifyForm");
+	
+	$("#cancelBtn").on("click", function(e){
+		alert("수정 취소")
 		e.preventDefault();
-		$("#modifyForm").submit();
+		window.history.back();
 	});
 	
-	// 강사 선택 팝업
-	$('.teaCode_btn').on("click",function(e){
+	$("#modifyBtn").on("click", function(e){
+		let courseName = $(".form_section_content input[name='courseName']").val();
+		
+		let nameCk = false;
+		
 		e.preventDefault();
-		let popUrl = "/admin/teacher/popup"
-		let popOption = "width = 650px, height=550px, top=300px, left=300px, scrollbars=yes";
-		window.open(popUrl, "강사 찾기", popOption);
+		
+		if(!courseName){
+			$("#warn_courseName").css("display", "block");
+		} else {
+			$("#warn_courseName").css("display", "none");
+			nameCk = true;
+		}
+		
+		if(nameCk){
+			modifyForm.submit();
+		} else {
+			return false;
+		}
 	});
 	
-	// 카테고리 리스트 구현
-	let cateList = JSON.parse('${cateList}');
-	
-	let cate1Array = new Array();
-	let cate2Array = new Array();
+	$(document).ready(function(){
+		/* 카테고리 */
+		let cateList = JSON.parse('${cateList}');
 
-	let cate1Obj = new Object();
-	let cate2Obj = new Object();
-	
-	let cateSelect1 = $(".cate1");		
-	let cateSelect2 = $(".cate2");
-	
-	/* 카테고리 배열 초기화 메서드 */
-	function makeCateArray(obj,array,cateList, tier){
-		for(let i = 0; i < cateList.length; i++){
-			if(cateList[i].tier === tier){
-				obj = new Object();
-				
-				obj.ccatName = cateList[i].ccatName;
-				obj.ccatCode = cateList[i].ccatCode;
-				obj.parentCode = cateList[i].parentCode;
-				
-				array.push(obj);					
+		let cate1Array = new Array();
+		let cate2Array = new Array();
+		let cate1Obj = new Object();
+		let cate2Obj = new Object();
+		
+		let cateSelect1 = $(".cate1");		
+		let cateSelect2 = $(".cate2");
+		
+		/* 카테고리 배열 초기화 메서드 */
+		function makeCateArray(obj,array,cateList, tier){
+			for(let i = 0; i < cateList.length; i++){
+				if(cateList[i].tier === tier){
+					obj = new Object();
+					
+					obj.ccatName = cateList[i].ccatName;
+					obj.ccatCode = cateList[i].ccatCode;
+					obj.parentCode = cateList[i].parentCode;
+					
+					array.push(obj);					
+				}
+			}
+		}		
+		
+		/* 배열 초기화 */
+		makeCateArray(cate1Obj,cate1Array,cateList,1);
+		makeCateArray(cate2Obj,cate2Array,cateList,2);	
+		
+		// 대분류
+		for (let i = 0; i < cate1Array.length; i++) {
+    		cateSelect1.append("<option value='" + cate1Array[i].cateCode + "'>" + cate1Array[i].cateName + "</option>");
+		}
+
+		$(".cate1 option").each(function (i, obj) {
+    		if (targetCate2.cateParent === obj.value) {
+        	$(obj).attr("selected", "selected");
+    		}
+		});
+		
+		let targetCate2 = '${detail.ccatCode}';
+		
+		// 중분류
+		for(let i = 0; i < cate2Array.length; i++){
+			if(targetCate2 === cate2Array[i].ccatCode){
+				targetCate2 = cate2Array[i];	
 			}
 		}
-	}		
-
-	/* 배열 초기화 */
-	makeCateArray(cate1Obj,cate1Array,cateList,1);
-	makeCateArray(cate2Obj,cate2Array,cateList,2);
-
-	let targetCate2 = '';
-	let targetCate3 = '${detail.ccatCode}';
-	
-	// 대분류
-	for(let i = 0; i < cate1Array.length; i++){
-		cateSelect1.append("<option value='"+cate1Array[i].ccatCode+"'>" + cate1Array[i].ccatName + "</option>");
-	}	
-	$(".cate1 option").each(function(i,obj){
-		if(targetCate2.parentCode === obj.value){
-			$(obj).attr("selected", "selected");
-		}
-	});
-	
-	// 중분류
-	for(let i = 0; i < cate2Array.length; i++){
-		if(targetCate3.parentCode === cate2Array[i].ccatCode){
-			targetCate2 = cate2Array[i];	
-		}
-	}		
-	for(let i = 0; i < cate2Array.length; i++){
-		if(targetCate2.parentCode === cate2Array[i].parentCode){
-			cateSelect2.append("<option value='"+cate2Array[i].ccatCode+"'>" + cate2Array[i].ccatName + "</option>");
-		}
-	}		
-	$(".cate2 option").each(function(i,obj){
-		if(targetCate2.ccatCode === obj.value){
-		$(obj).attr("selected", "selected");
-		}
-	});
-	
-	/* 목록 이동 버튼 */
-	$("#listBtn").on("click", function(e){
-		e.preventDefault();
-		$("#moveForm").submit();	
-	});	
-	
-	/* 삭제 버튼 */
-	$("#deleteBtn").on("click", function(e){
-		e.preventDefault();
-		let moveForm = $("#moveForm");
-		moveForm.find("input").remove();
-		moveForm.append('<input type="hidden" name="courseCode" value="${detail.courseCode}">');
-		moveForm.attr("action", "/course/delete");
-		moveForm.attr("method", "post");
-		moveForm.submit();
+		for(let i = 0; i < cate2Array.length; i++){
+			if(targetCate2.parentCode === cate2Array[i].parentCode){
+				cateSelect2.append("<option value='"+cate2Array[i].ccatCode+"'>" + cate2Array[i].ccatName + "</option>");
+			}
+		}		
+		
+		$(".cate2 option").each(function(i,obj){
+			if(targetCate2.ccatCode === obj.value){
+				$(obj).attr("selected", "selected");
+			}
+		});	
+		
 	});
 	</script>
 </body>

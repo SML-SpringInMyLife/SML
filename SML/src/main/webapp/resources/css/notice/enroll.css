@@ -39,16 +39,16 @@
 	justify-content: right;
 }
 
-.enroll-container .category select {
+ .enroll-container .category select{
 	border: 1px solid #ccc;
 	border-radius: 5px;
-	padding: 10px 30px;
+	padding: 10px 20px;
 	margin-bottom: 15px;
 	background-color: #6BAE7390;
 	color: white;
 	font-size: medium;
 }
-
+ 
 .enroll-container .content {
 	background-color: #e0f2e9;
 	padding: 20px;
@@ -130,3 +130,32 @@ font-size: 20px;
 	background-color: #45a049;
 	color: white;
 }
+
+#result_card img{
+		max-width: 100%;
+	    height: auto;
+	    display: block;
+	    padding: 5px;
+	    margin-top: 10px;
+	    margin: auto;	
+	}
+	#result_card {
+		position: relative;
+	}
+	.imgDeleteBtn{
+	    position: absolute;
+	    top: 0;
+	    right: 5%;
+	    background-color: #ef7d7d;
+	    color: wheat;
+	    font-weight: 900;
+	    width: 30px;
+	    height: 30px;
+	    border-radius: 50%;
+	    line-height: 26px;
+	    text-align: center;
+	    border: none;
+	    display: block;
+	    cursor: pointer;	
+	}
+	

@@ -11,8 +11,7 @@ import com.sml.model.NoticeVO;
 public interface NoticeService {
     
 	/* 공지사항 등록 */
-	public void noticeRegister(NoticeVO notice) throws Exception;                             //파일을 여러게 등록할 수 있으므로 list사용
-	// public void noticeRegisterfile(NoticeVO notice, List<FileupVO> fileup) throws Exception;
+	public void noticeRegister(NoticeVO notice) throws Exception;                  
 
 	/* 공지사항 조회 */
 	public List<NoticeVO> noticeGetList(Criteria cri) throws Exception;
@@ -27,8 +26,12 @@ public interface NoticeService {
 	public int noticeCount(int noticeCode) throws Exception;
 	
 	/* 좋아요 기능 */
-    boolean noticeLike(int noticeCode) throws Exception;
-	
+    boolean toggleMemberNoticeLike(int noticeCode, int memCode) throws Exception;
+    boolean toggleGuestNoticeLike(int noticeCode, String guestIdentifier) throws Exception;
+    int getTotalLikes(int noticeCode) throws Exception;
+    boolean isLikedByMember(int noticeCode, int memCode) throws Exception;
+    boolean isLikedByGuest(int noticeCode, String guestIdentifier) throws Exception;
+    boolean toggleNoticeLike(int noticeCode, String identifier) throws Exception;
 	/* 공지사항 수정 */
 	public int noticeModify(NoticeVO noticevo) throws Exception;
 	

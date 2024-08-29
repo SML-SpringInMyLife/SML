@@ -50,8 +50,9 @@ public class CourseServiceImpl implements CourseService {
 	}
 
 	@Override
-	public int courseModify(CourseVO vo) {
-		return mapper.courseModify(vo);
+	public int courseModify(CourseVO course) throws Exception {
+		log.info("(service) courseModify........." +course);
+		return mapper.courseModify(course);
 	}
 
 	@Override

@@ -10,6 +10,9 @@
 	href="${webappRoot}/resources/css/common/common.css">
 <link rel='stylesheet'
 	href='https://cdn-uicons.flaticon.com/2.5.1/uicons-bold-rounded/css/uicons-bold-rounded.css'>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
 	<div id="quick-menu">
@@ -31,7 +34,7 @@
 		<div class="container">
 			<div class="left-menu">
 				<a href="/" class="main-link"> <img
-					src="${webappRoot}/resources/images/logo.jpg" alt="Logo"
+					src="${webappRoot}/resources/images/logo.png" alt="Logo"
 					class="logo">
 				</a>
 				<nav class="main-menu" id="main-menu">
@@ -102,17 +105,36 @@
 
 	<!-- 채팅 팝업 설정 -->
 	<div id="chat-container" class="hidden">
-		<div id="chat-header">
-			<span><< 채팅 상담 >></span>
-			<button onclick="minimizeChat()">➖</button>
-			<!-- 최소화 버튼 -->
-			<button onclick="closeChat()">❌</button>
-		</div>
-		<div id="chat-box"></div>
-		<div id="chat-input">
-			<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
-			<button onclick="sendMessage()">전송</button>
-		</div>
+		<c:choose>
+			<c:when test="${sessionScope.member.memAdminCheck == 1}">
+				<div id="chat-header">
+					<h3>Chat Rooms</h3>
+					<div id="roomList"></div>
+					<span><< 채팅 상담 >></span>
+					<button class="sizeBtn" onclick="minimizeChat()">➖</button>
+					<!-- 최소화 버튼 -->
+					<button class="closeBtn" onclick="closeChat()">❌</button>
+				</div>
+				<div id="chat-box"></div>
+				<div id="chat-input">
+					<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
+					<button onclick="sendMessage()">전송</button>
+				</div>
+			</c:when>
+			<c:otherwise>
+				<div id="chat-header">
+					<span><< 채팅 상담 >></span>
+					<button class="sizeBtn" onclick="minimizeChat()">➖</button>
+					<!-- 최소화 버튼 -->
+					<button class="closeBtn" onclick="closeChat()">❌</button>
+				</div>
+				<div id="chat-box"></div>
+				<div id="chat-input">
+					<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
+					<button onclick="sendMessage()">전송</button>
+				</div>
+			</c:otherwise>
+		</c:choose>
 	</div>
 
 	<div id="close-chat-modal" class="modal hidden">
@@ -122,9 +144,7 @@
 			<button onclick="cancelCloseChat()">취소</button>
 		</div>
 	</div>
-
 	<script src="${webappRoot}/resources/js/common.js"></script>
-
 
 </body>
 </html>

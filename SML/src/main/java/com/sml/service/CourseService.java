@@ -18,7 +18,7 @@ public interface CourseService {
 	
 	public CourseVO courseDetail(int courseCode);
 	
-	public int courseModify(CourseVO vo);
+	public int courseModify(CourseVO course) throws Exception;
 	
 	public int courseDelete(int courseCode);
 	

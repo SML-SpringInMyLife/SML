@@ -1,108 +1,84 @@
 package com.sml.controller;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.json.simple.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sml.model.ChatVO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
+import com.sml.model.SmsVO;
 import com.sml.service.AdminService;
 
-import net.nurigo.java_sdk.api.Message;
-import net.nurigo.java_sdk.exceptions.CoolsmsException;
-
 @Controller
-@RequestMapping(value = "/admin")
+@RequestMapping("/admin")
+@EnableScheduling
 public class AdminController {
 	private static final Logger logger = LoggerFactory.getLogger(AdminController.class);
 
 	@Autowired
 	private AdminService service;
 
-	@Value("${SMS_KEY}")
-	private String SMSapiKey;
-
-	@Value("${SMS_SecretKEY}")
-	private String SMSapiSecret;
-
-	/* 관리자 메인 페이지 이동 */
-	@GetMapping(value = "main")
+	// 관리자 메인 페이지 이동
+	@GetMapping("/main")
 	public void adminMainGET(Model model) throws Exception {
 		logger.info("관리자 페이지 이동");
 
+		// 회원 수 및 연령대별 회원 수 조회 후 모델에 추가
 		int memberCnt = service.getMemberCnt();
 		model.addAttribute("memberCnt", memberCnt);
 
 		Map<String, Integer> ageGroupCnt = service.getAgeGroupCnt();
 		model.addAttribute("ageGroupCnt", ageGroupCnt);
 
-		// 기본 연도에 대한 차트 데이터 추가
-		String year = "2024"; // 기본 연도
+		// 현재 연도 기준으로 월별 연령대별 회원 수 차트 데이터 추가
+		String year = String.valueOf(Calendar.getInstance().get(Calendar.YEAR));
 		Map<String, int[]> chartData = service.getAgeGroupCountsByMonth(year);
-
-		// 차트 데이터를 모델에 추가
 		model.addAttribute("chartData", chartData);
 	}
 
-	@GetMapping(value = "getDataForYear")
+	// 특정 연도에 대한 월별 연령대별 회원 수 데이터를 비동기적으로 조회
+	@GetMapping("/getDataForYear")
 	@ResponseBody
 	public Map<String, int[]> getDataForYear(@RequestParam("year") String year) throws Exception {
 		logger.info("선택 년도 : " + year);
-		Map<String, int[]> result = service.getAgeGroupCountsByMonth(year);
-		return result;
+		return service.getAgeGroupCountsByMonth(year);
 	}
 
-	@GetMapping(value = "members")
+	// 관리자 - 회원 관리 페이지 이동
+	@GetMapping("/members")
 	public void adminMembersGET(Criteria cri, Model model) throws Exception {
+		logger.info("관리자 - 회원 관리 페이지 이동");
 
-		logger.info("관리자 - 회원관리페이지 이동");
-		List<MemberVO> members = service.getMemberList();
-
-		if (!members.isEmpty()) {
-			model.addAttribute("members", members);
-			model.addAttribute("totalCount", members.size());
-		} else {
-			model.addAttribute("listCheck", "empty");
-		}
-
-		int total = service.memberGetTotal(cri);
-		PageDTO pageMaker = new PageDTO(cri, total);
-		model.addAttribute("pageMaker", pageMaker);
+		// 페이징 처리된 회원 목록 조회 후 모델에 추가
+		List<MemberVO> members = service.getMemberList(cri);
+		model.addAttribute("members", members.isEmpty() ? "empty" : members);
+		model.addAttribute("totalCount", service.getMemberTotal(cri));
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getMemberTotal(cri)));
 	}
 
-	// 멤버 검색
-	@PostMapping(value = "members/search")
-	public String getMemberList(@RequestParam String category, @RequestParam String keyword, Model model) {
-		logger.info("검색 카테고리: " + category + ", 검색어: " + keyword);
-
-		List<MemberVO> members = service.getMemberList(category, keyword);
-		model.addAttribute("members", members);
-		model.addAttribute("totalCount", members.size());
-		model.addAttribute("category", category);
-		model.addAttribute("keyword", keyword);
-
-		return "admin/members"; // 검색 결과를 포함한 뷰를 반환합니다.
-	}
-
-	@PostMapping(value = "updateAdm")
+	// 관리자 권한 업데이트
+	@PostMapping("/updateAdm")
 	public String updateAdm(@RequestParam int memCode, @RequestParam int memAdminCheck, RedirectAttributes rttr) {
 		logger.info("관리권한 업데이트 멤버Code: " + memCode + ", 관리자 여부: " + memAdminCheck);
 
@@ -117,7 +93,8 @@ public class AdminController {
 		return "redirect:/admin/members";
 	}
 
-	@PostMapping(value = "updateStatus")
+	// 회원 상태 업데이트
+	@PostMapping("/updateStatus")
 	public String updateStatus(@RequestParam int memCode, @RequestParam int memStatus, RedirectAttributes rttr) {
 		logger.info("상태 업데이트 멤버Code: " + memCode + ", 상태: " + memStatus);
 
@@ -132,81 +109,92 @@ public class AdminController {
 		return "redirect:/admin/members";
 	}
 
-	@GetMapping(value = "courses")
-	public void adminCoursesGET() throws Exception {
+	// 관리자 - 수강 신청 관리 페이지 이동
+	@GetMapping("/courses")
+	public void adminCoursesGET(Criteria cri, Model model) throws Exception {
+		logger.info("관리자 - 수강 신청 관리 페이지 이동");
 
-		logger.info("관리자 - 수강신청관리 페이지 이동");
+		/*
+		 * // 페이징 처리된 수강 신청 목록 조회 후 모델에 추가 List<CourseVO> courses =
+		 * service.getCourseList(cri); model.addAttribute("courses", courses.isEmpty() ?
+		 * "empty" : courses); model.addAttribute("totalCount",
+		 * service.getCourseTotal(cri)); model.addAttribute("pageMaker", new
+		 * PageDTO(cri, service.getCourseTotal(cri)));
+		 */
 
 	}
 
-	@GetMapping(value = "adminInfo")
+	// 관리자 정보 수정 페이지 이동
+	@GetMapping("/adminInfo")
 	public void adminInfoGET() throws Exception {
-
-		logger.info("관리자 - 정보수정페이지 이동");
-
+		logger.info("관리자 - 정보 수정 페이지 이동");
 	}
 
-	@GetMapping(value = "sms")
-	public void adminSmsGET(Model model) throws Exception {
+	// 관리자 - 문자 관리 페이지 이동
+	@GetMapping("/sms")
+	public void adminSmsGET(Criteria cri, Model model) throws Exception {
+		logger.info("관리자 - 문자 관리 페이지 이동");
 
-		logger.info("관리자 - 문자관리페이지 이동");
-		List<MemberVO> members = service.getMemberList();
-
-		if (!members.isEmpty()) {
-			model.addAttribute("members", members);
-		} else {
-			model.addAttribute("listCheck", "empty");
-		}
-
+		// 페이징 처리된 SMS 목록 조회 후 모델에 추가
+		List<SmsVO> sms = service.getSmsList(cri);
+		model.addAttribute("sms", sms.isEmpty() ? "empty" : sms);
+		model.addAttribute("totalCount", service.getSmsTotal(cri));
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getSmsTotal(cri)));
 	}
 
-	@PostMapping("sms/sendSearch")
-	public ResponseEntity<List<MemberVO>> searchMembers(@RequestParam String category, @RequestParam String keyword) {
-		logger.info("검색 카테고리: " + category + ", 검색어: " + keyword);
+	// 회원 검색
+	@GetMapping("/searchMember.do")
+	@ResponseBody
+	public List<MemberVO> searchMember(Criteria cri) throws Exception {
+		logger.info("회원 검색 - 타입: " + cri.getType() + ", 키워드: " + cri.getKeyword());
 
-		// 회원 목록을 검색하는 서비스 호출
-		List<MemberVO> members = service.getMemberList(category, keyword);
-
-		// 클라이언트에 MemberVO 객체 리스트를 직접 반환
-		return ResponseEntity.ok(members); // 검색 결과를 JSON으로 반환
+		return service.getMemberList(cri);
 	}
 
-	@PostMapping(value = "sendSms.do")
+	// SMS 발송 및 DB 저장
+	@PostMapping("/sendSms.do")
 	public String sendSmsPost(HttpServletRequest request) throws Exception {
+		// 파라미터로 전달받은 SMS 정보를 HashMap으로 저장
+		HashMap<String, String> smsData = new HashMap<>();
+		smsData.put("to", request.getParameter("recipientNumber")); // 수신번호
+		smsData.put("from", request.getParameter("senderNumber")); // 발신번호
+		smsData.put("text", request.getParameter("smsContent")); // 문자 내용
+		smsData.put("type", "sms"); // 문자 타입
+		smsData.put("app_version", "test app 1.2"); // 애플리케이션 버전
+		smsData.put("memCode", request.getParameter("memCode")); // 회원 코드
 
-		// SMS 전송을 위한 파라미터 설정
-		HashMap<String, String> set = new HashMap<>();
-		set.put("to", request.getParameter("recipientNumber")); // 수신번호
-		set.put("from", request.getParameter("senderNumber")); // 발신번호
-		set.put("text", request.getParameter("smsContent")); // 문자 내용
-		set.put("type", "sms"); // 문자 타입
-		set.put("app_version", "test app 1.2"); // 애플리케이션 버전
-
-		System.out.println(set);
-
-		try {
-			// API key와 Secret Key 적용하여 Message 객체 생성
-			Message coolsms = new Message(SMSapiKey, SMSapiSecret);
-			// SMS 전송 및 결과 받기
-			JSONObject result = coolsms.send(set);
-			System.out.println(result.toString());
-		} catch (CoolsmsException e) {
-			System.out.println("Error Message: " + e.getMessage());
-			System.out.println("Error Code: " + e.getCode());
-		}
+		// 서비스에 HashMap을 넘겨서 SMS 발송 로직 처리
+		service.sendSms(smsData);
 
 		// SMS 전송 후 응답 페이지로 이동
-		return "admin/sms"; // SMS 전송 결과 페이지
+		return "redirect:/admin/sms";
 	}
 
-	@GetMapping("/chat")
-	public void adminChatGET() throws Exception {
-		logger.info("관리자 - 채팅상담관리페이지 이동");
+	// 3일 연속 미출석 회원에게 안부 문자 발송 (매일 10:00 AM)
+	@Scheduled(cron = "0 0 11 * * ?")
+	public void sendReminderSmsToAbsentMembers() {
+		logger.info("3일 연속 미출석 안부문자 발송일시 : {}", new Date());
+		try {
+			List<MemberVO> absentMembers = service.getAbsentMembers();
+			logger.info("3일 연속 미출석 회원 수 : {}", absentMembers.size());
+			if (!absentMembers.isEmpty()) {
+				service.sendReminderSms(absentMembers);
+			}
+		} catch (Exception e) {
+			logger.error("안부문자 발송 실패 : ", e);
+		}
 	}
 
-	@GetMapping(value = "login")
-	public void adminLoginGET() throws Exception {
-		logger.info("로그인페이지 이동");
+	// 관리자 - 채팅 상담 관리 페이지 이동
+	@GetMapping("/chatList")
+	public void adminChatGET(Criteria cri, Model model) throws Exception {
+		logger.info("관리자 - 채팅 상담 관리 페이지 이동");
+
+		// 페이징 처리된 채팅 목록 조회 후 모델에 추가
+		List<ChatVO> chat = service.getChatList(cri);
+		model.addAttribute("chat", chat.isEmpty() ? "empty" : chat);
+		model.addAttribute("totalCount", service.getChatTotal(cri));
+		model.addAttribute("pageMaker", new PageDTO(cri, service.getChatTotal(cri)));
 	}
 
 }

@@ -6,13 +6,16 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.sml.model.ChatVO;
+import com.sml.model.CourseVO;
+import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
+import com.sml.model.SmsVO;
 
 public interface AdminMapper {
 
-	public List<MemberVO> getMemberList();
+	// MEMBER 관련
 
-	public List<MemberVO> getMemberList(@Param("category") String category, @Param("keyword") String keyword);
+	public List<MemberVO> getMemberList(Criteria cri);
 
 	public void updateAdm(@Param("memCode") int memCode, @Param("memAdminCheck") int memAdminCheck);
 
@@ -24,9 +27,30 @@ public interface AdminMapper {
 
 	public List<Map<String, Object>> getAgeGroupCountsByMonth(String year);
 
-	public int memberGetTotal();
+	public int getMemberTotal(Criteria cri);
 
-	public void saveChatContent(ChatVO chatVO);
+	// COURSES 관련
 
+	public List<CourseVO> getCourseList(Criteria cri);
+
+	public int getCourseTotal(Criteria cri);
+
+	// SMS 관련
+
+	public List<SmsVO> getSmsList(Criteria cri);
+
+	public int getSmsTotal(Criteria cri);
+
+	public void insertSms(SmsVO sms);
+
+	public List<MemberVO> selectAbsentMembers();
+
+	// CHAT 관련
+
+	public List<ChatVO> getChatList(Criteria cri);
+
+	public int getChatTotal(Criteria cri);
+
+	public void saveChatContent(ChatVO chat);
 
 }

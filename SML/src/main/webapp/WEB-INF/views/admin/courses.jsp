@@ -17,14 +17,22 @@
 			<div class="admin-main-content">
 				<h2>수강신청 목록</h2>
 				<div class="search-container">
-					<select id="searchCategory">
+					<select id="type" name="type">
 						<option value="all">전체</option>
 						<option value="courseName">수업명</option>
 						<option value="enrolleeName">성명</option>
 						<option value="phone">전화번호</option>
-					</select> <input type="text" id="search" class="search-bar"
-						placeholder="검색어를 입력하세요." name="keyword">
-					<button onclick="search()">검색</button>
+					</select>
+					<div class="search-bar">
+						<input
+							type="text" id="search" class="search-bar"
+							placeholder="검색어를 입력하세요." name="keyword"
+							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
+						<input type="hidden" name="pageNum"
+							value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
+						<input type="hidden" name="amount" value='${pageMaker.cri.amount}'>
+						<button onclick="search()">검색</button>
+					</div>
 				</div>
 
 				<table class="course-table">
@@ -81,6 +89,34 @@
 						</tr>
 					</tbody>
 				</table>
+				<!-- 페이지 이동 인터페이스 영역 -->
+				<div class="pageMaker_wrap">
+					<ul class="pageMaker">
+						<!-- Previous Button -->
+						<c:if test="${pageMaker.prev}">
+							<li class="pageMaker_btn prev"><a
+								href="${pageMaker.pageStart - 1}">이전</a></li>
+						</c:if>
+						<!-- Page Numbers -->
+						<c:forEach begin="${pageMaker.pageStart}"
+							end="${pageMaker.pageEnd}" var="num">
+							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":"" }">
+								<a href="${num}">${num}</a>
+							</li>
+						</c:forEach>
+						<!-- Next Button -->
+						<c:if test="${pageMaker.next}">
+							<li class="pageMaker_btn next"><a
+								href="${pageMaker.pageEnd + 1 }">다음</a></li>
+						</c:if>
+					</ul>
+				</div>
+				<form id="moveForm" action="/admin/courses" method="get">
+					<input type="hidden" name="pageNum"
+						value="${pageMaker.cri.pageNum}"> <input type="hidden"
+						name="amount" value="${pageMaker.cri.amount}"> <input
+						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+				</form>
 			</div>
 		</div>
 	</main>

@@ -19,6 +19,16 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+ <style type="text/css">
+	#result_card img{
+		max-width: 100%;
+	    height: auto;
+	    display: block;
+	    padding: 5px;
+	    margin-top: 10px;
+	    margin: auto;	
+	}
+</style>
 </head>
 <body>
 	<!-- common.css 로드 -->
@@ -41,12 +51,7 @@
 					 <label>| 좋아요 <span id="likeCount"> <c:out value="${noticeDetail.noticeLike}" /></span></label>
 				</div>
 				<button id="like" class="like">♥</button>
-				<script>
-					document.querySelector('.like').addEventListener('click',
-							function() {
-								this.classList.toggle('active');
-							});
-				</script>
+				
 			</div>
 
 			<!-- 글제목 -->
@@ -57,6 +62,15 @@
 			<!-- 글내용 -->
 			<div class="content">
 				<c:out value="${noticeDetail.noticeBody}" />
+				
+					<div class="form_section">
+					<div class="form_section_title">
+						<label>상품 이미지</label>
+					</div>
+					<div class="form_section_content">
+						<div id="uploadResult"></div>
+					</div>
+				</div>
 
 			</div>
 			<div class="line"></div>
@@ -81,9 +95,33 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
    
 	<script>
+	 /* 이미지 정보 호출 */
+	let noticeCode = '<c:out value="${noticeDetail.noticeCode}"/>';
+	let uploadResult = $("#uploadResult");			
+	
+	$.getJSON("/notice/getAttachList", {noticeCode : noticeCode}, function(arr){	
+		
+		if(arr.length === 0){			
+			return;
+		}
+		
+		let str = "";
+		let obj = arr[0];	
+		
+		let fileCallPath = encodeURIComponent(obj.filePath + "/s_" + obj.fileUuid + "_" + obj.fileName);
+		str += "<div id='result_card'";
+		str += "data-path='" + obj.filePath + "' data-uuid='" + obj.fileUuid + "' data-filename='" + obj.fileName + "'";
+		str += ">";
+		str += "<img src='/notice/display?fileName=" + fileCallPath +"'>";
+		str += "</div>";		
+		
+		uploadResult.html(str);						
+		
+	});
+    
 	
 	$(document).ready(function() {
-	    var noticeCode = '${noticeDetail.noticeCode}';
+	    var noticeCode = '<c:out value="${noticeDetail.noticeCode}"/>';
 	    
 	    // 페이지 로드 시 AJAX 요청으로 조회수 증가
 	    $.ajax({
@@ -99,28 +137,11 @@
 	            console.error("조회수 증가 실패", error);
 	        }
 	    });
-       
-	        $("#like").on("click", function() {
-	            var noticeCode = '${noticeDetail.noticeCode}';
-	            
-	            $.ajax({
-	                url: '/notice/Like',
-	                type: 'POST',
-	                data: { noticeCode: noticeCode },
-	                success: function(response) {
-	                    var likeCount = parseInt($("#likeCount").text());
-	                    $("#likeCount").text(likeCount + 1);
-	                    console.log("좋아요 증가 성공");
-	                },
-	                error: function(xhr, status, error) {
-	                    console.error("좋아요 증가 실패", error);
-	                }
-	            });
-	        });
+	    
+	    
 
-	    
-	    
 	    let moveForm = $("#moveForm");
+	    
 	    /* 공지사항 조회 페이지 이동 */
 	    $("#listbtn").on("click", function(e) {
 	        e.preventDefault();
