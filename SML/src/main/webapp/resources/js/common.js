@@ -12,7 +12,6 @@ $(document).ready(function() {
     $('#search-input').on('keydown', handleEnterKey);  // 검색 입력 필드
 });
 
-
 // 햄버거 메뉴 버튼과 모바일 메뉴 요소를 가져옴
 const $hamburger = $('#hamburger');
 const $mobileMenu = $('#mobile-menu');
@@ -72,21 +71,7 @@ function chatConsultation() {
     }
 }
 
-// 최소화/최대화 버튼 클릭 시 호출되는 함수
-function minimizeChat() {
-    const $chatContainer = $('#chat-container');
-    const $chatHeader = $('#chat-header');
 
-    if ($chatContainer.hasClass('minimized')) {
-        // 현재 상태가 최소화 상태일 때 최대화
-        $chatContainer.removeClass('minimized').addClass('expanded');
-        $chatHeader.find('button').text('➖'); // 버튼 텍스트를 최소화 아이콘으로 변경
-    } else {
-        // 현재 상태가 최대화 상태일 때 최소화
-        $chatContainer.removeClass('expanded').addClass('minimized');
-        $chatHeader.find('button').text('⬜'); // 버튼 텍스트를 최대화 아이콘으로 변경
-    }
-}
 
 // 채팅창 닫기 요청 함수
 function closeChat() {
@@ -95,10 +80,16 @@ function closeChat() {
 
 // 채팅 종료 확인 함수
 function confirmCloseChat() {
-    $('#chat-container').addClass('hidden'); // 채팅창 숨기기
-    $('#close-chat-modal').addClass('hidden'); // 닫기 모달 숨기기
+    $('#chat-container').addClass('hidden'); 
+    $('#close-chat-modal').addClass('hidden'); 
+    
     if (ws) {
-        ws.close(); // WebSocket 연결 종료
+        // 클로징 메시지를 서버에 전송
+        const closeMessage = JSON.stringify({ action: 'closeChat' });
+        ws.send(closeMessage);
+        
+        // WebSocket 연결 종료
+        ws.close();
     }
 }
 
@@ -162,6 +153,7 @@ function startChat() {
 
     ws.onmessage = function(event) {
         appendMessage(event.data); // 메시지 수신 시 메시지 추가 함수 호출
+        handleNewMessage(); // 새 메시지 알림 처리
     };
 
     ws.onclose = function() {
@@ -228,13 +220,56 @@ function appendMessage(message) {
     $chatBox.scrollTop($chatBox.prop('scrollHeight')); // 스크롤을 가장 아래로 이동
 
     // 채팅창이 최소화 상태일 때 헤더 깜빡이기
+    handleNewMessage();
+}
+
+/// 새로운 메시지 알림 처리 함수
+function handleNewMessage() {
     const $chatContainer = $('#chat-container');
     const $chatHeader = $('#chat-header');
-    
+    const $sizeBtn = $chatHeader.find('.sizeBtn'); // sizeBtn 선택
+    const $closeBtn = $chatHeader.find('.closeBtn'); // closeBtn 선택
+
     if ($chatContainer.hasClass('minimized')) {
-        $chatHeader.addClass('blinking'); // 헤더에 깜빡임 클래스 추가
-        setTimeout(() => {
-            $chatHeader.removeClass('blinking'); // 일정 시간 후 깜빡임 클래스 제거
-        }, 3000); // 3초 후 제거
+        // 헤더에 깜빡임 클래스 추가
+        $chatHeader.addClass('blinking');
+        $chatHeader.css('background-color', 'yellow'); // 헤더 배경색을 노란색으로 변경
+        $chatHeader.css('color', 'black'); // 글자 색상을 검은색으로 변경
+
+        // sizeBtn 및 closeBtn 배경색을 노란색으로 변경
+        $sizeBtn.css('background-color', 'yellow');
+        $closeBtn.css('background-color', 'yellow');
+
+        // 알림 사운드 재생
+        const audio = new Audio('/resources/new-message.mp3');
+        audio.play();
+    }
+}
+
+// 채팅창 최소화/최대화 시 상태 복구 처리 함수
+function minimizeChat() {
+    const $chatContainer = $('#chat-container');
+    const $chatHeader = $('#chat-header');
+    const $sizeBtn = $chatHeader.find('.sizeBtn'); // sizeBtn 선택
+    const $closeBtn = $chatHeader.find('.closeBtn'); // closeBtn 선택
+
+    if ($chatContainer.hasClass('minimized')) {
+        // 현재 상태가 최소화 상태일 때 최대화
+        $chatContainer.removeClass('minimized').addClass('expanded');
+        $chatHeader.find('.sizeBtn').text('➖'); // 버튼 텍스트를 최소화 아이콘으로 변경
+
+        // 헤더 원래 색상 복구 및 깜빡임 제거
+        $chatHeader.removeClass('blinking');
+        $chatHeader.css('background-color', ''); // 헤더 배경색 복원
+        $chatHeader.css('color', ''); // 글자 색상 복원
+
+        // sizeBtn 및 closeBtn 배경색 복원
+        $sizeBtn.css('background-color', '');
+        $closeBtn.css('background-color', '');
+
+    } else {
+        // 현재 상태가 최대화 상태일 때 최소화
+        $chatContainer.removeClass('expanded').addClass('minimized');
+        $chatHeader.find('.sizeBtn').text('⬜'); // 버튼 텍스트를 최대화 아이콘으로 변경
     }
 }
