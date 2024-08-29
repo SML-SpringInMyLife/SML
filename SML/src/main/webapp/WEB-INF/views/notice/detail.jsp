@@ -51,12 +51,7 @@
 					 <label>| 좋아요 <span id="likeCount"> <c:out value="${noticeDetail.noticeLike}" /></span></label>
 				</div>
 				<button id="like" class="like">♥</button>
-				<script>
-					document.querySelector('.like').addEventListener('click',
-							function() {
-								this.classList.toggle('active');
-							});
-				</script>
+				
 			</div>
 
 			<!-- 글제목 -->
@@ -126,7 +121,7 @@
     
 	
 	$(document).ready(function() {
-	    var noticeCode = '${noticeDetail.noticeCode}';
+	    var noticeCode = '<c:out value="${noticeDetail.noticeCode}"/>';
 	    
 	    // 페이지 로드 시 AJAX 요청으로 조회수 증가
 	    $.ajax({
@@ -142,28 +137,11 @@
 	            console.error("조회수 증가 실패", error);
 	        }
 	    });
-       
-	        $("#like").on("click", function() {
-	            var noticeCode = '${noticeDetail.noticeCode}';
-	            
-	            $.ajax({
-	                url: '/notice/Like',
-	                type: 'POST',
-	                data: { noticeCode: noticeCode },
-	                success: function(response) {
-	                    var likeCount = parseInt($("#likeCount").text());
-	                    $("#likeCount").text(likeCount + 1);
-	                    console.log("좋아요 증가 성공");
-	                },
-	                error: function(xhr, status, error) {
-	                    console.error("좋아요 증가 실패", error);
-	                }
-	            });
-	        });
-
-	     
 	    
+	    
+
 	    let moveForm = $("#moveForm");
+	    
 	    /* 공지사항 조회 페이지 이동 */
 	    $("#listbtn").on("click", function(e) {
 	        e.preventDefault();

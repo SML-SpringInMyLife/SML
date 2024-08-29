@@ -16,11 +16,12 @@ public class NoticeVO {
 	private String noticeBody;
 	private Date noticeEnroll;
 	private Date noticeModify;
-	private int noticeLike;
+	private int totalLikes;
 	private String noticeStatus;
 	private int noticeCount;
 	private String memName;
 	private List<FileupVO> imageList;
-
+	private boolean userLiked;
+    private int noticeLike;
 	
 }
