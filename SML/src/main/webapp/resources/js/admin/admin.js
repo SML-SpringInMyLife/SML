@@ -272,7 +272,6 @@ function clearSearchResults() {
 
 // 채팅 상세보기 팝업 표시 함수
 function showChatDetails(content) {
-    console.log('채팅 내용:', content); // 디버깅용 콘솔 출력
     $('#chatDetailsContent').html(formatContent(content)); // 포맷팅된 채팅 내용 설정
     $('#chatDetailsPopup').show(); // 채팅 상세보기 팝업 표시
 }

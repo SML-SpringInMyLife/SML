@@ -537,8 +537,9 @@
 	margin-top: 20px;
 }
 
-.sms-content:hover, .chat-content:hover, .sms-content:focus, .chat-content:focus {
-	cursor : pointer;
+.sms-content:hover, .chat-content:hover, .sms-content:focus,
+	.chat-content:focus {
+	cursor: pointer;
 }
 
 /* 관리자페이지 - 테이블/차트 반응형 */

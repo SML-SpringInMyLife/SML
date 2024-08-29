@@ -16,16 +16,25 @@
 </head>
 <body>
 	<div id="quick-menu">
-		<button onclick="enlargeFont()">
+		<button id="enlarge-font-button"">
 			<i class="fi fi-br-zoom-in"></i>
 		</button>
-		<button onclick="reduceFont()">
+		<button id="reduce-font-button">
 			<i class="fi fi-br-zoom-out"></i>
 		</button>
-		<button onclick="chatConsultation()">
-			<i class="fi fi-br-comments-question-check"></i>
-		</button>
-		<button onclick="scrollToTop()">
+		<c:choose>
+			<c:when test="${sessionScope.member.memAdminCheck == 1}">
+				<a href="/admin/chat"><button>
+						<i class="fi fi-br-comments-question-check"></i>
+					</button> </a>
+			</c:when>
+			<c:otherwise>
+				<button id="chat-start-button">
+					<i class="fi fi-br-comments-question-check"></i>
+				</button>
+			</c:otherwise>
+		</c:choose>
+		<button id="scroll-top-button">
 			<i class="fi fi-br-chevron-double-up"></i>
 		</button>
 	</div>
@@ -105,36 +114,36 @@
 
 	<!-- 채팅 팝업 설정 -->
 	<div id="chat-container" class="hidden">
-		<c:choose>
+		<%-- <c:choose>
 			<c:when test="${sessionScope.member.memAdminCheck == 1}">
 				<div id="chat-header">
-					<h3>Chat Rooms</h3>
-					<div id="roomList"></div>
-					<span><< 채팅 상담 >></span>
-					<button class="sizeBtn" onclick="minimizeChat()">➖</button>
+					<span> 채팅 상담 💬 </span>
+					<!-- <h3>Chat Rooms</h3>
+					<div id="roomList"></div> -->
+					<button class="sizeBtn" onclick="minimizeChat()">⎯</button>
 					<!-- 최소화 버튼 -->
 					<button class="closeBtn" onclick="closeChat()">❌</button>
 				</div>
 				<div id="chat-box"></div>
 				<div id="chat-input">
 					<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
-					<button onclick="sendMessage()">전송</button>
+					<button class="sendBtn" onclick="sendMessage()">전송</button>
 				</div>
 			</c:when>
-			<c:otherwise>
-				<div id="chat-header">
-					<span><< 채팅 상담 >></span>
-					<button class="sizeBtn" onclick="minimizeChat()">➖</button>
-					<!-- 최소화 버튼 -->
-					<button class="closeBtn" onclick="closeChat()">❌</button>
-				</div>
-				<div id="chat-box"></div>
-				<div id="chat-input">
-					<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
-					<button onclick="sendMessage()">전송</button>
-				</div>
-			</c:otherwise>
-		</c:choose>
+			<c:otherwise> --%>
+		<div id="chat-header">
+			<span> 채팅 상담 💬 </span>
+			<button class="sizeBtn" onclick="minimizeChat()">⎯</button>
+			<!-- 최소화 버튼 -->
+			<button class="closeBtn" onclick="closeChat()">❌</button>
+		</div>
+		<div id="chat-box"></div>
+		<div id="chat-input">
+			<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
+			<button class="sendBtn" onclick="sendMessage()">전송</button>
+		</div>
+		<%-- </c:otherwise>
+		</c:choose> --%>
 	</div>
 
 	<div id="close-chat-modal" class="modal hidden">
