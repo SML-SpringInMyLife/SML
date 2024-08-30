@@ -2,19 +2,24 @@ package com.sml.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sml.controller.MemberController;
 import com.sml.mapper.NoticeMapper;
 import com.sml.model.Criteria;
 import com.sml.model.FileupVO;
-import com.sml.model.NoticeLikeVO;
+import com.sml.model.LikeVO;
 import com.sml.model.NoticeVO;
 
 @Service
 public class NoticeServiceImpl implements NoticeService {
-
+ 
+	   private static final Logger logger = LoggerFactory.getLogger(NoticeServiceImpl.class);
+	
 	@Autowired
 	NoticeMapper noticeMapper;
 
@@ -80,62 +85,39 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override // 게시글 조회수 증가
+	@Transactional
 	public int noticeCount(int noticeCode) throws Exception {
 
 		return noticeMapper.noticeCount(noticeCode);
-
 	}
-
-	@Override //좋아요 
-	public boolean toggleMemberNoticeLike(int noticeCode, int memCode) throws Exception {
-		NoticeLikeVO like = noticeMapper.getMemberNoticeLike(noticeCode, memCode);
-		if (like == null) {
-			// 좋아요가 없으면 추가
-			noticeMapper.insertMemberNoticeLike(noticeCode, memCode);
-			return true;
-		} else {
-			// 좋아요가 있으면 삭제
-			noticeMapper.deleteMemberNoticeLike(noticeCode, memCode);
-			return false;
-		}
-	}
-
-	@Override
-	public boolean toggleGuestNoticeLike(int noticeCode, String guestIdentifier) throws Exception {
-		NoticeLikeVO like = noticeMapper.getGuestNoticeLike(noticeCode, guestIdentifier);
-		if (like == null) {
-			// 좋아요가 없으면 추가
-			noticeMapper.insertGuestNoticeLike(noticeCode, guestIdentifier);
-			return true;
-		} else {
-			// 좋아요가 있으면 삭제
-			noticeMapper.deleteGuestNoticeLike(noticeCode, guestIdentifier);
-			return false;
-		}
-	}
-
-	@Override
-	public int getTotalLikes(int noticeCode) throws Exception {
-		return noticeMapper.getTotalLikes(noticeCode);
-	}
-
-	@Override
-	public boolean isLikedByMember(int noticeCode, int memCode) throws Exception {
-		return noticeMapper.getMemberNoticeLike(noticeCode, memCode) != null;
-	}
-
-	@Override
-	public boolean isLikedByGuest(int noticeCode, String guestIdentifier) throws Exception {
-		return noticeMapper.getGuestNoticeLike(noticeCode, guestIdentifier) != null;
-	}
-  
-	@Override
-	public boolean toggleNoticeLike(int noticeCode, String identifier) throws Exception {
-	    // identifier가 숫자면 회원, 아니면 비회원으로 처리
-	    if (identifier.matches("\\d+")) {
-	        return toggleMemberNoticeLike(noticeCode, Integer.parseInt(identifier));
+	
+	@Override //좋아요 기능 
+	public boolean toggleLike(int noticeCode, int memCode) {
+	    List<LikeVO> existingLikes = noticeMapper.getLike(noticeCode, memCode);
+	    boolean isLiked;
+	    if (existingLikes == null || existingLikes.isEmpty()) {
+	        LikeVO newLike = new LikeVO();
+	        newLike.setMemCode(memCode);
+	        newLike.setNoticeCode(noticeCode);
+	        newLike.setLikeType("NOTICE");
+	        noticeMapper.insertLike(newLike);
+	        noticeMapper.updateNoticeLikeCount(noticeCode, 1);  // 직접 업데이트
+	        isLiked = true;
 	    } else {
-	        return toggleGuestNoticeLike(noticeCode, identifier);
+	        LikeVO like = existingLikes.get(0);
+	        noticeMapper.deleteLike(like.getLikeCode());
+	        noticeMapper.updateNoticeLikeCount(noticeCode, -1);  // 직접 업데이트
+	        isLiked = false;
 	    }
+	    return isLiked;
 	}
-}
+
+	    @Override
+	    public int getNoticeLikeCount(int noticeCode) {
+	        return noticeMapper.getNoticeLikeCount(noticeCode);
+	    }
+	    
+	}
+	
+
+

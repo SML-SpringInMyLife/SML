@@ -37,6 +37,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -114,32 +115,53 @@ public class NoticeController {
     @ResponseBody
     public ResponseEntity<String> noticeCount(@RequestParam("noticeCode") int noticeCode, HttpSession session) {
         try {
-            // 세션에서 이미 조회한 게시글 목록을 가져옴
-            Set<Integer> viewedNotices = (Set<Integer>) session.getAttribute("viewedNotices");
-            if (viewedNotices == null) {
-                viewedNotices = new HashSet<>();
-            }
-
-            // 이미 조회한 게시글인지 확인
-            if (!viewedNotices.contains(noticeCode)) {
+            // 세션에서 현재 공지사항의 조회 여부를 확인
+            Boolean isViewed = (Boolean) session.getAttribute("notice_viewed_" + noticeCode);
+            
+            if (isViewed == null || !isViewed) {
+                // 조회하지 않은 경우에만 조회수 증가
                 int affectedRows = noticeservice.noticeCount(noticeCode);
                 logger.info("조회수 증가: 영향을 받은 행의 수 = " + affectedRows);
-
-                // 조회한 게시글 목록에 추가
-                viewedNotices.add(noticeCode);
-                session.setAttribute("viewedNotices", viewedNotices);
-
+                
+                // 세션에 조회 여부 저장
+                session.setAttribute("notice_viewed_" + noticeCode, true);
+                
                 return ResponseEntity.ok("조회수 증가 성공");
             } else {
-                return ResponseEntity.ok("이미 조회한 게시글");
+                logger.info("이미 조회한 공지사항: " + noticeCode);
+                return ResponseEntity.ok("이미 조회한 공지사항");
             }
         } catch (Exception e) {
             logger.error("조회수 증가 중 오류 발생", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("조회수 증가 실패");
         }
     }
-    
    
+    @PostMapping("/like/{noticeCode}")
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> toggleLike(@PathVariable int noticeCode, HttpSession session) {
+        MemberVO member = (MemberVO) session.getAttribute("member");
+        Map<String, Object> response = new HashMap<>();
+
+        if (member == null) {
+            response.put("status", "error");
+            response.put("message", "로그인이 필요합니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        int memCode = member.getMemCode();
+        boolean isLiked = noticeservice.toggleLike(noticeCode, memCode);
+        int likeCount = noticeservice.getNoticeLikeCount(noticeCode);
+
+        response.put("status", isLiked ? "Liked" : "Unliked");
+        response.put("likeCount", likeCount);
+         
+        return ResponseEntity
+                .ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+    }
+    
 
 	/* 공지사항 상세조회페이지 이동 */
 	@GetMapping({"/detail" , "/modify"})

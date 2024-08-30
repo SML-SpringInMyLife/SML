@@ -24,14 +24,11 @@ public interface NoticeService {
 	
 	/* 공지사항 조회수증가 */
 	public int noticeCount(int noticeCode) throws Exception;
-	
-	/* 좋아요 기능 */
-    boolean toggleMemberNoticeLike(int noticeCode, int memCode) throws Exception;
-    boolean toggleGuestNoticeLike(int noticeCode, String guestIdentifier) throws Exception;
-    int getTotalLikes(int noticeCode) throws Exception;
-    boolean isLikedByMember(int noticeCode, int memCode) throws Exception;
-    boolean isLikedByGuest(int noticeCode, String guestIdentifier) throws Exception;
-    boolean toggleNoticeLike(int noticeCode, String identifier) throws Exception;
+    
+	/* 공지사항 좋아요 */
+    boolean toggleLike(int noticeCode, int memCode);
+    int getNoticeLikeCount(int noticeCode);
+
 	/* 공지사항 수정 */
 	public int noticeModify(NoticeVO noticevo) throws Exception;
 	

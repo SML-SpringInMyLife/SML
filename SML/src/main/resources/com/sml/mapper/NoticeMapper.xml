@@ -18,13 +18,12 @@
 		 <result property="memName" column="MEM_NAME"/>
 	</resultMap> 
 	
-	<resultMap id="noticeLikeResultMap" type="com.sml.model.NoticeLikeVO">
-    <id property="likeId" column="LIKE_ID" />
-    <result property="noticeCode" column="NOTICE_CODE" />
-    <result property="memCode" column="MEM_CODE" />
-    <result property="guestIdentifier" column="GUEST_IDENTIFIER" />
-    <result property="likeStatus" column="LIKE_STATUS" typeHandler="org.apache.ibatis.type.BooleanTypeHandler" />
-    <result property="createdAt" column="CREATED_AT" />
+	<resultMap id="likeResultMap" type="com.sml.model.LikeVO">
+    <id property="likeCode" column="LIKE_CODE"/>
+    <result property="memCode" column="MEM_CODE"/>
+    <result property="noticeCode" column="NOTICE_CODE"/>
+    <result property="saftyCode" column="SAFTY_CODE"/>
+    <result property="likeType" column="LIKE_TYPE"/>
 </resultMap>
 
 
@@ -115,6 +114,12 @@
     WHERE n.NOTICE_CODE = #{noticeCode}
 </select>
 
+
+<!--  공지사항 수정  -->
+<update id="noticeModify"> update NOTICE SET NOTICE_TITLE=#{noticeTitle}, NOTICE_BODY=#{noticeBody}, NOTICE_MODIFY_DATE=sysdate where NOTICE_CODE=#{noticeCode} </update>
+<!--   공지사항 삭제   -->
+<update id="noticeDelete"> UPDATE NOTICE SET NOTICE_STATUS ='Y' WHERE NOTICE_CODE=#{noticeCode} </update>
+
  <!-- 조회수 증가 -->
     <update id="noticeCount" parameterType="int">
         UPDATE NOTICE
@@ -122,23 +127,33 @@
         WHERE notice_code = #{noticeCode}
     </update>
 
+ <!-- 공지사항 좋아요 -->
+ 
+ <select id="getNoticeLikeCount" resultType="int" >
+    SELECT NOTICE_LIKE FROM NOTICE WHERE NOTICE_CODE = #{noticeCode}
+</select>
+ 
+    <select id="getLike" resultMap="likeResultMap">
+    SELECT * FROM TB_LIKE 
+    WHERE NOTICE_CODE = #{noticeCode} AND MEM_CODE = #{memCode}
+</select>
 
+ <insert id="insertLike" parameterType="com.sml.model.LikeVO">
+    INSERT INTO TB_LIKE (MEM_CODE, NOTICE_CODE, LIKE_TYPE)
+    VALUES (#{memCode}, #{noticeCode}, 'NOTICE')
+</insert>
 
-	<!-- 공지사항 수정 -->
-	<update id="noticeModify">
-		update NOTICE SET NOTICE_TITLE=#{noticeTitle},
-		NOTICE_BODY=#{noticeBody},
-		NOTICE_MODIFY_DATE=sysdate
-		where
-		NOTICE_CODE=#{noticeCode}
-	</update>
+    <delete id="deleteLike" parameterType="int">
+        DELETE FROM TB_LIKE WHERE LIKE_CODE = #{likeCode}
+    </delete>
 
-    <!--  공지사항 삭제  -->
-	<update id="noticeDelete">
-		UPDATE NOTICE
-		SET NOTICE_STATUS ='Y'
-		WHERE NOTICE_CODE=#{noticeCode}
-	</update> 
-	
+   <update id="updateNoticeLikeCount">
+    UPDATE NOTICE 
+    SET NOTICE_LIKE = GREATEST(0, NOTICE_LIKE + #{increment})
+    WHERE NOTICE_CODE = #{noticeCode}
+</update>
+ 
+ 
+ 
 
 </mapper>
