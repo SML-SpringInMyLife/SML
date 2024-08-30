@@ -40,7 +40,7 @@
                         키워드 : <input type="text" value="" id="keyword" size="15" onfocus="showRecentSearches()" autocomplete="off">
                         <button type="submit">검색하기</button>
                     </form>
-                    <ul id="recentSearches"></ul>
+                    <ul id="recentSearches" style="display:none;"></ul>
                 </div>
             </div>
             <hr>
@@ -49,15 +49,17 @@
         </div>
 
     </div>
-    
-                       <!-- 지도 사용법 버튼 추가 -->
-        <div id="mapInstructionsButton">
-		    <button onclick="openMapInstructions()">지도 사용법</button>
-		</div>
+
+    <!-- 지도 사용법 버튼 추가 -->
+    <div id="mapInstructionsButton">
+        <button onclick="openMapInstructions()">지도 사용법</button>
+    </div>
 
 </main>
+
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=36ac063fd0533ae2bce9b847fb4f47fe&libraries=services"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 <script>
     var markers = [];
     var currCategory = '';
@@ -72,6 +74,7 @@
     var placeOverlay = new kakao.maps.CustomOverlay({zIndex: 1}),
         contentNode = document.createElement('div');
 
+    // 현재 위치 가져오기
     if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(function(position) {
             var lat = position.coords.latitude;
@@ -107,11 +110,16 @@
             type: "GET",
             url: "/location/getRecentSearches",
             success: function(data) {
+                if (!Array.isArray(data)) {
+                    data = [];
+                }
+
                 var exists = data.some(function(item) {
                     return item.searchKeyword === keyword;
                 });
 
                 if (!exists) {
+                    // 키워드 저장 로직
                     $.ajax({
                         type: "POST",
                         url: "/location/saveSearchKeyword",
@@ -119,20 +127,22 @@
                         data: JSON.stringify({searchKeyword: keyword}),
                         success: function() {
                             console.log("Search keyword saved.");
-                            // 장소 검색 함수 호출
                             currCategory = '';
                             changeCategoryClass();
                             ps.keywordSearch(keyword, placesSearchCB);
                         }
                     });
                 } else {
-                    // 장소 검색 함수 호출
                     currCategory = '';
                     changeCategoryClass();
                     ps.keywordSearch(keyword, placesSearchCB);
                 }
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching recent searches:", error);
             }
         });
+
         return false; // 폼 제출을 막기 위해 false 반환
     }
 
@@ -338,26 +348,49 @@
         $.ajax({
             type: "GET",
             url: "/location/getRecentSearches",
+            dataType: "json",
             success: function(data) {
+                console.log("Fetched recent searches:", data);
+
+                if (!Array.isArray(data)) {
+                    console.error("Expected an array but got:", typeof data, data);
+                    return;
+                }
+
                 var recentSearches = document.getElementById('recentSearches');
                 recentSearches.innerHTML = '';
+                recentSearches.style.display = 'block'; // 검색 바 포커스 시 목록 표시
+
+                if (data.length === 0) {
+                    var noRecordsMessage = document.createElement('li');
+                    noRecordsMessage.textContent = '최근 검색 기록이 없습니다.';
+                    recentSearches.appendChild(noRecordsMessage);
+                    return;
+                }
+
                 data.forEach(function(item) {
                     var li = document.createElement('li');
                     li.textContent = item.searchKeyword;
                     li.onclick = function() {
                         document.getElementById('keyword').value = item.searchKeyword;
-                        recentSearches.style.display = 'none';
+                        searchPlacesByKeyword();
                     };
                     recentSearches.appendChild(li);
                 });
-                recentSearches.style.display = 'block';
+            },
+            error: function(xhr, status, error) {
+                console.error("Error fetching recent searches:", error);
             }
         });
     }
 
+    // 페이지 외부 클릭 시 검색 기록 숨김
     document.addEventListener('click', function(event) {
         var recentSearches = document.getElementById('recentSearches');
-        if (!recentSearches.contains(event.target) && event.target.id !== 'keyword') {
+        var searchBar = document.getElementById('keyword');
+        if (recentSearches.style.display === 'block' &&
+            !recentSearches.contains(event.target) && 
+            event.target !== searchBar) {
             recentSearches.style.display = 'none';
         }
     });
@@ -368,7 +401,7 @@
         }
         searchPlaces();
     });
-    
+
     function openMapInstructions() {
         window.location.href = '/location/guide'; // 컨트롤러에 정의된 엔드포인트로 이동
     }
