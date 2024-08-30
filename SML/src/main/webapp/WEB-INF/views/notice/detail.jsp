@@ -41,7 +41,6 @@
 
 			<div class="header">
 				<div class="fix">
-					
 					 <fmt:formatDate
 							value="${noticeDetail.noticeEnroll}" pattern="yyyy-MM-dd" /> 
 					<label>작성일|</label>
@@ -50,7 +49,7 @@
 					 <label>| 조회수 <c:out value="${noticeDetail.noticeCount}" /></label> 
 					 <label>| 좋아요 <span id="likeCount"> <c:out value="${noticeDetail.noticeLike}" /></span></label>
 				</div>
-				<button id="like" class="like">♥</button>
+				<button id="likeBtn" class="like ${noticeDetail.userLiked ? 'active' : ''}">♥</button>
 				
 			</div>
 
@@ -166,6 +165,38 @@
 	            moveForm.attr("action", "/notice/delete");
 	            moveForm.attr("method", "post");
 	            moveForm.submit();
+	        }
+	    });
+	});
+	
+	// 좋아요 버튼 클릭 이벤트
+	$("#likeBtn").on("click", function() {
+	    var noticeCode = '<c:out value="${noticeDetail.noticeCode}"/>';
+
+	    $.ajax({
+	        url: '/notice/like/' + noticeCode,
+	        type: 'POST',
+	        dataType: 'json',
+	        success: function(response) {
+	          
+	            if(response.status === "Liked") {
+	                $("#likeBtn").addClass("active");
+	               
+	            } else if(response.status === "Unliked") {
+	                $("#likeBtn").removeClass("active");
+	            
+	            }
+	            // 좋아요 수 실시간 업데이트
+	            $("#likeCount").text(response.likeCount);
+	            console.log("좋아요 수 업데이트:", response.likeCount);
+	        },
+	        error: function(xhr, status, error) {
+	           
+	            if(xhr.status === 401) {
+	                alert("로그인이 필요합니다.");
+	            } else {
+	                console.error("좋아요 처리 실패", error);
+	            }
 	        }
 	    });
 	});
