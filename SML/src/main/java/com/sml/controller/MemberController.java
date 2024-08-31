@@ -1,5 +1,6 @@
 package com.sml.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,12 +20,16 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
+import com.sml.model.PointVO;
 import com.sml.service.MemberService;
+import com.sml.service.MypageService;
 
 @Controller
 @RequestMapping("/member")
@@ -35,6 +40,9 @@ public class MemberController {
   //MemberService가 MemberController에 자동주입되도록 코드추가
     @Autowired
     private MemberService memberService;
+    
+    @Autowired
+    private MypageService service;
     
     @Autowired
     private JavaMailSender mailSender;
@@ -52,7 +60,8 @@ public class MemberController {
   	@GetMapping("login")
   	public void loginGET() {
   		logger.info("로그인 페이지 진입");
-  	}
+  	}	
+  
   	
   //회원가입
   	@PostMapping("/join")
@@ -164,6 +173,51 @@ public class MemberController {
     			 session.setAttribute("member", lvo);
     			 session.setAttribute("memCode", lvo.getMemCode());
     			 session.setAttribute("isAdmin", lvo.getMemAdminCheck() == 1);
+    			 
+    			 // 로그인성공시 자동출석체크 
+    			   //출석체크여부확인(memberCheckTest)
+    				String result = memberCheckTest(lvo.getMemCode());
+    				
+    				//rttr.addFlashAttribute("usePoint", 100);
+    				
+    				//출석 되어 있지 않으면,
+    				if (result == "success") {
+    					MemberCheckVO vo = new MemberCheckVO();
+    					vo.setCheckDate(new Date());		
+    					vo.setStatus(1);
+    					vo.setMemCode(lvo.getMemCode());
+    					// 출석체크 등록 서비스 호출 
+    					service.insertMemberCheck(vo);	
+    					
+    					try {
+    					    //출석체크시 자동 포인트 적립
+    						int TotalPoint = service.selectTotalPoint(lvo.getMemCode());
+    						int usePoint = 50;
+    						TotalPoint = TotalPoint + usePoint;
+    						lvo.setMemTotalPoint(TotalPoint);
+    					    
+    					    PointVO point = new PointVO();
+    					    point.setPointPrice(usePoint);
+    					    point.setPointDate(new Date());
+    					    point.setPointComment("출석체크 포인트 적립");
+    					    point.setStatus(1); //1은 적립, 2는 사용
+    					    point.setMemCode(lvo.getMemCode());				    
+    						
+    						service.updateTotalPoint(lvo);
+    						
+    						System.out.println("point : " + point);
+    						service.insertPoint(point);
+    						
+    						//request.setAttribute("usePoint", usePoint);
+    						rttr.addFlashAttribute("usePoint", usePoint);
+    						
+    					} catch (Exception e) {
+    						// TODO Auto-generated catch block
+    						e.printStackTrace();
+    					}				
+    				}
+    			
+    			 //
     			 return "redirect:/";
     		 }else {
     			 rttr.addFlashAttribute("result", 0);
@@ -175,6 +229,38 @@ public class MemberController {
     	 }	    		 
    
     }
+    
+  //출석체크 중복 검사
+  	//@PostMapping("/memberCheckTest")
+  	//@ResponseBody
+  	public String memberCheckTest(int memberCode){
+  		
+  	    logger.info("중복체크검사 진입");
+			
+		String strDate;
+
+		Date date = new Date();
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		strDate = format.format(date);			
+
+  		int result = service.memberCheckTest(memberCode, strDate);
+  	  		
+  		logger.info("중복 검사 결과 = " + result );
+
+		if(result > 0) {
+  			return "fail"; //중복된 출석이 존재
+  		} else {
+  			return "success"; //중복 없음
+		}
+  	}
+    
+  //네이버 로그인
+  	//@RequestMapping(value="/naverLogin", method=RequestMethod.GET)
+	@GetMapping("naverLogin")
+    public void callBack(){
+  		System.out.println("네이버로그인 콜백 진입");
+  		//return "naverLogin";
+    } 
     
     /* 로그아웃 */
     @RequestMapping("logout")
