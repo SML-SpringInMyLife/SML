@@ -35,13 +35,18 @@ public class LocationController {
     }
 
     @GetMapping("/getRecentSearches")
-    @ResponseBody
+    @ResponseBody // 이 어노테이션이 JSON 형태로 응답하게 만듭니다.
     public List<LocationVO> getRecentSearches() {
         List<LocationVO> searches = locationService.getRecentSearches();
-        logger.info("Recent searches retrieved: " + searches);
+        if (searches == null || searches.isEmpty()) {
+            logger.warn("No recent searches found.");
+        } else {
+            logger.info("Recent searches retrieved: " + searches);
+        }
         return searches;
     }
-    
+
+
     
     @GetMapping("/guide")
     public String guide() {
