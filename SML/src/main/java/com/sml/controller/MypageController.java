@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
@@ -89,9 +90,24 @@ public class MypageController {
 	
 	/* 회원 수강신청 페이지 이동 */
 	@GetMapping("mycourses")
-	public void memberCoursesGET() throws Exception {
+	public void memberCoursesGET( Criteria criteria, HttpServletRequest request) throws Exception {
 
 		logger.info("회원 수강신청 페이지 이동");
+		
+		HttpSession session = request.getSession(false);
+		if(session != null && session.getAttribute("member") != null) {
+			MemberVO loginMember = (MemberVO)session.getAttribute("member");			
+		
+			logger.info("getPageNum = " + criteria.getPageNum());
+			logger.info("getAmount = " + criteria.getAmount());			
+			
+		List<CourseApplyDTO> list = service.selectCourseList(loginMember.getMemCode(), criteria);
+		PageDTO pageInfo = service.getCourseTotalCount(loginMember.getMemCode(), criteria);
+		
+		request.setAttribute("list", list);
+		request.setAttribute("pageInfo", pageInfo);
+			
+		}
 
 	}
 	
@@ -101,13 +117,16 @@ public class MypageController {
             Criteria criteria,
             HttpServletRequest request) throws Exception {
 
-		logger.info("회원 적립금 페이지 이동");
+		logger.info("회원 포인트 페이지 이동");
 		logger.info("selectDate before = " + selectDate);
 		
 		
 		HttpSession session = request.getSession(false);
 		if (session != null && session.getAttribute("member") != null) {
-			MemberVO loginMember = (MemberVO)session.getAttribute("member");		
+			MemberVO loginMember = (MemberVO)session.getAttribute("member");	
+			
+			logger.info("getPageNum = " + criteria.getPageNum());
+			logger.info("getAmount = " + criteria.getAmount());	
 			
 			String strDate;
 			
@@ -145,18 +164,7 @@ public class MypageController {
 		if (session != null && session.getAttribute("member") != null) {
 			MemberVO loginMember = (MemberVO)session.getAttribute("member");		
 			
-			int memCode = loginMember.getMemCode();	
-			
-			String result = memberCheckTest(memCode);
-			
-			if (result == "success") {
-				MemberCheckVO vo = new MemberCheckVO();
-				vo.setCheckDate(new Date());		
-				vo.setStatus(1);
-				vo.setMemCode(memCode);
-				
-				service.insertMemberCheck(vo);					
-			}
+			int memCode = loginMember.getMemCode();				
 			
 			// 현재 년월을 가져옵니다 (yyyy-MM 형식)
 	        String currentYearMonth = new SimpleDateFormat("yyyy-MM").format(new Date());
@@ -178,66 +186,9 @@ public class MypageController {
 	            service.insertMemberCheck(todayCheck);
 	        }
 	*/	
-		
-		
-		
 		}
         
     }
-
-    // 출석체크 등록
-    @PostMapping("/memberCheck")
-    public void insertMemberCheckPOST(MemberCheckVO membercheck) {
-    	logger.info("MemberCheckVO" + membercheck );
-    	
-    	HttpSession session = request.getSession(false);
-		if (session != null && session.getAttribute("member") != null) {
-			MemberVO loginMember = (MemberVO)session.getAttribute("member");
-			
-			int MemCode = loginMember.getMemCode();
-			
-			String result = memberCheckTest(MemCode);
-			
-			if (result == "success") {
-				MemberCheckVO vo = new MemberCheckVO();
-				vo.setCheckDate(new Date());		
-				vo.setStatus(1);
-				vo.setMemCode(MemCode);
-				
-				service.insertMemberCheck(vo);					
-			}
-					
-		}
-    }
-    
-    //출석체크 조회
-    @GetMapping("/memberCheckList")	
-	public void memberCheckGET(String selectDate) throws Exception {
-    }	
-
-    //출석체크 중복 검사
-  	//@PostMapping("/memberCheckTest")
-  	//@ResponseBody
-  	public String memberCheckTest(int memberCode){
-  		
-  	    logger.info("중복체크검사 진입");
-			
-		String strDate;
-
-		Date date = new Date();
-		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-		strDate = format.format(date);			
-
-  		int result = service.memberCheckTest(memberCode, strDate);
-  	  		
-  		logger.info("중복 검사 결과 = " + result );
-
-		if(result > 0) {
-  			return "fail"; //중복된 출석이 존재
-  		} else {
-  			return "success"; //중복 없음
-		}
-  	}
 }
 	
 	 
