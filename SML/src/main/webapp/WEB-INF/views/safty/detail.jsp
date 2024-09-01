@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>공지사항 상세조회페이지</title>
+<title>생활안전 상세조회페이지</title>
 
 <!-- common.css 로드 -->
 <link rel="stylesheet"
@@ -42,25 +42,25 @@
 			<div class="header">
 				<div class="fix">
 					 <fmt:formatDate
-							value="${noticeDetail.noticeEnroll}" pattern="yyyy-MM-dd" /> 
+							value="${saftyDetail.saftyEnroll}" pattern="yyyy-MM-dd" /> 
 					<label>작성일|</label>
-					 <label>수정일 <fmt:formatDate value="${noticeDetail.noticeModify}" pattern="yyyy-MM-dd" /> |
-					</label> <label >작성자: <c:out value= "${noticeDetail.memName}"/></label>
-					 <label>| 조회수 <c:out value="${noticeDetail.noticeCount}" /></label> 
-					 <label>| 좋아요 <span id="likeCount"> <c:out value="${noticeDetail.noticeLike}" /></span></label>
+					 <label>수정일 <fmt:formatDate value="${saftyDetail.saftyModify}" pattern="yyyy-MM-dd" /> |
+					</label> <label >작성자: <c:out value= "${saftyDetail.memName}"/></label>
+					 <label>| 조회수 <c:out value="${saftyDetail.saftyCount}" /></label> 
+					 <label>| 좋아요 <span id="likeCount"> <c:out value="${saftyDetail.saftyLike}" /></span></label>
 				</div>
-				<button id="likeBtn" class="like ${noticeDetail.userLiked ? 'active' : ''}">♥</button>
+				<button id="likeBtn" class="like ${saftyDetail.userLiked ? 'active' : ''}">♥</button>
 				
 			</div>
 
 			<!-- 글제목 -->
 			<div class="title">
-				<c:out value="${noticeDetail.noticeTitle}" />
+				<c:out value="${saftyDetail.saftyTitle}" />
 			</div>
 
 			<!-- 글내용 -->
 			<div class="content">
-				<c:out value="${noticeDetail.noticeBody}" />
+				<c:out value="${saftyDetail.saftyBody}" />
 				
 					<div class="form_section">
 					<div class="form_section_title">
@@ -84,8 +84,8 @@
 		</div>
 
 		<form id="moveForm" method="get">
-			<input type="hidden" name="noticeCode"
-				value="<c:out value='${noticeDetail.noticeCode}'/>">
+			<input type="hidden" name="saftyCode"
+				value="<c:out value='${saftyDetail.saftyCode}'/>">
 		</form>
         
 	</main>
@@ -95,10 +95,10 @@
    
 	<script>
 	 /* 이미지 정보 호출 */
-	let noticeCode = '<c:out value="${noticeDetail.noticeCode}"/>';
+	let saftyCode = '<c:out value="${saftyDetail.saftyCode}"/>';
 	let uploadResult = $("#uploadResult");			
 	
-	$.getJSON("/notice/getAttachList", {noticeCode : noticeCode}, function(arr){	
+	$.getJSON("/safty/getAttachList", {saftyCode : saftyCode}, function(arr){	
 		
 		if(arr.length === 0){			
 			return;
@@ -111,7 +111,7 @@
 		str += "<div id='result_card'";
 		str += "data-path='" + obj.filePath + "' data-uuid='" + obj.fileUuid + "' data-filename='" + obj.fileName + "'";
 		str += ">";
-		str += "<img src='/notice/display?fileName=" + fileCallPath +"'>";
+		str += "<img src='/safty/display?fileName=" + fileCallPath +"'>";
 		str += "</div>";		
 		
 		uploadResult.html(str);						
@@ -120,13 +120,13 @@
     
 	
 	$(document).ready(function() {
-	    var noticeCode = '<c:out value="${noticeDetail.noticeCode}"/>';
+	    var saftyCode = '<c:out value="${saftyDetail.saftyCode}"/>';
 	    
 	    // 페이지 로드 시 AJAX 요청으로 조회수 증가
 	    $.ajax({
-	        url: '/notice/Count',
+	        url: '/safty/Count',
 	        type: 'POST',
-	        data: { noticeCode: noticeCode },
+	        data: { saftyCode: saftyCode },
 	        success: function(response) {
 	            console.log("조회수 증가 성공");
 	            // 조회수를 다시 가져와 화면에 표시
@@ -144,15 +144,15 @@
 	    /* 공지사항 조회 페이지 이동 */
 	    $("#listbtn").on("click", function(e) {
 	        e.preventDefault();
-	        $("input[name=noticeCode]").remove();
-	        moveForm.attr("action", "/notice/list");
+	        $("input[name=saftyCode]").remove();
+	        moveForm.attr("action", "/safty/list");
 	        moveForm.submit();
 	    });
 
 	    /* 공지사항 수정 페이지 이동 */
 	    $("#modifybtn").on("click", function(e) {
 	        e.preventDefault();
-	        moveForm.attr("action", "/notice/modify");
+	        moveForm.attr("action", "/safty/modify");
 	        moveForm.submit();
 	    });
 
@@ -161,8 +161,8 @@
 	        e.preventDefault();
 	        if(confirm("정말로 이 공지사항을 삭제하시겠습니까?")) {
 	            moveForm.find("input").remove();
-	            moveForm.append('<input type="hidden" name="noticeCode" value="' + noticeCode + '">');
-	            moveForm.attr("action", "/notice/delete");
+	            moveForm.append('<input type="hidden" name="saftyCode" value="' + saftyCode + '">');
+	            moveForm.attr("action", "/safty/delete");
 	            moveForm.attr("method", "post");
 	            moveForm.submit();
 	        }
@@ -171,10 +171,10 @@
 	
 	// 좋아요 버튼 클릭 이벤트
 	$("#likeBtn").on("click", function() {
-	    var noticeCode = '<c:out value="${noticeDetail.noticeCode}"/>';
+	    var saftyCode = '<c:out value="${saftyDetail.saftyCode}"/>';
 
 	    $.ajax({
-	        url: '/notice/like/' + noticeCode,
+	        url: '/safty/like/' + saftyCode,
 	        type: 'POST',
 	        dataType: 'json',
 	        success: function(response) {

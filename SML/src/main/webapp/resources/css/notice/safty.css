@@ -87,6 +87,12 @@
 	font-weight: bold;
 }
 
+
+.safty-containery a{
+	color:#1088ed;
+}
+
+
 .safty-containery .grid-container .grid-item .info {
 	margin-top: 20px;
 	display: flex;
@@ -98,10 +104,19 @@
 	margin: 0;
 }
 
-.safty-containery .pagination {
+.safty-containery .button-container {
 	display: flex;
-	justify-content: center;
-	align-items: center;
+	justify-content: flex-end;
+}
+
+.safty-containery .button-container button {
+	padding: 10px 40px;
+	margin: 0 5px;
+	border: 1px solid #ccc;
+	border-radius: 20px;
+	background-color: #6BAE73;
+	color: white;
+	cursor: pointer;
 }
 
 .safty-containery  .pagination button {
@@ -121,4 +136,45 @@
 .safty-containery .pagination button:hover {
 	background-color: #45a049;
 	color: white;
+}
+
+
+/* 페이지 버튼 인터페이스 */
+.pageMaker_wrap{
+text-align: center;
+margin: 0 auto;
+}
+.pageMaker_wrap a{
+color : black;
+}
+.pageMaker{
+list-style: none;
+display: inline-block;
+}	
+.pageMaker_btn {
+float: left;
+width: 40px;
+height: 40px;
+line-height: 40px;
+margin-left: 20px;
+background-color: #e0e0e0;
+	cursor: pointer;
+	border-radius: 10px;
+}
+
+.pageMaker_btn:hover {
+background-color: #45a049;
+	color: white;
+	}
+.next, .prev {
+border: 1px solid #ccc;
+padding: 0 10px;
+}
+.next a, .prev a {
+color: #ccc;
+}
+.active{							/* 현재 페이지 버튼 */
+background-color: #4caf50;
+	color: white;
+font-weight:400;
 }

@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.sml.mapper.SaftyMapper">
+  
+  <resultMap id="saftyResultMap" type="com.sml.model.SaftyVO">
+    <id property="saftyCode" column="SAFTY_CODE"/>
+    <result property="memCode" column="MEM_CODE"/>
+    <result property="memName" column="MEM_NAME"/>
+    <result property="categoryCode" column="CATEGORY_CODE"/>
+    <result property="saftyTitle" column="SAFTY_TITLE"/>
+    <result property="saftyBody" column="SAFTY_BODY"/>
+    <result property="saftyEnroll" column="SAFTY_ENROLL_DATE"/>
+    <result property="saftyModify" column="SAFTY_MODIFY_DATE"/>
+    <result property="saftyStatus" column="SAFTY_STATUS"/>
+    <result property="saftyCount" column="SAFTY_COUNT"/>
+    <result property="saftyLike" column="SAFTY_LIKE"/>
+ </resultMap>
+  
+  <resultMap id="likeResultMap" type="com.sml.model.LikeVO">
+    <id property="likeCode" column="LIKE_CODE"/>
+    <result property="memCode" column="MEM_CODE"/>
+    <result property="noticeCode" column="NOTICE_CODE"/>
+    <result property="saftyCode" column="SAFTY_CODE"/>
+    <result property="likeType" column="LIKE_TYPE"/>
+</resultMap>
+  
+  <!-- 생활안전 글 등록 -->
+<insert id="saftyRegister" useGeneratedKeys="true" keyProperty="saftyCode" keyColumn="SAFTY_CODE">
+        INSERT INTO SAFTY (SAFTY_TITLE, SAFTY_BODY, MEM_CODE, CATEGORY_CODE)
+        VALUES (#{saftyTitle}, #{saftyBody}, #{memCode}, #{categoryCode})
+    </insert>
+	
+<!-- 이미지파일 업로드 -->
+<insert id="imageEnroll">
+    INSERT INTO FILE_UP (
+        SAFTY_CODE, 
+        FILE_NAME,
+        FILE_PATH,
+        FILE_UUID,
+        FILE_TYPE
+    ) VALUES (
+        #{saftyCode},
+        #{fileName},
+        #{filePath},
+        #{fileUuid},
+        'SAFTY'
+    )
+</insert>
+
+<!-- 지정 이미지 전체 삭제 --> 
+	<delete id="deleteImageAll">
+		delete FROM FILE_UP where SAFTY_CODE = #{saftyCode}
+	</delete>
+
+  <!-- 검색기능 -->
+    <sql id="search">
+        <if test="type != null and type != ''">
+            <if test="type == 'T'.toString()">
+                AND SAFTY_TITLE LIKE '%'||#{keyword}||'%'
+            </if>
+            <if test="type == 'C'.toString()">
+                AND SAFTY_BODY LIKE '%'||#{keyword}||'%'
+            </if>
+            <if test="type == 'TC'.toString()">
+                AND (SAFTY_TITLE LIKE '%'||#{keyword}||'%' OR SAFTY_BODY LIKE '%'||#{keyword}||'%')
+            </if>
+        </if>
+    </sql>
+
+      <!-- 생활안전 조회 -->
+    <select id="saftyGetList" resultType="com.sml.model.SaftyVO" resultMap="saftyResultMap">
+    <![CDATA[
+        SELECT * FROM (
+            SELECT
+                ROWNUM AS rn, SAFTY_CODE, SAFTY_TITLE, SAFTY_ENROLL_DATE, SAFTY_COUNT, SAFTY_LIKE, CATEGORY_CODE
+            FROM SAFTY
+            WHERE SAFTY_STATUS = 'Y'
+    ]]>
+            <include refid="search"></include>
+            <if test="categoryCode != null and categoryCode != 0">
+                AND CATEGORY_CODE = #{categoryCode}
+            </if>
+    <![CDATA[
+            AND ROWNUM <= #{pageNum} * #{amount}
+        )
+        WHERE rn > (#{pageNum} - 1) * #{amount}
+    ]]>
+    </select>
+
+       <!-- 생활안전 페이징 -->
+     	<select id="saftyGetTotal" resultType="int">
+  		SELECT COUNT(*) FROM SAFTY
+        WHERE SAFTY_STATUS = 'Y'
+        <if test="keyword != null and keyword != ''">
+            AND SAFTY_TITLE LIKE '%' || #{keyword} || '%'
+        </if>
+        <if test="categoryCode != null and categoryCode != 0">
+            AND CATEGORY_CODE = #{categoryCode}
+        </if>
+        <include refid="search"></include>
+  	</select>
+  
+  <!-- 생활안전 상세조회 -->
+<select id="saftyGetDetail" resultType="com.sml.model.SaftyVO" resultMap="saftyResultMap">
+    SELECT n.*, m.MEM_NAME
+    FROM SAFTY n
+    LEFT JOIN TB_MEMBER m ON n.MEM_CODE = m.MEM_CODE
+    WHERE n.SAFTY_CODE = #{saftyCode}
+</select>
+  
+<!-- 조회수 증가 -->
+    <update id="saftyCount" parameterType="int">
+        UPDATE SAFTY
+        SET SAFTY_COUNT = COALESCE(SAFTY_COUNT, 0) + 1
+        WHERE SAFTY_CODE = #{saftyCode}
+    </update>
+
+ <!-- 공지사항 좋아요 -->
+ 
+ <select id="getSaftyLikeCount" resultType="int" >
+    SELECT SAFTY_LIKE FROM SAFTY WHERE SAFTY_CODE = #{saftyCode}
+</select>
+ 
+    <select id="getLike" resultMap="likeResultMap">
+    SELECT * FROM TB_LIKE 
+    WHERE SAFTY_CODE = #{saftyCode} AND MEM_CODE = #{memCode}
+</select>
+
+ <insert id="insertLike" parameterType="com.sml.model.LikeVO">
+    INSERT INTO TB_LIKE (MEM_CODE, SAFTY_CODE, LIKE_TYPE)
+    VALUES (#{memCode}, #{saftyCode}, 'SAFTY')
+</insert>
+
+    <delete id="deleteLike" parameterType="int">
+        DELETE FROM TB_LIKE WHERE LIKE_CODE = #{likeCode}
+    </delete>
+
+   <update id="updateSaftyLikeCount">
+    UPDATE SAFTY 
+    SET SAFTY_LIKE = GREATEST(0, SAFTY_LIKE + #{increment})
+    WHERE SAFTY_CODE = #{saftyCode}
+</update>  
+  
+  <!--  생활안전 수정  -->
+<update id="saftyModify"> update SAFTY SET SAFTY_TITLE=#{saftyTitle}, SAFTY_BODY=#{saftyBody}, SAFTY_MODIFY_DATE=sysdate where SAFTY_CODE=#{saftyCode} </update>
+<!--   생활안전 삭제   -->
+<update id="saftyDelete"> UPDATE SAFTY SET SAFTY_STATUS ='N' WHERE SAFTY_CODE=#{saftyCode} </update>
+  
+  </mapper>

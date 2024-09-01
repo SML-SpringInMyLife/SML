@@ -136,7 +136,8 @@ public class NoticeController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("조회수 증가 실패");
         }
     }
-   
+     
+	/* 공지사항 좋아요 */
     @PostMapping("/like/{noticeCode}")
     @ResponseBody
     public ResponseEntity<Map<String, Object>> toggleLike(@PathVariable int noticeCode, HttpSession session) {

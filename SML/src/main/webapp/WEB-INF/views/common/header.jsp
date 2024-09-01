@@ -40,7 +40,7 @@
 				<nav class="main-menu" id="main-menu">
 					<ul>
 						<li><a href="/notice/list">공지사항</a></li>
-						<li><a href="/life/list">생활정보</a></li>
+						<li><a href="/safty/list">생활정보</a></li>
 						<li><a href="/location/map">위치찾기</a></li>
 						<li><a href="/course/boardList">취미교실</a></li>
 						<li><a href="/community/boardList">커뮤니티</a></li>
@@ -75,7 +75,7 @@
 			<div class="mobile-menu" id="mobile-menu">
 				<ul>
 					<li><a href="/notice/list">공지사항</a></li>
-					<li><a href="/life/list">생활정보</a></li>
+					<li><a href="/safty/list">생활정보</a></li>
 					<li><a href="/location/map">위치찾기</a></li>
 					<li><a href="/course/boardList">취미교실</a></li>
 					<li><a href="/community/boardList">커뮤니티</a></li>

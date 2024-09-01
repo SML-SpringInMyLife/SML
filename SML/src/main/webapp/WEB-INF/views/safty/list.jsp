@@ -1,98 +1,194 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>생활안전 조회 게시판</title>
+<title>생활안전 목록게시판</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/notice/safty.css"> 
 <!-- 헤더 css -->
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
-<!-- 헤더 영역 포함 -->
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	<main>
+	
+	<form id="searchForm" action="/safty/list" method="get">
 	    <div class="safty-containery">
         <div class="filter-section">
-            <select class="category">
-                <option>카테고리</option>
-                <option>수강안내</option>
-                <option>전체공지</option>
-                <option>이벤트</option>
-            </select>
+             <select name="categoryCode" id="categoryFilter" class="category">
+                            <option value="">전체 카테고리</option>
+                            <c:forEach var="category" items="${categories}">
+                                <option value="${category.categoryCode}" ${pageMaker.cri.categoryCode eq category.categoryCode ? 'selected' : ''}>${category.categoryName}</option>
+                            </c:forEach>
+                        </select>
             <div class="searchBar">
-                <select class="bar">
-                    <option value="all">전체</option>
-                    <option value="title">제목</option>
-                    <option value="content">내용</option>
-                    <option value="title-content">제목+내용</option>
-                </select>
-                <input type="text" placeholder="검색어">
-                <button>조회하기</button>
+              <select name="type" class="bar">
+                            <option value="">전체</option>
+                            <option value="T" ${pageMaker.cri.type eq 'T' ? 'selected' : ''}>제목</option>
+                            <option value="C" ${pageMaker.cri.type eq 'C' ? 'selected' : ''}>내용</option>
+                            <option value="TC" ${pageMaker.cri.type eq 'TC' ? 'selected' : ''}>제목+내용</option>
+                        </select>
+                 <input type="text" placeholder="검색어를 입력하세요" name="keyword" value='<c:out value="${pageMaker.cri.keyword}"/>'/>
+                <input type="hidden" name="pageNum" value='<c:out value="${pageMaker.cri.pageNum}"/>'/>
+                        <input type="hidden" name="amount" value='${pageMaker.cri.amount}'/>
+                        <button type='button' class='btn search_btn'>검색하기</button>
             </div>
         </div>
-
+        </form>
+        
+        <c:if test="${listCheck != 'empty'}">
         <div class="grid-container">
-
+        <c:forEach items="${list}" var="safty">
             <div class="grid-item">
-
-                <p class="date">2024-00-00</p>
-
-                <img src="https://via.placeholder.com/150" alt="SML Image">
-                <label>사고 예방법</label>
+                <p class="date"><fmt:formatDate value="${safty.saftyEnroll}" pattern="yyyy-MM-dd" /></p>
+                <a class="move" href="<c:out value='${safty.saftyCode}'/>"><img src="${webappRoot}/resources/images/safty/SML.jpg" alt="Logo" ></a>          
+                <label><a class="move" href="<c:out value='${safty.saftyCode}'/>"><c:out value="${safty.saftyTitle}" /></a></label>
                 <div class="info">
-                    <p>조회수 35</p>
-                    <p>좋아요 1</p>
+                    <p>조회수 <c:out value="${safty.saftyCount}" /></p>
+                    <p>좋아요 <c:out value="${safty.saftyLike}" /></p>
                 </div>
             </div>
-            <div class="grid-item">
-                <p class="date">2024-00-00</p>
-                <img src="https://via.placeholder.com/150" alt="SML Image">
-                <label>일자리</label>
-                <div class="info">
-                    <p>조회수</p>
-                    <p>좋아요 1</p>
-                </div>
-            </div>
-            <div class="grid-item">
-                <p class="date">2024-00-00</p>
-                <img src="https://via.placeholder.com/150" alt="SML Image">
-                <label>키오스크 사용법</label>
-                <div class="info">
-
-                    <p>조회수</p>
-                    <p>좋아요 1</p>
-                </div>
-            </div>
-            <div class="grid-item">
-                <p class="date">2024-00-00</p>
-                <img src="https://via.placeholder.com/150" alt="SML Image">
-                <label >건강관리</label>
-                <div class="info">
-
-                    <p>조회수</p>
-                    <p>좋아요 1</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="pagination">
-            <button class="page-btn active">1</button>
-            <button class="page-btn">2</button>
-            <button class="page-btn">3</button>
-        </div>
+        </c:forEach>
     </div>
-    <script>
-        document.querySelectorAll('.page-btn').forEach(button => {
-            button.addEventListener('click', function () {
-                document.querySelectorAll('.page-btn').forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-            });
-        });
-    </script>
+    </c:if>
+    
+    <c:if test="${listCheck == 'empty'}">
+                <div class="table_empty">
+                    등록된 글이 없습니다.
+                </div>
+            </c:if>
+
+ <c:if test="${isLoggedIn && isAdmin}">
+                <div class="button-container">
+                    <button id="write">글쓰기</button>
+                </div>
+            </c:if>
+          </div>
+
+        <div class="pageMaker_wrap">
+            <ul class="pageMaker">
+                <c:if test="${pageMaker.prev}">
+                    <li class="pageMaker_btn prev">
+                        <a href="${pageMaker.pageStart - 1}">이전</a>
+                    </li>
+                </c:if>
+                <c:forEach begin="${pageMaker.pageStart}" end="${pageMaker.pageEnd}" var="num">
+                    <li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? 'active':''}">
+                        <a href="${num}">${num}</a>
+                    </li>
+                </c:forEach>
+                <c:if test="${pageMaker.next}">
+                    <li class="pageMaker_btn next">
+                        <a href="${pageMaker.pageEnd + 1 }">다음</a>
+                    </li>
+                </c:if>
+            </ul>         
+        </div>
+    
+     <form id="moveForm" action="/safty/list" method="get">
+            <input type="hidden" name="pageNum" value="${pageMaker.cri.pageNum}">
+            <input type="hidden" name="amount" value="${pageMaker.cri.amount}">
+            <input type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
+            <input type="hidden" name="type" value="${pageMaker.cri.type}">
+            <input type="hidden" name="categoryCode" value="${pageMaker.cri.categoryCode}">
+        </form>
+    
 	</main>
-		<!-- 푸터 영역 포함 -->
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
+	
+	    <script>
+	    $(document).ready(function() {
+            let searchForm = $('#searchForm');
+            let moveForm = $('#moveForm');
+
+            /* 글쓰기 버튼 */
+           $("#write").click(function(e) {
+    e.preventDefault();  // 기본 동작 방지
+    e.stopPropagation();  // 이벤트 버블링 방지
+    location.href = "/safty/enroll";
+});
+            /* 검색 버튼 클릭 이벤트 */
+            $(".search_btn").on("click", function(e) {
+                e.preventDefault();
+                
+                let type = $("select[name='type']").val();
+                let keyword = $("input[name='keyword']").val();
+                let categoryCode = $("#categoryFilter").val();
+
+                if(!type && !categoryCode){
+                    alert("검색 종류를 선택하거나 카테고리를 선택하세요");
+                    return false;
+                }
+
+                if(type && !keyword){
+                    alert("키워드를 입력하세요");
+                    return false;
+                }
+
+                searchForm.find("input[name='pageNum']").val("1");
+                searchForm.submit();
+            });
+
+            /* 페이지 이동 버튼 */
+            $(".pageMaker_btn a").on("click", function(e) {
+                e.preventDefault();
+                moveForm.find("input[name='pageNum']").val($(this).attr("href"));
+                moveForm.submit();
+            });
+
+            /* 상세조회 페이지 이동 */
+            $(".move").on("click", function(e) {
+                e.preventDefault();    
+                moveForm.append("<input type='hidden' name='saftyCode' value='" + $(this).attr("href") + "'>");
+                moveForm.attr("action", "/safty/detail");
+                moveForm.submit();    
+            });
+
+            /* 카테고리 필터 변경 이벤트 */
+            $("#categoryFilter").change(function() {
+                searchForm.find("input[name='pageNum']").val("1");
+                searchForm.submit();
+            });
+
+            /* 알람 창 */
+            let enroll = '<c:out value="${enroll_result}"/>';
+            let modify = '<c:out value="${modify_result}"/>';
+            let ndelete = '<c:out value="${delete_result}"/>';
+            
+            checkResult(enroll);
+            checkResult(modify);
+            checkResult(ndelete);
+
+            function checkResult(result) {
+                if(result === '') {
+                    return;
+                }
+                if(result === '1') {
+                    if(ndelete === '1') {
+                        alert("글 삭제를 완료하였습니다.");
+                    } else {
+                        alert("글 수정을 완료하였습니다.");
+                    }
+                } else if(result === '0') {
+                    if(ndelete === '0') {
+                        alert("글 삭제를 실패하였습니다.");
+                    } else {
+                        alert("글 수정을 실패하였습니다.");
+                    }
+                } else {
+                    alert("글 '" + result + "' 을 등록하였습니다.");
+                } 
+            }
+        });
+        
+        
+        
+    </script>
+	
+	
 </body>
 </html>

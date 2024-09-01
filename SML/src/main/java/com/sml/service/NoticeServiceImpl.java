@@ -54,7 +54,7 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Transactional
-	@Override
+	@Override  //게시글 수정
 	public int noticeModify(NoticeVO noticevo) throws Exception {
 		int result = noticeMapper.noticeModify(noticevo);
 
