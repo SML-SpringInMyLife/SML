@@ -18,14 +18,15 @@
 			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
 			<div class="admin-main-content">
 				<h2>SMS 관리</h2>
-				<!-- 검색 폼 -->
-				<form id="searchForm" action="/admin/sms" method="get"
-					class="search-container">
+				<div class="search-container">
 					<select id="type" name="type">
 						<option value="all">전체</option>
-						<option value="date">발송일</option>
-						<option value="receiver">수신인</option>
-						<option value="content">내용</option>
+						<option value="date"
+							${pageMaker.cri.type == 'date' ? 'selected' : ''}>발송일</option>
+						<option value="receiver"
+							${pageMaker.cri.type == 'receiver' ? 'selected' : ''}>수신인</option>
+						<option value="content"
+							${pageMaker.cri.type == 'content' ? 'selected' : ''}>내용</option>
 					</select>
 					<div class="search-bar">
 						<input type="text" id="search" class="search-bar"
@@ -34,19 +35,17 @@
 						<input type="hidden" name="pageNum"
 							value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
 						<input type="hidden" name="amount" value='${pageMaker.cri.amount}'>
-
-						<!-- 검색 버튼 -->
-						<button onclick="search()">검색</button>
+						<button class='btn search_btn'>검색</button>
 					</div>
-				</form>
+				</div>
 				<!-- SMS 리스트 테이블 -->
 				<table class="sms-table">
 					<thead>
 						<tr>
-							<th>No.</th>
-							<th>발송일</th>
-							<th>수신인</th>
-							<th>내용</th>
+							<th data-label="No.">No.</th>
+							<th data-label="발송일">발송일</th>
+							<th data-label="수신인">수신인</th>
+							<th data-label="내용">내용</th>
 						</tr>
 					</thead>
 					<c:if test="${sms == 'empty' || sms.size() == 0}">
@@ -54,15 +53,11 @@
 					</c:if>
 					<c:if test="${sms != 'empty'}">
 						<tbody id="smsList">
-							<!-- SMS 항목 출력 -->
 							<c:forEach items="${sms}" var="sms" varStatus="status">
 								<tr>
-									<!-- 번호 -->
-									<td data-label="No.">${totalCount - (pageNum - 1) * amount - status.index}</td>
-									<!-- 발송일 -->
+									<td data-label="No.">${totalCount - ((pageMaker.cri.pageNum - 1) * pageMaker.cri.amount + status.index)}</td>
 									<td data-label="발송일시"><fmt:formatDate
 											value="${sms.sendDate}" pattern="yyyy-MM-dd HH:mm" /></td>
-									<!-- 수신인 -->
 									<td data-label="수신인"><c:out
 											value="${sms.memName}(${sms.memId})" /></td>
 									<!-- 내용, 길면 축약 표시 -->
@@ -83,33 +78,33 @@
 					</c:if>
 				</table>
 
-				<!-- 페이지 이동 UI -->
+				<!-- 페이지 이동 인터페이스 영역 -->
 				<div class="pageMaker_wrap">
 					<ul class="pageMaker">
-						<!-- 이전 버튼 -->
+						<!-- Previous Button -->
 						<c:if test="${pageMaker.prev}">
-							<li class="pageMaker_btn prev"><a
-								href="${pageMaker.pageStart - 1}">이전</a></li>
+							<li class="pageMaker_btn prev"><a href="#"
+								data-page="${pageMaker.pageStart - 1}">이전</a></li>
 						</c:if>
-						<!-- 페이지 번호 표시 -->
+						<!-- Page Numbers -->
 						<c:forEach begin="${pageMaker.pageStart}"
 							end="${pageMaker.pageEnd}" var="num">
-							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":""}">
-								<a href="${num}">${num}</a>
+							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":"" }">
+								<a href="#" data-page="${num}">${num}</a>
 							</li>
 						</c:forEach>
-						<!-- 다음 버튼 -->
+						<!-- Next Button -->
 						<c:if test="${pageMaker.next}">
-							<li class="pageMaker_btn next"><a
-								href="${pageMaker.pageEnd + 1 }">다음</a></li>
+							<li class="pageMaker_btn next"><a href="#"
+								data-page="${pageMaker.pageEnd + 1}">다음</a></li>
 						</c:if>
 					</ul>
 				</div>
-				<!-- 페이지 이동을 위한 폼 -->
 				<form id="moveForm" action="/admin/sms" method="get">
 					<input type="hidden" name="pageNum"
 						value="${pageMaker.cri.pageNum}"> <input type="hidden"
 						name="amount" value="${pageMaker.cri.amount}"> <input
+						type="hidden" name="type" value="${pageMaker.cri.type}"> <input
 						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 				</form>
 				<!-- SMS 발송 버튼 -->
@@ -129,6 +124,7 @@
 			<form id="memberSearchForm" onsubmit="return false;"
 				class="search-container" action="searchMember.do">
 				<select id="popupSearchType" name="type">
+					<option value="all">전체</option>
 					<option value="name">성명</option>
 					<option value="id">ID</option>
 					<option value="phone">전화번호</option>
@@ -138,7 +134,7 @@
 				<button type="button" onclick="popupSearchMember()">검색</button>
 			</form>
 			<div>
-				<ul id="searchResults"></ul>
+				<ol id="searchResults"></ol>
 			</div>
 			<!-- SMS 발송 폼 -->
 			<form id="sendSms" method="post" action="sendSms.do">

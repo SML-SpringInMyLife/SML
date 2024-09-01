@@ -71,10 +71,16 @@ public class AdminController {
 	public void adminMembersGET(Criteria cri, Model model) throws Exception {
 		logger.info("관리자 - 회원 관리 페이지 이동");
 
-		List<MemberVO> members = service.getMemberList(cri);
-		model.addAttribute("members", members.isEmpty() ? "empty" : members);
-		model.addAttribute("totalCount", service.getMemberTotal(cri));
-		model.addAttribute("pageMaker", new PageDTO(cri, service.getMemberTotal(cri)));
+	    // 회원 목록 가져오기
+	    List<MemberVO> members = service.getMemberList(cri);
+
+	    // 총 회원 수 가져오기
+	    int totalCount = service.getMemberTotal(cri);
+
+	    // 모델에 회원 목록 및 페이지 정보 추가
+	    model.addAttribute("members", members.isEmpty() ? "empty" : members);
+	    model.addAttribute("totalCount", totalCount);
+	    model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
 	}
 
 	// 관리자 권한 업데이트
@@ -108,11 +114,11 @@ public class AdminController {
 	@GetMapping("/sms")
 	public void adminSmsGET(Criteria cri, Model model) throws Exception {
 		logger.info("관리자 - 문자 관리 페이지 이동");
-
 		List<SmsVO> sms = service.getSmsList(cri);
+	    int totalCount = service.getSmsTotal(cri);
 		model.addAttribute("sms", sms.isEmpty() ? "empty" : sms);
-		model.addAttribute("totalCount", service.getSmsTotal(cri));
-		model.addAttribute("pageMaker", new PageDTO(cri, service.getSmsTotal(cri)));
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
 	}
 
 	// 회원 검색
@@ -143,7 +149,7 @@ public class AdminController {
 	}
 
 	// 3일 연속 미출석 회원에게 안부 문자 발송 (매일 11:00 PM)
-	@Scheduled(cron = "0 00 11 * * ?")
+	@Scheduled(cron = "0 28 18 * * ?")
 	public void sendReminderSmsToAbsentMembers() {
 		logger.info("3일 연속 미출석 안부문자 발송일시 : {}", new Date());
 		try {
@@ -163,9 +169,10 @@ public class AdminController {
 		logger.info("관리자 - 채팅 상담 관리 페이지 이동");
 
 		List<ChatVO> chat = service.getChatList(cri);
+		int totalCount = service.getChatTotal(cri);
 		model.addAttribute("chat", chat.isEmpty() ? "empty" : chat);
-		model.addAttribute("totalCount", service.getChatTotal(cri));
-		model.addAttribute("pageMaker", new PageDTO(cri, service.getChatTotal(cri)));
+		model.addAttribute("totalCount", totalCount);
+		model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
 	}
 
 	// 관리자 - 채팅리스트 페이지 이동

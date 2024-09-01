@@ -27,16 +27,20 @@
 							<div class="instructor-container">
 								<div class="name_wrap">
 									<div class="label">강사명</div>
-									<input class="text_input" name="teaName" required>
+									<input type="text" class="text_input" name="teaName"
+										id="teaName" oninvalid="this.setCustomValidity('강사명을 입력하세요.')"
+										oninput="this.setCustomValidity('')" required />
 								</div>
 								<div class="Intro_wrap">
 									<div class="label">강사 소개</div>
-									<textarea class="text_input" name="teaIntro" required></textarea>
+									<textarea class="text_input" name="teaIntro" id="teaIntro"
+										oninvalid="this.setCustomValidity('강사소개를 입력하세요.')"
+										oninput="this.setCustomValidity('')" required></textarea>
 								</div>
 							</div>
 							<div class="button_wrap">
 								<button id="cancelBtn" class="cancel_button">취소</button>
-								<button id="enrollBtn" class="save_button">등록</button>
+								<button type="submit" id="enrollBtn" class="save_button">등록</button>
 							</div>
 					</form>
 				</div>
@@ -48,44 +52,34 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 
 	<script>
-		/* 등록 버튼 클릭 이벤트 */
-		$("#enrollBtn").click(function() {
-			let nameCheck = false;
-			let teaName = $('input[name=teaName]').val();
-			let wteaName = $('#warn_teaName');
-
-			if (teaName === '') {
-				wteaName.css('display', 'block');
-				nameCheck = false;
-			} else {
-				wteaName.css('display', 'none');
-				nameCheck = true;
-			}
-
-			if (nameCheck) {
-				$("#enrollForm").submit();
-			} else {
-				return;
-			}
-		});
-
 		/* 취소 버튼 클릭 이벤트 */
 		$("#cancelBtn").click(function() {
 			location.href = "/admin/teacher/list";
 		});
 
 		$(document).ready(function() {
-			let result = '<c:out value="${enroll_result}"/>';
+			$('#enrollForm').submit(function(event) {
+				var teaName = $('#teaName');
+				var teaIntro = $('#teaIntro');
 
-			checkResult(result);
-
-			function checkResult(result) {
-				if (result === '') {
+				if (!teaName.val().trim()) {
+					teaName[0].setCustomValidity('강사명을 입력하세요.');
+					teaName[0].reportValidity();
+					event.preventDefault();
 					return;
+				} else {
+					teaName[0].setCustomValidity('');
 				}
 
-				alert("강사 정보 등록 결과: " + result);
-			}
+				if (!teaIntro.val().trim()) {
+					teaIntro[0].setCustomValidity('강사소개를 입력하세요.');
+					teaIntro[0].reportValidity();
+					event.preventDefault();
+					return;
+				} else {
+					teaIntro[0].setCustomValidity('');
+				}
+			});
 		});
 	</script>
 </body>

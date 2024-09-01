@@ -50,7 +50,7 @@
 						<tbody id="chatList">
 							<c:forEach items="${chat}" var="chat" varStatus="status">
 								<tr>
-									<td data-label="No.">${totalCount - status.index}</td>
+									<td data-label="No.">${totalCount - ((pageMaker.cri.pageNum - 1) * pageMaker.cri.amount + status.index)}</td>
 									<td data-label="상담일시"><fmt:formatDate
 											value="${chat.chatDate}" pattern="yyyy-MM-dd HH:mm" /></td>
 									<!-- <td data-label="분류">${chat.categoryCode}</td>
@@ -79,20 +79,20 @@
 					<ul class="pageMaker">
 						<!-- Previous Button -->
 						<c:if test="${pageMaker.prev}">
-							<li class="pageMaker_btn prev"><a
-								href="${pageMaker.pageStart - 1}">이전</a></li>
+							<li class="pageMaker_btn prev"><a href="#"
+								data-page="${pageMaker.pageStart - 1}">이전</a></li>
 						</c:if>
 						<!-- Page Numbers -->
 						<c:forEach begin="${pageMaker.pageStart}"
 							end="${pageMaker.pageEnd}" var="num">
 							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":"" }">
-								<a href="${num}">${num}</a>
+								<a href="#" data-page="${num}">${num}</a>
 							</li>
 						</c:forEach>
 						<!-- Next Button -->
 						<c:if test="${pageMaker.next}">
-							<li class="pageMaker_btn next"><a
-								href="${pageMaker.pageEnd + 1 }">다음</a></li>
+							<li class="pageMaker_btn next"><a href="#"
+								data-page="${pageMaker.pageEnd + 1}">다음</a></li>
 						</c:if>
 					</ul>
 				</div>
@@ -100,6 +100,7 @@
 					<input type="hidden" name="pageNum"
 						value="${pageMaker.cri.pageNum}"> <input type="hidden"
 						name="amount" value="${pageMaker.cri.amount}"> <input
+						type="hidden" name="type" value="${pageMaker.cri.type}"> <input
 						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 				</form>
 			</div>
@@ -114,7 +115,6 @@
 			<div id="chatDetailsContent"></div>
 		</div>
 	</div>
-
 
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
