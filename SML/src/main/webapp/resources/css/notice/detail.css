@@ -33,6 +33,7 @@
 	background-color: transparent;
 	cursor: pointer;
 	color: black;
+	  transition: color 0.3s ease;
 }
 
  .like.active {

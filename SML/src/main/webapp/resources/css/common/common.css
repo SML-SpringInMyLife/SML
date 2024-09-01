@@ -233,6 +233,51 @@ main {
 	min-height: 560px;
 }
 
+
+.pageMaker_wrap {
+	text-align: center; /* 중앙 정렬 */
+	margin-top: 20px; /* 위쪽 여백 */
+}
+
+.pageMaker {
+	list-style-type: none; /* 기본 목록 스타일 제거 */
+	padding: 0; /* 패딩 제거 */
+	display: inline-block; /* 수평 정렬 */
+}
+
+.pageMaker li {
+	display: inline; /* 인라인 정렬 */
+	margin: 0 5px; /* 항목 간 여백 */
+}
+
+.pageMaker a {
+	display: inline-block; /* 링크 스타일 적용 */
+	text-decoration: none; /* 밑줄 제거 */
+	color: black; /* 링크 기본 색상 */
+	padding: 8px 12px; /* 내부 여백 */
+	border-radius: 4px; /* 둥근 모서리 */
+	transition: background-color 0.3s, color 0.3s; /* 색상 전환 */
+}
+
+.pageMaker a:hover {
+	text-decoration: none; /* 밑줄 제거 */
+	background-color: #e9ecef; /* 호버 배경색 */
+	color: #095309; /* 호버 색상 */
+}
+
+.pageMaker .active a {
+	font-weight: bold; /* 현재 페이지 강조 */
+	color: #fff; /* 현재 페이지 텍스트 색상 */
+	background-color: #095309; /* 현재 페이지 배경색 */
+	border: 2px solid #095309; /* 현재 페이지 테두리 */
+}
+
+.pageMaker .disabled a {
+	color: #6c757d; /* 비활성 링크 색상 */
+	cursor: not-allowed; /* 비활성 링크 커서 */
+}
+
+
 /* 채팅상담창 영역 */
 #chat-container {
 	position: fixed; /* 화면 고정 위치 */

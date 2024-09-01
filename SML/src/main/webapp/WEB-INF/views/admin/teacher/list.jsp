@@ -7,8 +7,6 @@
 <title>강사 목록 - 관리자 페이지</title>
 <link rel="stylesheet"
 	href="${webappRoot}/resources/css/common/common.css">
-<link rel="stylesheet"
-	href="${webappRoot}/resources/css/admin/admin.css">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -24,7 +22,7 @@
 				<form id="searchForm" action="/admin/teacher/list" method="get"
 					class="search-container">
 					<div class="search_input">
-						<input type="text" name="keyword"
+						<input type="text" placeholder="검색어를 입력하세요." name="keyword"
 							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
 						<input type="hidden" name="pageNum"
 							value='<c:out value="${pageMaker.cri.pageNum }"></c:out>'>
@@ -38,7 +36,7 @@
 							<tr>
 								<th data-label="No.">No.</th>
 								<th data-label="강사명">강사명</th>
-								<th data-label="담당과목">담당과목</th>
+								<!-- <th data-label="담당과목">담당과목</th> -->
 								<th data-label="상태">상태</th>
 							</tr>
 						</thead>
@@ -48,9 +46,9 @@
 								<td><a class="move" href='<c:out value="${list.teaCode}"/>'>
 										<c:out value="${list.teaName}"></c:out>
 								</a></td>
-								<td>
+								<!--  <td>
 									<%-- <c:out value="${list.teaSubject}" /> --%> 과목을 추가해야할듯?
-								</td>
+								</td> -->
 								<td><c:choose>
 										<c:when test="${list.teaStatus eq 'N'}">정상</c:when>
 										<c:otherwise>(삭제됨)</c:otherwise>
@@ -91,7 +89,11 @@
 						name="amount" value="${pageMaker.cri.amount}"> <input
 						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 				</form>
-
+				<div class="teacherEnroll-button-container">
+					<button class="teacherEnroll">
+						<a href="/admin/teacher/enroll">강사 등록</a>
+					</button>
+				</div>
 			</div>
 		</div>
 	</main>

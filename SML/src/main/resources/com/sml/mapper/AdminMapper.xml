@@ -61,7 +61,7 @@
 				</choose>
 			</if>
 		</where><![CDATA[
-        ORDER BY MEM_ADMIN_CHECK DESC, MEM_NAME
+        ORDER BY MEM_ADMIN_CHECK DESC, MEM_JOIN_DATE DESC
       ) m
     )
     WHERE rn > (#{pageNum} - 1) * #{amount} AND rn <= #{pageNum} * #{amount}

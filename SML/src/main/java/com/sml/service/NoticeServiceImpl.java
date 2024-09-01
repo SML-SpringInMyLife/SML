@@ -2,18 +2,24 @@ package com.sml.service;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.sml.controller.MemberController;
 import com.sml.mapper.NoticeMapper;
 import com.sml.model.Criteria;
 import com.sml.model.FileupVO;
+import com.sml.model.LikeVO;
 import com.sml.model.NoticeVO;
 
 @Service
 public class NoticeServiceImpl implements NoticeService {
-
+ 
+	   private static final Logger logger = LoggerFactory.getLogger(NoticeServiceImpl.class);
+	
 	@Autowired
 	NoticeMapper noticeMapper;
 
@@ -46,25 +52,26 @@ public class NoticeServiceImpl implements NoticeService {
 
 		return noticeMapper.noticeGetDetail(noticeCode);
 	}
-    
+
 	@Transactional
 	@Override
 	public int noticeModify(NoticeVO noticevo) throws Exception {
-	    int result = noticeMapper.noticeModify(noticevo);
-	    
-	    // 기존 이미지 삭제
-	    noticeMapper.deleteImageAll(noticevo.getNoticeCode());
-	    
-	    // 새 이미지가 있으면 추가
-	    if (noticevo.getImageList() != null && !noticevo.getImageList().isEmpty()) {
-	        noticevo.getImageList().forEach(attach -> {
-	            attach.setNoticeCode(noticevo.getNoticeCode());
-	            noticeMapper.imageEnroll(attach);
-	        });
-	    }
-	    
-	    return result;
+		int result = noticeMapper.noticeModify(noticevo);
+
+		// 기존 이미지 삭제
+		noticeMapper.deleteImageAll(noticevo.getNoticeCode());
+
+		// 새 이미지가 있으면 추가
+		if (noticevo.getImageList() != null && !noticevo.getImageList().isEmpty()) {
+			noticevo.getImageList().forEach(attach -> {
+				attach.setNoticeCode(noticevo.getNoticeCode());
+				noticeMapper.imageEnroll(attach);
+			});
+		}
+
+		return result;
 	}
+
 	@Override // 게시글 삭제
 	public int noticeDelete(int noticeCode) {
 
@@ -78,16 +85,39 @@ public class NoticeServiceImpl implements NoticeService {
 	}
 
 	@Override // 게시글 조회수 증가
+	@Transactional
 	public int noticeCount(int noticeCode) throws Exception {
 
 		return noticeMapper.noticeCount(noticeCode);
-
+	}
+	
+	@Override //좋아요 기능 
+	public boolean toggleLike(int noticeCode, int memCode) {
+	    List<LikeVO> existingLikes = noticeMapper.getLike(noticeCode, memCode);
+	    boolean isLiked;
+	    if (existingLikes == null || existingLikes.isEmpty()) {
+	        LikeVO newLike = new LikeVO();
+	        newLike.setMemCode(memCode);
+	        newLike.setNoticeCode(noticeCode);
+	        newLike.setLikeType("NOTICE");
+	        noticeMapper.insertLike(newLike);
+	        noticeMapper.updateNoticeLikeCount(noticeCode, 1);  // 직접 업데이트
+	        isLiked = true;
+	    } else {
+	        LikeVO like = existingLikes.get(0);
+	        noticeMapper.deleteLike(like.getLikeCode());
+	        noticeMapper.updateNoticeLikeCount(noticeCode, -1);  // 직접 업데이트
+	        isLiked = false;
+	    }
+	    return isLiked;
 	}
 
-	@Override
-	public boolean noticeLike(int noticeCode) throws Exception {
-		int affectedRows = noticeMapper.noticeLike(noticeCode);
-		return affectedRows > 0;
+	    @Override
+	    public int getNoticeLikeCount(int noticeCode) {
+	        return noticeMapper.getNoticeLikeCount(noticeCode);
+	    }
+	    
 	}
+	
 
-}
+

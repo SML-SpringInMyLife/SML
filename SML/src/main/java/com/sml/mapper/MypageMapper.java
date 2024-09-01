@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
@@ -29,12 +30,26 @@ public interface MypageMapper {
     //포인트 조회
     public List<PointVO> selectPointList(@Param("memCode")int memCode
 		                               ,@Param("selectDate")String selectDate
-		                               , @Param("criteria") Criteria criteria);
+		                               ,@Param("criteria") Criteria criteria);
     public int getTotalCount(@Param("memCode") int memCode, 
                              @Param("selectDate") String selectDate);
+    
+    //포인트 등록
+    public void insertPoint(PointVO point);
    
     //잔여포인트 조회
     public int selectTotalPoint(int memCode);    
+    
+    //잔여포인트 업데이트(수정)
+    public void updateTotalPoint(MemberVO member);
+    
+    //수강신청 조회
+    public List<CourseApplyDTO> selectCourseList(@Param("memCode")int memCode              
+                                      ,@Param("criteria") Criteria criteria);
+    
+    public int getCourseTotalCount(int memCode);
+    
+    
     
     
     

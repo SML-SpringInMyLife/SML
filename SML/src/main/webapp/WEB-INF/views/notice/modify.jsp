@@ -78,9 +78,7 @@
 
 				<div class="content">
 					<span id="alram_body">내용을 입력해 주세요</span>
-					<textarea name="noticeBody" class="bodytext">
-          <c:out value="${noticeDetail.noticeBody}" />
-          </textarea>
+			<textarea name="noticeBody" class="bodytext"><c:out value="${noticeDetail.noticeBody}" /></textarea>
 
 					<div class="form_section">
                     			<div class="form_section_title">

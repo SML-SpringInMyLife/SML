@@ -5,6 +5,7 @@
 <html>
 <head>
 <title>SML Home</title>
+<script src="https://code.jquery.com/jquery-3.4.1.js"></script>  
 <link rel="stylesheet"
 	href="${webappRoot}/resources/css/common/common.css">
 </head>
@@ -22,8 +23,24 @@
 			</div>
 		</main>
 	</div>
+	
+<!-- 푸터 영역 포함 -->
+	<%@ include file="/WEB-INF/views/common/footer.jsp"%>	
+	
+<script>
 
-	<!-- 푸터 영역 포함 -->
-	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+$(document).ready(function(){   
+    let aResult = '<c:out value="${usePoint}"/>';
+    checkResult(aResult);
+    function checkResult(aresult){
+       if(aresult !== ''){
+    	   alert("출석 " + aResult +" 포인트가 적립되었습니다") 
+       }
+       return;
+    }
+ });
+</script>
+	
 </body>
+
 </html>

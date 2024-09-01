@@ -36,10 +36,10 @@
 					<thead>
 						<tr>
 							<th data-label="No.">No.</th>
-							<th data-label="분류">분류</th>
 							<th data-label="상담일시">상담일시</th>
+							<!--  <th data-label="분류">분류</th>
 							<th data-label="아이디">아이디</th>
-							<th data-label="성명">성명</th>
+							<th data-label="성명">성명</th>-->
 							<th data-label="내용">내용</th>
 						</tr>
 					</thead>
@@ -51,17 +51,17 @@
 							<c:forEach items="${chat}" var="chat" varStatus="status">
 								<tr>
 									<td data-label="No.">${totalCount - status.index}</td>
-									<td data-label="분류">${chat.categoryCode}</td>
 									<td data-label="상담일시"><fmt:formatDate
 											value="${chat.chatDate}" pattern="yyyy-MM-dd HH:mm" /></td>
+									<!-- <td data-label="분류">${chat.categoryCode}</td>
 									<td data-label="아이디">${chat.memCode}</td>
-									<td data-label="성명">${chat.memCode}</td>
+									<td data-label="성명">${chat.memCode}</td> -->
 									<!-- 내용, 길면 축약 표시 -->
 									<td data-label="내용"><span class="chat-content"
 										data-chat-content="<c:out value='${chat.chatContent}' />">
 											<c:choose>
-												<c:when test="${fn:length(chat.chatContent) > 25}">
-													<c:out value="${fn:substring(chat.chatContent, 0, 25)}" />...
+												<c:when test="${fn:length(chat.chatContent) > 80}">
+													<c:out value="${fn:substring(chat.chatContent, 0, 80)}" />...
 											</c:when>
 												<c:otherwise>
 													<c:out value="${chat.chatContent}" />

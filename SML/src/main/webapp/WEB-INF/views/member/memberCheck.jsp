@@ -29,7 +29,7 @@
 		<div class="member-container">
 			<jsp:include page="/WEB-INF/views/member/mypage.jsp" />
 			<div class="member-main-content">
-				<h2>매일매일 출석체크</h2>
+				<h2>나의 출석기록 확인</h2>
 				
 
 				<!--  달력 보이기 -->

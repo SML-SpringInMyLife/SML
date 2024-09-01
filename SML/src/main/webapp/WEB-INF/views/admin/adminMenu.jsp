@@ -18,9 +18,9 @@ if (pagePath == null || pagePath.isEmpty()) {
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <link rel="stylesheet"
-	href="${webappRoot}/resources/css/admin/admin.css">
-<link rel="stylesheet"
 	href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet"
+	href="${webappRoot}/resources/css/admin/admin.css">
 </head>
 <body>
 

@@ -25,13 +25,12 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-		<div class="enroll-container">
-			<form action="/notice/enroll.do" method="post" id="enrollForm">
-				<input type="hidden" name="memCode"
-					value="${sessionScope.member.memCode}">
-				
-			 <div class="category">
-                    <label for="categoryCode">☰ 카테고리:</label>
+		   <div class="enroll-container">
+            <form action="/notice/enroll.do" method="post" id="enrollForm">
+                <input type="hidden" name="memCode" value="${sessionScope.member.memCode}">
+                
+                <div class="category">
+         
                     <select id="categoryCode" name="categoryCode">
                         <option value="">카테고리 선택 (선택사항)</option>
                         <c:forEach var="category" items="${categories}">
@@ -41,42 +40,38 @@
                 </div>
                 <div class="new-category">
                     <label for="newCategory">새 카테고리:</label>
-                    <input type="text" id="newCategory" name="newCategory" placeholder="새 카테고리 입력 (선택사항)">
+                    <input type="text" id="newCategory" placeholder="새 카테고리 입력 (선택사항)">
+                    <button type="button" id="addCategoryBtn">추가</button>
                 </div>
               
-				<div class="title">
-					<!-- 제목 -->
-					<span id="alram_title" style="display: none;">제목을 입력해 주세요</span> <input
-						name="noticeTitle" type="text" size="30" class="titletext">
-				</div>
-				<div class="content">
-					<span id="alram_body" style="display: none;">내용을 입력해 주세요</span>
-					<textarea name="noticeBody" class="bodytext"></textarea>
-					<!-- 글내용 -->
+                <div class="title">
+                    <span id="alram_title" style="display: none;">제목을 입력해 주세요</span>
+                    <input name="noticeTitle" type="text" size="30" class="titletext">
+                </div>
+                <div class="content">
+                    <span id="alram_body" style="display: none;">내용을 입력해 주세요</span>
+                    <textarea name="noticeBody" class="bodytext"></textarea>
 
-					<div class="form_section">
-						<div class="form_section_title">
-							<label>사진선택하기</label>
-						</div>
-						<div class="form_section_content">
-							<input type="file" multiple id="fileItem" name='uploadFile'
-								style="height: 30px;">
-							<div id="uploadResult">
-							<div id="result_card">
-									<div class="imgDeleteBtn">x</div>
-								</div> 
-							</div>
-
-						</div>
-					</div>
-
-				</div>
-				<div class="actions">
-					<button id="enrollbtn" class="update">등록</button>
-					<button id="cancelbtn" class="cancel">취소</button>
-				</div>
-			</form>
-		</div>
+                    <div class="form_section">
+                        <div class="form_section_title">
+                            <label>사진선택하기</label>
+                        </div>
+                        <div class="form_section_content">
+                            <input type="file" multiple id="fileItem" name='uploadFile' style="height: 30px;">
+                            <div id="uploadResult">
+                                <div id="result_card">
+                                    <div class="imgDeleteBtn">x</div>
+                                </div> 
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="actions">
+                    <button type="button" id="enrollbtn" class="update">등록</button>
+                    <button type="button" id="cancelbtn" class="cancel">취소</button>
+                </div>
+            </form>
+        </div>
 
 	</main>
 
@@ -84,58 +79,93 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script>
-		$(document).ready(function() {
-			/* 등록 버튼 유효성검사 */
-			$("#enrollbtn").click(function(event) {
-				event.preventDefault(); // 기본 제출 동작을 막음
+	 $(document).ready(function() {
+	        // 새 카테고리 추가 기능
+	        $("#addCategoryBtn").click(function() {
+	            var newCategoryName = $("#newCategory").val().trim();
+	            if (newCategoryName) {
+	                addNewCategory(newCategoryName);
+	            } else {
+	                alert("새 카테고리 이름을 입력해주세요.");
+	            }
+	        });
 
-				/* 검사 통과 유무 변수 */
-				let titleCheck = false; // 제목
-				let bodyCheck = false; // 본문 내용
+	        // 등록 버튼 클릭 이벤트
+	        $("#enrollbtn").click(function(event) {
+	            event.preventDefault();
+	            submitForm();
+	        });
 
-				/* 입력값 변수 */
-				let noticeTitle = $('input[name=noticeTitle]').val(); // 제목
-				let noticeBody = $('textarea[name=noticeBody]').val(); // 본문내용
+	        // 취소 버튼
+	        $("#cancelbtn").click(function() {
+	            location.href = "/notice/list";
+	        });
 
-				/* 공란 경고 span태그 */
-				let altitle = $('#alram_title');
-				let albody = $('#alram_body');
+	        function addNewCategory(newCategoryName) {
+	            $.ajax({
+	                url: '/notice/category/add',
+	                type: 'POST',
+	                data: { categoryName: newCategoryName },
+	                success: function(response) {
+	                    if (response.success) {
+	                        $('#categoryCode').append($('<option>', {
+	                            value: response.categoryCode,
+	                            text: response.categoryName
+	                        }));
+	                        $("#categoryCode").val(response.categoryCode);
+	                        $("#newCategory").val('');
+	                    } else {
+	                        alert(response.message);
+	                    }
+	                },
+	                error: function() {
+	                    alert('카테고리 추가 중 오류가 발생했습니다.');
+	                }
+	            });
+	            location.reload();
+	        }
 
-				/* 제목 공란 체크 */
-				if (noticeTitle === '') {
-					altitle.css('display', 'block');
-					titleCheck = false;
-				} else {
-					altitle.css('display', 'none');
-					titleCheck = true;
-				}
+	        function submitForm() {
+	            var categoryCode = $("#categoryCode").val();
+	            var newCategory = $("#newCategory").val().trim();
+	            var noticeTitle = $('input[name=noticeTitle]').val().trim();
+	            var noticeBody = $('textarea[name=noticeBody]').val().trim();
 
-				/* 본문내용 공란 체크 */
-				if (noticeBody === '') {
-					albody.css('display', 'block');
-					bodyCheck = false;
-				} else {
-					albody.css('display', 'none');
-					bodyCheck = true;
-				}
+	            // 카테고리 검증
+	            if (!categoryCode && !newCategory) {
+	                alert("카테고리를 선택하거나 새 카테고리를 입력해주세요.");
+	                return;
+	            }
 
-				/* 최종 검사 */
-				if (titleCheck && bodyCheck) {
-					$("#enrollForm").submit();
-				} else {
-					return;
-				}
-			});
-   
-			
-			 
-			/* 취소 버튼 */
-			$("#cancelbtn").click(function() {
-				location.href = "/notice/list";
-			});
-		});
+	            // 제목 검증
+	            if (noticeTitle === '') {
+	                $('#alram_title').css('display', 'block');
+	                return;
+	            } else {
+	                $('#alram_title').css('display', 'none');
+	            }
 
-		
+	            // 내용 검증
+	            if (noticeBody === '') {
+	                $('#alram_body').css('display', 'block');
+	                return;
+	            } else {
+	                $('#alram_body').css('display', 'none');
+	            }
+
+	            // 새 카테고리가 입력되었다면 먼저 추가
+	            if (newCategory && !categoryCode) {
+	                addNewCategory(newCategory);
+	                // 카테고리 추가 후 약간의 지연을 두고 폼 제출
+	                setTimeout(function() {
+	                    $("#enrollForm").submit();
+	                }, 500);
+	            } else {
+	                // 기존 카테고리 선택 시 바로 폼 제출
+	                $("#enrollForm").submit();
+	            }
+	        }
+	    
 		/* 이미지 업로드 */
 		$("input[type='file']").on("change", function(e) {
 
@@ -249,6 +279,7 @@
 		        }
 		    });
 		}
+	 });
 	</script>
 </body>
 </html>
