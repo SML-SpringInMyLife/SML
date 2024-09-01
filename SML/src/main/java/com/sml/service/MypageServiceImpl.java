@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sml.mapper.MypageMapper;
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
@@ -45,7 +46,6 @@ public class MypageServiceImpl implements MypageService {
     
     
     
-    
     //포인트 조회
     @Override
     public List<PointVO> selectPointList(int memCode,String selectDate, Criteria criteria)throws Exception{
@@ -59,12 +59,34 @@ public class MypageServiceImpl implements MypageService {
         return new PageDTO(criteria, total);
     }
     
+   //포인트 등록
+    @Override
+  	public void insertPoint(PointVO point){
+    	mypageMapper.insertPoint(point);
+    }
     
     //잔여포인트 조회
     @Override
     public int selectTotalPoint(int memCode)throws Exception{
     	return mypageMapper.selectTotalPoint(memCode);
-    };
+    }
+    
+    //잔여포인트 업데이트 
+    @Override
+    public void updateTotalPoint(MemberVO member)throws Exception{
+    	mypageMapper.updateTotalPoint(member);
+    }
+    //수강목록 조회
+    @Override
+    public List<CourseApplyDTO> selectCourseList(int memCode, Criteria criteria)throws Exception{
+    	return mypageMapper.selectCourseList(memCode,criteria);
+    }
+    @Override
+    public PageDTO getCourseTotalCount(int memCode, Criteria criteria) {
+        int total = mypageMapper.getCourseTotalCount(memCode);
+        return new PageDTO(criteria, total);
+    }	
+    
     
 }
 

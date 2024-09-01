@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class ChatVO {
-
+	private String conversationId; // 대화 ID 추가
 	private int chatCode; // 채팅 코드
 	private int memCode; // 보낸 사람의 코드
 	private int categoryCode; // 상담 카테고리 코드

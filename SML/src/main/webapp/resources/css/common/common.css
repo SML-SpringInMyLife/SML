@@ -412,43 +412,28 @@ main {
 }
 
 /* CSS에 추가 */
-@
-keyframes blink { 0% {
-	background-color: transparent;
-	color: inherit;
-	font-weight: normal; /* 기본 굵기 */
+@keyframes blink {
+    0% {
+        background-color: yellow;
+        color: black;
+        font-weight: bold;
+    }
+    50% {
+        background-color: transparent;
+        color: inherit;
+        font-weight: normal;
+    }
+    100% {
+        background-color: yellow;
+        text-color: black;
+        font-weight: bold;
+    }
 }
 
-50
-%
-{
-background-color
-:
-yellow;
-color
-:
-black;
-font-weight
-:
-bold; /* 굵게 변경 */
-}
-100
-%
-{
-background-color
-:
-transparent;
-color
-:
-inherit;
-font-weight
-:
-normal; /* 기본 굵기로 복원 */
-}
-}
 .blinking {
-	animation: blink 1s infinite;
+    animation: blink 1s infinite;
 }
+
 
 /* 채팅창 종료 경고창 */
 .modal {

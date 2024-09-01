@@ -279,12 +279,16 @@
 	<!-- 안부문자 자동발송을 위한 3일연속 미출석자 조회 -->
 	<select id="selectAbsentMembers"
 		resultType="com.sml.model.MemberVO" resultMap="userResultMap">
-		SELECT m.MEM_CODE, m.MEM_NAME, m.MEM_PHONE
+		SELECT m.MEM_CODE,
+		m.MEM_NAME, m.MEM_PHONE
 		FROM TB_MEMBER m
-		LEFT JOIN MEMBER_CHECK mc ON m.MEM_CODE = mc.MEM_CODE
+		LEFT JOIN MEMBER_CHECK mc ON
+		m.MEM_CODE = mc.MEM_CODE
 		AND mc.CHECK_DATE >= SYSDATE - 3
-		WHERE m.MEM_ADMIN_CHECK = 0 AND m.MEM_STATUS = 1
-		GROUP BY m.MEM_CODE, m.MEM_NAME, m.MEM_PHONE
+		WHERE
+		m.MEM_ADMIN_CHECK = 0 AND m.MEM_STATUS = 1
+		GROUP BY m.MEM_CODE,
+		m.MEM_NAME, m.MEM_PHONE
 		HAVING COUNT(mc.CHECK_CODE) = 0
 	</select>
 
@@ -293,6 +297,7 @@
 	<!-- 채팅을 포함하는 ResultMap -->
 	<resultMap id="chatMap" type="com.sml.model.ChatVO">
 		<result property="chatCode" column="CHAT_CODE" />
+		<result property="categoryCode" column="CATEGORY_CODE" />
 		<result property="chatContent" column="CHAT_CONTENT" />
 		<result property="chatDate" column="CHAT_DATE" />
 		<result property="memCode" column="MEM_CODE" />
@@ -359,6 +364,17 @@
 			</if>
 		</where>
 	</select>
+
+
+	<!-- 채팅 저장하기 -->
+	<insert id="saveChatContent"
+		parameterType="com.sml.model.ChatVO">
+		INSERT INTO CHAT (CATEGORY_CODE, CHAT_CONTENT,
+		CHAT_DATE, STATUS, MEM_CODE)
+		VALUES (#{categoryCode}, #{chatContent},
+		#{chatDate}, #{status}, #{memCode})
+	</insert>
+
 
 	<!-- 채팅 삭제하기 -->
 	<delete id="deleteChat" parameterType="int">

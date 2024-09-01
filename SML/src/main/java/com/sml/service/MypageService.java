@@ -2,6 +2,7 @@ package com.sml.service;
 
 import java.util.List;
 
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
@@ -28,8 +29,19 @@ public interface MypageService {
 	
 	public PageDTO getTotalCount(int memCode, String selectDate, Criteria criteria);
 	
+	//포인트 등록
+	public void insertPoint(PointVO point);
+	
 	//잔여포인트 조회
 	public int selectTotalPoint(int memCode)throws Exception;
+	
+	//잔여포인트 업데이트
+	public void updateTotalPoint(MemberVO member)throws Exception;
+	
+	//수강목록 조회
+	public List<CourseApplyDTO> selectCourseList(int memCode, Criteria criteria) throws Exception;
+	
+	public PageDTO getCourseTotalCount(int memCode,Criteria criteria);
 			
 		
 		

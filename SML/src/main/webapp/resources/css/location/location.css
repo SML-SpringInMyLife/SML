@@ -240,22 +240,28 @@ list-style: none;
 }
 
 #recentSearches {
-    position: absolute;
-    background: #fff;
-    border: 1px solid #ccc;
-    width: 200px;
-    max-height: 150px;
-    overflow-y: auto;
-    display: none;
-    z-index: 1000; /* 높은 값 설정 */
+    display: none; /* 기본적으로 숨김 */
+    position: absolute; /* 부모 요소 기준으로 위치 설정 */
+    z-index: 100; /* 다른 요소 위에 표시되도록 설정 */
+    background-color: white; /* 배경색 설정 */
+    border: 1px solid #ddd; /* 테두리 추가 */
+    width: 200px; /* 너비 조정 */
+    max-height: 200px; /* 최대 높이 설정 */
+    overflow-y: auto; /* 스크롤바 추가 */
+    list-style: none; /* 리스트 스타일 제거 */
+    padding: 0; /* 패딩 제거 */
+    margin: 0; /* 마진 제거 */
 }
+
 #recentSearches li {
     padding: 5px;
     cursor: pointer;
 }
+
 #recentSearches li:hover {
-    background: #eee;
+    background: #eee; /* 호버 시 배경색 */
 }
+
 
 
 #mapInstructionsButton {

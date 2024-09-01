@@ -270,32 +270,6 @@
 			}//success 종료
 		}); //ajax 종료
 	}); //function 종료
-     
-	
-	
-	
-	 /*
-	$(document).ready(function(){
-		
-		$(".join_button").click(function(){
-			
-		    var year = $('.birth-year').val();
-		    var month = $('.birth-month').val();
-		    var day = $('.birth-day').val();
-
-		    var birthDate = '${year}-${month}-${day}';
-		    birthDate.val(birthDate);			
-			
-			
-	        
-	        
-	     	
-	    	
-	    
-		});
-	});
-	*/		
-	
 	
 	// 입력 이메일 형식 유효성 검사 //
 	 function mailFormCheck(email){

@@ -253,7 +253,7 @@ function selectMember(name, phoneNumber, memCode) {
     $('#recipientNumber').val(selectedMember.phone);
 
     // 메시지 내용 필드에 회원 이름을 포함한 메시지 자동 입력
-    $('#smsContent').val(`[SML] 안녕하세요, ${selectedMember.name}님! 3일 이상 결석을 확인하는 문자입니다.`);
+    $('#smsContent').val(`[SML] 안녕하세요, ${selectedMember.name}님! `);
 
     // 숨겨진 필드에 회원 코드 설정
     $('#memCode').val(selectedMember.memCode);
@@ -270,22 +270,37 @@ function clearSearchResults() {
     $('#searchResults').empty(); // 검색 결과 목록 초기화
 }
 
-// 채팅 검색 함수
-function searchChats() {
-    const type = $('#chatSearchType').val(); // 검색 카테고리 가져오기
-    const query = $('#chatSearchQuery').val(); // 검색 쿼리 가져오기
-
-    // 검색어 및 카테고리를 콘솔에 출력
-    console.log(`Searching for ${query} in type ${type}`);
-}
-
-// 채팅 상세 보기 팝업 표시 함수
+// 채팅 상세보기 팝업 표시 함수
 function showChatDetails(content) {
-    $('#chatDetailsContent').text(content); // 채팅 세부 내용 설정
-    $('#chatDetailsPopup').show(); // 채팅 상세 보기 팝업 표시
+    console.log('채팅 내용:', content); // 디버깅용 콘솔 출력
+    $('#chatDetailsContent').html(formatContent(content)); // 포맷팅된 채팅 내용 설정
+    $('#chatDetailsPopup').show(); // 채팅 상세보기 팝업 표시
 }
 
-// 채팅 상세 보기 팝업 닫기 함수
-function closeChatDetailsPopup() {
-    $('#chatDetailsPopup').hide(); // 채팅 상세 보기 팝업 숨기기
+// 채팅 내용 포맷팅 함수
+function formatContent(content) {
+    return content
+        .split('//') // '//'를 기준으로 문자열 분리
+        .map(line => line.trim()) // 공백 제거
+        .filter(line => line) // 빈 줄 제거
+        .join('<br><br>'); // <br>로 줄 바꿈 연결
 }
+
+// 문서 전체에서 클릭 이벤트를 감지하고 '.chat-content' 요소 클릭 시 처리
+document.addEventListener('click', function(event) {
+    if (event.target.matches('.chat-content')) { // '.chat-content' 요소 클릭 여부 확인
+        const content = event.target.getAttribute('data-chat-content'); // data 속성에서 값 가져오기
+        showChatDetails(content); // 팝업에 채팅 내용 표시
+    }
+});
+
+// 채팅 상세보기 팝업 닫기 함수
+function closeChatDetailsPopup() {
+    $('#chatDetailsPopup').hide(); // 채팅 상세보기 팝업 숨기기
+}
+
+// 채팅 상세보기 팝업 닫기 버튼 이벤트 핸들러
+$('#closeChatDetailsButton').on('click', function() {
+    closeChatDetailsPopup(); // 팝업 닫기
+});
+
