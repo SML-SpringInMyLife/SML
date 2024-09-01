@@ -96,7 +96,7 @@
 						</c:if>
 					</ul>
 				</div>
-				<form id="moveForm" action="/admin/chat" method="get">
+				<form id="moveForm" action="/admin/chatList" method="get">
 					<input type="hidden" name="pageNum"
 						value="${pageMaker.cri.pageNum}"> <input type="hidden"
 						name="amount" value="${pageMaker.cri.amount}"> <input

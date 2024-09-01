@@ -140,6 +140,9 @@
 		<div id="chat-box"></div>
 		<div id="chat-input">
 			<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
+
+			<input type="hidden" id="conversationId" value="">
+
 			<button class="sendBtn" onclick="sendMessage()">전송</button>
 		</div>
 		<%-- </c:otherwise>

@@ -52,12 +52,14 @@
 					/// 채팅방 클릭 이벤트 추가
 					$('#chat-room-list li').on('click', function() {
 						const conversationId = $(this).data('id');
-						console.log(conversationId);
+						console.log("chat.jsp 클릭이벤트 ====> "+conversationId);
 						const message = JSON.stringify({
 					        action: 'joinChatRoom',
 					        conversationId: conversationId
 					    });
 					    ws.send(message);
+					    $('#chat-container').removeClass('hidden');
+					    $('#conversationId').val(conversationId);
 					});
 				},
 				error : function(xhr, status, error) {
