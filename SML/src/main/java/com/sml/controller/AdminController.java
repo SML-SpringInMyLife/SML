@@ -159,7 +159,7 @@ public class AdminController {
 	}
 
 	// 3일 연속 미출석 회원에게 안부 문자 발송 (매일 11:00 PM)
-	@Scheduled(cron = "0 00 11 * * ?")
+	@Scheduled(cron = "0 31 6 * * ?")
 	public void sendReminderSmsToAbsentMembers() {
 		logger.info("3일 연속 미출석 안부문자 발송일시 : {}", new Date());
 		try {

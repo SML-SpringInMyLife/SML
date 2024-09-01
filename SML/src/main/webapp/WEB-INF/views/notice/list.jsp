@@ -176,22 +176,31 @@
             /* 알람 창 */
             let enroll = '<c:out value="${enroll_result}"/>';
             let modify = '<c:out value="${modify_result}"/>';
-        
+            let ndelete = '<c:out value="${delete_result}"/>';
+            
             checkResult(enroll);
             checkResult(modify);
+            checkResult(ndelete);
 
             function checkResult(result) {
                 if(result === '') {
                     return;
                 }
-                
                 if(result === '1') {
-                    alert("글 수정을 완료하였습니다.");
+                    if(ndelete === '1') {
+                        alert("글 삭제를 완료하였습니다.");
+                    } else {
+                        alert("글 수정을 완료하였습니다.");
+                    }
                 } else if(result === '0') {
-                    alert("글 수정을 실패하였습니다.");
+                    if(ndelete === '0') {
+                        alert("글 삭제를 실패하였습니다.");
+                    } else {
+                        alert("글 수정을 실패하였습니다.");
+                    }
                 } else {
                     alert("글 '" + result + "' 을 등록하였습니다.");
-                }
+                } 
             }
         });
     </script>
