@@ -18,6 +18,7 @@ public class SaftyVO {
 	private Date saftyModify;
 	private String saftyStatus;
 	private Integer saftyCount;
-	private int saftyLike;
 	private List<FileupVO> imageList;
+	private boolean userLiked;
+	private int saftyLike;
 }

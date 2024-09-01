@@ -15,9 +15,11 @@
 </resultMap>
   
 <select id="getAttachList" resultType="com.sml.model.FileupVO" resultMap="fileupResultMap">
-	
 		select * from FILE_UP where NOTICE_CODE = #{noticeCode}
-	
+	</select>
+
+<select id="getAttachListss" resultType="com.sml.model.FileupVO" resultMap="fileupResultMap">
+		select * from FILE_UP where SAFTY_CODE = #{saftyCode}
 	</select>
 
   </mapper>
