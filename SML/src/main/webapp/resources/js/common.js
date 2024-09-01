@@ -162,6 +162,7 @@ function sendMessage() {
     }
 }
 
+// 서버로부터 메시지를 처리하는 함수
 function handleServerMessage(message) {
     const $chatBox = $('#chat-box');
     const $messageDiv = $('<div></div>').addClass('message-container');
@@ -169,8 +170,15 @@ function handleServerMessage(message) {
     try {
         const jsonMessage = JSON.parse(message);
         const userId = jsonMessage.userId;
-        const content = jsonMessage.content;
+        const memName = jsonMessage.memName; // memName 추가
+        const content = jsonMessage.content; // content 추가
         const timestamp = jsonMessage.timestamp;
+
+        // memName이 null이거나 빈 문자열, content가 null이거나 빈 문자열인 경우 메시지 추가하지 않음
+        if (!memName || memName.trim() === '' || !content || content.trim() === '') {
+            console.warn('메시지의 memName 또는 content가 유효하지 않아 메시지를 표시하지 않습니다.');
+            return;
+        }
 
         const myUserId = $('#memId').text().trim();
         const isMyMessage = userId === myUserId;
@@ -182,6 +190,43 @@ function handleServerMessage(message) {
 
         $messageDiv.append($userIdDiv, $messageBox, $timestampDiv);
     } catch (e) {
+        console.error('메시지 파싱 중 오류 발생:', e);
+    }
+
+    $chatBox.append($messageDiv);
+    $chatBox.scrollTop($chatBox.prop('scrollHeight')); // 스크롤을 가장 아래로 이동
+    handleNewMessage(); // 새 메시지 알림 처리
+}
+
+// 채팅 박스에 메시지 추가 함수
+function appendMessage(message) {
+    const $chatBox = $('#chat-box');
+    const $messageDiv = $('<div></div>').addClass('message-container');
+
+    try {
+        const jsonMessage = JSON.parse(message);
+        const userId = jsonMessage.userId;
+        const memName = jsonMessage.memName; // memName 추가
+        const content = jsonMessage.content; // content 추가
+        const timestamp = jsonMessage.timestamp;
+
+        // memName이 null이거나 빈 문자열, content가 null이거나 빈 문자열인 경우 메시지 추가하지 않음
+        if (!memName || memName.trim() === '' || !content || content.trim() === '') {
+            console.warn('메시지의 memName 또는 content가 유효하지 않아 메시지를 표시하지 않습니다.');
+            return;
+        }
+
+        const myUserId = $('#memId').text().trim();
+        const isMyMessage = userId === myUserId;
+        $messageDiv.addClass(isMyMessage ? 'my-message-container' : 'other-message-container');
+
+        const $userIdDiv = $('<div></div>').addClass('user-id').text(userId);
+        const $messageBox = $('<div></div>').addClass('message-box').text(content);
+        const $timestampDiv = $('<div></div>').addClass('timestamp').text(new Date(timestamp).toLocaleTimeString());
+
+        $messageDiv.append($userIdDiv, $messageBox, $timestampDiv);
+
+    } catch (e) {
         $messageDiv.addClass('other-message-container').text(message);
     }
 
@@ -189,6 +234,7 @@ function handleServerMessage(message) {
     $chatBox.scrollTop($chatBox.prop('scrollHeight')); // 스크롤을 가장 아래로 이동
     handleNewMessage(); // 새 메시지 알림 처리
 }
+
 
 // 새로운 메시지 알림 처리 함수
 function handleNewMessage() {
@@ -205,35 +251,6 @@ function handleNewMessage() {
     }
 }
 
-// 채팅 박스에 메시지 추가 함수
-function appendMessage(message) {
-    const $chatBox = $('#chat-box');
-    const $messageDiv = $('<div></div>').addClass('message-container');
-
-    try {
-        const jsonMessage = JSON.parse(message);
-        const userId = jsonMessage.userId;
-        const content = jsonMessage.content;
-        const timestamp = jsonMessage.timestamp;
-
-        const myUserId = $('#memId').text().trim();
-        const isMyMessage = userId === myUserId;
-        $messageDiv.addClass(isMyMessage ? 'my-message-container' : 'other-message-container');
-
-        const $userIdDiv = $('<div></div>').addClass('user-id').text(userId);
-        const $messageBox = $('<div></div>').addClass('message-box').text(content);
-        const $timestampDiv = $('<div></div>').addClass('timestamp').text(new Date(timestamp).toLocaleTimeString());
-
-        $messageDiv.append($userIdDiv, $messageBox, $timestampDiv);
-
-    } catch (e) {
-        $messageDiv.addClass('other-message-container').text(message);
-    }
-
-    $chatBox.append($messageDiv);
-    $chatBox.scrollTop($chatBox.prop('scrollHeight')); // 스크롤을 가장 아래로 이동
-    handleNewMessage(); // 새 메시지 알림 처리
-}
 
 
 
