@@ -57,7 +57,7 @@
 									<c:out value="${item.startTime}"/>~<c:out value="${item.endTime}"/>
 								</td>
 								<td>
-									<span>0</span>
+									<c:out value="${item.courseApply}"/>
 									/
 									<c:out value="${item.courseLimit}"/>
 									명

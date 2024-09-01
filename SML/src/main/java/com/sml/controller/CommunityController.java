@@ -2,7 +2,6 @@ package com.sml.controller;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -14,13 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
+import com.sml.service.CommunityReplyService;
 import com.sml.service.CommunityService;
 
 @Controller
@@ -31,11 +30,12 @@ public class CommunityController {
 
 	@Autowired
 	private CommunityService service;
+	
+	@Autowired
+	private CommunityReplyService replyService;
 
 	@GetMapping("/boardList")
 	public void boardListGET(Criteria cri, Model model) throws Exception {
-
-		logger.info("커뮤니티 페이지 이동" + cri);
 
 		List list = service.getBoardList(cri);
 
@@ -54,14 +54,14 @@ public class CommunityController {
 
 	@GetMapping("/enroll")
 	public void enrollGET() throws Exception {
-		logger.info("커뮤니티 글 등록");
+		logger.info("而ㅻ�ㅻ땲�떚 湲� �벑濡�");
 	}
 
 	@PostMapping("/enroll.do")
 	public String enrollPOST(CommunityVO community, RedirectAttributes rttr, HttpSession session) throws Exception {
 		MemberVO member = (MemberVO) session.getAttribute("member");
 		if (member == null) {
-	        rttr.addFlashAttribute("error_message", "로그인해 주세요.");
+	        rttr.addFlashAttribute("error_message", "濡쒓렇�씤�빐 二쇱꽭�슂.");
 	        return "redirect:/community/boardList";
 	    }
 		
@@ -84,20 +84,7 @@ public class CommunityController {
 		int total = service.communityGetTotal(cri);
 		PageDTO pageMaker = new PageDTO(cri, total);
 		model.addAttribute("pageMaker", pageMaker);
-		
-		// 댓글 
-		List list = service.getReplyList(cri);
 
-		if (!list.isEmpty()) {
-			model.addAttribute("list", list);
-			model.addAttribute("totalCount", list.size());
-		} else {
-			model.addAttribute("listCheck", "empty");
-		}
-
-		int rtotal = service.replyGetTotal(cri);
-		PageDTO rpageMaker = new PageDTO(cri, rtotal);
-		model.addAttribute("pageMaker", rpageMaker);
 	}
 
 	@PostMapping("/modify")
@@ -105,7 +92,7 @@ public class CommunityController {
 		logger.info("modifyPOST......" + community);
 		int result = service.communityModify(community);
 		rttr.addFlashAttribute("modify_result", result);
-		// 해당 페이지로 다시 return - 바꾸기
+		// �빐�떦 �럹�씠吏�濡� �떎�떆 return - 諛붽씀湲�
 		return "redirect:/community/boardList";
 	}
 
@@ -126,9 +113,13 @@ public class CommunityController {
 		return "redirect:/community/boardList";
 	}
 	
-	// 댓글
-//	@PostMapping("/reply/enroll.do")
-//	@ResponseBody
-
+	@GetMapping("/reply/{memCode}")
+	public String replyEnrollGET(@PathVariable("memCode")int memCode, int commCode, Model model) {
+		CommunityVO community = service.getCommCode(commCode);
+		model.addAttribute("commCode", community);
+		model.addAttribute("memCode", memCode);
+		
+		return "/reply";
+	}
 
 }

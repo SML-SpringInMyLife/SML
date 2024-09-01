@@ -5,7 +5,16 @@ import com.sml.model.MemberVO;
 
 public interface CourseApplyService {
 	
-	public void courseApply(CourseApplyDTO dto) throws Exception;
+	public int enrollApply(CourseApplyDTO apply);
 	
 	public int coursePoint(MemberVO member) throws Exception;
+	
+	public int getMemTotalPoint(int memCode) throws Exception;
+	
+	public int getCoursePoint(int courseCode) throws Exception;
+	
+	public int getApplyLimit(int applyCode) throws Exception;
+	
+	public int getCourseLimit(int courseCode) throws Exception;
+
 }

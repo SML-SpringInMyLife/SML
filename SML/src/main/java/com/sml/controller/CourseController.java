@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.CourseVO;
 import com.sml.model.Criteria;
 import com.sml.model.PageDTO;
@@ -45,7 +46,6 @@ public class CourseController {
 
 	@GetMapping("/enroll")
 	public void courseEnrollGET(Model model) throws Exception {
-		logger.info("수업 등록 페이지 진입");
 		ObjectMapper objmapper = new ObjectMapper();
 		List list = service.cateList();
 		String cateList = objmapper.writeValueAsString(list);

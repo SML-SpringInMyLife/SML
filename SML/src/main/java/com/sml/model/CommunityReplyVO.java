@@ -8,11 +8,12 @@ import lombok.Data;
 public class CommunityReplyVO {
 	
 	private int repCode;
+	private int memCode;
 	private int commCode;
-	private Integer repParentCode;
-	private int repWriter;
 	private String repContent;
 	private Date renrollDate;
 	private Date rmodifyDate;
 	
+	private String repWriter;
+	private String repOwner;
 }

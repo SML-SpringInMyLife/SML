@@ -25,12 +25,24 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 	
 	<main>
-	<h1>${commCode}</h1>
-	<h1>${memCode}</h1>
 		<div class="community_container">
 			<jsp:include page="/WEB-INF/views/community/communityMenu.jsp"/>
 			<div class="community_main_content">
 				<h2>댓글...</h2>
+				<div class="community_reply_enroll">
+					<c:choose>
+						<c:when test="${not empty sessionScope.member}">
+							<div>현재 작성자 : ${sessionScope.member.memName}님</div>
+							<form id="replyEnrollForm" method="post" action="/reply/enroll">
+								<textarea id="replyContent" name="replyContent" rows="4" cols="50" placeholder="댓글을 입력하세요.."></textarea>
+								<button id="replyeEnrollBtn" type="submit" class="btn">댓글 등록</button>
+							</form>	
+						</c:when>
+						<c:otherwise>
+							<div class="login-required-message">로그인 후 댓글을 작성해 주세요.</div>
+						</c:otherwise>
+					</c:choose>								
+				</div>
 				<div class="community_reply">
 					<c:if test="${listCheck != 'empty'}">
 						<c:forEach items="${list}" var="list">
@@ -69,24 +81,42 @@
 						</div>
 					</c:if>
 				</div>
-				<div class="community_reply_enroll">
-					<c:choose>
-						<c:when test="${not empty sessionScope.member}">
-							<div>현재 작성자 : ${sessionScope.member.memName}님</div>
-							<form id="replyEnrollForm" method="post" action="/community/reply/enroll">
-								<textarea id="replyContent" name="replyContent" rows="4" cols="50" placeholder="댓글을 입력하세요.."></textarea>
-								<button id="replyeEnrollBtn" type="submit" class="btn">댓글 등록</button>
-							</form>	
-						</c:when>
-						<c:otherwise>
-							<div class="login-required-message">로그인 후 댓글을 작성해 주세요.</div>
-						</c:otherwise>
-					</c:choose>								
-				</div>
+				
 			</div>
 		</div>
 	</main>
 
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
+	
+	<script>
+	$(".enroll_btn").on("click", function(e) {
+	    e.preventDefault(); 
+
+	    const commCode = '${communityDetail.commCode}';
+	    const memCode = '${memCode}';
+	    const repContent = $("textarea").val();
+
+	    const data = {
+	        commCode: commCode,
+	        memCode: memCode,
+	        repContent: repContent
+	    };
+
+	    $.ajax({
+	        type: "POST",
+	        url: "/reply/enroll", 
+	        data: data, 
+	        success: function(response) {
+	            alert("댓글이 등록되었습니다.");
+	            location.reload();
+	        },
+	        error: function(error) {
+	            console.error("댓글 등록 중 오류가 발생했습니다.", error);
+	            alert("댓글 등록에 실패했습니다.");
+	        }
+	    });
+	});
+
+	</script>
 </body>
 </html>

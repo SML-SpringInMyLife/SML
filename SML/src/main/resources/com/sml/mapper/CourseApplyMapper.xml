@@ -5,8 +5,8 @@
 
 <mapper namespace="com.sml.mapper.CourseApplyMapper">
 	
-	<insert id="courseApply">
-		INSERT INTO COURSE_APPLICANT (MEM_CODE, COURSE_CODE) VALUES (
+	<insert id="enrollApply">
+		INSERT INTO COURSE_APPLY (MEM_CODE, COURSE_CODE) VALUES (
 			#{memCode},
 			#{courseCode}
 		)
@@ -15,13 +15,61 @@
 	<update id="coursePoint">
 		UPDATE TB_MEMBER
 			SET
-				MEM_TOTAL_POINT = MEM_TOTAL_POINT - (
+				MEM_TOTAL_POINT = MEM_TOTAL_POINT - 8000<!-- (
 					SELECT COURSE_POINT
 					FROM COURSE
 					WHERE COURSE_CODE = #{courseCode}
-				)
+				) -->
 			WHERE 
 				MEM_CODE = #{memCode}
 	</update>
+	
+	<select id="getMemTotalPoint" resultType="int">
+		SELECT MEM_TOTAL_POINT FROM TB_MEMBER WHERE MEM_CODE = #{memCode}
+	</select>
+	
+	<select id="getCoursePoint" resultType="int">
+		SELECT COURSE_POINT FROM COURSE WHERE COURSE_CODE = #{courseCode}
+	</select>
+	
+	<update id="modifyApply">
+		UPDATE COURSE_APPLY	
+			SET APPLY_STATUS=#{applyStatus} 
+			WHERE COURSE_CODE=#{courseCode}
+	</update>
+	
+	<select id="getApply" resultType="com.sml.model.CourseApplyDTO">
+		SELECT 
+			a.APPLY_CODE AS applyCode,
+			a.MEM_CODE AS memCode,
+			a.COURSE_CODE AS courseCode,
+			a.APPLY_DATE AS applyDate,
+			a.APPLY_CANCEL_DATE AS applyCancelDate,
+			a.APPLY_STATUS AS applyStatus,
+			c.COURSE_NAME AS courseName
+		 FROM COURSE_APPLY a
+		 LEFT OUTER JOIN COURSE c ON a.COURSE_CODE=c.COURSE_CODE
+		 WHERE MEM_CODE = #{memCode}
+	</select>
+	
+	<select id="checkApply" resultType="com.sml.model.CourseApplyDTO">
+		SELECT  
+			APPLY_CODE AS applyCode,
+			MEM_CODE AS memCode,
+			COURSE_CODE AS courseCode,
+			APPLY_DATE AS applyDate,
+			APPLY_CANCEL_DATE AS applyCancelDate,
+			APPLY_STATUS AS applyStatus
+		FROM COURSE_APPLY
+		WHERE MEM_CODE = #{memCode} AND COURSE_CODE = #{courseCode}
+	</select>
+	
+	<select id="getApplyLimit" resultType="int">
+		SELECT COUNT(*) FROM COURSE_APPLY WHERE COURSE_CODE = #{courseCode}
+	</select>
+	
+	<select id="getCourseLimit" resultType="int">
+		SELECT COURSE_LIMIT FROM COURSE WHERE COURSE_CODE = #{courseCode}
+	</select>
 	
 </mapper>

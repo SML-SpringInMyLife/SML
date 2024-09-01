@@ -33,7 +33,7 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public List<CourseVO> courseList(Criteria cri) {
-		log.info("수강신청 리스트..............");
+		log.info("�닔媛뺤떊泥� 由ъ뒪�듃..............");
 		return mapper.courseList(cri);
 	}
 
@@ -45,7 +45,7 @@ public class CourseServiceImpl implements CourseService {
 
 	@Override
 	public CourseVO courseDetail(int courseCode) {
-		log.info("상세 페이지 진입" +courseCode);
+		log.info("�긽�꽭 �럹�씠吏� 吏꾩엯" +courseCode);
 		return mapper.courseDetail(courseCode);
 	}
 
@@ -63,6 +63,11 @@ public class CourseServiceImpl implements CourseService {
 	@Override
 	public CourseVO courseApplyDetail(int courseCode) {
 		return mapper.courseApplyDetail(courseCode);
+	}
+
+	@Override
+	public int courseApply(int applyCode) {
+		return mapper.courseApply(applyCode);
 	}
 
 	

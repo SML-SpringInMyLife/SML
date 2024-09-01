@@ -131,4 +131,8 @@
     	 WHERE COURSE_CODE = #{courseCode}
 	</select>
 	
+	<select id="courseApply" resultType="int">
+		SELECT COUNT(*) FROM COURSE_APPLY WHERE COURSE_CODE = #{courseCode}
+	</select>
+	
 </mapper>

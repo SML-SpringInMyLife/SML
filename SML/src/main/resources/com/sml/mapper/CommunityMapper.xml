@@ -88,4 +88,10 @@
   				MEM_CODE = #{memCode}
   	</update>
   	
+  	<select id="getCommCode" resultType="com.sml.model.CommunityVO">
+  		SELECT 
+  			COMM_CODE AS commCode,
+  			COMM_TITLE AS commTitle
+  		 WHERE COMM_CODE = #{commCode}
+  	</select>
   </mapper>

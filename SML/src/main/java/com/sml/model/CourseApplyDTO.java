@@ -25,7 +25,7 @@ public class CourseApplyDTO {
 	private int courseCode;
 	private String courseName;
 	private String courseStartDate;
-	private Date applyCancel;
+	private Date applyCancelDate;
 	private String applyStatus;
 
 }

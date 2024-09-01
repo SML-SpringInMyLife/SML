@@ -2,15 +2,11 @@ package com.sml.service;
 
 import java.util.List;
 
-import javax.mail.Session;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sml.mapper.CommunityMapper;
 import com.sml.mapper.CommunityReplyMapper;
-import com.sml.model.CommunityReplyVO;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
@@ -23,9 +19,6 @@ public class CommunityServiceImpl implements CommunityService{
 
 	@Autowired
 	CommunityMapper mapper;
-	
-	@Autowired
-	CommunityReplyMapper replyMapper;
 
 	@Override
 	public void communityEnroll(CommunityVO community) throws Exception {
@@ -45,7 +38,6 @@ public class CommunityServiceImpl implements CommunityService{
 
 	@Override
 	public CommunityVO communityDetail(int commCode) throws Exception {
-		log.info("상세 페이지 접속......" +commCode);
 		return mapper.communityDetail(commCode);
 	}
 
@@ -71,21 +63,11 @@ public class CommunityServiceImpl implements CommunityService{
 		return mapper.communityPoint(member);
 	}
 
-	// 댓글 
 	@Override
-	public List<CommunityReplyVO> getReplyList(Criteria cri) throws Exception {
-		return replyMapper.getReplyList(cri);
-	}
-	
-	@Override
-	public int replyGetTotal(Criteria cri) throws Exception {
-		// TODO Auto-generated method stub
-		return replyMapper.replyGetTotal(cri);
+	public CommunityVO getCommCode(int commCode) {
+		return mapper.getCommCode(commCode);
 	}
 
-	@Override
-	public void enrollReply(CommunityReplyVO reply) throws Exception {
-		replyMapper.enrollReply(reply);
-	}
+
 
 }

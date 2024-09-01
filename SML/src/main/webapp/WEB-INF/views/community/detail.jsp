@@ -64,59 +64,16 @@
     			
     			<div class="community_reply_content">
     				<h3>댓글</h3>
-    				<div class="reply_list">
-    					<c:if test="${listCheck != 'empty'}">
-    						<c:forEach items="${reply}" var="reply">
-    							<table class="community_reply_list">
-    								<tr>
-    									<td>
-    										<c:out value="${reply.repWriter}"/>
-    										<br>
-    										<c:out value="${reply.repContent}"/>
-    										<br>
-    										<small>
-    											<c:choose>
-                                               		<c:when test="${not empty reply.rmodifyDate}">
-                                                   		<fmt:formatDate value="${reply.rmodifyDate}" pattern="yyyy-MM-dd"/>
-                                                   			<small><c:out value="${reply.rmodifyDate}"/>(수정됨)</small>
-                                               		</c:when>
-                                               		<c:otherwise>
-                                                   		<fmt:formatDate value="${reply.renrollDate}" pattern="yyyy-MM-dd"/>
-                                               		</c:otherwise>
-                                           		</c:choose>
-    										</small>
-    										<c:if test="${sessionScope.member != null && sessionScope.member.memName eq list.repWriter}">
-                                         		<div class="reply_detail_btn_section">
-                                             		<button id="detailDeleteBtn" class="btn">삭제</button>
-                                             		<button id="detailModifyBtn" class="btn">수정</button>
-                                         		</div>
-                                     		</c:if>
-    									</td>
-    								</tr>
-    							</table>
-    						</c:forEach>
-    					</c:if>
-    					<c:if test="${listCheck == 'empty'}">
-                     		<div class="table_empty">
-                        		등록된 댓글이 없습니다.
-                     		</div>
-               			</c:if>			
-    				</div>
-    				<div class="reply_enroll">
-    					<c:choose>
-    						<c:when test="${not empty sessionScope.member}">
-    							현재 작성자 : ${sessionScope.member.memName}님
-    						</c:when>
-    					</c:choose>
-    					<form action="/community/reply/enroll.do" method="post" id="replyEnrollForm">
-    						<input type="hidden" name="refGroup" value="${reply.repCode}">
-    						<input type="hidden" name="targetCode" value="${reply.repWriter}">
-    						<textarea rows="repContent">
-    							<c:if test="${empty memCode}">로그인이 필요합니다.</c:if>
-    						</textarea>
-    						<button type="submit">등록</button>
-    					</form>
-    				</div>
+    				<c:choose>
+    					<c:when test="${member != null }">
+    						<div class="community_reply_button">
+    							<button>댓글 쓰기</button>
+    						</div>
+    					</c:when>
+    					<c:otherwise>
+    						로그인해 주세요.
+    					</c:otherwise>
+    				</c:choose>
     			</div>
          </div>      		
 		<form id="moveForm" method="get">
@@ -132,6 +89,11 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
 	<script>
+	const form = {
+			memCode : '${member.memCode}',
+			courseCode : '${communityDetail.courseCode}'
+	}
+	
 	let moveForm = $("#moveForm");
 	
 	$("#deleteBtn").on("click", function(e){
@@ -153,15 +115,30 @@
 		moveForm.submit();
 	});
 	
-	$("#replyBtn").on("click", function(e){
+	$(".community_reply_button").on("click", function(e) {
 		e.preventDefault();
-		
 		const memCode = '${member.memCode}';
 		const commCode = '${communityDetail.commCode}';
+
+		/*  */
 		
-		moveForm.attr("action", "/community/reply")
-		moveForm.submit();
+		$.ajax({
+			data : {
+				commCode : commCode,
+				memCode : memCode
+			},
+			url : '/reply/check',
+			type : 'POST',
+			success : function(result){
+				let popUrl = "/reply/" + memCode + "?commCode=" + commCode;
+				console.log(popUrl);
+				let popOption = "width = 490px, height=490px, top=300px, left=300px, scrollbars=yes";
+				
+				window.open(popUrl,"댓글 쓰기",popOption);
+			}
+		})
 	});
+	     
 		
 	</script>
 	

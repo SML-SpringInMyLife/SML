@@ -5,47 +5,19 @@
   
   <mapper namespace="com.sml.mapper.CommunityReplyMapper">
   
-  	<select id="getReplyList" resultType="com.sml.model.CommunityReplyVO">
-  		<![CDATA[
-  			SELECT * FROM (
-  				SELECT
-  					ROWNUM AS rn, 
-  					r.REP_CODE AS repCode,
-  					r.MEM_CODE AS memCode,
-  					r.COMM_CODE AS commCode,
-  					r.REP_CONTENT AS repContent,
-  					r.REP_ENROLL_DATE AS renrollDate,
-  					r.REP_MODIFY_DATE AS rmodifyDate,
-  					m.MEM_NAME AS repWriter
-  				FROM COMMUNITY_REPLY r
-  				JOIN TB_MEMBER m ON r.MEM_CODE = m.MEM_CODE
-  				WHERE r.REP_STATUS = 'N' AND
-  					  r.COMM_CODE = #{commCode} AND   					
-  		]]>
-  			<if test="keyword != null">
-                REP_CONTENT like '%'||#{keyword}||'%' AND
-            </if>
-        <![CDATA[
-        		ROWNUM <= #{pageNum}*#{amount}
-            	)
-        	WHERE rn > (#{pageNum} - 1) * #{amount}       	
-        ]]>
-  	</select>
-  	
-  	<select id="replyGetTotal" resultType="int">
-  		SELECT COUNT(*) FROM COMMUNITY_REPLY
-  		<if test="keyword != null">
-  			WHERE REP_CODE LIKE '%' || #{keyword} || '%'
-  		</if>
-  	</select>
-  	
   	<insert id="enrollReply">
-  		INSERT INTO COMMUNITY_REPLY(COMM_CODE, REP_PARENT_CODE, REP_WRITER, REP_CONTENT) VALUES (
+  		INSERT INTO COMMUNITY_REPLY(MEM_CODE, COMM_CODE, REP_CONTENT) VALUES (
+  		#{memCode},
   		#{commCode},
-  		#{repParentCode, jdbcType=NULL},
-  		#{repWriter},
   		#{repContent}
   		)
   	</insert>
+  	
+  	<select id="checkReply" resultType="integer">
+  		SELECT 
+  			REP_CODE AS repCode 
+  		 FROM COMMUNITY_REPLY
+  		 WHERE MEM_CODE = #{memCode} AND COMM_CODE = #{commCode}
+  	</select>
   	
   </mapper>

@@ -25,4 +25,7 @@ public interface CommunityMapper {
 	
 	public int communityPoint(MemberVO member);
 	
+	
+	public CommunityVO getCommCode(int commCode);
+	
 }
