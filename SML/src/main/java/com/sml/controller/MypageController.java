@@ -27,12 +27,14 @@ import com.sml.model.MemberCheckVO;
 import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
 import com.sml.model.PointVO;
+import com.sml.service.MemberService;
 import com.sml.service.MypageService;
 
 @Controller
 @RequestMapping("/member")
 public class MypageController {
 	private static final Logger logger = LoggerFactory.getLogger(MypageController.class);
+	
 	
 	@Autowired
 	private MypageService service;
@@ -62,7 +64,8 @@ public class MypageController {
 		if (session != null && session.getAttribute("member") != null) {
 			MemberVO loginMember = (MemberVO)session.getAttribute("member");
 			//logger.info("loginMember=" + loginMember.getMemName());
-			request.setAttribute("Member", loginMember);
+			
+			request.setAttribute("Member", loginMember);						
 
 		}
 		return "/member/myinfo";
@@ -72,16 +75,20 @@ public class MypageController {
     @PostMapping("/updateMember")
     public String updateMemberPOST(MemberVO member)throws Exception{
     	
+    	System.out.println("updateMemberPOST : " + member);
+    	
     	String rawPw = ""; //인코딩전 비밀번호
   		String encodePw = ""; //인코딩후 비밀번호
   		
   		rawPw = member.getMemPw();
   		encodePw = pwEncoder.encode(rawPw);
-  		member.setMemPw(encodePw); 
+  		member.setMemPw(encodePw);     	
+  		
+    	service.updateMember(member);    
     	
+    	HttpSession session = request.getSession(false);
+    	session.setAttribute("member", member);
     	
-    	//service.updateMember(member);
-    	service.updateMember(member);
     	return "redirect:/";
     	
     	
