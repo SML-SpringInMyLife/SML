@@ -65,7 +65,7 @@ public class MemberController {
   	
   //회원가입
   	@PostMapping("/join")
-  	public String joinPOST(MemberVO member) throws Exception{
+  	public String joinPOST(MemberVO member,RedirectAttributes rttr) throws Exception{
   		
   		logger.info("회원가입 진입");
   		System.out.println("회원가입 데이터 : " + member);
@@ -83,12 +83,29 @@ public class MemberController {
   			member.setMemQuitDate(now);
   		}
   		
-  		//회원가입 서비스 실행
-  		memberService.MemberJoin(member);
-  		
-  		logger.info("로그인 서비스 성공");
-  		
-  		return "redirect:/";
+  	//회원가입시 5000포인트 적립
+  	int MemJoinPoint = 5000;
+	
+	member.setMemTotalPoint(MemJoinPoint);
+	
+	//회원가입 서비스 실행
+	memberService.MemberJoin(member);
+	
+	MemberVO lvo = memberService.memberLogin(member);
+	
+	PointVO point = new PointVO();
+	point.setPointPrice(MemJoinPoint);
+	point.setPointDate(new Date()); //날짜
+	point.setPointComment("회원가입 포인트 적립"); //내용
+	point.setStatus(1); //포인트유형(1은 적립, 2는 사용)
+	point.setMemCode(lvo.getMemCode());		
+	
+	System.out.println("MemJoinPoint : " + point);
+	service.insertPoint(point);	
+	
+	logger.info("회원가입 서비스 성공");
+	
+	return "redirect:/";
   	}
   	
   //아이디 중복 검사
@@ -155,12 +172,11 @@ public class MemberController {
     	
     	HttpSession session = request.getSession();
     	String rawPw = "";
-    	String encodePw = "";
+    	String encodePw = "";    	 
     	 
+    	MemberVO lvo = memberService.memberLogin(member); //제출한 아이디와 일치하는 아이디 있는지
     	 
-    	 MemberVO lvo = memberService.memberLogin(member); //제출한 아이디와 일치하는 아이디 있는지
-    	 
-    	 System.out.println("111 : " + lvo);
+    	System.out.println("111 : " + lvo);
     	 
     	    	 
     	 if(lvo != null) {
@@ -176,9 +192,7 @@ public class MemberController {
     			 
     			 // 로그인성공시 자동출석체크 
     			   //출석체크여부확인(memberCheckTest)
-    				String result = memberCheckTest(lvo.getMemCode());
-    				
-    				//rttr.addFlashAttribute("usePoint", 100);
+    				String result = memberCheckTest(lvo.getMemCode());    				
     				
     				//출석 되어 있지 않으면,
     				if (result == "success") {
@@ -215,9 +229,8 @@ public class MemberController {
     						// TODO Auto-generated catch block
     						e.printStackTrace();
     					}				
-    				}
-    			
-    			 //
+    				}    			
+    			 
     			 return "redirect:/";
     		 }else {
     			 rttr.addFlashAttribute("result", 0);
@@ -275,54 +288,7 @@ public class MemberController {
         }
         return "redirect:/"; 
     }
-	
-
   
-    /*
-    @ResponseBody
-    public Map<String, String> updateMember(@RequestParam String memMail,
-    		                                @RequestParam String memPhone,
-    		                                @RequestParam String memEmerPhone,
-    		                                @RequestParam String memAddr1,
-    		                                @RequestParam String memAddr2,
-    		                                @RequestParam String memAddr3,
-                                            HttpSession session) {
-    	Map<String, String> response = new HashMap<>();
-        
-        // 세션에서 회원 ID를 가져옵니다. (세션에 'memId'라는 이름으로 저장되어 있다고 가정)
-        Integer memId = (Integer) session.getAttribute("memId");
-        
-        if (memId == null) {
-            // 세션에 memId가 없으면 에러 응답을 반환합니다.
-            response.put("status", "error");
-            response.put("message", "Session expired or invalid.");
-            return response;
-        }
-
-        // 여기서 서비스 레이어를 호출하여 회원 정보를 업데이트합니다.
-        try {
-            MemberVO member = new MemberVO();           
-            member.setMemMail(memMail);
-            member.setMemPhone(memPhone);
-            member.setMemEmerPhone(memEmerPhone);
-            member.setMemAddr1(memAddr1);
-            member.setMemAddr2(memAddr2);
-            member.setMemAddr3(memAddr3);
-
-            // 예시로 memberService.updateMember를 호출한다고 가정합니다.
-            memberService.updateMember(member);
-
-            response.put("status", "success");
-            response.put("message", "업데이트 성공");
-        } catch (Exception e) {
-            response.put("status", "error");
-            response.put("message", "업데이트 실패");
-        }
-
-        return response;
-        */
-    //}
-    
-    
+   
   
 }
