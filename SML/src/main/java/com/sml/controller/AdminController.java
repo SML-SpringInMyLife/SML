@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.sml.model.ChatVO;
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 import com.sml.model.PageDTO;
@@ -98,12 +99,21 @@ public class AdminController {
 	}
 
 	// 관리자 - 수강 신청 관리 페이지 이동
-	@GetMapping("/courses")
+	@GetMapping("/courseApplycant")
 	public void adminCoursesGET(Criteria cri, Model model) throws Exception {
 		logger.info("관리자 - 수강 신청 관리 페이지 이동");
-		// TODO: 수강 신청 목록 조회 및 모델에 추가
-	}
+	    List<CourseApplyDTO> courseApplycant = service.getCourseList(cri);
+	    logger.info("courseApplycant====>"+courseApplycant);
 
+	    // 총 회원 수 가져오기
+	    int totalCount = service.getCourseTotal(cri);
+
+	    // 모델에 회원 목록 및 페이지 정보 추가
+	    model.addAttribute("courseApplycant", courseApplycant.isEmpty() ? "empty" : courseApplycant);
+	    model.addAttribute("totalCount", totalCount);
+	    model.addAttribute("pageMaker", new PageDTO(cri, totalCount));
+	}
+	
 	// 관리자 정보 수정 페이지 이동
 	@GetMapping("/adminInfo")
 	public void adminInfoGET() throws Exception {

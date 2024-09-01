@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sml.mapper.AdminMapper;
 import com.sml.model.ChatVO;
-import com.sml.model.CourseVO;
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 import com.sml.model.SmsVO;
@@ -135,7 +135,7 @@ public class AdminServiceImpl implements AdminService {
 
 	// 페이징 처리된 수강 목록 조회
 	@Override
-	public List<CourseVO> getCourseList(Criteria cri) {
+	public List<CourseApplyDTO> getCourseList(Criteria cri) {
 		return adminMapper.getCourseList(cri);
 	}
 

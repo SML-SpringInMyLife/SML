@@ -373,4 +373,104 @@
 	</delete>
 
 
+	<resultMap id="courseApplyMap"
+		type="com.sml.model.CourseApplyDTO">
+		<!-- 기본 테이블의 컬럼과 DTO의 필드 매핑 -->
+		<id property="applyCode" column="APPLY_CODE" />
+		<result property="applyDate" column="APPLY_DATE" />
+		<result property="memCode" column="MEM_CODE" />
+		<result property="courseCode" column="COURSE_CODE" />
+		<result property="applyCancel" column="APPLY_CANCEL" />
+		<result property="applyStatus" column="APPLY_STATUS" />
+
+		<!-- 추가로 가져올 값들 (NOT IN DB) -->
+		<result property="memName" column="MEM_NAME" />
+		<result property="courseName" column="COURSE_NAME" />
+		<result property="courseStartDate" column="COURSE_START_DATE" />
+	</resultMap>
+
+
+	<!-- 수강 신청자 총 수 가져오기 -->
+	<select id="getCourseTotal" parameterType="map" resultType="int">
+    <![CDATA[
+    SELECT COUNT(*) FROM COURSE_APPLICANT a
+    JOIN COURSE c ON a.COURSE_CODE = c.COURSE_CODE
+    JOIN TB_MEMBER m ON a.MEM_CODE = m.MEM_CODE
+    ]]>
+		<where>
+			<!-- 'type'이 'all'인 경우, 모든 필드에서 검색 -->
+			<if test="type != null and type == 'all'">
+				(
+				a.APPLY_CODE LIKE '%' || #{keyword} || '%'
+				OR m.MEM_NAME
+				LIKE '%' || #{keyword} || '%'
+				OR c.COURSE_NAME LIKE '%' || #{keyword}
+				|| '%'
+				)
+			</if>
+			<!-- 특정 'type'에 대한 필터링 -->
+			<if test="type != null and type != 'all'">
+				<choose>
+					<when test="type == 'applyCode'">
+						a.APPLY_CODE LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'memName'">
+						m.MEM_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'courseName'">
+						c.COURSE_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 수강 신청자 목록 가져오기 -->
+	<select id="getCourseList" parameterType="map"
+		resultType="com.sml.model.CourseApplyDTO" resultMap="courseApplyMap">
+    <![CDATA[
+    SELECT 
+        a.APPLY_CODE,
+        a.APPLY_DATE,
+        a.MEM_CODE,
+        m.MEM_NAME,
+        a.COURSE_CODE,
+        c.COURSE_NAME,
+        c.COURSE_START_DATE
+    FROM COURSE_APPLICANT a
+    JOIN COURSE c ON a.COURSE_CODE = c.COURSE_CODE
+    JOIN TB_MEMBER m ON a.MEM_CODE = m.MEM_CODE
+    ]]>
+		<where>
+			<!-- 'type'이 'all'인 경우, 모든 필드에서 검색 -->
+			<if test="type != null and type == 'all'">
+				(
+				a.APPLY_CODE LIKE '%' || #{keyword} || '%'
+				OR m.MEM_NAME LIKE '%' || #{keyword} || '%'
+				OR c.COURSE_NAME LIKE '%' || #{keyword} || '%'
+				)
+			</if>
+			<!-- 특정 'type'에 대한 필터링 -->
+			<if test="type != null and type != 'all'">
+				<choose>
+					<when test="type == 'applyCode'">
+						a.APPLY_CODE LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'memName'">
+						m.MEM_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'courseName'">
+						c.COURSE_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
+    <![CDATA[
+    ORDER BY a.APPLY_DATE DESC
+    OFFSET (#{pageNum} - 1) * #{amount} ROWS FETCH NEXT #{amount} ROWS ONLY
+    ]]>
+	</select>
+
+
 </mapper>

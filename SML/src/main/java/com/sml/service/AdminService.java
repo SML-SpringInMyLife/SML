@@ -4,12 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.ibatis.annotations.Param;
 
 import com.sml.model.ChatVO;
-import com.sml.model.CourseVO;
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 import com.sml.model.SmsVO;
@@ -34,7 +32,7 @@ public interface AdminService {
 
 	// COURSES 관련
 
-	public List<CourseVO> getCourseList(Criteria cri);
+	public List<CourseApplyDTO> getCourseList(Criteria cri);
 
 	public int getCourseTotal(Criteria cri);
 

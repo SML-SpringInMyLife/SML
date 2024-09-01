@@ -17,7 +17,8 @@
 			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
 			<div class="admin-main-content">
 				<h2>채팅상담 관리</h2>
-				<div class="search-container">
+				<form id="searchForm" action="/admin/chatList" method="get"
+					class="search-container">
 					<select id="type" name="type">
 						<option value="all">전체</option>
 						<option value="date">상담일시</option>
@@ -31,7 +32,7 @@
 							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
 						<button onclick="search()">검색</button>
 					</div>
-				</div>
+				</form>
 				<table class="chat-table">
 					<thead>
 						<tr>

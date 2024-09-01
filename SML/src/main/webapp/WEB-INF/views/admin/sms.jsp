@@ -18,7 +18,8 @@
 			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
 			<div class="admin-main-content">
 				<h2>SMS 관리</h2>
-				<div class="search-container">
+				<form id="searchForm" action="/admin/sms" method="get"
+					class="search-container">
 					<select id="type" name="type">
 						<option value="all">전체</option>
 						<option value="date"
@@ -37,7 +38,7 @@
 						<input type="hidden" name="amount" value='${pageMaker.cri.amount}'>
 						<button class='btn search_btn'>검색</button>
 					</div>
-				</div>
+				</form>
 				<!-- SMS 리스트 테이블 -->
 				<table class="sms-table">
 					<thead>
