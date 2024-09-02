@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Header</title>
+<title>Chat Consultation List</title>
 <link rel="stylesheet"
 	href="${webappRoot}/resources/css/common/common.css">
 <link rel='stylesheet'
@@ -18,48 +18,65 @@
 	<!-- 헤더 영역 포함 -->
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<!-- 해당 페이지의 메인 내용을 여기에 작성하세요. -->
+	<!-- 채팅 상담 목록 메인 내용을 여기에 작성 -->
 	<main>
-		<div id="chatList">
-			<h3>Chat Rooms</h3>
-			<div id="roomList">
-				<ol id="chat-room-list">
-					<!-- 여기에 동적으로 채팅방 목록이 추가됨. 10초마다 갱신됨 -->
-				</ol>
+		<div class="admin-container">
+			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
+
+			<div class="admin-main-content" id="chatList">
+				<h2>채팅 상담 목록</h2>
+				<table class="stats-table">
+					<thead>
+						<tr>
+							<th>NO.</th>
+							<th>채팅방 ID</th>
+							<th>회원명</th>
+						</tr>
+					</thead>
+					<tbody id="chat-room-list">
+						<!-- 여기에 동적으로 채팅방 목록이 추가됨 -->
+					</tbody>
+				</table>
 			</div>
 		</div>
 	</main>
+
 	<!-- 푸터 영역 포함 -->
-	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
 	<script>
+		// 채팅방 목록을 갱신하는 함수
 		function updateChatRooms() {
 			$.ajax({
-				url : '/admin/chatRooms',
-				method : 'GET',
-				success : function(response) {
-					let chatRooms = JSON.parse(response).chatRooms;
-					let chatRoomList = $('#chat-room-list');
-					chatRoomList.empty(); // 기존 목록 제거
+			    url: '/admin/chatRooms',
+			    method: 'GET',
+			    dataType: 'json', // JSON 형식으로 응답을 받도록 명시
+			    success: function(response) {
+			        let chatRooms = response.chatRooms; // 이미 JSON으로 파싱된 응답을 사용
+			        let chatRoomList = $('#chat-room-list');
+			        chatRoomList.empty(); // 기존 목록 제거
 
-					chatRooms.forEach(function(room) {
-						chatRoomList
-								.append('<li data-id="' + room.id + '">ID: '
-										+ room.id + ', Name: ' + room.name
-										+ '</li>');
-					});
-
-					/// 채팅방 클릭 이벤트 추가
-					$('#chat-room-list li').on('click', function() {
+			        chatRooms.forEach(function(room, index) {
+			            var status = index + 1;
+			            chatRoomList.append('<tr data-id="' + room.id + '">'
+			                                + '<td>' + status + '</td>'  // 자동 번호
+			                                + '<td>' + room.id + '</td>' 
+			                                + '<td>' + room.name + '</td>' // 한글 이름
+			                                + '</tr>');
+			        });
+					// 각 채팅방 클릭 이벤트 설정
+					$('#chat-room-list tr').on('click', function() {
 						const conversationId = $(this).data('id');
-						console.log("chat.jsp 클릭이벤트 ====> "+conversationId);
+						console.log("채팅방 선택됨 ===> " + conversationId);
+
 						const message = JSON.stringify({
-					        action: 'joinChatRoom',
-					        conversationId: conversationId
-					    });
-					    ws.send(message);
-					    $('#chat-container').removeClass('hidden');
-					    $('#conversationId').val(conversationId);
+							action : 'joinChatRoom',
+							conversationId : conversationId
+						});
+
+						ws.send(message); // WebSocket을 통해 메시지 전송
+						$('#chat-container').removeClass('hidden');
+						$('#conversationId').val(conversationId); // 선택된 대화 ID 설정
 					});
 				},
 				error : function(xhr, status, error) {
@@ -68,12 +85,11 @@
 			});
 		}
 
-		
-		// 페이지 로드 시 채팅방 목록 갱신
+		// 페이지가 로드될 때 채팅방 목록을 갱신
 		$(document).ready(function() {
-			startChat();
+			startChat(); // 채팅 연결 함수 호출
 			updateChatRooms();
-			// 10초마다 채팅방 목록 갱신
+			// 10초마다 채팅방 목록을 갱신
 			setInterval(updateChatRooms, 10000);
 		});
 	</script>
