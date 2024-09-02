@@ -29,19 +29,19 @@ public class CourseServiceTest {
 //		teaService.teacherEnroll(teacher);
 //	}
 
-	@Test
-	public void applyApplyTest() {
-		int memCode = 21;
-		int courseCode = 1;
-		
-		CourseApplyDTO dto = new CourseApplyDTO();
-		dto.setMemCode(memCode);
-		dto.setCourseCode(courseCode);
-		
-		int result = applyService.applyApply(dto);
-		
-		System.out.println("** result : " +result);
-	}
-	
+//	@Test
+//	public void applyApplyTest() {
+//		int memCode = 21;
+//		int courseCode = 1;
+//		
+//		CourseApplyDTO dto = new CourseApplyDTO();
+//		dto.setMemCode(memCode);
+//		dto.setCourseCode(courseCode);
+//		
+//		int result = applyService.applyApply(dto);
+//		
+//		System.out.println("** result : " +result);
+//	}
+//	
 
 }

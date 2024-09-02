@@ -31,4 +31,6 @@ public class CourseVO {
 	private String endTime;
 	private String courseDay;
 	
+	private int courseApply;
+	
 }

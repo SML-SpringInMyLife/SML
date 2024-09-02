@@ -17,9 +17,9 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
 	<main>
-		<div>
+		<div class="course_container">
 		<h2>수강신청</h2>
-		<form action="course/apply" method="post" id="applyForm">
+		<form action="${pageContext.request.contextPath}/course/apply" method="post" id="applyForm">
 			<table class="course_content">
 				<tr>
 					<td>신청한 과목</td>
@@ -77,15 +77,48 @@
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
 	
 	<script>
-	$("#applyBtn").on("click", function() {
-		alert("수강 등록");
-		e.preventDefault();
-		applyForm.submit();
+	const form = {
+		memCode : '${member.memCode}',
+		courseCode : '${detail.courseCode}'
+	}
+	
+	$("#applyBtn").on("click", function(e) {
+		alert("작동")
+		$.ajax({
+			url : '/course/apply',
+			type : 'POST',
+			data : form,
+			success : function(result){
+				applyAlert(result);
+			}
+		})
 	});
+	
+	function applyAlert(result){
+		if(result == '0'){
+			alert("수강신청에 실패했습니다.");
+		} else if (result == '1'){
+			alert("정상적으로 신청되었습니다.");
+			if(window.opener){
+				window.opener.location.href="/member/mycourses";
+			}
+			window.close();
+		} else if (result == '2'){
+			alert("이미 수강 신청한 수업입니다.");
+		} else if (result == '5'){
+			alert("로그인이 필요합니다.");
+		} else if (result == '4'){
+			alert("포인트가 부족합니다.");
+		} else if (result == '6'){
+			alert("수강 인원이 마감되었습니다.");
+		}
+	}
 
 	$("#cancelBtn").on("click", function() {
 		window.close();
 	});
+	
+	
 	</script>
 
 </body>

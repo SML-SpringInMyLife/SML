@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.sml.mapper.CommunityMapper;
 import com.sml.mapper.CommunityReplyMapper;
-import com.sml.model.CommunityReplyDTO;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
+import com.sml.model.MemberVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -19,9 +19,6 @@ public class CommunityServiceImpl implements CommunityService{
 
 	@Autowired
 	CommunityMapper mapper;
-	
-	@Autowired
-	CommunityReplyMapper replyMapper;
 
 	@Override
 	public void communityEnroll(CommunityVO community) throws Exception {
@@ -41,7 +38,6 @@ public class CommunityServiceImpl implements CommunityService{
 
 	@Override
 	public CommunityVO communityDetail(int commCode) throws Exception {
-		log.info("상세 페이지 접속......" +commCode);
 		return mapper.communityDetail(commCode);
 	}
 
@@ -61,12 +57,17 @@ public class CommunityServiceImpl implements CommunityService{
 	public CommunityVO getCommunityCode(int commCode) {
 		return mapper.getCommunityCode(commCode);
 	}
+	
+	@Override
+	public int communityPoint(MemberVO member) throws Exception {
+		return mapper.communityPoint(member);
+	}
 
 	@Override
-	public int enrollReply(CommunityReplyDTO dto) {
-		int result = replyMapper.enrollReply(dto);
-		return replyMapper.enrollReply(dto);
+	public CommunityVO getCommCode(int commCode) {
+		return mapper.getCommCode(commCode);
 	}
+
 
 
 }

@@ -4,19 +4,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.sml.model.CommunityReplyDTO;
-import com.sml.service.CommunityService;
+import com.sml.model.CommunityReplyVO;
+import com.sml.service.CommunityReplyService;
 
 @RestController
-//@RequestMapping("/reply")
 public class CommunityReplyController {
 	
 	@Autowired
-	private CommunityService replyService;
+	private CommunityReplyService replyService;
 	
-	@PostMapping("/enroll")
-	public void enrollReplyPOST(CommunityReplyDTO dto) {
-		replyService.enrollReply(dto);
+	@PostMapping("/reply/enroll")
+	public void enrollReplyPOST(CommunityReplyVO reply) {
+		replyService.enrollReply(reply);
+	}
+	
+	@PostMapping("/reply/check")
+	public String replyCheckPOST(CommunityReplyVO reply) {
+		return replyService.checkReply(reply);
 	}
 
 }

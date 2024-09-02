@@ -67,7 +67,7 @@
 					<tr>
 						<td>수강 인원</td>
 						<td>
-							<span>0</span>
+							<c:out value="${detail.courseApply}"/>
 							/
 							<input name="courseLimit" readonly="readonly" value="<c:out value='${detail.courseLimit}'/>">
 							명
