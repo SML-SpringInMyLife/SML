@@ -6,6 +6,76 @@
 <head>
 <title>게시글 상세 페이지</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="${webappRoot}/resources/css/admin/admin.css">
+<style>
+/* 기본 입력 필드 스타일링 */
+input {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    width: 100%; /* 기본적으로 100% 너비 */
+    box-sizing: border-box;
+}
+
+input[readonly] {
+    background-color: #e9ecef;
+    cursor: not-allowed;
+}
+
+/* 버튼 섹션 스타일링 */
+.btn_section {
+    margin-top: 20px;
+    display: flex;
+    justify-content: flex-end; /* 버튼을 오른쪽으로 정렬합니다 */
+    gap: 10px;
+}
+
+.btn {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 15px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 150px; /* 기본 버튼 너비 */
+}
+
+.btn.long {
+    width: 200px; /* 긴 버튼의 너비 */
+}
+
+.btn.short {
+    width: 100px; /* 짧은 버튼의 너비 */
+}
+
+.btn:hover {
+    background-color: #0056b3;
+}
+
+.modify_btn {
+    background-color: #28a745;
+}
+
+.modify_btn:hover {
+    background-color: #218838;
+}
+
+.small-text {
+    color: #6c757d;
+    font-size: 0.875em;
+}
+
+.input_block {
+    width: auto;
+}
+
+#moveForm {
+    display: none; /* form을 숨깁니다 */
+}
+
+</style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -41,6 +111,8 @@
                             	<small class="small-text">마지막 수정일 : <c:out value="${formattedModifyDate}"/></small>
                             </c:if>
                         </td>
+                    </tr>
+                    <tr>
                         <td>상태</td>
                         <td>
                         	<input name="teaStatus" readonly="readonly" value="<c:out value='${detail.teaStatus}'/>"/>					

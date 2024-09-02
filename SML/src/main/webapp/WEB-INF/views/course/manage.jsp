@@ -73,6 +73,7 @@
 				<c:if test="${listCheck == 'empty'}">
 					<div class="table_empty">개설된 수업이 없습니다.</div>
 				</c:if>
+				<br>
 
 			<!-- 검색 영역 -->
 			<div class="search_wrap">

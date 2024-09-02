@@ -8,91 +8,7 @@
 <title>커뮤니티 게시판</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 <link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
- <style>
-        .community_container {
-            padding: 20px;
-        }
-        .community_boardList {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-        .community_boardList th, .community_boardList td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-        .community_boardList th {
-            background-color: #f2f2f2;
-        }
-        .community_boardList tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        .community_boardList tr:hover {
-            background-color: #ddd;
-        }
-        .community_boardList a.move {
-            color: #007bff;
-            text-decoration: none;
-        }
-        .community_boardList a.move:hover {
-            text-decoration: underline;
-        }
-        .table_empty {
-            text-align: center;
-            margin: 20px 0;
-            font-size: 18px;
-            color: #999;
-        }
-        .search_wrap {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .search_wrap .search_input {
-            display: inline-block;
-        }
-        .search_wrap input[type="text"] {
-            padding: 5px 10px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .search_wrap button.search_btn {
-            padding: 5px 10px;
-            font-size: 16px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .search_wrap button.search_btn:hover {
-            background-color: #0056b3;
-        }
-        .pageMaker_wrap {
-            text-align: center;
-            margin: 20px 0;
-        }
-        .pageMaker {
-            list-style-type: none;
-            padding: 0;
-        }
-        .pageMaker li {
-            display: inline;
-            margin: 0 5px;
-        }
-        .pageMaker a {
-            text-decoration: none;
-            color: #007bff;
-        }
-        .pageMaker a:hover {
-            text-decoration: underline;
-        }
-        .pageMaker .active a {
-            font-weight: bold;
-            color: #333;
-        }
-    </style>
+
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -201,7 +117,7 @@
 				return;
 			}
 			
-			alert("수업을 정상적으로 등록하였습니다.");
+			alert("게시글을 정상적으로 등록하였습니다.");
 			
 		}
 

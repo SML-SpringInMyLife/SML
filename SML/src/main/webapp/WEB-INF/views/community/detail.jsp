@@ -66,8 +66,8 @@
     				<h3>댓글</h3>
     				<c:choose>
     					<c:when test="${member != null }">
-    						<div class="community_reply_button">
-    							<button>댓글 쓰기</button>
+    						<div class="btn_section">
+    							<button id="replyBtn">댓글 쓰기</button>
     						</div>
     					</c:when>
     					<c:otherwise>
@@ -91,7 +91,7 @@
 	<script>
 	const form = {
 			memCode : '${member.memCode}',
-			courseCode : '${communityDetail.courseCode}'
+			commCode : '${communityDetail.commCode}'
 	}
 	
 	let moveForm = $("#moveForm");

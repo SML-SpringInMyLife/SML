@@ -6,6 +6,7 @@
 <head>
 <title>게시글 상세 페이지</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
+<link rel="stylesheet" href="${webappRoot}/resources/css/admin/admin.css">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
