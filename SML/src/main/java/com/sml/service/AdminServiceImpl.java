@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.sml.mapper.AdminMapper;
 import com.sml.model.ChatVO;
-import com.sml.model.CourseVO;
+import com.sml.model.CourseApplyDTO;
 import com.sml.model.Criteria;
 import com.sml.model.MemberVO;
 import com.sml.model.SmsVO;
@@ -135,7 +135,7 @@ public class AdminServiceImpl implements AdminService {
 
 	// 페이징 처리된 수강 목록 조회
 	@Override
-	public List<CourseVO> getCourseList(Criteria cri) {
+	public List<CourseApplyDTO> getCourseList(Criteria cri) {
 		return adminMapper.getCourseList(cri);
 	}
 
@@ -207,7 +207,7 @@ public class AdminServiceImpl implements AdminService {
 	// 미출석 회원에게 안부 문자 발송
 	@Override
 	@Transactional
-	public void sendReminderSms(List<MemberVO> members){
+	public void sendReminderSms(List<MemberVO> members) {
 		logger.info(null, members.size());
 		if (members == null || members.isEmpty()) {
 			logger.warn("조회된 미출석 회원 없음");
@@ -219,6 +219,7 @@ public class AdminServiceImpl implements AdminService {
 
 		for (MemberVO member : members) {
 			String phone = member.getMemPhone();
+			String memName = member.getMemName();
 			if (phone == null || phone.trim().isEmpty()) {
 				logger.warn("전화번호 없는 회원 스킵 : {}", member);
 				continue; // null이거나 빈 전화번호를 가진 객체는 건너뜀
@@ -227,7 +228,7 @@ public class AdminServiceImpl implements AdminService {
 			HashMap<String, String> set = new HashMap<>();
 			set.put("to", phone);
 			set.put("from", "01091933200");
-			set.put("text", "[SML] 안녕하세요, 출석 체크를 잊지 마세요!");
+			set.put("text", "[SML] 안녕하세요, " + memName + "님, 출석 체크를 잊지 마세요!");
 			set.put("type", "sms");
 			set.put("app_version", "test app 1.2");
 

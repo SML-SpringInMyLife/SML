@@ -30,10 +30,6 @@
 	<select id="getMemberList" parameterType="map"
 		resultType="com.sml.model.MemberVO" resultMap="userResultMap">
     <![CDATA[
-    SELECT * FROM (
-      SELECT
-        ROWNUM AS rn, m.*
-      FROM (
         SELECT * FROM TB_MEMBER ]]>
 		<where>
 			<!-- 'type'이 'all'인 경우, 여러 필드를 검색 -->
@@ -45,7 +41,6 @@
 				OR MEM_PHONE LIKE '%' || #{keyword} || '%'
 				)
 			</if>
-
 			<!-- 특정 'type'에 대해 필터링 -->
 			<if test="type != null and type != 'all'">
 				<choose>
@@ -60,12 +55,11 @@
 					</when>
 				</choose>
 			</if>
-		</where><![CDATA[
-        ORDER BY MEM_ADMIN_CHECK DESC, MEM_NAME
-      ) m
-    )
-    WHERE rn > (#{pageNum} - 1) * #{amount} AND rn <= #{pageNum} * #{amount}
-    ]]>
+		</where>
+     <![CDATA[
+     ORDER BY MEM_ADMIN_CHECK DESC, MEM_JOIN_DATE DESC
+	 OFFSET (#{pageNum} - 1) * #{amount} ROWS FETCH NEXT #{amount} ROWS ONLY
+  ]]>
 	</select>
 
 	<!-- 전체 회원 수 가져오기 : 검색 조건에 맞는 -->
@@ -172,31 +166,29 @@
 		<result property="memId" column="MEM_ID" />
 	</resultMap>
 
-	<!-- SMS 목록 가져오기 -->
 	<!-- SMS 목록 가져오기 (페이징 포함) -->
-	<!-- SMS 목록 가져오기 -->
 	<select id="getSmsList" resultMap="smsResultMap">
-		SELECT
-		s.SMS_CODE,
-		s.SMS_CONTENT,
-		s.SEND_DATE,
-		s.STATUS,
-		s.MEM_CODE,
-		m.MEM_NAME,  <!-- 추가된 멤버 이름 -->
-		m.MEM_ID     <!-- 추가된 멤버 아이디 -->
-		FROM SMS s
-		LEFT JOIN TB_MEMBER m ON s.MEM_CODE = m.MEM_CODE
+  <![CDATA[
+  SELECT 
+      s.SMS_CODE,
+      s.SMS_CONTENT,
+      s.SEND_DATE,
+      s.STATUS,
+      s.MEM_CODE,
+      m.MEM_NAME,
+      m.MEM_ID
+  FROM SMS s
+  LEFT JOIN TB_MEMBER m ON s.MEM_CODE = m.MEM_CODE
+  ]]>
 		<where>
 			<!-- 'type'이 'all'인 경우, 모든 필드 검색 -->
 			<if test="type != null and type == 'all'">
 				(
 				s.SMS_CONTENT LIKE '%' || #{keyword} || '%'
 				OR
-				s.SEND_DATE
-				LIKE '%' || #{keyword} || '%'
+				s.SEND_DATE LIKE '%' || #{keyword} || '%'
 				OR m.MEM_NAME LIKE '%' ||
-				#{keyword} ||
-				'%'
+				#{keyword} || '%'
 				OR m.MEM_ID LIKE '%' || #{keyword} || '%'
 				)
 			</if>
@@ -218,9 +210,11 @@
 				</choose>
 			</if>
 		</where>
-		ORDER BY s.SEND_DATE DESC
+  <![CDATA[
+  ORDER BY SMS_CODE DESC
+  OFFSET (#{pageNum} - 1) * #{amount} ROWS FETCH NEXT #{amount} ROWS ONLY
+  ]]>
 	</select>
-
 
 	<!-- SMS 리스트 수 가져오기 : 검색 조건에 맞는 -->
 	<select id="getSmsTotal" parameterType="map" resultType="int">
@@ -307,10 +301,7 @@
 	<select id="getChatList" parameterType="map"
 		resultType="com.sml.model.ChatVO" resultMap="chatMap">
     <![CDATA[
-    SELECT * FROM (
-      SELECT
-        ROWNUM AS rn, c.*
-      FROM CHAT c ]]>
+    SELECT * FROM CHAT ]]>
 		<where>
 			<!-- 'type'이 'all'인 경우, 여러 필드를 검색 -->
 			<if test="type != null and type == 'all'">
@@ -333,15 +324,14 @@
 			</if>
 		</where><![CDATA[
 		ORDER BY CHAT_DATE DESC
-		)
-		WHERE rn > (#{pageNum} - 1) * #{amount} AND rn
-		<= #{pageNum} * #{amount}]]>
+		OFFSET (#{pageNum} - 1) * #{amount} ROWS FETCH NEXT #{amount} ROWS ONLY
+ 	]]>
 	</select>
 
 	<!-- 채팅 리스트 수 가져오기 : 검색 조건에 맞는 -->
 	<select id="getChatTotal" parameterType="map" resultType="int">
     <![CDATA[
-    SELECT COUNT(*) FROM CHAT c ]]>
+    SELECT COUNT(*) FROM CHAT ]]>
 		<where>
 			<!-- 'type'이 'all'인 경우, 여러 필드를 검색 -->
 			<if test="type != null and type == 'all'">
@@ -381,6 +371,106 @@
 		DELETE FROM CHAT WHERE
 		CHAT_CODE = #{chatCode}
 	</delete>
+
+
+	<resultMap id="courseApplyMap"
+		type="com.sml.model.CourseApplyDTO">
+		<!-- 기본 테이블의 컬럼과 DTO의 필드 매핑 -->
+		<id property="applyCode" column="APPLY_CODE" />
+		<result property="applyDate" column="APPLY_DATE" />
+		<result property="memCode" column="MEM_CODE" />
+		<result property="courseCode" column="COURSE_CODE" />
+		<result property="applyCancel" column="APPLY_CANCEL" />
+		<result property="applyStatus" column="APPLY_STATUS" />
+
+		<!-- 추가로 가져올 값들 (NOT IN DB) -->
+		<result property="memName" column="MEM_NAME" />
+		<result property="courseName" column="COURSE_NAME" />
+		<result property="courseStartDate" column="COURSE_START_DATE" />
+	</resultMap>
+
+
+	<!-- 수강 신청자 총 수 가져오기 -->
+	<select id="getCourseTotal" parameterType="map" resultType="int">
+    <![CDATA[
+    SELECT COUNT(*) FROM COURSE_APPLICANT a
+    JOIN COURSE c ON a.COURSE_CODE = c.COURSE_CODE
+    JOIN TB_MEMBER m ON a.MEM_CODE = m.MEM_CODE
+    ]]>
+		<where>
+			<!-- 'type'이 'all'인 경우, 모든 필드에서 검색 -->
+			<if test="type != null and type == 'all'">
+				(
+				a.APPLY_CODE LIKE '%' || #{keyword} || '%'
+				OR m.MEM_NAME
+				LIKE '%' || #{keyword} || '%'
+				OR c.COURSE_NAME LIKE '%' || #{keyword}
+				|| '%'
+				)
+			</if>
+			<!-- 특정 'type'에 대한 필터링 -->
+			<if test="type != null and type != 'all'">
+				<choose>
+					<when test="type == 'applyCode'">
+						a.APPLY_CODE LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'memName'">
+						m.MEM_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'courseName'">
+						c.COURSE_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
+	</select>
+
+
+	<!-- 수강 신청자 목록 가져오기 -->
+	<select id="getCourseList" parameterType="map"
+		resultType="com.sml.model.CourseApplyDTO" resultMap="courseApplyMap">
+    <![CDATA[
+    SELECT 
+        a.APPLY_CODE,
+        a.APPLY_DATE,
+        a.MEM_CODE,
+        m.MEM_NAME,
+        a.COURSE_CODE,
+        c.COURSE_NAME,
+        c.COURSE_START_DATE
+    FROM COURSE_APPLICANT a
+    JOIN COURSE c ON a.COURSE_CODE = c.COURSE_CODE
+    JOIN TB_MEMBER m ON a.MEM_CODE = m.MEM_CODE
+    ]]>
+		<where>
+			<!-- 'type'이 'all'인 경우, 모든 필드에서 검색 -->
+			<if test="type != null and type == 'all'">
+				(
+				a.APPLY_CODE LIKE '%' || #{keyword} || '%'
+				OR m.MEM_NAME LIKE '%' || #{keyword} || '%'
+				OR c.COURSE_NAME LIKE '%' || #{keyword} || '%'
+				)
+			</if>
+			<!-- 특정 'type'에 대한 필터링 -->
+			<if test="type != null and type != 'all'">
+				<choose>
+					<when test="type == 'applyCode'">
+						a.APPLY_CODE LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'memName'">
+						m.MEM_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+					<when test="type == 'courseName'">
+						c.COURSE_NAME LIKE '%' || #{keyword} || '%'
+					</when>
+				</choose>
+			</if>
+		</where>
+    <![CDATA[
+    ORDER BY a.APPLY_DATE DESC
+    OFFSET (#{pageNum} - 1) * #{amount} ROWS FETCH NEXT #{amount} ROWS ONLY
+    ]]>
+	</select>
 
 
 </mapper>

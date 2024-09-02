@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Header</title>
+<title>Chat Consultation List</title>
 <link rel="stylesheet"
 	href="${webappRoot}/resources/css/common/common.css">
 <link rel='stylesheet'
@@ -15,153 +15,83 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
-	<div id="quick-menu">
-		<button onclick="openChat()">
-			<i class="fi fi-br-comments-question-check"></i>
-		</button>
-		<button onclick="scrollToTop()">
-			<i class="fi fi-br-chevron-double-up"></i>
-		</button>
-	</div>
+	<!-- 헤더 영역 포함 -->
+	<jsp:include page="/WEB-INF/views/common/header.jsp" />
 
-	<header>
-		<div class="container">
-			<div class="left-menu">
-				<a href="/" class="main-link"> <img
-					src="${webappRoot}/resources/images/logo.jpg" alt="Logo"
-					class="logo">
-				</a>
-				<nav class="main-menu" id="main-menu">
-					<ul>
-						<li><a href="/notice/list">공지사항</a></li>
-						<li><a href="/life/list">생활정보</a></li>
-						<li><a href="/location/map">위치찾기</a></li>
-						<li><a href="/course/boardList">취미교실</a></li>
-						<li><a href="/community/boardList">커뮤니티</a></li>
-						<li><a href="/donation/main">후원하기</a></li>
-					</ul>
-				</nav>
-			</div>
-			<nav class="auth-menu" id="auth-menu">
-				<ul>
-					<c:choose>
-						<c:when test="${not empty sessionScope.member}">
-							<li><span class="welcome" id="memName">${sessionScope.member.memName}
-									님</span><span class="memId" id="memId" style="display: none;">${sessionScope.member.memId}</span></li>
-							<c:choose>
-								<c:when test="${sessionScope.member.memAdminCheck == 1}">
-									<li><a href="/admin/main">관리자페이지</a></li>
-								</c:when>
-								<c:otherwise>
-									<li><a href="/member/memberCheck">마이페이지</a></li>
-								</c:otherwise>
-							</c:choose>
-							<li><a href="/member/logout">로그아웃</a></li>
-						</c:when>
-						<c:otherwise>
-							<li><a href="/member/login">로그인</a></li>
-							<li><a href="/member/join">회원가입</a></li>
-						</c:otherwise>
-					</c:choose>
-				</ul>
-			</nav>
-			<button class="hamburger" id="hamburger">&#9776;</button>
-			<div class="mobile-menu" id="mobile-menu">
-				<ul>
-					<li><a href="/notice/list">공지사항</a></li>
-					<li><a href="/life/list">생활정보</a></li>
-					<li><a href="/location/map">위치찾기</a></li>
-					<li><a href="/course/boardList">취미교실</a></li>
-					<li><a href="/community/boardList">커뮤니티</a></li>
-					<li><a href="/donation/main">후원하기</a></li>
-					<hr>
-					<c:choose>
-						<c:when test="${not empty sessionScope.member}">
-							<c:choose>
-								<c:when test="${sessionScope.member.memAdminCheck == 1}">
-									<li><a href="/admin/main">관리자페이지</a></li>
-								</c:when>
-								<c:otherwise>
-									<li><a href="/member/memberCheck">마이페이지</a></li>
-								</c:otherwise>
-							</c:choose>
-							<li><a href="/member/logout">로그아웃</a></li>
-						</c:when>
-						<c:otherwise>
-							<li><a href="/member/login">로그인</a></li>
-							<li><a href="/member/join">회원가입</a></li>
-						</c:otherwise>
-					</c:choose>
-				</ul>
+	<!-- 채팅 상담 목록 메인 내용을 여기에 작성 -->
+	<main>
+		<div class="admin-container">
+			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
+
+			<div class="admin-main-content" id="chatList">
+				<h2>채팅 상담 목록</h2>
+				<table class="stats-table">
+					<thead>
+						<tr>
+							<th>NO.</th>
+							<th>채팅방 ID</th>
+							<th>회원명</th>
+						</tr>
+					</thead>
+					<tbody id="chat-room-list">
+						<!-- 여기에 동적으로 채팅방 목록이 추가됨 -->
+					</tbody>
+				</table>
 			</div>
 		</div>
-	</header>
+	</main>
 
-	<!-- 채팅 팝업 설정 -->
-	<div id="chat-container" class="hidden">
-		<c:choose>
-			<c:when test="${sessionScope.member.memAdminCheck == 1}">
-				<div id="chatContainer">
-					<div id="chatList">
-						<h3>Chat Rooms</h3>
-						<input type="text" id="newChatRoom" placeholder="New Chat Room">
-						<button onclick="createChatRoom()">Create Room</button>
-						<div id="roomList"></div>
-					</div>
-					<div id="chatRoom">
-						<h3>Chat Room</h3>
-						<div id="messageArea"></div>
-						<input type="text" id="messageInput" placeholder="Type a message">
-						<button onclick="sendMessage()">Send</button>
-					</div>
-				</div>
-			</c:when>
-			<c:otherwise>
-				<div id="chat-header">
-					<span><< 채팅 상담 >></span>
-					<button onclick="minimizeChat()">➖</button>
-					<!-- 최소화 버튼 -->
-					<button onclick="closeChat()">❌</button>
-				</div>
-				<div id="chat-box"></div>
-				<div id="chat-input">
-					<input type="text" id="message-input" placeholder="메시지를 입력하세요.">
-					<button onclick="sendMessage()">전송</button>
-				</div>
-			</c:otherwise>
-		</c:choose>
-	</div>
+	<!-- 푸터 영역 포함 -->
+	<jsp:include page="/WEB-INF/views/common/footer.jsp" />
 
-	<div id="close-chat-modal" class="modal hidden">
-		<div class="modal-content">
-			<p>채팅(상담)을 종료하시겠습니까?</p>
-			<button onclick="confirmCloseChat()">종료</button>
-			<button onclick="cancelCloseChat()">취소</button>
-		</div>
-	</div>
-	<script src="${webappRoot}/resources/js/common.js"></script>
 	<script>
-		function openChat() {
-			document.getElementById('chat-container').classList.toggle('hidden');
+		// 채팅방 목록을 갱신하는 함수
+		function updateChatRooms() {
+			$.ajax({
+			    url: '/admin/chatRooms',
+			    method: 'GET',
+			    dataType: 'json', // JSON 형식으로 응답을 받도록 명시
+			    success: function(response) {
+			        let chatRooms = response.chatRooms; // 이미 JSON으로 파싱된 응답을 사용
+			        let chatRoomList = $('#chat-room-list');
+			        chatRoomList.empty(); // 기존 목록 제거
+
+			        chatRooms.forEach(function(room, index) {
+			            var status = index + 1;
+			            chatRoomList.append('<tr data-id="' + room.id + '">'
+			                                + '<td>' + status + '</td>'  // 자동 번호
+			                                + '<td>' + room.id + '</td>' 
+			                                + '<td>' + room.name + '</td>' // 한글 이름
+			                                + '</tr>');
+			        });
+					// 각 채팅방 클릭 이벤트 설정
+					$('#chat-room-list tr').on('click', function() {
+						const conversationId = $(this).data('id');
+						console.log("채팅방 선택됨 ===> " + conversationId);
+
+						const message = JSON.stringify({
+							action : 'joinChatRoom',
+							conversationId : conversationId
+						});
+
+						ws.send(message); // WebSocket을 통해 메시지 전송
+						$('#chat-container').removeClass('hidden');
+						$('#conversationId').val(conversationId); // 선택된 대화 ID 설정
+					});
+				},
+				error : function(xhr, status, error) {
+					console.error('채팅방 목록 가져오기 실패:', status, error);
+				}
+			});
 		}
 
-		function minimizeChat() {
-			document.getElementById('chat-container').classList.add('hidden');
-			// Optional: Add functionality to minimize chat
-		}
-
-		function closeChat() {
-			document.getElementById('close-chat-modal').classList.remove('hidden');
-		}
-
-		function confirmCloseChat() {
-			document.getElementById('chat-container').classList.add('hidden');
-			document.getElementById('close-chat-modal').classList.add('hidden');
-		}
-
-		function cancelCloseChat() {
-			document.getElementById('close-chat-modal').classList.add('hidden');
-		}
+		// 페이지가 로드될 때 채팅방 목록을 갱신
+		$(document).ready(function() {
+			startChat(); // 채팅 연결 함수 호출
+			updateChatRooms();
+			// 10초마다 채팅방 목록을 갱신
+			setInterval(updateChatRooms, 10000);
+		});
 	</script>
 </body>
 </html>

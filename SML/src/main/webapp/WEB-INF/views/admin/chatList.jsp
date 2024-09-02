@@ -17,7 +17,8 @@
 			<jsp:include page="/WEB-INF/views/admin/adminMenu.jsp" />
 			<div class="admin-main-content">
 				<h2>채팅상담 관리</h2>
-				<div class="search-container">
+				<form id="searchForm" action="/admin/chatList" method="get"
+					class="search-container">
 					<select id="type" name="type">
 						<option value="all">전체</option>
 						<option value="date">상담일시</option>
@@ -31,15 +32,15 @@
 							value='<c:out value="${pageMaker.cri.keyword}"></c:out>'>
 						<button onclick="search()">검색</button>
 					</div>
-				</div>
+				</form>
 				<table class="chat-table">
 					<thead>
 						<tr>
 							<th data-label="No.">No.</th>
-							<th data-label="분류">분류</th>
 							<th data-label="상담일시">상담일시</th>
+							<!--  <th data-label="분류">분류</th>
 							<th data-label="아이디">아이디</th>
-							<th data-label="성명">성명</th>
+							<th data-label="성명">성명</th>-->
 							<th data-label="내용">내용</th>
 						</tr>
 					</thead>
@@ -50,18 +51,18 @@
 						<tbody id="chatList">
 							<c:forEach items="${chat}" var="chat" varStatus="status">
 								<tr>
-									<td data-label="No.">${totalCount - status.index}</td>
-									<td data-label="분류">${chat.categoryCode}</td>
+									<td data-label="No.">${totalCount - ((pageMaker.cri.pageNum - 1) * pageMaker.cri.amount + status.index)}</td>
 									<td data-label="상담일시"><fmt:formatDate
 											value="${chat.chatDate}" pattern="yyyy-MM-dd HH:mm" /></td>
+									<!-- <td data-label="분류">${chat.categoryCode}</td>
 									<td data-label="아이디">${chat.memCode}</td>
-									<td data-label="성명">${chat.memCode}</td>
+									<td data-label="성명">${chat.memCode}</td> -->
 									<!-- 내용, 길면 축약 표시 -->
 									<td data-label="내용"><span class="chat-content"
 										data-chat-content="<c:out value='${chat.chatContent}' />">
 											<c:choose>
-												<c:when test="${fn:length(chat.chatContent) > 25}">
-													<c:out value="${fn:substring(chat.chatContent, 0, 25)}" />...
+												<c:when test="${fn:length(chat.chatContent) > 80}">
+													<c:out value="${fn:substring(chat.chatContent, 0, 80)}" />...
 											</c:when>
 												<c:otherwise>
 													<c:out value="${chat.chatContent}" />
@@ -79,27 +80,28 @@
 					<ul class="pageMaker">
 						<!-- Previous Button -->
 						<c:if test="${pageMaker.prev}">
-							<li class="pageMaker_btn prev"><a
-								href="${pageMaker.pageStart - 1}">이전</a></li>
+							<li class="pageMaker_btn prev"><a href="#"
+								data-page="${pageMaker.pageStart - 1}">이전</a></li>
 						</c:if>
 						<!-- Page Numbers -->
 						<c:forEach begin="${pageMaker.pageStart}"
 							end="${pageMaker.pageEnd}" var="num">
 							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":"" }">
-								<a href="${num}">${num}</a>
+								<a href="#" data-page="${num}">${num}</a>
 							</li>
 						</c:forEach>
 						<!-- Next Button -->
 						<c:if test="${pageMaker.next}">
-							<li class="pageMaker_btn next"><a
-								href="${pageMaker.pageEnd + 1 }">다음</a></li>
+							<li class="pageMaker_btn next"><a href="#"
+								data-page="${pageMaker.pageEnd + 1}">다음</a></li>
 						</c:if>
 					</ul>
 				</div>
-				<form id="moveForm" action="/admin/chat" method="get">
+				<form id="moveForm" action="/admin/chatList" method="get">
 					<input type="hidden" name="pageNum"
 						value="${pageMaker.cri.pageNum}"> <input type="hidden"
 						name="amount" value="${pageMaker.cri.amount}"> <input
+						type="hidden" name="type" value="${pageMaker.cri.type}"> <input
 						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 				</form>
 			</div>
@@ -114,7 +116,6 @@
 			<div id="chatDetailsContent"></div>
 		</div>
 	</div>
-
 
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>

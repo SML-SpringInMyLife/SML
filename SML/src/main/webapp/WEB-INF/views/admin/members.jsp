@@ -20,9 +20,11 @@
 					class="search-container">
 					<select id="type" name="type">
 						<option value="all">전체</option>
-						<option value="id">ID</option>
-						<option value="name">성명</option>
-						<option value="phone">전화번호</option>
+						<option value="id" ${pageMaker.cri.type == 'id' ? 'selected' : ''}>ID</option>
+						<option value="name"
+							${pageMaker.cri.type == 'name' ? 'selected' : ''}>성명</option>
+						<option value="phone"
+							${pageMaker.cri.type == 'phone' ? 'selected' : ''}>전화번호</option>
 					</select>
 					<div class="search-bar">
 						<input type="text" id="search" class="search-bar"
@@ -48,14 +50,14 @@
 						</tr>
 					</thead>
 					<c:if test="${members == 'empty' || members.size() == 0}">
-						<div class="table_empty">등록된 회원가 없습니다.</div>
+						<div class="table_empty">등록된 회원이 없습니다.</div>
 					</c:if>
 					<c:if test="${members != 'empty'}">
 						<tbody id="memberList">
 							<!-- 반복출력 -->
 							<c:forEach var="member" items="${members}" varStatus="status">
 								<tr>
-									<td data-label="No.">${totalCount - (pageNum - 1) * amount - status.index}</td>
+									<td data-label="No.">${totalCount - ((pageMaker.cri.pageNum - 1) * pageMaker.cri.amount + status.index)}</td>
 									<td data-label="ID"><c:out value="${member.memId}" /></td>
 									<td data-label="성명"><c:out value="${member.memName}" /></td>
 									<td data-label="생년월일"><fmt:formatDate
@@ -119,20 +121,20 @@
 					<ul class="pageMaker">
 						<!-- Previous Button -->
 						<c:if test="${pageMaker.prev}">
-							<li class="pageMaker_btn prev"><a
-								href="${pageMaker.pageStart - 1}">이전</a></li>
+							<li class="pageMaker_btn prev"><a href="#"
+								data-page="${pageMaker.pageStart - 1}">이전</a></li>
 						</c:if>
 						<!-- Page Numbers -->
 						<c:forEach begin="${pageMaker.pageStart}"
 							end="${pageMaker.pageEnd}" var="num">
 							<li class="pageMaker_btn ${pageMaker.cri.pageNum == num ? "active":"" }">
-								<a href="${num}">${num}</a>
+								<a href="#" data-page="${num}">${num}</a>
 							</li>
 						</c:forEach>
 						<!-- Next Button -->
 						<c:if test="${pageMaker.next}">
-							<li class="pageMaker_btn next"><a
-								href="${pageMaker.pageEnd + 1 }">다음</a></li>
+							<li class="pageMaker_btn next"><a href="#"
+								data-page="${pageMaker.pageEnd + 1}">다음</a></li>
 						</c:if>
 					</ul>
 				</div>
@@ -140,6 +142,7 @@
 					<input type="hidden" name="pageNum"
 						value="${pageMaker.cri.pageNum}"> <input type="hidden"
 						name="amount" value="${pageMaker.cri.amount}"> <input
+						type="hidden" name="type" value="${pageMaker.cri.type}"> <input
 						type="hidden" name="keyword" value="${pageMaker.cri.keyword}">
 				</form>
 			</div>
@@ -148,5 +151,6 @@
 
 	<!-- 푸터 영역 포함 -->
 	<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+
 </body>
 </html>

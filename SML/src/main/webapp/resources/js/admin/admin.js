@@ -7,21 +7,12 @@ $(document).ready(function () {
         }
     });
 
-    // 페이지 이동 버튼 클릭 시 폼 제출 처리
-    let $moveForm = $('#moveForm');
-    $('.pageMaker_btn a').on('click', function (e) {
-        e.preventDefault(); // 기본 링크 동작 방지
-        $moveForm.find("input[name='pageNum']").val($(this).attr('href')); // 페이지 번호 업데이트
-        $moveForm.submit(); // 폼 제출
-    });
-
-    // 검색 버튼 클릭 시 페이지 번호를 1로 설정하고 폼 제출
-    let $searchForm = $('#searchForm');
-    $('#searchForm button').on('click', function (e) {
-        e.preventDefault(); // 기본 버튼 동작 방지
-        $searchForm.find("input[name='pageNum']").val('1'); // 페이지 번호를 1로 설정
-        $searchForm.submit(); // 폼 제출
-    });
+    $(".pageMaker_btn a").on("click", function(e) {
+				e.preventDefault();
+				const page = $(this).data("page");
+				$("#moveForm").find("input[name='pageNum']").val(page);
+				$("#moveForm").submit();
+	});
 
     // 각 폼의 제출 시 콘솔에 값 출력 및 폼 제출
     $('form.makeAdm-form, form.status-form').on('submit', function (event) {
@@ -70,7 +61,7 @@ function setupChart() {
                 y: {
                     beginAtZero: true, // y축의 시작점을 0으로 설정
                     min: 0, // y축의 최소값 설정
-                    max: 30, // y축의 최대값 설정
+                    max: 10, // y축의 최대값 설정
                     ticks: { stepSize: 1, callback: value => value } // y축 눈금 간격 및 레이블 표시
                 }
             },
@@ -192,13 +183,18 @@ function sendSms() {
 
 // 검색 결과를 처리하고 목록을 업데이트하는 함수
 function updateSearchResults(results) {
-    $('#searchResults').empty(); // 기존 검색 결과 초기화
+    $('#searchResults').empty(); // 기존 검색 결과를 리셋
+    
+    if (results.length === 0) { // 결과가 없는 경우
+        alert("회원이 없습니다."); // 알림창 표시
+        return; // 함수를 조기에 종료
+    }
 
     results.forEach(result => {
         // 검색 결과 항목 생성
         const $listItem = $('<li></li>').text(`${result.memName} (${result.memPhone})`);
         $listItem.on('click', () => {
-            $('#recipientNumber').val(result.memPhone); // 선택된 번호를 수신인 번호 입력 필드에 설정
+            $('#recipientNumber').val(result.memPhone); // 선택한 번호를 수신자 번호 입력란에 설정
         });
         $('#searchResults').append($listItem); // 결과 목록에 추가
     });
@@ -272,7 +268,6 @@ function clearSearchResults() {
 
 // 채팅 상세보기 팝업 표시 함수
 function showChatDetails(content) {
-    console.log('채팅 내용:', content); // 디버깅용 콘솔 출력
     $('#chatDetailsContent').html(formatContent(content)); // 포맷팅된 채팅 내용 설정
     $('#chatDetailsPopup').show(); // 채팅 상세보기 팝업 표시
 }
