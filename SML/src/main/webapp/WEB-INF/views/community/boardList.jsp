@@ -9,7 +9,6 @@
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 <link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
 
-
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
 <body>
@@ -29,7 +28,7 @@
 								<td class="th_column_2">제목</td>
 								<td class="th_column_3">작성자</td>
 								<td class="th_column_4">등록일</td>
-								<td class="th_column_5">조회수</td>
+								<!-- <td class="th_column_5">조회수</td> -->
 							</tr>
 						</thead>
 						<c:forEach items="${list}" var="list" varStatus="status">
@@ -42,7 +41,7 @@
 								</td>
 								<td><c:out value="${list.commWriter}" /></td>
 								<td><fmt:formatDate value="${list.enrollDate}" pattern="yyyy-MM-dd" /></td>
-								<td><c:out value="${list.commCount}" /></td>
+								<%-- <td><c:out value="${list.commCount}" /></td> --%>
 							</tr>
 						</c:forEach>
 					</table>

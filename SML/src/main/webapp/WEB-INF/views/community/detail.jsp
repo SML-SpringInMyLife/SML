@@ -7,6 +7,14 @@
 <title>게시글 상세 페이지</title>
 <link rel="stylesheet" href="${webappRoot}/resources/css/common/common.css">
 <link rel="stylesheet" href="../resources/css/courseNcommunity/courseNcommunity.css">
+<style>
+textarea.input_block {
+    height: 200px; /* 원하는 높이로 조정 */
+    overflow-y: auto; /* 내용이 넘칠 때 스크롤 */
+    word-wrap: break-word; /* 긴 단어를 자동으로 줄바꿈 */
+    white-space: pre-wrap; /* 줄바꿈 유지 */
+}
+</style>
 
 <script	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 </head>
@@ -42,10 +50,9 @@
 						</td> --%>
 					</tr>
 					<tr>
-						<td>게시글 내용</td>
-						<td>
-							<input class="input_block" name="commContent" readonly="readonly" value="<c:out value='${communityDetail.commContent}'/>"/>
-						</td>
+    					<td colspan="3">
+        					<input class="input_block" name="commContent" readonly="readonly" value="<c:out value='${communityDetail.commContent}'/>"/>
+    					</td>
 					</tr>
 				</table>
 				

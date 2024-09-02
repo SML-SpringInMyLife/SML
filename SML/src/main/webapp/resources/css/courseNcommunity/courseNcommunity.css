@@ -313,6 +313,14 @@ textarea[name="commContent"] {
 	border-collapse: collapse;
 	margin-top: 20px;
 }
+.community_table th.th_column_2 {
+    width: 100%; /* 제목 칸의 너비를 40%로 설정 (조정 가능) */
+}
+
+/* 커뮤니티 게시판 테이블 데이터 스타일 */
+.community_table td.th_column_2 {
+    word-break: break-word; /* 긴 텍스트가 셀을 넘어가지 않도록 줄바꿈 설정 */
+}
 
 .course_table, .community_table thead {
 	background-color: #f0f0f0;

@@ -15,23 +15,32 @@
 
   	<select id="getBoardList" resultType="com.sml.model.CommunityVO">
   		<![CDATA[
-  			SELECT * FROM (
-  				SELECT 
-  					ROWNUM AS rn, c.COMM_CODE AS commCode, c.COMM_TITLE AS commTitle, m.MEM_NAME AS commWriter, c.COMM_ENROLL_DATE AS enrollDate, c.COMM_COUNT AS commCount
-  				FROM COMMUNITY c
-  				JOIN TB_MEMBER m
-  					ON c.MEM_CODE = m.MEM_CODE
-  				WHERE c.COMM_STATUS = 'N' AND
-  		]]>
-  			<if test="keyword != null">
-                COMM_TITLE like '%'||#{keyword}||'%' AND
-            </if>
-        <![CDATA[
-        		ROWNUM <= #{pageNum}*#{amount}
-            	)
-        	WHERE rn > (#{pageNum} - 1) * #{amount}       	
-        ]]>
+        SELECT 
+            c.COMM_CODE AS commCode, 
+            c.COMM_TITLE AS commTitle, 
+            m.MEM_NAME AS commWriter, 
+            c.COMM_ENROLL_DATE AS enrollDate, 
+            c.COMM_COUNT AS commCount
+        FROM 
+            COMMUNITY c
+        JOIN 
+            TB_MEMBER m ON c.MEM_CODE = m.MEM_CODE
+        WHERE 
+            c.COMM_STATUS = 'N'
+    ]]>
+    <if test="keyword != null and keyword != ''">
+        <![CDATA[ AND c.COMM_TITLE LIKE '%' || #{keyword} || '%' ]]>
+    </if>
+    <![CDATA[
+        ORDER BY 
+            c.COMM_ENROLL_DATE DESC
+        OFFSET 
+            (#{pageNum} - 1) * #{amount} ROWS 
+        FETCH NEXT 
+            #{amount} ROWS ONLY
+    ]]>
   	</select>
+  	
   	<select id="communityGetTotal" resultType="int">
   		SELECT COUNT(*) FROM COMMUNITY
   		<if test="keyword != null">
