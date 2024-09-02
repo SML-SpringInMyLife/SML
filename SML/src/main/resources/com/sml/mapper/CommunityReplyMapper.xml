@@ -6,12 +6,18 @@
   <mapper namespace="com.sml.mapper.CommunityReplyMapper">
   
   	<insert id="enrollReply">
-  		INSERT INTO COMMUNITY_REPLY(COMM_CODE, MEM_CODE, REP_CONTENT) VALUES (
-  			#{commCode},
-  			#{memCode},
-  			#{repContent, jdbcType=VARCHAR}
+  		INSERT INTO COMMUNITY_REPLY(MEM_CODE, COMM_CODE, REP_CONTENT) VALUES (
+  		#{memCode},
+  		#{commCode},
+  		#{repContent}
   		)
   	</insert>
-
-  
+  	
+  	<select id="checkReply" resultType="integer">
+  		SELECT 
+  			REP_CODE AS repCode 
+  		 FROM COMMUNITY_REPLY
+  		 WHERE MEM_CODE = #{memCode} AND COMM_CODE = #{commCode}
+  	</select>
+  	
   </mapper>

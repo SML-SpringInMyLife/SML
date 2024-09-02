@@ -1,17 +1,20 @@
 package com.sml.service;
 
-import java.util.List;
-
 import com.sml.model.CourseApplyDTO;
-import com.sml.model.Criteria;
+import com.sml.model.MemberVO;
 
 public interface CourseApplyService {
 	
-	// 수강 신청
-	public int applyApply(CourseApplyDTO apply);
+	public int enrollApply(CourseApplyDTO apply);
 	
-	// 리스트 보기
-//	public List<CourseApplyDTO> applyList(Criteria cri);
-//	
-//	public int applyTotal(Criteria cri);
+	public int coursePoint(MemberVO member) throws Exception;
+	
+	public int getMemTotalPoint(int memCode) throws Exception;
+	
+	public int getCoursePoint(int courseCode) throws Exception;
+	
+	public int getApplyLimit(int applyCode) throws Exception;
+	
+	public int getCourseLimit(int courseCode) throws Exception;
+
 }

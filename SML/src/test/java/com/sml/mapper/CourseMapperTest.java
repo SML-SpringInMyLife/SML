@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.sml.model.Criteria;
+import com.sml.model.CourseApplyDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("file:src/main/webapp/WEB-INF/spring/root-context.xml")
@@ -172,44 +172,5 @@ public class CourseMapperTest {
 //		
 //		System.out.println("결과 : " +result);
 //	}
-	
-	@Test
-	public void applyTotal() throws Exception {
-		Criteria cri = new Criteria();
 
-		int total = applyMapper.applyTotal(cri);
-		System.out.println("total......." +total);
-	}
-	
-//	@Test
-//	public void cancelApplyTest() {
-//		int applyCode = 2;
-//		
-//		applyMapper.cancelApply(applyCode);
-//	}
-	
-//	@Test
-//	public void applyListTest() {
-//		int memCode = 21;
-//		
-//		List<CourseApplyDTO> list = applyMapper.applyList(memCode);
-//
-//		for(int i = 0; i < list.size(); i++) {
-//			System.out.println("result......." + i + " : " + list.get(i));
-//		}
-//
-//	}
-	
-//	@Test
-//	public void applyCheckTest() {
-//		int memCode = 21;
-//		int courseCode = 1;
-//		
-//		CourseApplyDTO apply = new CourseApplyDTO();
-//		apply.setMemCode(memCode);
-//		apply.setCourseCode(courseCode);
-//		
-//		CourseApplyDTO applyResult = applyMapper.applyCheck(apply);
-//		System.out.println("결과 : " +applyResult);
-//	}
 }

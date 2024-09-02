@@ -80,4 +80,18 @@
   		 WHERE COMM_CODE = #{commCode}
   	</select>
   	
+  	<update id="communityPoint">
+  		UPDATE TB_MEMBER
+  			SET
+  				MEM_TOTAL_POINT = MEM_TOTAL_POINT +500
+  			WHERE 
+  				MEM_CODE = #{memCode}
+  	</update>
+  	
+  	<select id="getCommCode" resultType="com.sml.model.CommunityVO">
+  		SELECT 
+  			COMM_CODE AS commCode,
+  			COMM_TITLE AS commTitle
+  		 WHERE COMM_CODE = #{commCode}
+  	</select>
   </mapper>

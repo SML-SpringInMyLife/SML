@@ -19,12 +19,6 @@
 			<jsp:include page="/WEB-INF/views/community/communityMenu.jsp"/>
 			<div class="community_main_content">
 				<h2><c:out value='${communityDetail.commTitle}'/></h2>
-				<c:if test="${member != null}">
-					<div class="replyAndlike" style="text-align: right;">
-						<button id="replyBtn"><img src="resources/images/community/reply.png"></button>
-						<button id="likeBtn">좋아요</button>
-					</div>
-				</c:if>
 				<table class="community_table">
 					<tr>
 						<td>작성자</td>
@@ -67,8 +61,21 @@
             			</c:otherwise>
         			</c:choose>
     			</div>
-         </div>
-			
+    			
+    			<div class="community_reply_content">
+    				<h3>댓글</h3>
+    				<c:choose>
+    					<c:when test="${member != null }">
+    						<div class="community_reply_button">
+    							<button>댓글 쓰기</button>
+    						</div>
+    					</c:when>
+    					<c:otherwise>
+    						로그인해 주세요.
+    					</c:otherwise>
+    				</c:choose>
+    			</div>
+         </div>      		
 		<form id="moveForm" method="get">
         	<input type="hidden" name="commCode" value='<c:out value="${communityDetail.commCode }"/>'>
             <input type="hidden" name="pageNum" value='<c:out value="${cri.pageNum }"/>'>
@@ -82,6 +89,11 @@
 	<jsp:include page="/WEB-INF/views/common/footer.jsp"/>
 	
 	<script>
+	const form = {
+			memCode : '${member.memCode}',
+			courseCode : '${communityDetail.courseCode}'
+	}
+	
 	let moveForm = $("#moveForm");
 	
 	$("#deleteBtn").on("click", function(e){
@@ -103,15 +115,30 @@
 		moveForm.submit();
 	});
 	
-	$("#replyBtn").on("click", function(e){
+	$(".community_reply_button").on("click", function(e) {
 		e.preventDefault();
-		
 		const memCode = '${member.memCode}';
 		const commCode = '${communityDetail.commCode}';
+
+		/*  */
 		
-		moveForm.attr("action", "/community/reply")
-		moveForm.submit();
+		$.ajax({
+			data : {
+				commCode : commCode,
+				memCode : memCode
+			},
+			url : '/reply/check',
+			type : 'POST',
+			success : function(result){
+				let popUrl = "/reply/" + memCode + "?commCode=" + commCode;
+				console.log(popUrl);
+				let popOption = "width = 490px, height=490px, top=300px, left=300px, scrollbars=yes";
+				
+				window.open(popUrl,"댓글 쓰기",popOption);
+			}
+		})
 	});
+	     
 		
 	</script>
 	

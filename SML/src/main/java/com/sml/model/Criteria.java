@@ -24,4 +24,6 @@ public class Criteria {
 		return type == null? new String[] {}:type.split("");
 	}
 	
+	private int commCode;
+	
 }

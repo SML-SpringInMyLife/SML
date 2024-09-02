@@ -57,7 +57,7 @@
 									<c:out value="${item.startTime}"/>~<c:out value="${item.endTime}"/>
 								</td>
 								<td>
-									<span>0</span>
+									<c:out value="${item.courseApply}"/>
 									/
 									<c:out value="${item.courseLimit}"/>
 									명
@@ -76,6 +76,8 @@
 				<c:if test="${listCheck == 'empty'}">
 					<div class="table_empty">개설된 수업이 없습니다.</div>
 				</c:if>
+				
+				<br>
 
 
 			<!-- 검색 영역 -->
@@ -138,6 +140,15 @@
 				return;
 			}
 			alert("수업'"+ eResult +"'을 등록하였습니다.");
+		}
+		
+		let aResult = '<c:out value="${apply_result}"/>';
+		checkResult(aResult);
+		function checkResult(aresult){
+			if(aresult === ''){
+				return;
+			}
+			alert("수업이 정상적으로 신청되었습니다.")
 		}
 	});
 	

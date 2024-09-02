@@ -2,15 +2,16 @@ package com.sml.service;
 
 import java.util.List;
 
+import com.sml.model.CommunityReplyVO;
 import com.sml.model.CommunityVO;
 import com.sml.model.Criteria;
-import com.sml.model.CommunityReplyDTO;
+import com.sml.model.MemberVO;
 
 public interface CommunityService {
 	
-	public void communityEnroll(CommunityVO community)throws Exception;
+	public void communityEnroll(CommunityVO community) throws Exception;
 
-	public List<CommunityVO> getBoardList(Criteria cri)throws Exception;
+	public List<CommunityVO> getBoardList(Criteria cri) throws Exception;
 	
 	public int communityGetTotal(Criteria cri) throws Exception;
 	
@@ -22,5 +23,9 @@ public interface CommunityService {
 
 	public CommunityVO getCommunityCode(int commCode);
 	
-	public int enrollReply(CommunityReplyDTO dto);
+	public int communityPoint(MemberVO member) throws Exception;	
+	
+	public CommunityVO getCommCode(int commCode);
+	
+
 }

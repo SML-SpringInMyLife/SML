@@ -1,13 +1,11 @@
 package com.sml.service;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.sml.mapper.CourseApplyMapper;
 import com.sml.model.CourseApplyDTO;
-import com.sml.model.Criteria;
+import com.sml.model.MemberVO;
 
 import lombok.extern.log4j.Log4j;
 
@@ -16,25 +14,58 @@ import lombok.extern.log4j.Log4j;
 public class CourseApplyServiceImpl implements CourseApplyService {
 	
 	@Autowired
-	CourseApplyMapper mapper;
+	CourseApplyMapper applyMapper;
 
 	@Override
-	public int applyApply(CourseApplyDTO apply) {
+	public int enrollApply(CourseApplyDTO apply) {
+		CourseApplyDTO checkApply = applyMapper.checkApply(apply);
+		int memPoint = applyMapper.getMemTotalPoint(apply.getMemCode());
+        int coursePoint = applyMapper.getCoursePoint(apply.getCourseCode());
+        int applyLimit = applyMapper.getApplyLimit(apply.getApplyCode());
+        int courseLimit = applyMapper.getCourseLimit(apply.getCourseCode());
 		
-		CourseApplyDTO applyCheck = mapper.applyCheck(apply);
-		
-		if(applyCheck != null) {
+		if(checkApply != null) {
 			return 2;
 		}
 		
+		if(memPoint < coursePoint) {
+			return 4;
+		}
+		
+		if(applyLimit > courseLimit) {
+			return 6;
+		}
+		
 		try {
-			return mapper.courseApply(apply);
+			return applyMapper.enrollApply(apply);
 		} catch (Exception e) {
 			return 0;
 		}
-		
 	}
 
-	
+	@Override
+	public int coursePoint(MemberVO member) throws Exception {
+		return applyMapper.coursePoint(member);
+	}
+
+	@Override
+	public int getMemTotalPoint(int memCode) throws Exception {
+		return applyMapper.getMemTotalPoint(memCode);
+	}
+
+	@Override
+	public int getCoursePoint(int courseCode) throws Exception {
+		return applyMapper.getCoursePoint(courseCode);
+	}
+
+	@Override
+	public int getCourseLimit(int courseCode) throws Exception {
+		return applyMapper.getCourseLimit(courseCode);
+	}
+
+	@Override
+	public int getApplyLimit(int applyCode) throws Exception {
+		return applyMapper.getApplyLimit(applyCode);
+	}
 	
 }
